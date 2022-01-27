@@ -1,1 +1,24 @@
-/* You can add global styles to this file, and also import other style files */
+
+@import "../node_modules/bootstrap/scss/bootstrap";
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/mixins";
+
+.bg-dark {
+  .form-control {
+    background-color: $secondary;
+    border-color: darken($dark, 50%);
+    color: $white;
+    &:focus {
+      background-color: $secondary;
+      border-color: darken($dark, 50%);
+      color: $white;
+    }
+  }
+  .input-group {
+    .input-group-text,button {
+      background-color: $dark;
+      border-color: darken($dark, 50%);
+      color: $light;
+    }
+  }
+}

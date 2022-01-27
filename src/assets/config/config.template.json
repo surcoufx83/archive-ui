@@ -1,0 +1,28 @@
+{
+  "api": {
+    "baseUrl": "/api/"
+  },
+  "auth": {
+    "authUrl": "/auth"
+  },
+  "icons": {
+    "cases": "fas fa-file-signature",
+    "cloud": "fab fa-cloudversify",
+    "dashboard": "fas fa-chart-pie",
+    "finance": "far fa-money-bill-alt",
+    "home": "fas fa-anchor",
+    "notepad": "far fa-lightbulb",
+    "search": "fab fa-searchengin",
+    "work": "fas fa-laptop-house"
+  },
+  "navbar": {
+    "items": [
+      { "title": "pages.home", "icon": "home", "link": "/home" },
+      { "title": "pages.dashboard", "icon": "dashboard", "link": "/dashboard" },
+      { "title": "pages.cases", "icon": "cases", "link": "/cases" },
+      { "title": "pages.finance", "icon": "finance", "link": "/finance" },
+      { "title": "pages.notepad", "icon": "notepad", "link": "/notepad" },
+      { "title": "pages.work", "icon": "work", "link": "/work" }
+    ]
+  }
+}

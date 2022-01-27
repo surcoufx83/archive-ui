@@ -1,3 +1,20 @@
-<p>login works!</p>
-
-<button (click)="submit()">Login</button>
+<div class="login">
+  <div class="container h-75 d-flex justify-content-center">
+    <div class="d-flex h-100 align-items-center text-center">
+      <div class="card body bg-gradient border border-secondary shadow-sm rounded">
+        <form>
+          <div class="card-body">
+            <h5 class="card-title pb-2 mb-2 border-bottom border-2 border-secondary">{{ i18n('login.title') }}</h5>
+            <p class="">{{ i18n('login.subtitle') }}</p>
+          </div>
+          <div class="card-footer">
+            <button type="submit" class="btn btn-primary">
+              <i [class]="config().getIcon('cloud') + ' me-2'"></i>
+              {{ i18n('login.button') }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

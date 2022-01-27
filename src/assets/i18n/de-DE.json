@@ -1,0 +1,32 @@
+{
+  "common": {
+    "back": "Zurück",
+    "cancel": "Abbruch"
+  },
+  "home": {
+    "abc": 1278
+  },
+  "login": {
+    "title": "Benutzeranmeldung",
+    "subtitle": "Diese Webseite verwendet den Login via Nextcloud. Klicke auf den folgenden Button um die Anmeldung zu starten.",
+    "button": "Zum Nextcloud-Login"
+  },
+  "navbar": {
+    "brand": {
+      "title": "Archiv"
+    },
+    "search": {
+      "label": "Durchsuchen des Archivs",
+      "placeholder": "Suchbegriff",
+      "submit": "Suchen"
+    }
+  },
+  "pages": {
+    "cases": "Akten",
+    "dashboard": "Dashboard",
+    "finance": "Finanzen",
+    "home": "Start",
+    "notepad": "Notepad",
+    "work": "Arbeit"
+  }
+}
