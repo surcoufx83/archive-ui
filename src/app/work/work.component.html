@@ -4,9 +4,9 @@
       <ul class="navbar-nav">
         <li class="nav-item mx-2"
             *ngFor="let item of config().WorkNavbarItems; let i = index">
-          <a [class]="'nav-link d-flex flex-column align-items-center ' + (routeUrl == item.link ? 'active' : '')"
+          <a [class]="'nav-link ' + (routeUrl == item.link ? 'active' : '')"
              [routerLink]="item.link">
-            <i [class]="config().getIcon(item.icon)"></i>
+            <i [class]="config().getIcon(item.icon) + ' me-1'"></i>
             <span class="d-none d-md-inline">
               {{ i18n(item.title) }}
             </span>
