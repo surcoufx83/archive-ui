@@ -14,8 +14,8 @@
     "usernamePlaceholder": "pete@archive.org",
     "failed": "Error during login. Please check input and try again.",
     "sessioncheck": {
-      "title": "Benutzeranmeldung",
-      "subtitle": "Bitte warten, die Anmeldung wird überprüft..."
+      "title": "User login",
+      "subtitle": "Please wait, the login is being checked..."
     }
   },
   "navbar": {
@@ -29,13 +29,13 @@
     }
   },
   "pages": {
-    "account": "Konto",
+    "account": "Account",
     "cases": "Cases",
     "dashboard": "Dashboard",
     "finance": "Finance",
     "home": "Home",
     "notepad": "Notes",
-    "settings": "Einstellungen",
+    "settings": "Settings",
     "work": "Work"
   }
 }
