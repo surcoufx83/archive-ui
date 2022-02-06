@@ -3,9 +3,7 @@
     "back": "Back",
     "cancel": "Cancel"
   },
-  "home": {
-    "abc": 1278
-  },
+  "home": {},
   "login": {
     "title": "User login",
     "subtitle": "This website requires the input of credentials. Please login with your username and password.",
@@ -14,7 +12,11 @@
     "passwordPlaceholder": "*********",
     "username": "Username",
     "usernamePlaceholder": "pete@archive.org",
-    "failed": "Error during login. Please check input and try again."
+    "failed": "Error during login. Please check input and try again.",
+    "sessioncheck": {
+      "title": "Benutzeranmeldung",
+      "subtitle": "Bitte warten, die Anmeldung wird überprüft..."
+    }
   },
   "navbar": {
     "brand": {
@@ -27,11 +29,13 @@
     }
   },
   "pages": {
+    "account": "Konto",
     "cases": "Cases",
     "dashboard": "Dashboard",
     "finance": "Finance",
     "home": "Home",
     "notepad": "Notes",
+    "settings": "Einstellungen",
     "work": "Work"
   }
 }
