@@ -12,7 +12,19 @@ import { LoginComponent } from './login/login.component';
 import { LoginCheckComponent } from './login-check/login-check.component';
 import { LogoutComponent } from './logout/logout.component';
 import { NotepadComponent } from './notepad/notepad.component';
+import { WorkCustomerComponent } from './work/settings/customers/customer/customer.component';
+import { WorkCustomersComponent } from './work/settings/customers/customers.component';
 import { WorkComponent } from './work/work.component';
+import { WorkDayComponent } from './work/work-day/work-day.component';
+import { WorkHolidaysComponent } from './work/settings/calendar/holidays/holidays.component';
+import { WorkLeadComponent } from './work/leads/lead/lead.component';
+import { WorkLeadsComponent } from './work/leads/leads.component';
+import { WorkMonthComponent } from './work/work-month/work-month.component';
+import { WorkOffCategoriesComponent } from './work/settings/off-categories/off-categories.component';
+import { WorkProjectsComponent } from './work/settings/customers/projects/projects.component';
+import { WorkSettingsComponent } from './work/settings/settings.component';
+import { WorkTimeCategoriesComponent } from './work/settings/time-categories/time-categories.component';
+import { WorkYearComponent } from './work/work-year/work-year.component';
 
 const routes: Routes = [
   { path: 'account', component: AccountComponent, canActivate: [ SessionGuard ] },
@@ -24,7 +36,17 @@ const routes: Routes = [
   { path: 'logincheck', component: LoginCheckComponent, canActivate: [ SessionGuard ]},
   { path: 'logout', component: LogoutComponent, canActivate: [ SessionGuard ] },
   { path: 'notepad', component: NotepadComponent, canActivate: [ SessionGuard ] },
-  { path: 'work', component: WorkComponent, canActivate: [ SessionGuard ] },
+  { path: 'work', component: WorkComponent, canActivate: [ SessionGuard ], children: [
+    { path: '', redirectTo: 'today', pathMatch: 'full' },
+    { path: 'day/:date', component: WorkDayComponent, canActivate: [ SessionGuard ] },
+    { path: 'leads', component: WorkLeadsComponent, canActivate: [ SessionGuard ] },
+    { path: 'month', component: WorkMonthComponent, canActivate: [ SessionGuard ] },
+    { path: 'settings', component: WorkSettingsComponent, canActivate: [ SessionGuard ], children: [
+      { path: 'customer/:id', component: WorkCustomerComponent, canActivate: [ SessionGuard ] },
+      { path: 'customers', component: WorkCustomersComponent, canActivate: [ SessionGuard ] },
+    ]},
+    { path: 'today', component: WorkDayComponent, canActivate: [ SessionGuard ] },
+  ]},
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', redirectTo: '/home' },
 ];

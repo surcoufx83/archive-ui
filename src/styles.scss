@@ -22,3 +22,16 @@
     }
   }
 }
+
+.navbar.navbar-sm {
+  .navbar-nav .nav-link {
+    font-size: 85%;
+  }
+}
+
+.navbar-secondary .navbar-nav .nav-link {
+  color: rgba(255, 255, 255, .55);
+  &.active {
+    color: #fff;
+  }
+}

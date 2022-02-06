@@ -23,20 +23,25 @@
     "brand": {
       "title": "Archiv"
     },
+    "items": {
+      "account": "Konto",
+      "cases": "Akten",
+      "dashboard": "Dashboard",
+      "finance": "Finanzen",
+      "home": "Start",
+      "notepad": "Notepad",
+      "settings": "Einstellungen",
+      "work": "Arbeit"
+    },
     "search": {
       "label": "Durchsuchen des Archivs",
       "placeholder": "Suchbegriff",
       "submit": "Suchen"
+    },
+    "workitems": {
+      "leads": "Leads",
+      "today": "Tagesbuchung",
+      "month": "Monatsansicht"
     }
-  },
-  "pages": {
-    "account": "Konto",
-    "cases": "Akten",
-    "dashboard": "Dashboard",
-    "finance": "Finanzen",
-    "home": "Start",
-    "notepad": "Notepad",
-    "settings": "Einstellungen",
-    "work": "Arbeit"
   }
 }

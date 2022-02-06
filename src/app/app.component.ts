@@ -19,6 +19,18 @@ export class AppComponent implements OnInit {
               private route: ActivatedRoute,
               private router: Router) { }
 
+  config() : ConfigService {
+    return this.configService;
+  }
+
+  i18n(key: string) : string {
+    return this.i18nService.i18n(key);
+  }
+
+  get isLoggedin() : boolean {
+    return this.auth.isLoggedin;
+  }
+
   ngOnInit() {
     this.route.url.subscribe(url => {
       this.routeUrl = url[0].path;
@@ -30,18 +42,6 @@ export class AppComponent implements OnInit {
             this.router.navigateByUrl('/home');
         }
     });
-  }
-
-  config() : ConfigService {
-    return this.configService;
-  }
-
-  i18n(key: string) : string {
-    return this.i18nService.i18n(key);
-  }
-
-  get isLoggedin() : boolean {
-    return this.auth.isLoggedin;
   }
 
 }
