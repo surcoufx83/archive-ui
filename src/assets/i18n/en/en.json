@@ -1,13 +1,13 @@
 {
   "common": {
-    "back": "Zurück",
-    "cancel": "Abbruch"
+    "back": "Back",
+    "cancel": "Cancel"
   },
   "home": {
     "abc": 1278
   },
   "login": {
-    "title": "Benutzeranmeldung",
+    "title": "User login",
     "subtitle": "Diese Webseite erfordert die Eingabe von Zugangsdaten. Bitte mit Benutzername und Passwort anmelden.",
     "button": "Anmelden",
     "password": "Passwort",
