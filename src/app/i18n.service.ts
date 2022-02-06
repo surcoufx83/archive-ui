@@ -13,7 +13,7 @@ export class I18nService {
   }
 
   loadLocalStrings(lang: string) {
-    return this.http.get('/assets/i18n/compiled/' + lang + '/' + lang + '.json').subscribe(
+    return this.http.get('/assets/i18n/' + lang + '/' + lang + '.json').subscribe(
       (i18nstrings) => {
         i18nstrings = <{ [key: string]: any; }>i18nstrings;
         if (i18nstrings == undefined)
