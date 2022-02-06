@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import * as moment from 'moment';
 
 import { ConfigService } from '../../config.service';
 import { I18nService } from '../../i18n.service';
@@ -12,6 +13,7 @@ import { I18nService } from '../../i18n.service';
 export class WorkDayComponent implements OnInit {
 
   routeUrl: string = '';
+  today: moment.Moment = moment();
 
   constructor(private configService: ConfigService,
               private i18nService: I18nService,
@@ -21,15 +23,12 @@ export class WorkDayComponent implements OnInit {
     return this.configService;
   }
 
-  i18n(key: string) : string {
-    return this.i18nService.i18n(key);
+  i18n(key: string, params: string[] = []) : string {
+    return this.i18nService.i18n(key, params);
   }
 
   ngOnInit(): void {
-    this.route.url.subscribe(url => {
-      console.log(url, url[0].path)
-      this.routeUrl = url[0].path;
-    });
+    this.today.locale(this.i18nService.Locale);
   }
 
 }
