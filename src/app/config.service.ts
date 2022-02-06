@@ -15,12 +15,15 @@ export class ConfigService {
       .toPromise()
       .then(config => {
         this.appConfig = config;
-        console.log(config);
       });
   }
 
   get AuthUrl() : string {
     return <string>this.appConfig.auth.authUrl;
+  }
+
+  get AuthCheckUrl() : string {
+    return <string>this.appConfig.auth.authCheck;
   }
 
   get NavbarItems() : any[] {

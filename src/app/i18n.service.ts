@@ -21,7 +21,6 @@ export class I18nService {
         for (const key in i18nstrings) {
           this.iterateStrings(<{ [key: string]: any; }>i18nstrings, key, '');
         }
-        console.log(this.strings);
       },
       (error) => {
         if (lang != 'de')

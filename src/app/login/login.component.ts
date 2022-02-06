@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
-import { ApiReply } from '../api-reply';
 import { ConfigService } from '../config.service';
 import { I18nService } from '../i18n.service';
 
@@ -20,7 +19,7 @@ export class LoginComponent implements OnInit {
   constructor(private auth: AuthService,
               private configService: ConfigService,
               private i18nService: I18nService,
-              private http: HttpClient) { }
+              private router: Router) { }
 
   config() : ConfigService {
     return this.configService;
@@ -31,12 +30,13 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() : void {
+    if (this.auth.hasSession)
+      this.router.navigate(['logincheck']);
   }
 
   submit() : void {
     if (this.busy)
       return;
-    console.log(this.user, this.password);
     this.busy = true;
     this.auth.login(this.user, this.password).subscribe((s) => {
       if (s.success == false) {

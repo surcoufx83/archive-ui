@@ -3,21 +3,24 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
-import { AppRoutingModule } from './app-routing.module';
+import { AccountComponent } from './account/account.component';
 import { AppComponent } from './app.component';
-import { ConfigService } from './config.service';
-import { I18nService } from './i18n.service';
+import { AppRoutingModule } from './app-routing.module';
 import { CasesComponent } from './cases/cases.component';
+import { ConfigService } from './config.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomeComponent } from './home/home.component';
 import { FinanceComponent } from './finance/finance.component';
+import { I18nService } from './i18n.service';
 import { LoginComponent } from './login/login.component';
 import { LogoutComponent } from './logout/logout.component';
 import { NotepadComponent } from './notepad/notepad.component';
 import { WorkComponent } from './work/work.component';
+import { LoginCheckComponent } from './login-check/login-check.component';
 
 @NgModule({
   declarations: [
+    AccountComponent,
     AppComponent,
     LoginComponent,
     LogoutComponent,
@@ -27,6 +30,7 @@ import { WorkComponent } from './work/work.component';
     FinanceComponent,
     NotepadComponent,
     WorkComponent,
+    LoginCheckComponent,
   ],
   imports: [
     AppRoutingModule,

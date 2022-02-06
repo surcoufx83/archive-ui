@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Injectable, OnInit } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { ApiReply } from './api-reply';
 import { ConfigService } from './config.service';
@@ -9,14 +9,12 @@ import { User } from './user';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class AuthService implements OnInit {
 
+  private checked: boolean = false;
+  private loggedin: boolean = false;
   private session?: Session;
   private storeName: string = '';
-
-  private clientid: string = 'archive-ui-client';
-  private clientLoginUrl: string = '/auth/login';
-  private clientLogoutUrl: string = '/auth/logout';
 
   constructor(private configService: ConfigService, private http: HttpClient) {
     this.storeName = this.configService.StoragePrefix + 'Session';
@@ -26,16 +24,52 @@ export class AuthService {
       if (localSession.username == '' || localSession.token == '') {
         localStorage.removeItem(this.storeName);
       } else {
-        this.session = localSession;
+        this.session = <Session>localSession;
       }
     }
+    else
+      this.checked = true;
   }
 
-  /**
-   * isLoggedin
-   */
-  public isLoggedin() : boolean {
+  public checkSession() : Subject<ApiReply> {
+    let reply: Subject<ApiReply> = new Subject<ApiReply>();
+    let url = this.configService.AuthCheckUrl;
+    if (this.session == undefined) {
+      reply.next({ success: false });
+      return reply;
+    }
+    this.http.post<ApiReply>(url, {}, { headers: new HttpHeaders().set('AuthToken', this.session.token)}).subscribe(
+      (response) => {
+        if (response.success) {
+          this.loggedin = true;
+        } else {
+          this.session = undefined;
+          this.loggedin = false;
+        }
+        this.checked = true;
+        reply.next({ success: true });
+      },
+      (error) => {
+        console.log(error);
+        this.session = undefined;
+        this.loggedin = false;
+        this.checked = true;
+        reply.next({ success: false });
+      }
+    );
+    return reply;
+  }
+
+  get hasChecked() : boolean {
+    return this.checked;
+  }
+
+  get hasSession() : boolean {
     return (this.session != undefined);
+  }
+
+  get isLoggedin() : boolean {
+    return this.loggedin;
   }
 
   /**
@@ -77,6 +111,10 @@ export class AuthService {
    */
   public logout() {
     console.log('AuthService.logout()');
+
+  }
+
+  ngOnInit() : void {
 
   }
 
