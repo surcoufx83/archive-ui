@@ -45,7 +45,7 @@ import { WorkComponent } from './work/work.component';
       provide: APP_INITIALIZER,
       deps: [I18nService],
       multi: true,
-      useFactory: (i18nService: I18nService) => () => i18nService.loadLocalStrings()
+      useFactory: (i18nService: I18nService) => () => i18nService.loadLocalStrings(navigator.language.substr(0, 2))
     }
   ],
   bootstrap: [AppComponent]

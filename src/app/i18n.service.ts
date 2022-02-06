@@ -12,10 +12,9 @@ export class I18nService {
 	   this.http = http;
   }
 
-  loadLocalStrings() {
-    return this.http.get('/assets/i18n/' + navigator.language + '.json')
-      .toPromise()
-      .then(i18nstrings => {
+  loadLocalStrings(lang: string) {
+    return this.http.get('/assets/i18n/' + lang + '.json').subscribe(
+      (i18nstrings) => {
         i18nstrings = <{ [key: string]: any; }>i18nstrings;
         if (i18nstrings == undefined)
           return;
@@ -23,7 +22,12 @@ export class I18nService {
           this.iterateStrings(<{ [key: string]: any; }>i18nstrings, key, '');
         }
         console.log(this.strings);
-      });
+      },
+      (error) => {
+        if (lang != 'de')
+          this.loadLocalStrings('de');
+      }
+    );
   }
 
   private iterateStrings(strings: { [key: string]: any; }, key: string, parent: string) : void {

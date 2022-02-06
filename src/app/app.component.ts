@@ -20,11 +20,8 @@ export class AppComponent implements OnInit {
               private router: Router) { }
 
   ngOnInit() {
-    console.log(this.route);
     this.route.url.subscribe(url => {
-      console.log(url);
       this.routeUrl = url[0].path;
-        console.log(this.routeUrl);
         if (!this.isLoggedin()) {
           if (this.routeUrl !== '/login' && this.routeUrl !== '/logout')
             this.router.navigateByUrl('/login');

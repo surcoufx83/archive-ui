@@ -42,7 +42,6 @@ export class AuthService {
    * login
    */
   public login(username: string, password: string) : Subject<ApiReply> {
-    console.log('AuthService.login()', username);
     let reply: Subject<ApiReply> = new Subject<ApiReply>();
     let formdata = new FormData();
     formdata.append('archauth_login_username', username);
@@ -50,7 +49,6 @@ export class AuthService {
     let url = this.configService.AuthUrl;
     this.http.post<ApiReply>(url, formdata).subscribe(
       (response) => {
-        console.log(response);
         if (response.success && response.payload != undefined) {
           this.session = {
             token: response.payload['token'],
@@ -66,7 +64,6 @@ export class AuthService {
         }
       },
       (error) => {
-        console.log(error);
         reply.next({
           success: false,
         });
