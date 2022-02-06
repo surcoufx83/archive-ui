@@ -1,0 +1,46 @@
+{
+  "common": {
+    "back": "Zurück",
+    "cancel": "Abbruch"
+  },
+  "home": {},
+  "login": {
+    "title": "Benutzeranmeldung",
+    "subtitle": "Diese Webseite erfordert die Eingabe von Zugangsdaten. Bitte mit Benutzername und Passwort anmelden.",
+    "button": "Anmelden",
+    "password": "Passwort",
+    "passwordPlaceholder": "*********",
+    "username": "Benutzername",
+    "usernamePlaceholder": "pete@archive.org",
+    "failed": "Fehler bei der Anmeldung. Bitte Eingabe prüfen und nochmal versuchen.",
+    "sessioncheck": {
+      "title": "Benutzeranmeldung",
+      "subtitle": "Bitte warten, die Anmeldung wird überprüft..."
+    }
+  },
+  "navbar": {
+    "brand": {
+      "title": "Archiv"
+    },
+    "items": {
+      "account": "Konto",
+      "cases": "Akten",
+      "dashboard": "Dashboard",
+      "finance": "Finanzen",
+      "home": "Start",
+      "notepad": "Notepad",
+      "settings": "Einstellungen",
+      "work": "Arbeit"
+    },
+    "search": {
+      "label": "Durchsuchen des Archivs",
+      "placeholder": "Suchbegriff",
+      "submit": "Suchen"
+    },
+    "workitems": {
+      "leads": "Leads",
+      "today": "Tagesbuchung",
+      "month": "Monatsansicht"
+    }
+  }
+}
