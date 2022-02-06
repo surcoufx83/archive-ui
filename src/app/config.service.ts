@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -7,8 +8,11 @@ import { HttpClient } from '@angular/common/http';
 export class ConfigService {
 
   private appConfig: any;
+  private startUrl: string = '';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) {
+    this.startUrl = location.href.substr(location.href.indexOf('#') + 1);
+  }
 
   loadAppConfig() {
     return this.http.get('/assets/config/config.json')
@@ -24,6 +28,10 @@ export class ConfigService {
 
   get AuthCheckUrl() : string {
     return <string>this.appConfig.auth.authCheck;
+  }
+
+  get FirstUrl() : string {
+    return this.startUrl;
   }
 
   get NavbarItems() : any[] {
