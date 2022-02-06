@@ -8,8 +8,13 @@
   },
   "login": {
     "title": "Benutzeranmeldung",
-    "subtitle": "Diese Webseite verwendet den Login via Nextcloud. Klicke auf den folgenden Button um die Anmeldung zu starten.",
-    "button": "Zum Nextcloud-Login"
+    "subtitle": "Diese Webseite erfordert die Eingabe von Zugangsdaten. Bitte mit Benutzername und Passwort anmelden.",
+    "button": "Anmelden",
+    "password": "Passwort",
+    "passwordPlaceholder": "*********",
+    "username": "Benutzername",
+    "usernamePlaceholder": "pete@archive.org",
+    "failed": "Fehler bei der Anmeldung. Bitte Eingabe prüfen und nochmal versuchen."
   },
   "navbar": {
     "brand": {

@@ -16,7 +16,7 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent, canActivate: [ SessionGuard ] },
   { path: 'home', component: HomeComponent, canActivate: [ SessionGuard ] },
   { path: 'finance', component: FinanceComponent, canActivate: [ SessionGuard ] },
-  { path: 'login', component: LoginComponent, canActivate: [ SessionGuard ] },
+  { path: 'login', component: LoginComponent, canActivate: [ SessionGuard ], pathMatch: 'full'},
   { path: 'logout', component: LogoutComponent, canActivate: [ SessionGuard ] },
   { path: 'notepad', component: NotepadComponent, canActivate: [ SessionGuard ] },
   { path: 'work', component: WorkComponent, canActivate: [ SessionGuard ] },

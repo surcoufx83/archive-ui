@@ -1,5 +1,4 @@
-export class Session {
-
-  constructor(private token: string) { }
-
+export interface Session {
+  token: string;
+  username: string;
 }

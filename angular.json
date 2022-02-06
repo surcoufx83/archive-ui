@@ -83,7 +83,10 @@
             }
           },
           "defaultConfiguration": "development",
-          "options": {}
+          "options": {
+            "browserTarget": "archive-ui:build",
+            "proxyConfig": "proxy.json"
+          }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",

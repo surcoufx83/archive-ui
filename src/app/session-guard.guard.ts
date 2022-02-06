@@ -13,13 +13,10 @@ export class SessionGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    switch(state.url) {
-      case '/login':
-        return !this.auth.isLoggedin();
-      default:
-        return this.auth.isLoggedin();
-    }
-    return true;
+    console.log(state.url, this.auth.isLoggedin());
+    if (state.url.startsWith('/login'))
+      return !this.auth.isLoggedin();
+    return this.auth.isLoggedin();
   }
 
 }

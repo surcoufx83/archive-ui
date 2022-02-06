@@ -2,14 +2,38 @@
   <div class="container h-75 d-flex justify-content-center">
     <div class="d-flex h-100 align-items-center text-center">
       <div class="card body bg-gradient border border-secondary shadow-sm rounded">
-        <form>
+        <form #form="ngForm" (ngSubmit)="submit()">
           <div class="card-body">
             <h5 class="card-title pb-2 mb-2 border-bottom border-2 border-secondary">{{ i18n('login.title') }}</h5>
             <p class="">{{ i18n('login.subtitle') }}</p>
           </div>
+          <div class="card-body">
+            <div class="mb-3 d-flex g-1 text-start">
+              <label for="username" class="col-4 col-md-3 col-form-label">{{ i18n('login.username') }}</label>
+              <div class="col-8 col-md-9">
+                <input type="text" class="form-control" id="username" name="username"
+                  [(ngModel)]="user" required
+                  placeholder="{{ i18n('login.usernamePlaceholder') }}">
+              </div>
+            </div>
+            <div class="mb-3 d-flex g-1 text-start">
+              <label for="password" class="col-4 col-md-3 col-form-label">{{ i18n('login.password') }}:</label>
+              <div class="col-8 col-md-9">
+                <input type="password" class="form-control" id="password" name="password"
+                  [(ngModel)]="password" required
+                  placeholder="{{ i18n('login.passwordPlaceholder') }}">
+              </div>
+            </div>
+            <div class="my-3" *ngIf="failed != ''">
+              <div class="alert alert-danger" role="alert">
+                {{ i18n(failed) }}
+              </div>
+            </div>
+          </div>
           <div class="card-footer">
-            <button type="submit" class="btn btn-primary">
-              <i [class]="config().getIcon('cloud') + ' me-2'"></i>
+            <button type="submit" class="btn btn-primary"
+              [disabled]="busy">
+              <i [class]="config().getIcon(busy ? 'busy' : 'login') + ' me-2'"></i>
               {{ i18n('login.button') }}
             </button>
           </div>
