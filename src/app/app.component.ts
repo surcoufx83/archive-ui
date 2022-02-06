@@ -22,11 +22,11 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.route.url.subscribe(url => {
       this.routeUrl = url[0].path;
-        if (!this.isLoggedin()) {
-          if (this.routeUrl !== '/login' && this.routeUrl !== '/logout')
+        if (!this.isLoggedin) {
+          if (!this.routeUrl.startsWith('/login') && this.routeUrl !== '/logout')
             this.router.navigateByUrl('/login');
         } else {
-          if (this.routeUrl === '/login')
+          if (this.routeUrl.startsWith('/login'))
             this.router.navigateByUrl('/home');
         }
     });
@@ -40,8 +40,8 @@ export class AppComponent implements OnInit {
     return this.i18nService.i18n(key);
   }
 
-  isLoggedin() : boolean {
-    return this.auth.isLoggedin();
+  get isLoggedin() : boolean {
+    return this.auth.isLoggedin;
   }
 
 }
