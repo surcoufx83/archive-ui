@@ -50,4 +50,10 @@ export class ConfigService {
     return <string>this.appConfig.storage.prefix;
   }
 
+  get WorkNavbarItems() : any[] {
+    if (this.appConfig != undefined && this.appConfig.navbar !== undefined && this.appConfig.navbar.workitems !== undefined)
+      return <any[]>this.appConfig.navbar.workitems;
+    return [];
+  }
+
 }
