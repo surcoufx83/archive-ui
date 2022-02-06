@@ -44,6 +44,6 @@
     }
   },
   "workday": {
-    "pagetitle": "Tagesbuchungen {0}"
+    "pagetitle": "Day bookings {0}"
   }
 }
