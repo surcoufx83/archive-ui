@@ -22,6 +22,10 @@ export class ConfigService {
       });
   }
 
+  get ApiBaseUrl() : string {
+    return <string>this.appConfig.api.baseUrl;
+  }
+
   get AuthUrl() : string {
     return <string>this.appConfig.auth.authUrl;
   }

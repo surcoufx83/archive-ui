@@ -34,7 +34,7 @@ export class AuthService implements OnInit {
   public checkSession() : Subject<ApiReply> {
     let reply: Subject<ApiReply> = new Subject<ApiReply>();
     let url = this.configService.AuthCheckUrl;
-    this.queryApi(url).subscribe(
+    this.updateApi(url).subscribe(
       (response) => {
         if (response.success) {
           this.loggedin = true;
@@ -110,6 +110,24 @@ export class AuthService implements OnInit {
   }
 
   public queryApi(url: string, payload: any = {}) : Subject<ApiReply> {
+    let reply: Subject<ApiReply> = new Subject<ApiReply>();
+    if (this.session == undefined) {
+      reply.next({ success: false });
+      return reply;
+    }
+    this.http.get<ApiReply>(url, { headers: new HttpHeaders().set('AuthToken', this.session.token)}).subscribe(
+      (response) => {
+        reply.next(response);
+      },
+      (error) => {
+        console.log(error);
+        reply.next({ success: false });
+      }
+    );
+    return reply;
+  }
+
+  public updateApi(url: string, payload: any = {}) : Subject<ApiReply> {
     let reply: Subject<ApiReply> = new Subject<ApiReply>();
     if (this.session == undefined) {
       reply.next({ success: false });
