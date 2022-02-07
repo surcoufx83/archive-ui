@@ -39,11 +39,16 @@
     },
     "workitems": {
       "leads": "Leads",
-      "today": "Today",
-      "month": "Month"
+      "month": "Month",
+      "settings": "Settings",
+      "today": "Today"
     }
   },
   "workday": {
     "pagetitle": "Day bookings {0}"
+  },
+  "workmonth": {
+    "pagetitle": "Monatsübersicht {0}",
+    "pagetitleShort": "Übersicht {0}"
   }
 }
