@@ -1,0 +1,54 @@
+{
+  "common": {
+    "back": "Back",
+    "cancel": "Cancel"
+  },
+  "home": {},
+  "login": {
+    "title": "User login",
+    "subtitle": "This website requires the input of credentials. Please login with your username and password.",
+    "button": "Login",
+    "password": "Password",
+    "passwordPlaceholder": "*********",
+    "username": "Username",
+    "usernamePlaceholder": "pete@archive.org",
+    "failed": "Error during login. Please check input and try again.",
+    "sessioncheck": {
+      "title": "User login",
+      "subtitle": "Please wait, the login is being checked..."
+    }
+  },
+  "navbar": {
+    "brand": {
+      "title": "Archive"
+    },
+    "items": {
+      "account": "Account",
+      "cases": "Cases",
+      "dashboard": "Dashboard",
+      "finance": "Finance",
+      "home": "Home",
+      "notepad": "Notes",
+      "settings": "Settings",
+      "work": "Work"
+    },
+    "search": {
+      "label": "Search archive",
+      "placeholder": "Search topic",
+      "submit": "Search"
+    },
+    "workitems": {
+      "leads": "Leads",
+      "month": "Month",
+      "settings": "Settings",
+      "today": "Today"
+    }
+  },
+  "workday": {
+    "pagetitle": "Day bookings {0}"
+  },
+  "workmonth": {
+    "pagetitle": "Monthly calendar {0}",
+    "pagetitleShort": "Calendar {0}"
+  }
+}
