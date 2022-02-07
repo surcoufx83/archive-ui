@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 
 import { ConfigService } from '../../config.service';
@@ -12,12 +11,10 @@ import { I18nService } from '../../i18n.service';
 })
 export class WorkDayComponent implements OnInit {
 
-  routeUrl: string = '';
   today: moment.Moment = moment();
 
   constructor(private configService: ConfigService,
-              private i18nService: I18nService,
-              private route: ActivatedRoute) { }
+              private i18nService: I18nService) { }
 
   config() : ConfigService {
     return this.configService;
