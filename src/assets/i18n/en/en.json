@@ -48,7 +48,7 @@
     "pagetitle": "Day bookings {0}"
   },
   "workmonth": {
-    "pagetitle": "Monatsübersicht {0}",
-    "pagetitleShort": "Übersicht {0}"
+    "pagetitle": "Monthly calendar {0}",
+    "pagetitleShort": "Calendar {0}"
   }
 }
