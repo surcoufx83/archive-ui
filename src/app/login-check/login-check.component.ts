@@ -27,7 +27,7 @@ export class LoginCheckComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.auth.checkSession().subscribe((e) => {
       if (e.success)
-        this.router.navigate(['home']);
+        this.router.navigate([this.configService.FirstUrl]);
       else
         this.router.navigate(['login']);
     });

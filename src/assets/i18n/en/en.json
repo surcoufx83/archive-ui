@@ -1,37 +1,54 @@
 {
   "common": {
-    "back": "Zurück",
-    "cancel": "Abbruch"
+    "back": "Back",
+    "cancel": "Cancel"
   },
-  "home": {
-    "abc": 1278
-  },
+  "home": {},
   "login": {
-    "title": "Benutzeranmeldung",
-    "subtitle": "Diese Webseite erfordert die Eingabe von Zugangsdaten. Bitte mit Benutzername und Passwort anmelden.",
-    "button": "Anmelden",
-    "password": "Passwort",
+    "title": "User login",
+    "subtitle": "This website requires the input of credentials. Please login with your username and password.",
+    "button": "Login",
+    "password": "Password",
     "passwordPlaceholder": "*********",
-    "username": "Benutzername",
+    "username": "Username",
     "usernamePlaceholder": "pete@archive.org",
-    "failed": "Fehler bei der Anmeldung. Bitte Eingabe prüfen und nochmal versuchen."
+    "failed": "Error during login. Please check input and try again.",
+    "sessioncheck": {
+      "title": "User login",
+      "subtitle": "Please wait, the login is being checked..."
+    }
   },
   "navbar": {
     "brand": {
-      "title": "Archiv"
+      "title": "Archive"
+    },
+    "items": {
+      "account": "Account",
+      "cases": "Cases",
+      "dashboard": "Dashboard",
+      "finance": "Finance",
+      "home": "Home",
+      "notepad": "Notes",
+      "settings": "Settings",
+      "work": "Work"
     },
     "search": {
-      "label": "Durchsuchen des Archivs",
-      "placeholder": "Suchbegriff",
-      "submit": "Suchen"
+      "label": "Search archive",
+      "placeholder": "Search topic",
+      "submit": "Search"
+    },
+    "workitems": {
+      "leads": "Leads",
+      "month": "Month",
+      "settings": "Settings",
+      "today": "Today"
     }
   },
-  "pages": {
-    "cases": "Akten",
-    "dashboard": "Dashboard",
-    "finance": "Finanzen",
-    "home": "Start",
-    "notepad": "Notepad",
-    "work": "Arbeit"
+  "workday": {
+    "pagetitle": "Day bookings {0}"
+  },
+  "workmonth": {
+    "pagetitle": "Monthly calendar {0}",
+    "pagetitleShort": "Calendar {0}"
   }
 }

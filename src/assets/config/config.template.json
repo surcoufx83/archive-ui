@@ -1,28 +1,50 @@
 {
   "api": {
-    "baseUrl": "/api/"
+    "baseUrl": "/api"
   },
   "auth": {
-    "authUrl": "/auth"
+    "authUrl": "/api/auth/login",
+    "authCheck": "/api/auth/check"
   },
   "icons": {
+    "account": "fas fa-user",
+    "busy": "fas fa-fan fa-spin",
     "cases": "fas fa-file-signature",
-    "cloud": "fab fa-cloudversify",
     "dashboard": "fas fa-chart-pie",
     "finance": "far fa-money-bill-alt",
+    "go-down": "fas fa-caret-down",
+    "go-left": "fas fa-caret-left",
+    "go-right": "fas fa-caret-right",
+    "go-up": "fas fa-caret-up",
     "home": "fas fa-anchor",
+    "leads": "fas fa-funnel-dollar",
+    "login": "fas fa-user-lock",
+    "month": "fas fa-calendar-week",
     "notepad": "far fa-lightbulb",
     "search": "fab fa-searchengin",
-    "work": "fas fa-laptop-house"
+    "settings": "fas fa-cog",
+    "today": "fas fa-calendar-day",
+    "work": "fas fa-laptop-house",
+    "year": "fas fa-calendar-alt"
   },
   "navbar": {
     "items": [
-      { "title": "pages.home", "icon": "home", "link": "/home" },
-      { "title": "pages.dashboard", "icon": "dashboard", "link": "/dashboard" },
-      { "title": "pages.cases", "icon": "cases", "link": "/cases" },
-      { "title": "pages.finance", "icon": "finance", "link": "/finance" },
-      { "title": "pages.notepad", "icon": "notepad", "link": "/notepad" },
-      { "title": "pages.work", "icon": "work", "link": "/work" }
+      { "title": "navbar.items.home", "icon": "home", "link": "/home" },
+      { "title": "navbar.items.dashboard", "icon": "dashboard", "link": "/dashboard" },
+      { "title": "navbar.items.cases", "icon": "cases", "link": "/cases" },
+      { "title": "navbar.items.finance", "icon": "finance", "link": "/finance" },
+      { "title": "navbar.items.notepad", "icon": "notepad", "link": "/notepad" },
+      { "title": "navbar.items.work", "icon": "work", "link": "/work" },
+      { "title": "navbar.items.account", "icon": "account", "link": "/account" }
+    ],
+    "workitems": [
+      { "title": "navbar.workitems.today", "icon": "today", "link": "/work/today" },
+      { "title": "navbar.workitems.month", "icon": "month", "link": "/work/month" },
+      { "title": "navbar.workitems.leads", "icon": "leads", "link": "/work/leads" },
+      { "title": "navbar.workitems.settings", "icon": "settings", "link": "/work/settings" }
     ]
+  },
+  "storage": {
+    "prefix": "ArcApiv2__"
   }
 }

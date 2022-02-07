@@ -22,3 +22,21 @@
     }
   }
 }
+
+.fs-7 { font-size: $font-size-base * .9; }
+.fs-8 { font-size: $font-size-base * .8; }
+
+.navbar.navbar-sm {
+  .navbar-nav .nav-link {
+    font-size: 92%;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+.navbar-secondary .navbar-nav .nav-link {
+  color: rgba(255, 255, 255, .55);
+  &.active {
+    color: #fff;
+  }
+}

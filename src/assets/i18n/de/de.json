@@ -23,20 +23,48 @@
     "brand": {
       "title": "Archiv"
     },
+    "items": {
+      "account": "Konto",
+      "cases": "Akten",
+      "dashboard": "Dashboard",
+      "finance": "Finanzen",
+      "home": "Start",
+      "notepad": "Notepad",
+      "settings": "Einstellungen",
+      "work": "Arbeit"
+    },
     "search": {
       "label": "Durchsuchen des Archivs",
       "placeholder": "Suchbegriff",
       "submit": "Suchen"
+    },
+    "workitems": {
+      "leads": "Leads",
+      "month": "Monatsansicht",
+      "settings": "Einstellungen",
+      "today": "Tagesbuchung"
     }
   },
-  "pages": {
-    "account": "Konto",
-    "cases": "Akten",
-    "dashboard": "Dashboard",
-    "finance": "Finanzen",
-    "home": "Start",
-    "notepad": "Notepad",
-    "settings": "Einstellungen",
-    "work": "Arbeit"
+  "workday": {
+    "pagetitle": "Tagesbuchungen {0}"
+  },
+  "workmonth": {
+    "pagetitle": "Monatsübersicht {0}",
+    "pagetitleShort": "Übersicht {0}",
+    "cards": {
+      "target": {
+        "title": "Monatsinfo",
+        "businessDays": "Arbeitstage",
+        "offDays": "WE / FT",
+        "lastEdit": "Letzte Änderung",
+        "lastEditShort": "Letzte Änd."
+      },
+      "time": {
+        "title": "Gebuchte Zeiten",
+        "takeover": "Übernahme",
+        "balance": "Differenz",
+        "carryover": "Übertrag"
+      }
+    }
   }
 }

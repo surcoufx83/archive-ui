@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class I18nService {
 
+  private locale: string = navigator.language.substr(0, 2);
   private strings: { [key: string]: string; } = {};
 
   constructor(private http: HttpClient) {
@@ -40,10 +41,19 @@ export class I18nService {
       this.strings[mykey] = strings[key];
   }
 
-  i18n(key: string) : string {
-    if (this.strings[key] != undefined)
-      return this.strings[key];
+  i18n(key: string, params: string[] = []) : string {
+    if (this.strings[key] != undefined) {
+      let str: string = this.strings[key];
+      for (let i = 0; i < params.length; i++) {
+        str = str.replace('{' + i + '}', params[i]);
+      }
+      return str;
+    }
     return '<I18n: string \'' + key + '\' missing!>';
+  }
+
+  get Locale() : string {
+    return this.locale;
   }
 
 }
