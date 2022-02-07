@@ -34,11 +34,7 @@ export class AuthService implements OnInit {
   public checkSession() : Subject<ApiReply> {
     let reply: Subject<ApiReply> = new Subject<ApiReply>();
     let url = this.configService.AuthCheckUrl;
-    if (this.session == undefined) {
-      reply.next({ success: false });
-      return reply;
-    }
-    this.http.post<ApiReply>(url, {}, { headers: new HttpHeaders().set('AuthToken', this.session.token)}).subscribe(
+    this.queryApi(url).subscribe(
       (response) => {
         if (response.success) {
           this.loggedin = true;
@@ -50,7 +46,6 @@ export class AuthService implements OnInit {
         reply.next({ success: true });
       },
       (error) => {
-        console.log(error);
         this.session = undefined;
         this.loggedin = false;
         this.checked = true;
@@ -112,6 +107,24 @@ export class AuthService implements OnInit {
   public logout() {
     console.log('AuthService.logout()');
 
+  }
+
+  public queryApi(url: string, payload: any = {}) : Subject<ApiReply> {
+    let reply: Subject<ApiReply> = new Subject<ApiReply>();
+    if (this.session == undefined) {
+      reply.next({ success: false });
+      return reply;
+    }
+    this.http.post<ApiReply>(url, payload, { headers: new HttpHeaders().set('AuthToken', this.session.token)}).subscribe(
+      (response) => {
+        reply.next(response);
+      },
+      (error) => {
+        console.log(error);
+        reply.next({ success: false });
+      }
+    );
+    return reply;
   }
 
   ngOnInit() : void {
