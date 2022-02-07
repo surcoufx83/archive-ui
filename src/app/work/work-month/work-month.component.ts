@@ -3,9 +3,11 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import * as moment from 'moment';
 import { map } from 'rxjs/operators';
 
+import { UiCenteredBusyIndicatorComponent } from '../../utils/ui-centered-busy-indicator/ui-centered-busy-indicator.component';
 import { AuthService } from '../../auth.service';
 import { ConfigService } from '../../config.service';
 import { I18nService } from '../../i18n.service';
+import { WorkMonth } from '../work-month';
 import { WorkSettingsService } from '../settings/work-settings.service';
 import { WorkSettings } from '../settings/work-settings';
 
@@ -22,6 +24,9 @@ export class WorkMonthComponent implements OnInit {
   year: number|undefined;
   month: number|undefined;
   worksettingsObj?: WorkSettings;
+  monthLoading: boolean = false;
+  monthObj?: WorkMonth;
+  dayObjs?: any[];
 
   constructor(private authService: AuthService,
               private configService: ConfigService,
@@ -78,6 +83,7 @@ export class WorkMonthComponent implements OnInit {
       else if (this.year != undefined && this.month == undefined)
         this.router.navigate(['work', 'month', this.year, this.selectedMonth.format('M')]);
       else {
+        this.monthLoading = true;
         this.selectedMonth = moment([<number>this.year, <number>this.month - 1, +this.selectedMonth.format('D')]);
         this.firstOfMonth = moment([<number>this.year, <number>this.month - 1, 1]);
         this.selectedMonth.locale(this.i18nService.Locale);
@@ -92,6 +98,19 @@ export class WorkMonthComponent implements OnInit {
     let url = this.configService.ApiBaseUrl + '/work/month/' + this.selectedMonth.format('YYYY-M');
     this.authService.queryApi(url).subscribe((reply) => {
       console.log(reply);
+      if (reply.success && reply.payload != undefined) {
+        if (reply.payload['month'] != null) {
+          this.monthObj = <WorkMonth>reply.payload['month'];
+          this.monthObj.datefrom = moment(this.monthObj.datefrom).locale(this.i18nService.Locale);
+          this.monthObj.dateuntil = moment(this.monthObj.dateuntil).locale(this.i18nService.Locale);
+          this.monthObj.updated = moment(this.monthObj.updated).locale(this.i18nService.Locale);
+          if (reply.payload['days'] != null) {
+            this.dayObjs = reply.payload['days'];
+          }
+        }
+      }
+      console.log(this.monthObj);
+      this.monthLoading = false;
     });
   }
 

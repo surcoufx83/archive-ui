@@ -50,6 +50,21 @@
   },
   "workmonth": {
     "pagetitle": "Monatsübersicht {0}",
-    "pagetitleShort": "Übersicht {0}"
+    "pagetitleShort": "Übersicht {0}",
+    "cards": {
+      "target": {
+        "title": "Monatsinfo",
+        "businessDays": "Arbeitstage",
+        "offDays": "WE / FT",
+        "lastEdit": "Letzte Änderung",
+        "lastEditShort": "Letzte Änd."
+      },
+      "time": {
+        "title": "Gebuchte Zeiten",
+        "takeover": "Übernahme",
+        "balance": "Differenz",
+        "carryover": "Übertrag"
+      }
+    }
   }
 }

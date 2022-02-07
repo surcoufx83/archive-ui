@@ -7,9 +7,7 @@
           <p class="">{{ i18n('login.sessioncheck.subtitle') }}</p>
         </div>
         <div class="card-footer">
-          <button type="button" class="btn btn-secondary" disabled>
-            <i [class]="config().getIcon('busy')"></i>
-          </button>
+          <h2><ui-busy-indicator></ui-busy-indicator></h2>
         </div>
       </div>
     </div>

@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { ReplaySubject } from 'rxjs';
 import { WorkSettings } from './work-settings';
 
 @Injectable()
 export class WorkSettingsService {
 
-  private workSettings: Subject<WorkSettings> = new Subject<WorkSettings>();
+  private workSettings: ReplaySubject<WorkSettings> = new ReplaySubject<WorkSettings>();
   workSettings$ = this.workSettings.asObservable();
 
   update(settings: WorkSettings) {

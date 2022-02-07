@@ -1,19 +1,16 @@
-<ng-container *ngIf="worksettingsObj == undefined">
-  <div class="container pt-4 pt-md-2">
-    <div class="pb-2 d-flex justify-content-center">
-      <h2><i [class]="config().getIcon('busy')"></i></h2>
-    </div>
-  </div>
-</ng-container>
+<ui-centered-busy-indicator *ngIf="worksettingsObj == undefined"></ui-centered-busy-indicator>
 
 <ng-container *ngIf="worksettingsObj != undefined">
-  <div class="container pt-4 pt-md-2">
+  <div class="container pt-4 pt-md-2 mb-4 mb-md-2">
     <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between">
       <h2 class="d-block d-md-none">{{ i18n('workmonth.pagetitleShort', [firstOfMonth.format('MMM YYYY')]) }}</h2>
       <h2 class="d-none d-md-block">{{ i18n('workmonth.pagetitle', [firstOfMonth.format('MMMM YYYY')]) }}</h2>
       <div>
         <nav class="h-100" style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
           <ol class="breadcrumb d-flex align-items-center h-100 mb-0">
+            <li class="breadcrumb-item">
+              <ui-busy-indicator *ngIf="monthLoading"></ui-busy-indicator>
+            </li>
             <a class="breadcrumb-item" [routerLink]="['/work', 'month', LastMonth.format('YYYY'), LastMonth.format('M')]">
               <button type="button" class="btn btn-sm btn-outline-primary">
                 <i [class]="config().getIcon('go-left') + ' me-1'"></i>
@@ -36,6 +33,97 @@
           </ol>
         </nav>
       </div>
+    </div>
+  </div>
+  <div *ngIf="!monthLoading && monthObj != undefined"
+    class="container pt-4 pt-md-2 mb-4 mb-md-2">
+
+    <div class="row g-2">
+
+      <div class="col-12 col-md-4"><!-- card 1: container month info -->
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">
+              <i [class]="config().getIcon('info') + ' me-1'"></i>
+              {{ i18n('workmonth.cards.target.title') }}
+            </h5>
+          </div>
+          <div class="card-body">
+            <table class="table table-sm table-fluid table-responsive table-borderless table-hover mb-0">
+              <tbody>
+                <tr>
+                  <th scope="col">
+                    {{ i18n('workmonth.cards.target.businessDays') }}
+                    <span class="fw-normal fs-8 d-inline d-md-none d-xl-inline">[ {{ i18n('workmonth.cards.target.offDays') }} ]</span>
+                  </th>
+                  <td>
+                    <strong>{{ monthObj.days - monthObj.weekenddays - monthObj.holidays }}</strong>
+                    <span class="fs-8 ms-1 d-inline d-md-none d-xl-inline">[ {{ monthObj.weekenddays }} / {{ monthObj.holidays }} ]</span>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="col">
+                    <span class="d-inline d-md-none d-xl-inline">{{ i18n('workmonth.cards.target.lastEdit') }}</span>
+                    <span class="d-none d-md-inline d-xl-none">{{ i18n('workmonth.cards.target.lastEditShort') }}</span>
+                  </th>
+                  <td>
+                    <span class="d-inline d-md-none d-xl-inline">{{ monthObj.updated.format('lll') }}</span>
+                    <span class="d-none d-md-inline d-xl-none">{{ monthObj.updated.format('l') }}</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div><!-- card 1: container month info -->
+
+      <div class="col-12 col-md-4"><!-- card 2: time booked -->
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">
+              <i [class]="config().getIcon('stopwatch') + ' me-1'"></i>
+              {{ i18n('workmonth.cards.time.title') }}
+            </h5>
+          </div>
+          <div class="card-body">
+            <table class="table table-sm table-fluid table-responsive table-borderless table-hover mb-0">
+              <tbody>
+                <tr>
+                  <th scope="col">
+                    {{ i18n('workmonth.cards.time.takeover') }}
+                  </th>
+                  <td>
+                    {{ monthObj.timestart }}
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="col">
+                    {{ i18n('workmonth.cards.time.balance') }}
+                  </th>
+                  <td>
+                    <strong>{{ monthObj.timedif }}</strong>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="col">
+                    {{ i18n('workmonth.cards.time.carryover') }}
+                  </th>
+                  <td>
+                    {{ monthObj.timeclose }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div><!-- card 2: time booked -->
+
+    </div>
+    <div class="row">
+      {{ monthObj|json }}
+    </div>
+    <div class="row">
+      {{ dayObjs|json }}
     </div>
   </div>
 </ng-container>

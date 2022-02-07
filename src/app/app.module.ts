@@ -1,7 +1,7 @@
 import { NgModule, APP_INITIALIZER } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
 
 import { AccountComponent } from './account/account.component';
 import { AppComponent } from './app.component';
@@ -14,9 +14,11 @@ import { FinanceComponent } from './finance/finance.component';
 import { I18nService } from './i18n.service';
 import { LoginCheckComponent } from './login-check/login-check.component';
 import { LoginComponent } from './login/login.component';
-import { WorkCalendarComponent } from './work/settings/calendar/calendar.component';
 import { LogoutComponent } from './logout/logout.component';
 import { NotepadComponent } from './notepad/notepad.component';
+import { UiBusyIndicatorComponent } from './utils/ui-busy-indicator/ui-busy-indicator.component';
+import { UiCenteredBusyIndicatorComponent } from './utils/ui-centered-busy-indicator/ui-centered-busy-indicator.component';
+import { WorkCalendarComponent } from './work/settings/calendar/calendar.component';
 import { WorkCustomerComponent } from './work/settings/customers/customer/customer.component';
 import { WorkCustomersComponent } from './work/settings/customers/customers.component';
 import { WorkComponent } from './work/work.component';
@@ -43,6 +45,8 @@ import { WorkYearComponent } from './work/work-year/work-year.component';
     LoginComponent,
     LogoutComponent,
     NotepadComponent,
+    UiBusyIndicatorComponent,
+    UiCenteredBusyIndicatorComponent,
     WorkCalendarComponent,
     WorkComponent,
     WorkCustomerComponent,
@@ -78,6 +82,8 @@ import { WorkYearComponent } from './work/work-year/work-year.component';
       useFactory: (i18nService: I18nService) => () => i18nService.loadLocalStrings(navigator.language.substr(0, 2))
     }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [
+    AppComponent
+  ]
 })
 export class AppModule { }
