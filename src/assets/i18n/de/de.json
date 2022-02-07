@@ -40,11 +40,16 @@
     },
     "workitems": {
       "leads": "Leads",
-      "today": "Tagesbuchung",
-      "month": "Monatsansicht"
+      "month": "Monatsansicht",
+      "settings": "Einstellungen",
+      "today": "Tagesbuchung"
     }
   },
   "workday": {
     "pagetitle": "Tagesbuchungen {0}"
+  },
+  "workmonth": {
+    "pagetitle": "Monatsübersicht {0}",
+    "pagetitleShort": "Übersicht {0}"
   }
 }

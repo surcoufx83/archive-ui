@@ -41,6 +41,7 @@ const routes: Routes = [
     { path: 'day/:date', component: WorkDayComponent, canActivate: [ SessionGuard ] },
     { path: 'leads', component: WorkLeadsComponent, canActivate: [ SessionGuard ] },
     { path: 'month', component: WorkMonthComponent, canActivate: [ SessionGuard ] },
+    { path: 'month/:year/:month', component: WorkMonthComponent, canActivate: [ SessionGuard ] },
     { path: 'settings', component: WorkSettingsComponent, canActivate: [ SessionGuard ], children: [
       { path: 'customer/:id', component: WorkCustomerComponent, canActivate: [ SessionGuard ] },
       { path: 'customers', component: WorkCustomersComponent, canActivate: [ SessionGuard ] },

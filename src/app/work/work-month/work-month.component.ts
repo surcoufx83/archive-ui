@@ -1,4 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import * as moment from 'moment';
+import { map } from 'rxjs/operators';
+
+import { ConfigService } from '../../config.service';
+import { I18nService } from '../../i18n.service';
 
 @Component({
   selector: 'app-work-month',
@@ -7,9 +13,65 @@ import { Component, OnInit } from '@angular/core';
 })
 export class WorkMonthComponent implements OnInit {
 
-  constructor() { }
+  today: moment.Moment = moment();
+  selectedMonth: moment.Moment = moment();
+  firstOfMonth: moment.Moment = moment().startOf('month');
+  year: number|undefined;
+  month: number|undefined;
+
+  constructor(private configService: ConfigService,
+              private i18nService: I18nService,
+              private route: ActivatedRoute,
+              private router: Router) { }
+
+  config() : ConfigService {
+    return this.configService;
+  }
+
+  i18n(key: string, params: string[] = []) : string {
+    return this.i18nService.i18n(key, params);
+  }
+
+  get IsToday() : boolean {
+    return this.today.isSame(this.selectedMonth, 'month');
+  }
+
+  get LastMonth() : moment.Moment {
+    return moment(this.selectedMonth).subtract(1, 'months');
+  }
+
+  get NextMonth() : moment.Moment {
+    return moment(this.selectedMonth).add(1, 'months');
+  }
 
   ngOnInit(): void {
+    console.log(this.route)
+    this.selectedMonth.locale(this.i18nService.Locale);
+    this.firstOfMonth.locale(this.i18nService.Locale);
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      let y = params.get('year');
+      if (y != null && +y >= 2022 && +y <= (+this.selectedMonth.format('YYYY') + 2))
+        this.year = +y;
+      else
+        this.year = undefined;
+      let m = params.get('month');
+      if (m != null && +m >= 1 && +m <= 12)
+        this.month = +m;
+      else
+        this.month = undefined;
+      if (this.year == undefined && this.month == undefined)
+        this.router.navigate(['work', 'month', this.selectedMonth.format('YYYY'), this.selectedMonth.format('M')]);
+      else if (this.year == undefined && this.month != undefined)
+        this.router.navigate(['work', 'month', this.selectedMonth.format('YYYY'), this.month]);
+      else if (this.year != undefined && this.month == undefined)
+        this.router.navigate(['work', 'month', this.year, this.selectedMonth.format('M')]);
+      else {
+        this.selectedMonth = moment([<number>this.year, <number>this.month - 1, +this.selectedMonth.format('D')]);
+        this.firstOfMonth = moment([<number>this.year, <number>this.month - 1, 1]);
+        this.selectedMonth.locale(this.i18nService.Locale);
+        this.firstOfMonth.locale(this.i18nService.Locale);
+      }
+    });
   }
 
 }
