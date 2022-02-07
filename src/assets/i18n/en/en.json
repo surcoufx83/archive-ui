@@ -52,17 +52,17 @@
     "pagetitleShort": "Calendar {0}",
     "cards": {
       "target": {
-        "title": "Monatsinfo",
-        "businessDays": "Arbeitstage",
-        "offDays": "WE / FT",
-        "lastEdit": "Letzte Änderung",
-        "lastEditShort": "Letzte Änd."
+        "title": "Info",
+        "businessDays": "Business days",
+        "offDays": "WE / HD",
+        "lastEdit": "Last Update",
+        "lastEditShort": "Last update"
       },
       "time": {
-        "title": "Gebuchte Zeiten",
-        "takeover": "Übernahme",
-        "balance": "Differenz",
-        "carryover": "Übertrag"
+        "title": "Booked time",
+        "takeover": "Take-over",
+        "balance": "Balance",
+        "carryover": "Carry-over"
       }
     }
   }
