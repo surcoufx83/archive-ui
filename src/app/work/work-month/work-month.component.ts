@@ -8,6 +8,8 @@ import { AuthService } from '../../auth.service';
 import { ConfigService } from '../../config.service';
 import { I18nService } from '../../i18n.service';
 import { WorkMonth } from '../work-month';
+import { SettingsService } from '../../user/settings/settings.service';
+import { Settings } from '../../user/settings/settings';
 import { WorkSettingsService } from '../settings/work-settings.service';
 import { WorkSettings } from '../settings/work-settings';
 
@@ -23,6 +25,7 @@ export class WorkMonthComponent implements OnInit {
   firstOfMonth: moment.Moment = moment().startOf('month');
   year: number|undefined;
   month: number|undefined;
+  usersettingsObj?: Settings;
   worksettingsObj?: WorkSettings;
   monthLoading: boolean = false;
   monthObj?: WorkMonth;
@@ -33,9 +36,14 @@ export class WorkMonthComponent implements OnInit {
               private i18nService: I18nService,
               private route: ActivatedRoute,
               private router: Router,
+              private userSettings: SettingsService,
               private workSettings: WorkSettingsService)
   {
     console.log('WorkMonthComponent');
+    this.userSettings.settings$.subscribe((settings) => {
+      console.log('WorkMonthComponent', settings);
+      this.usersettingsObj = settings;
+    })
     this.workSettings.workSettings$.subscribe((settings) => {
       console.log('WorkMonthComponent', settings);
       this.worksettingsObj = settings;
@@ -112,6 +120,10 @@ export class WorkMonthComponent implements OnInit {
       console.log(this.monthObj);
       this.monthLoading = false;
     });
+  }
+
+  pushUserSettings() : void {
+    this.userSettings.update(<Settings>this.usersettingsObj, true);
   }
 
 }

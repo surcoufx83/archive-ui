@@ -1,7 +1,7 @@
-<ui-centered-busy-indicator *ngIf="worksettingsObj == undefined"></ui-centered-busy-indicator>
+<ui-centered-busy-indicator *ngIf="usersettingsObj != undefined && worksettingsObj == undefined"></ui-centered-busy-indicator>
 
-<ng-container *ngIf="worksettingsObj != undefined">
-  <div class="container pt-4 pt-md-2 mb-4 mb-md-2">
+<ng-container *ngIf="usersettingsObj != undefined && worksettingsObj != undefined">
+  <div class="container pt-4 pt-md-2 mb-2">
     <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between">
       <h2 class="d-block d-md-none">{{ i18n('workmonth.pagetitleShort', [firstOfMonth.format('MMM YYYY')]) }}</h2>
       <h2 class="d-none d-md-block">{{ i18n('workmonth.pagetitle', [firstOfMonth.format('MMMM YYYY')]) }}</h2>
@@ -35,95 +35,172 @@
       </div>
     </div>
   </div>
-  <div *ngIf="!monthLoading && monthObj != undefined"
-    class="container pt-4 pt-md-2 mb-4 mb-md-2">
 
-    <div class="row g-2">
+  <ng-container *ngIf="!monthLoading && monthObj != undefined">
 
-      <div class="col-12 col-md-4"><!-- card 1: container month info -->
-        <div class="card">
-          <div class="card-header">
-            <h5 class="mb-0">
-              <i [class]="config().getIcon('info') + ' me-1'"></i>
-              {{ i18n('workmonth.cards.target.title') }}
-            </h5>
+    <div class="container pt-md-2 mb-2">
+
+      <div class="row g-2"><!-- container with info cards -->
+
+        <div class="col-12 col-md-4"><!-- card 1: container month info -->
+          <div class="card">
+            <div class="card-header">
+              <h5 class="mb-0">
+                <i [class]="config().getIcon('info') + ' me-1'"></i>
+                {{ i18n('workmonth.cards.target.title') }}
+              </h5>
+            </div>
+            <div class="card-body">
+              <table class="table table-sm table-fluid table-responsive table-borderless table-hover mb-0">
+                <tbody>
+                  <tr>
+                    <th scope="col">
+                      {{ i18n('workmonth.cards.target.businessDays') }}
+                      <span class="fw-normal fs-8 d-inline d-md-none d-xl-inline">[ {{ i18n('workmonth.cards.target.offDays') }} ]</span>
+                    </th>
+                    <td>
+                      <strong>{{ monthObj.days - monthObj.weekenddays - monthObj.holidays }}</strong>
+                      <span class="fs-8 ms-1 d-inline d-md-none d-xl-inline">[ {{ monthObj.weekenddays }} / {{ monthObj.holidays }} ]</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="col">
+                      <span class="d-inline d-md-none d-xl-inline">{{ i18n('workmonth.cards.target.lastEdit') }}</span>
+                      <span class="d-none d-md-inline d-xl-none">{{ i18n('workmonth.cards.target.lastEditShort') }}</span>
+                    </th>
+                    <td>
+                      <span class="d-inline d-md-none d-xl-inline">{{ monthObj.updated.format('lll') }}</span>
+                      <span class="d-none d-md-inline d-xl-none">{{ monthObj.updated.format('l') }}</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-          <div class="card-body">
-            <table class="table table-sm table-fluid table-responsive table-borderless table-hover mb-0">
-              <tbody>
-                <tr>
-                  <th scope="col">
-                    {{ i18n('workmonth.cards.target.businessDays') }}
-                    <span class="fw-normal fs-8 d-inline d-md-none d-xl-inline">[ {{ i18n('workmonth.cards.target.offDays') }} ]</span>
-                  </th>
-                  <td>
-                    <strong>{{ monthObj.days - monthObj.weekenddays - monthObj.holidays }}</strong>
-                    <span class="fs-8 ms-1 d-inline d-md-none d-xl-inline">[ {{ monthObj.weekenddays }} / {{ monthObj.holidays }} ]</span>
-                  </td>
-                </tr>
-                <tr>
-                  <th scope="col">
-                    <span class="d-inline d-md-none d-xl-inline">{{ i18n('workmonth.cards.target.lastEdit') }}</span>
-                    <span class="d-none d-md-inline d-xl-none">{{ i18n('workmonth.cards.target.lastEditShort') }}</span>
-                  </th>
-                  <td>
-                    <span class="d-inline d-md-none d-xl-inline">{{ monthObj.updated.format('lll') }}</span>
-                    <span class="d-none d-md-inline d-xl-none">{{ monthObj.updated.format('l') }}</span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+        </div><!-- card 1: container month info -->
+
+        <div class="col-12 col-md-4"><!-- card 2: time booked -->
+          <div class="card">
+            <div class="card-header">
+              <h5 class="mb-0">
+                <i [class]="config().getIcon('stopwatch') + ' me-1'"></i>
+                {{ i18n('workmonth.cards.time.title') }}
+              </h5>
+            </div>
+            <div class="card-body">
+              <table class="table table-sm table-fluid table-responsive table-borderless table-hover mb-0">
+                <tbody>
+                  <tr>
+                    <th scope="col">
+                      {{ i18n('workmonth.cards.time.takeover') }}
+                    </th>
+                    <td>
+                      {{ monthObj.timestart }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="col">
+                      {{ i18n('workmonth.cards.time.balance') }}
+                    </th>
+                    <td>
+                      <strong>{{ monthObj.timedif }}</strong>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="col">
+                      {{ i18n('workmonth.cards.time.carryover') }}
+                    </th>
+                    <td>
+                      {{ monthObj.timeclose }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div><!-- card 2: time booked -->
+
+      </div><!-- container with month calendar -->
+
+    </div>
+
+    <div class="container pt-4 pt-md-2 mb-2">
+      <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between">
+        <h3>{{ i18n('workmonth.calendar.title') }}</h3>
+        <div>
+          <nav class="h-100" style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
+            <ol class="breadcrumb d-flex align-items-center h-100 mb-0">
+              <li class="breadcrumb-item">
+                <button type="button" [ngClass]="['btn btn-sm', usersettingsObj.viewSettings.calendar.asList ? 'btn-primary' : 'btn-outline-primary']"
+                  (click)="usersettingsObj.viewSettings.calendar.asList = true; pushUserSettings();">
+                  <i [class]="config().getIcon('list')"></i>
+                </button>
+              </li>
+              <li class="breadcrumb-item">
+                <button type="button" [ngClass]="['btn btn-sm', !usersettingsObj.viewSettings.calendar.asList ? 'btn-primary' : 'btn-outline-primary']"
+                  (click)="usersettingsObj.viewSettings.calendar.asList = false; pushUserSettings();">
+                  <i [class]="config().getIcon('grid')"></i>
+                </button>
+              </li>
+              <li class="breadcrumb-item">
+                <button type="button" class="btn btn-sm btn-secondary"
+                  (click)="usersettingsObj.viewSettings.calendar.showWeek = !usersettingsObj.viewSettings.calendar.showWeek; pushUserSettings();">
+                  <i [class]="config().getIcon(usersettingsObj.viewSettings.calendar.showWeek ? 'toggle-on' : 'toggle-off') + ' me-1'"></i>
+                  {{ i18n('workmonth.calendar.showWeek') }}
+                </button>
+              </li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+    </div>
+
+    <div class="container pt-md-2 mb-2">
+
+      <ng-container *ngIf="!usersettingsObj.viewSettings.calendar.asList"><!-- calendar grid view -->
+        <div class="card container">
+          <div class="card-body p-0 row">
+            <div class="card-header col order-0" *ngIf="usersettingsObj.viewSettings.calendar.showWeek">{{ i18n('workmonth.calendar.grid.weekHeader') }}</div>
+            <div [ngClass]="['card-header col', usersettingsObj.viewSettings.calendar.sundayFirst ? 'order-1' : 'order-last']">
+              <span class="d-inline d-lg-none">{{ i18n('workmonth.calendar.grid.sundayHeaderSm') }}</span>
+              <span class="d-none d-lg-inline">{{ i18n('workmonth.calendar.grid.sundayHeader') }}</span>
+            </div>
+            <div class="card-header col order-2">
+              <span class="d-inline d-lg-none">{{ i18n('workmonth.calendar.grid.mondayHeaderSm') }}</span>
+              <span class="d-none d-lg-inline">{{ i18n('workmonth.calendar.grid.mondayHeader') }}</span>
+            </div>
+            <div class="card-header col order-2">
+              <span class="d-inline d-lg-none">{{ i18n('workmonth.calendar.grid.tuesdayHeaderSm') }}</span>
+              <span class="d-none d-lg-inline">{{ i18n('workmonth.calendar.grid.tuesdayHeader') }}</span>
+            </div>
+            <div class="card-header col order-2">
+              <span class="d-inline d-lg-none">{{ i18n('workmonth.calendar.grid.wednesdayHeaderSm') }}</span>
+              <span class="d-none d-lg-inline">{{ i18n('workmonth.calendar.grid.wednesdayHeader') }}</span>
+            </div>
+            <div class="card-header col order-2">
+              <span class="d-inline d-lg-none">{{ i18n('workmonth.calendar.grid.thursdayHeaderSm') }}</span>
+              <span class="d-none d-lg-inline">{{ i18n('workmonth.calendar.grid.thursdayHeader') }}</span>
+            </div>
+            <div class="card-header col order-2">
+              <span class="d-inline d-lg-none">{{ i18n('workmonth.calendar.grid.fridayHeaderSm') }}</span>
+              <span class="d-none d-lg-inline">{{ i18n('workmonth.calendar.grid.fridayHeader') }}</span>
+            </div>
+            <div class="card-header col order-2">
+              <span class="d-inline d-lg-none">{{ i18n('workmonth.calendar.grid.saturdayHeaderSm') }}</span>
+              <span class="d-none d-lg-inline">{{ i18n('workmonth.calendar.grid.saturdayHeader') }}</span>
+            </div>
           </div>
         </div>
-      </div><!-- card 1: container month info -->
+      </ng-container><!-- calendar grid view -->
 
-      <div class="col-12 col-md-4"><!-- card 2: time booked -->
-        <div class="card">
-          <div class="card-header">
-            <h5 class="mb-0">
-              <i [class]="config().getIcon('stopwatch') + ' me-1'"></i>
-              {{ i18n('workmonth.cards.time.title') }}
-            </h5>
-          </div>
-          <div class="card-body">
-            <table class="table table-sm table-fluid table-responsive table-borderless table-hover mb-0">
-              <tbody>
-                <tr>
-                  <th scope="col">
-                    {{ i18n('workmonth.cards.time.takeover') }}
-                  </th>
-                  <td>
-                    {{ monthObj.timestart }}
-                  </td>
-                </tr>
-                <tr>
-                  <th scope="col">
-                    {{ i18n('workmonth.cards.time.balance') }}
-                  </th>
-                  <td>
-                    <strong>{{ monthObj.timedif }}</strong>
-                  </td>
-                </tr>
-                <tr>
-                  <th scope="col">
-                    {{ i18n('workmonth.cards.time.carryover') }}
-                  </th>
-                  <td>
-                    {{ monthObj.timeclose }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div><!-- card 2: time booked -->
+      <div class="row">
+        {{ monthObj|json }}
+      </div>
+      <div class="row">
+        {{ dayObjs|json }}
+      </div>
+    </div>
 
-    </div>
-    <div class="row">
-      {{ monthObj|json }}
-    </div>
-    <div class="row">
-      {{ dayObjs|json }}
-    </div>
-  </div>
+  </ng-container>
+
 </ng-container>
