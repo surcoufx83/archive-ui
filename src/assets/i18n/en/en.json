@@ -49,7 +49,7 @@
   },
   "workmonth": {
     "pagetitle": "Monthly calendar {0}",
-    "pagetitleShort": "Calendar {0}",
+    "pagetitleShort": "{0}",
     "cards": {
       "target": {
         "title": "Info",
@@ -63,6 +63,27 @@
         "takeover": "Take-over",
         "balance": "Balance",
         "carryover": "Carry-over"
+      }
+    },
+    "calendar": {
+      "title": "Kalender",
+      "showWeek": "KW",
+      "grid": {
+        "weekHeader": "KW",
+        "sundayHeader": "Sonntag",
+        "sundayHeaderSm": "So",
+        "mondayHeader": "Montag",
+        "mondayHeaderSm": "Mo",
+        "tuesdayHeader": "Dienstag",
+        "tuesdayHeaderSm": "Di",
+        "wednesdayHeader": "Mittwoch",
+        "wednesdayHeaderSm": "Mi",
+        "thursdayHeader": "Donnerstag",
+        "thursdayHeaderSm": "Do",
+        "fridayHeader": "Freitag",
+        "fridayHeaderSm": "Fr",
+        "saturdayHeader": "Samstag",
+        "saturdayHeaderSm": "Sa"
       }
     }
   }
