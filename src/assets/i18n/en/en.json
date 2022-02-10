@@ -66,24 +66,24 @@
       }
     },
     "calendar": {
-      "title": "Kalender",
-      "showWeek": "KW",
+      "title": "Calendar",
+      "showWeek": "wk",
       "grid": {
-        "weekHeader": "KW",
-        "sundayHeader": "Sonntag",
-        "sundayHeaderSm": "So",
-        "mondayHeader": "Montag",
-        "mondayHeaderSm": "Mo",
-        "tuesdayHeader": "Dienstag",
-        "tuesdayHeaderSm": "Di",
-        "wednesdayHeader": "Mittwoch",
-        "wednesdayHeaderSm": "Mi",
-        "thursdayHeader": "Donnerstag",
-        "thursdayHeaderSm": "Do",
-        "fridayHeader": "Freitag",
-        "fridayHeaderSm": "Fr",
-        "saturdayHeader": "Samstag",
-        "saturdayHeaderSm": "Sa"
+        "weekHeader": "wk",
+        "sundayHeader": "Sunday",
+        "sundayHeaderSm": "Sun",
+        "mondayHeader": "Monday",
+        "mondayHeaderSm": "Mon",
+        "tuesdayHeader": "Tuesday",
+        "tuesdayHeaderSm": "Tue",
+        "wednesdayHeader": "Wednesday",
+        "wednesdayHeaderSm": "Wed",
+        "thursdayHeader": "Thursday",
+        "thursdayHeaderSm": "Thu",
+        "fridayHeader": "Friday",
+        "fridayHeaderSm": "Fri",
+        "saturdayHeader": "Saturday",
+        "saturdayHeaderSm": "Sat"
       }
     }
   }
