@@ -17,6 +17,11 @@
     "sessioncheck": {
       "title": "Benutzeranmeldung",
       "subtitle": "Bitte warten, die Anmeldung wird überprüft..."
+    },
+    "oauth2": {
+      "title": "Benutzeranmeldung",
+      "subtitle": "Diese Webseite erfordert eine Anmeldung via Nextcloud. Bitte klicke auf den Button um die Anmeldung vorzunehmen.",
+      "button": "Anmelden"
     }
   },
   "navbar": {

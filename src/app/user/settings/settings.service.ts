@@ -17,7 +17,7 @@ export class SettingsService {
   update(settings: Settings, push: boolean = false) {
     this.settings.next(settings);
     if (push) {
-      let url = this.configService.ApiBaseUrl + '/user/settings';
+      let url = this.configService.config.api.baseUrl + '/user/settings';
       this.authService.updateApi(url, {userSettings: settings});
     }
   }

@@ -13,21 +13,21 @@
             </li>
             <a class="breadcrumb-item" [routerLink]="['/work', 'month', LastMonth.format('YYYY'), LastMonth.format('M')]">
               <button type="button" class="btn btn-sm btn-outline-primary">
-                <i [class]="config().getIcon('go-left') + ' me-1'"></i>
+                <i [class]="config.icons['go-left'] + ' me-1'"></i>
                 {{ LastMonth.format('MMM') }}
               </button>
             </a>
             <a *ngIf="!IsToday"
               class="breadcrumb-item" [routerLink]="['/work', 'month', today.format('YYYY'), today.format('M')]">
               <button type="button" class="btn btn-sm btn-primary">
-                <i [class]="config().getIcon('today') + ' me-1'"></i>
+                <i [class]="config.icons['today'] + ' me-1'"></i>
                 {{ today.format('MMM YY') }}
               </button>
             </a>
             <a class="breadcrumb-item" [routerLink]="['/work', 'month', NextMonth.format('YYYY'), NextMonth.format('M')]">
               <button type="button" class="btn btn-sm btn-outline-primary">
                 {{ NextMonth.format('MMM') }}
-                <i [class]="config().getIcon('go-right') + ' ms-1'"></i>
+                <i [class]="config.icons['go-right'] + ' ms-1'"></i>
               </button>
             </a>
           </ol>
@@ -46,7 +46,7 @@
           <div class="card">
             <div class="card-header">
               <h5 class="mb-0">
-                <i [class]="config().getIcon('info') + ' me-1'"></i>
+                <i [class]="config.icons['info'] + ' me-1'"></i>
                 {{ i18n('workmonth.cards.target.title') }}
               </h5>
             </div>
@@ -83,7 +83,7 @@
           <div class="card">
             <div class="card-header">
               <h5 class="mb-0">
-                <i [class]="config().getIcon('stopwatch') + ' me-1'"></i>
+                <i [class]="config.icons['stopwatch'] + ' me-1'"></i>
                 {{ i18n('workmonth.cards.time.title') }}
               </h5>
             </div>
@@ -133,19 +133,19 @@
               <li class="breadcrumb-item">
                 <button type="button" [ngClass]="['btn btn-sm', usersettingsObj.viewSettings.calendar.asList ? 'btn-primary' : 'btn-outline-primary']"
                   (click)="usersettingsObj.viewSettings.calendar.asList = true; pushUserSettings();">
-                  <i [class]="config().getIcon('list')"></i>
+                  <i [class]="config.icons['list']"></i>
                 </button>
               </li>
               <li class="breadcrumb-item">
                 <button type="button" [ngClass]="['btn btn-sm', !usersettingsObj.viewSettings.calendar.asList ? 'btn-primary' : 'btn-outline-primary']"
                   (click)="usersettingsObj.viewSettings.calendar.asList = false; pushUserSettings();">
-                  <i [class]="config().getIcon('grid')"></i>
+                  <i [class]="config.icons['grid']"></i>
                 </button>
               </li>
               <li class="breadcrumb-item">
                 <button type="button" class="btn btn-sm btn-secondary"
                   (click)="usersettingsObj.viewSettings.calendar.showWeek = !usersettingsObj.viewSettings.calendar.showWeek; pushUserSettings();">
-                  <i [class]="config().getIcon(usersettingsObj.viewSettings.calendar.showWeek ? 'toggle-on' : 'toggle-off') + ' me-1'"></i>
+                  <i [class]="config.icons[usersettingsObj.viewSettings.calendar.showWeek ? 'toggle-on' : 'toggle-off'] + ' me-1'"></i>
                   {{ i18n('workmonth.calendar.showWeek') }}
                 </button>
               </li>

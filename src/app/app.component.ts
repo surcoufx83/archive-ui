@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from './auth.service';
-import { ConfigService } from './config.service';
+import { ConfigService, AppConfig } from './config.service';
 import { I18nService } from './i18n.service';
 
 @Component({
@@ -19,8 +19,8 @@ export class AppComponent implements OnInit {
               private route: ActivatedRoute,
               private router: Router) { }
 
-  config() : ConfigService {
-    return this.configService;
+  get config() : AppConfig {
+    return this.configService.config;
   }
 
   i18n(key: string) : string {
@@ -31,17 +31,6 @@ export class AppComponent implements OnInit {
     return this.auth.isLoggedin;
   }
 
-  ngOnInit() {
-    this.route.url.subscribe(url => {
-      this.routeUrl = url[0].path;
-        if (!this.isLoggedin) {
-          if (!this.routeUrl.startsWith('/login') && this.routeUrl !== '/logout')
-            this.router.navigateByUrl('/login');
-        } else {
-          if (this.routeUrl.startsWith('/login'))
-            this.router.navigateByUrl('/home');
-        }
-    });
-  }
+  ngOnInit() { }
 
 }

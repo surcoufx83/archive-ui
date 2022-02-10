@@ -2,7 +2,7 @@ import { Injectable, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { ApiReply } from './api-reply';
-import { ConfigService } from './config.service';
+import { ConfigService, AppConfig } from './config.service';
 import { Session } from './session';
 import { User } from './user';
 
@@ -11,13 +11,11 @@ import { User } from './user';
 })
 export class AuthService implements OnInit {
 
-  private checked: boolean = false;
   private loggedin: boolean = false;
   private session?: Session;
-  private storeName: string = '';
+  private storeName: string = 'ArcApiv2__Session';
 
   constructor(private configService: ConfigService, private http: HttpClient) {
-    this.storeName = this.configService.StoragePrefix + 'Session';
     let localSession: Session|string|null = localStorage.getItem(this.storeName);
     if (localSession != null) {
       localSession = <Session>JSON.parse(localSession);
@@ -25,38 +23,13 @@ export class AuthService implements OnInit {
         localStorage.removeItem(this.storeName);
       } else {
         this.session = <Session>localSession;
+        this.loggedin = true;
       }
     }
-    else
-      this.checked = true;
   }
 
-  public checkSession() : Subject<ApiReply> {
-    let reply: Subject<ApiReply> = new Subject<ApiReply>();
-    let url = this.configService.AuthCheckUrl;
-    this.updateApi(url).subscribe(
-      (response) => {
-        if (response.success) {
-          this.loggedin = true;
-        } else {
-          this.session = undefined;
-          this.loggedin = false;
-        }
-        this.checked = true;
-        reply.next({ success: true });
-      },
-      (error) => {
-        this.session = undefined;
-        this.loggedin = false;
-        this.checked = true;
-        reply.next({ success: false });
-      }
-    );
-    return reply;
-  }
-
-  get hasChecked() : boolean {
-    return this.checked;
+  private get config() : AppConfig {
+    return this.configService.config;
   }
 
   get hasSession() : boolean {
@@ -75,7 +48,7 @@ export class AuthService implements OnInit {
     let formdata = new FormData();
     formdata.append('archauth_login_username', username);
     formdata.append('archauth_login_password', password);
-    let url = this.configService.AuthUrl;
+    let url = this.config.auth.authUrl;
     this.http.post<ApiReply>(url, formdata).subscribe(
       (response) => {
         if (response.success && response.payload != undefined) {
@@ -107,6 +80,44 @@ export class AuthService implements OnInit {
   public logout() {
     console.log('AuthService.logout()');
 
+  }
+
+  public processOauth2Redirect(state: string, code: string) : Subject<ApiReply> {
+    let reply: Subject<ApiReply> = new Subject<ApiReply>();
+    if (this.isLoggedin) {
+      reply.next({ success: false });
+      return reply;
+    }
+    if (this.config.auth.oauth2.state !== state) {
+      reply.next({ success: false });
+      return reply;
+    }
+    let formdata = new FormData();
+    formdata.append('archauth_oauth2_code', code);
+    formdata.append('archauth_oauth2_state', state);
+    this.http.post<ApiReply>(this.config.auth.oauth2.tokenEndpoint, formdata).subscribe(
+      (response) => {
+        if (response.success && response.payload != undefined) {
+          this.session = {
+            token: response.payload['token'],
+            username: this.config.auth.oauth2.state
+          };
+          localStorage.setItem(this.storeName, JSON.stringify(this.session));
+          location.replace('/home');
+          return;
+        } else {
+          reply.next({
+            success: false,
+          });
+        }
+      },
+      (error) => {
+        reply.next({
+          success: false,
+        });
+      }
+    );
+    return reply;
   }
 
   public queryApi(url: string, payload: any = {}) : Subject<ApiReply> {

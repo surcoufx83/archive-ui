@@ -9,9 +9,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { FinanceComponent } from './finance/finance.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
-import { LoginCheckComponent } from './login-check/login-check.component';
 import { LogoutComponent } from './logout/logout.component';
 import { NotepadComponent } from './notepad/notepad.component';
+import { Oauth2CallbackComponent } from './login/oauth2-callback/oauth2-callback.component';
 import { WorkCustomerComponent } from './work/settings/customers/customer/customer.component';
 import { WorkCustomersComponent } from './work/settings/customers/customers.component';
 import { WorkComponent } from './work/work.component';
@@ -32,8 +32,10 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent, canActivate: [ SessionGuard ] },
   { path: 'home', component: HomeComponent, canActivate: [ SessionGuard ] },
   { path: 'finance', component: FinanceComponent, canActivate: [ SessionGuard ] },
-  { path: 'login', component: LoginComponent, canActivate: [ SessionGuard ]},
-  { path: 'logincheck', component: LoginCheckComponent, canActivate: [ SessionGuard ]},
+  { path: 'login', children: [
+    { path: 'oauth2', component: Oauth2CallbackComponent, canActivate: [ SessionGuard ] },
+    { path: '', component: LoginComponent, canActivate: [ SessionGuard ], pathMatch: 'full' },
+  ]},
   { path: 'logout', component: LogoutComponent, canActivate: [ SessionGuard ] },
   { path: 'notepad', component: NotepadComponent, canActivate: [ SessionGuard ] },
   { path: 'work', component: WorkComponent, canActivate: [ SessionGuard ], children: [
@@ -53,7 +55,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { useHash: true })],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

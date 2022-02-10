@@ -6,13 +6,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AccountComponent } from './account/account.component';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { AuthService } from './auth.service';
 import { CasesComponent } from './cases/cases.component';
 import { ConfigService } from './config.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HomeComponent } from './home/home.component';
 import { FinanceComponent } from './finance/finance.component';
 import { I18nService } from './i18n.service';
-import { LoginCheckComponent } from './login-check/login-check.component';
 import { LoginComponent } from './login/login.component';
 import { LogoutComponent } from './logout/logout.component';
 import { NotepadComponent } from './notepad/notepad.component';
@@ -32,6 +32,7 @@ import { WorkProjectsComponent } from './work/settings/customers/projects/projec
 import { WorkSettingsComponent } from './work/settings/settings.component';
 import { WorkTimeCategoriesComponent } from './work/settings/time-categories/time-categories.component';
 import { WorkYearComponent } from './work/work-year/work-year.component';
+import { Oauth2CallbackComponent } from './login/oauth2-callback/oauth2-callback.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,6 @@ import { WorkYearComponent } from './work/work-year/work-year.component';
     DashboardComponent,
     FinanceComponent,
     HomeComponent,
-    LoginCheckComponent,
     LoginComponent,
     LogoutComponent,
     NotepadComponent,
@@ -61,6 +61,7 @@ import { WorkYearComponent } from './work/work-year/work-year.component';
     WorkSettingsComponent,
     WorkTimeCategoriesComponent,
     WorkYearComponent,
+    Oauth2CallbackComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -80,6 +81,12 @@ import { WorkYearComponent } from './work/work-year/work-year.component';
       deps: [I18nService],
       multi: true,
       useFactory: (i18nService: I18nService) => () => i18nService.loadLocalStrings(navigator.language.substr(0, 2))
+    },
+    {
+      provide: APP_INITIALIZER,
+      deps: [AuthService],
+      multi: true,
+      useFactory: (authService: AuthService) => () => {}
     }
   ],
   bootstrap: [

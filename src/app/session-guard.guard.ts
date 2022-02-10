@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, RouterEvent, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterEvent, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { AuthService } from './auth.service';
@@ -9,14 +9,23 @@ import { AuthService } from './auth.service';
 })
 export class SessionGuard implements CanActivate {
 
-  constructor(private auth: AuthService) { }
+  constructor(private auth: AuthService, private router: Router) { }
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (state.url.startsWith('/login'))
-      return !this.auth.isLoggedin;
-    return this.auth.isLoggedin;
+    if (!this.auth.isLoggedin) {
+      if (!state.url.startsWith('/login')) {
+        this.router.navigate(['login']);
+        return false;
+      }
+      return true;
+    }
+    if (state.url.startsWith('/login')) {
+      this.router.navigate(['home']);
+      return false;
+    }
+    return true;
   }
 
 }

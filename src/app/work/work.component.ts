@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { AuthService } from '../auth.service';
-import { ConfigService } from '../config.service';
+import { ConfigService, AppConfig } from '../config.service';
 import { I18nService } from '../i18n.service';
 import { SettingsService } from '../user/settings/settings.service';
 import { Settings } from '../user/settings/settings';
@@ -40,8 +40,8 @@ export class WorkComponent implements OnInit {
     });
   }
 
-  config() : ConfigService {
-    return this.configService;
+  get config() : AppConfig {
+    return this.configService.config;
   }
 
   i18n(key: string) : string {
@@ -53,13 +53,13 @@ export class WorkComponent implements OnInit {
       this.routeUrl = this.router.routerState.snapshot.url;
     });
 
-    let url1 = this.configService.ApiBaseUrl + '/user/settings';
+    let url1 = this.config.api.baseUrl + '/user/settings';
     this.authService.queryApi(url1).subscribe((reply) => {
       if (reply.success && reply.payload != null)
         this.settings.update(<Settings>reply.payload['settings']);
     });
 
-    let url2 = this.configService.ApiBaseUrl + '/work/settings';
+    let url2 = this.config.api.baseUrl + '/work/settings';
     this.authService.queryApi(url2).subscribe((reply) => {
       if (reply.success && reply.payload != null)
         this.workSettings.update(<WorkSettings>reply.payload['settings']);

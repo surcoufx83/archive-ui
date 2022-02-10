@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 })
 export class ConfigService {
 
-  private appConfig: any;
+  private appConfig: AppConfig = <AppConfig>{ loaded: false };
   private startUrl: string = '';
 
   constructor(private http: HttpClient, private router: Router) {
@@ -18,46 +18,59 @@ export class ConfigService {
     return this.http.get('/assets/config/config.json')
       .toPromise()
       .then(config => {
-        this.appConfig = config;
+        this.appConfig = <AppConfig>config;
+        this.appConfig.api.startUrl = this.startUrl;
+        this.appConfig.loaded = true;
       });
   }
 
-  get ApiBaseUrl() : string {
-    return <string>this.appConfig.api.baseUrl;
+  get config() : AppConfig {
+    return this.appConfig;
   }
 
-  get AuthUrl() : string {
-    return <string>this.appConfig.auth.authUrl;
-  }
+}
 
-  get AuthCheckUrl() : string {
-    return <string>this.appConfig.auth.authCheck;
-  }
+export interface ApiConfig {
+  baseUrl: string;
+  startUrl: string;
+}
 
-  get FirstUrl() : string {
-    return this.startUrl;
-  }
+export interface AppConfig {
+  api: ApiConfig;
+  auth: AuthConfig;
+  icons: { [key: string]: string };
+  loaded: boolean;
+  navbar: NavbarConfig;
+  storage: StorageConfig;
+}
 
-  get NavbarItems() : any[] {
-    if (this.appConfig != undefined && this.appConfig.navbar !== undefined && this.appConfig.navbar.items !== undefined)
-      return <any[]>this.appConfig.navbar.items;
-    return [];
-  }
+export interface AuthConfig {
+  authUrl: string;
+  authCheck: string;
+  oauth2: OAuth2Config;
+}
 
-  getIcon(iconName: string) : string {
-    if (this.appConfig != undefined && this.appConfig.icons !== undefined && this.appConfig.icons[iconName] !== undefined)
-      return <string>this.appConfig.icons[iconName];
-    return 'fas fa-question';
-  }
+export interface NavbarConfig {
+  items: NavbarItem[];
+  workitems: NavbarItem[];
+}
 
-  get StoragePrefix() : string {
-    return <string>this.appConfig.storage.prefix;
-  }
+export interface NavbarItem {
+  title: string;
+  icon: string;
+  link: string;
+}
 
-  get WorkNavbarItems() : any[] {
-    if (this.appConfig != undefined && this.appConfig.navbar !== undefined && this.appConfig.navbar.workitems !== undefined)
-      return <any[]>this.appConfig.navbar.workitems;
-    return [];
-  }
+export interface OAuth2Config {
+  enabled: boolean;
+  endpoint: string;
+  tokenEndpoint: string;
+  clientId: string;
+  clientSecret: string;
+  redirectUrl: string;
+  state: string;
+}
 
+export interface StorageConfig {
+  prefix: string;
 }

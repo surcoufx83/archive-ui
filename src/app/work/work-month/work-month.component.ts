@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 
 import { UiCenteredBusyIndicatorComponent } from '../../utils/ui-centered-busy-indicator/ui-centered-busy-indicator.component';
 import { AuthService } from '../../auth.service';
-import { ConfigService } from '../../config.service';
+import { ConfigService, AppConfig } from '../../config.service';
 import { I18nService } from '../../i18n.service';
 import { WorkMonth } from '../work-month';
 import { SettingsService } from '../../user/settings/settings.service';
@@ -50,8 +50,8 @@ export class WorkMonthComponent implements OnInit {
     })
   }
 
-  config() : ConfigService {
-    return this.configService;
+  get config(): AppConfig {
+    return this.configService.config;
   }
 
   i18n(key: string, params: string[] = []) : string {
@@ -103,7 +103,7 @@ export class WorkMonthComponent implements OnInit {
 
   ngOnInitLoadFromBackend() : void {
     console.log('ngOnInitLoadFromBackend', this.selectedMonth.format('YYYY-MM-DD'));
-    let url = this.configService.ApiBaseUrl + '/work/month/' + this.selectedMonth.format('YYYY-M');
+    let url = this.config.api.baseUrl + '/work/month/' + this.selectedMonth.format('YYYY-M');
     this.authService.queryApi(url).subscribe((reply) => {
       console.log(reply);
       if (reply.success && reply.payload != undefined) {
