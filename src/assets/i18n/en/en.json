@@ -16,6 +16,11 @@
     "sessioncheck": {
       "title": "User login",
       "subtitle": "Please wait, the login is being checked..."
+    },
+    "oauth2": {
+      "title": "User login",
+      "subtitle": "Diese Webseite erfordert eine Anmeldung via Nextcloud. Bitte klicke auf den Button um die Anmeldung vorzunehmen.",
+      "button": "Login"
     }
   },
   "navbar": {
@@ -49,6 +54,42 @@
   },
   "workmonth": {
     "pagetitle": "Monthly calendar {0}",
-    "pagetitleShort": "Calendar {0}"
+    "pagetitleShort": "{0}",
+    "cards": {
+      "target": {
+        "title": "Info",
+        "businessDays": "Business days",
+        "offDays": "WE / HD",
+        "lastEdit": "Last Update",
+        "lastEditShort": "Last update"
+      },
+      "time": {
+        "title": "Booked time",
+        "takeover": "Take-over",
+        "balance": "Balance",
+        "carryover": "Carry-over"
+      }
+    },
+    "calendar": {
+      "title": "Calendar",
+      "showWeek": "wk",
+      "grid": {
+        "weekHeader": "wk",
+        "sundayHeader": "Sunday",
+        "sundayHeaderSm": "Sun",
+        "mondayHeader": "Monday",
+        "mondayHeaderSm": "Mon",
+        "tuesdayHeader": "Tuesday",
+        "tuesdayHeaderSm": "Tue",
+        "wednesdayHeader": "Wednesday",
+        "wednesdayHeaderSm": "Wed",
+        "thursdayHeader": "Thursday",
+        "thursdayHeaderSm": "Thu",
+        "fridayHeader": "Friday",
+        "fridayHeaderSm": "Fri",
+        "saturdayHeader": "Saturday",
+        "saturdayHeaderSm": "Sat"
+      }
+    }
   }
 }
