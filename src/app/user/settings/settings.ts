@@ -12,7 +12,6 @@ export interface ViewSettings {
 export interface CalendarViewSettings {
   asList: boolean;
   showWeek: boolean;
-  sundayFirst: boolean;
 }
 
 export interface ListViewSettings {

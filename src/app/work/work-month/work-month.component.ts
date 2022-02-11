@@ -18,13 +18,16 @@ export class WorkMonthComponent implements OnInit {
 
   today: moment.Moment = moment();
   selectedMonth: moment.Moment = moment();
+  firstOfCalendar: moment.Moment = moment().startOf('month');
   firstOfMonth: moment.Moment = moment().startOf('month');
+  lastOfMonth: moment.Moment = moment().endOf('month');
   year: number|undefined;
   month: number|undefined;
   usersettingsObj?: Settings;
   monthLoading: boolean = false;
   monthObj?: WorkMonth;
   dayObjs?: any[];
+  weeks: CalendarWeek[] = [];
 
   constructor(private authService: AuthService,
               private configService: ConfigService,
@@ -44,6 +47,10 @@ export class WorkMonthComponent implements OnInit {
 
   i18n(key: string, params: string[] = []) : string {
     return this.i18nService.i18n(key, params);
+  }
+
+  CalendarDay(weekIndex: number, dayIndex: number) {
+
   }
 
   get IsToday() : boolean {
@@ -80,11 +87,28 @@ export class WorkMonthComponent implements OnInit {
         this.router.navigate(['work', 'month', this.year, this.selectedMonth.format('M')]);
       else {
         this.monthLoading = true;
+        this.firstOfCalendar = moment([<number>this.year, <number>this.month - 1, 1]);
+        this.firstOfCalendar.locale('en-US').subtract(this.firstOfCalendar.day(), 'days');
         this.selectedMonth = moment([<number>this.year, <number>this.month - 1, +this.selectedMonth.format('D')]);
-        this.firstOfMonth = moment([<number>this.year, <number>this.month - 1, 1]);
         this.selectedMonth.locale(this.i18nService.Locale);
+        this.firstOfMonth = moment([<number>this.year, <number>this.month - 1, 1]);
         this.firstOfMonth.locale(this.i18nService.Locale);
+        this.lastOfMonth = moment([<number>this.year, <number>this.month - 1, 1]).endOf('month');
+        this.lastOfMonth.locale(this.i18nService.Locale);
         this.ngOnInitLoadFromBackend();
+        this.weeks = [];
+        let day = moment(this.firstOfCalendar);
+        let week: CalendarWeek = { weekNo: day.week(), days: []};
+        while (true) {
+          if (day.week() != week.weekNo) {
+            this.weeks.push(week);
+            week = { weekNo: day.week(), days: []};
+            if (day.month() != this.selectedMonth.month() && day.month() != this.firstOfCalendar.month())
+              break;
+          }
+          week.days.push({ day: day.day(), date: day.date(), matchMonth: day.month() === this.selectedMonth.month() });
+          day = day.add(1, 'days');
+        }
       }
     });
   }
@@ -114,4 +138,15 @@ export class WorkMonthComponent implements OnInit {
     this.userSettings.update(<Settings>this.usersettingsObj, true);
   }
 
+}
+
+export interface CalendarWeek {
+  weekNo: number;
+  days: CalendarDay[];
+}
+
+export interface CalendarDay {
+  day: number;
+  date: number;
+  matchMonth: boolean;
 }
