@@ -1,6 +1,6 @@
-<ui-centered-busy-indicator *ngIf="usersettingsObj != undefined && worksettingsObj == undefined"></ui-centered-busy-indicator>
+<ui-centered-busy-indicator *ngIf="usersettingsObj == undefined"></ui-centered-busy-indicator>
 
-<ng-container *ngIf="usersettingsObj != undefined && worksettingsObj != undefined">
+<ng-container *ngIf="usersettingsObj != undefined">
   <div class="container pt-4 pt-md-2 mb-2">
     <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between">
       <h2 class="d-block d-md-none">{{ i18n('workmonth.pagetitleShort', [firstOfMonth.format('MMM YYYY')]) }}</h2>
@@ -131,21 +131,21 @@
           <nav class="h-100" style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
             <ol class="breadcrumb d-flex align-items-center h-100 mb-0">
               <li class="breadcrumb-item">
-                <button type="button" [ngClass]="['btn btn-sm', usersettingsObj.viewSettings.calendar.asList ? 'btn-primary' : 'btn-outline-primary']"
-                  (click)="usersettingsObj.viewSettings.calendar.asList = true; pushUserSettings();">
+                <button type="button" [ngClass]="['btn btn-sm', usersettingsObj.view.calendar.asList ? 'btn-primary' : 'btn-outline-primary']"
+                  (click)="usersettingsObj.view.calendar.asList = true; pushUserSettings();">
                   <i [class]="config.icons['list']"></i>
                 </button>
               </li>
               <li class="breadcrumb-item">
-                <button type="button" [ngClass]="['btn btn-sm', !usersettingsObj.viewSettings.calendar.asList ? 'btn-primary' : 'btn-outline-primary']"
-                  (click)="usersettingsObj.viewSettings.calendar.asList = false; pushUserSettings();">
+                <button type="button" [ngClass]="['btn btn-sm', !usersettingsObj.view.calendar.asList ? 'btn-primary' : 'btn-outline-primary']"
+                  (click)="usersettingsObj.view.calendar.asList = false; pushUserSettings();">
                   <i [class]="config.icons['grid']"></i>
                 </button>
               </li>
               <li class="breadcrumb-item">
                 <button type="button" class="btn btn-sm btn-secondary"
-                  (click)="usersettingsObj.viewSettings.calendar.showWeek = !usersettingsObj.viewSettings.calendar.showWeek; pushUserSettings();">
-                  <i [class]="config.icons[usersettingsObj.viewSettings.calendar.showWeek ? 'toggle-on' : 'toggle-off'] + ' me-1'"></i>
+                  (click)="usersettingsObj.view.calendar.showWeek = !usersettingsObj.view.calendar.showWeek; pushUserSettings();">
+                  <i [class]="config.icons[usersettingsObj.view.calendar.showWeek ? 'toggle-on' : 'toggle-off'] + ' me-1'"></i>
                   {{ i18n('workmonth.calendar.showWeek') }}
                 </button>
               </li>
@@ -157,11 +157,11 @@
 
     <div class="container pt-md-2 mb-2">
 
-      <ng-container *ngIf="!usersettingsObj.viewSettings.calendar.asList"><!-- calendar grid view -->
+      <ng-container *ngIf="!usersettingsObj.view.calendar.asList"><!-- calendar grid view -->
         <div class="card container">
           <div class="card-body p-0 row">
-            <div class="card-header col order-0" *ngIf="usersettingsObj.viewSettings.calendar.showWeek">{{ i18n('workmonth.calendar.grid.weekHeader') }}</div>
-            <div [ngClass]="['card-header col', usersettingsObj.viewSettings.calendar.sundayFirst ? 'order-1' : 'order-last']">
+            <div class="card-header col order-0" *ngIf="usersettingsObj.view.calendar.showWeek">{{ i18n('workmonth.calendar.grid.weekHeader') }}</div>
+            <div [ngClass]="['card-header col', usersettingsObj.view.calendar.sundayFirst ? 'order-1' : 'order-last']">
               <span class="d-inline d-lg-none">{{ i18n('workmonth.calendar.grid.sundayHeaderSm') }}</span>
               <span class="d-none d-lg-inline">{{ i18n('workmonth.calendar.grid.sundayHeader') }}</span>
             </div>

@@ -1,17 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import * as moment from 'moment';
-import { map } from 'rxjs/operators';
 
-import { UiCenteredBusyIndicatorComponent } from '../../utils/ui-centered-busy-indicator/ui-centered-busy-indicator.component';
 import { AuthService } from '../../auth.service';
 import { ConfigService, AppConfig } from '../../config.service';
 import { I18nService } from '../../i18n.service';
 import { WorkMonth } from '../work-month';
 import { SettingsService } from '../../user/settings/settings.service';
 import { Settings } from '../../user/settings/settings';
-import { WorkSettingsService } from '../settings/work-settings.service';
-import { WorkSettings } from '../settings/work-settings';
 
 @Component({
   selector: 'app-work-month',
@@ -26,7 +22,6 @@ export class WorkMonthComponent implements OnInit {
   year: number|undefined;
   month: number|undefined;
   usersettingsObj?: Settings;
-  worksettingsObj?: WorkSettings;
   monthLoading: boolean = false;
   monthObj?: WorkMonth;
   dayObjs?: any[];
@@ -36,18 +31,11 @@ export class WorkMonthComponent implements OnInit {
               private i18nService: I18nService,
               private route: ActivatedRoute,
               private router: Router,
-              private userSettings: SettingsService,
-              private workSettings: WorkSettingsService)
+              private userSettings: SettingsService)
   {
-    console.log('WorkMonthComponent');
     this.userSettings.settings$.subscribe((settings) => {
-      console.log('WorkMonthComponent', settings);
       this.usersettingsObj = settings;
-    })
-    this.workSettings.workSettings$.subscribe((settings) => {
-      console.log('WorkMonthComponent', settings);
-      this.worksettingsObj = settings;
-    })
+    });
   }
 
   get config(): AppConfig {

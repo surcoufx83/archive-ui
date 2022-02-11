@@ -29,7 +29,6 @@ import { WorkLeadsComponent } from './work/leads/leads.component';
 import { WorkMonthComponent } from './work/work-month/work-month.component';
 import { WorkOffCategoriesComponent } from './work/settings/off-categories/off-categories.component';
 import { WorkProjectsComponent } from './work/settings/customers/projects/projects.component';
-import { WorkSettingsComponent } from './work/settings/settings.component';
 import { WorkTimeCategoriesComponent } from './work/settings/time-categories/time-categories.component';
 import { WorkYearComponent } from './work/work-year/work-year.component';
 import { Oauth2CallbackComponent } from './login/oauth2-callback/oauth2-callback.component';
@@ -58,7 +57,6 @@ import { Oauth2CallbackComponent } from './login/oauth2-callback/oauth2-callback
     WorkMonthComponent,
     WorkOffCategoriesComponent,
     WorkProjectsComponent,
-    WorkSettingsComponent,
     WorkTimeCategoriesComponent,
     WorkYearComponent,
     Oauth2CallbackComponent,

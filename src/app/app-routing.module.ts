@@ -22,7 +22,6 @@ import { WorkLeadsComponent } from './work/leads/leads.component';
 import { WorkMonthComponent } from './work/work-month/work-month.component';
 import { WorkOffCategoriesComponent } from './work/settings/off-categories/off-categories.component';
 import { WorkProjectsComponent } from './work/settings/customers/projects/projects.component';
-import { WorkSettingsComponent } from './work/settings/settings.component';
 import { WorkTimeCategoriesComponent } from './work/settings/time-categories/time-categories.component';
 import { WorkYearComponent } from './work/work-year/work-year.component';
 
@@ -44,7 +43,7 @@ const routes: Routes = [
     { path: 'leads', component: WorkLeadsComponent, canActivate: [ SessionGuard ] },
     { path: 'month', component: WorkMonthComponent, canActivate: [ SessionGuard ] },
     { path: 'month/:year/:month', component: WorkMonthComponent, canActivate: [ SessionGuard ] },
-    { path: 'settings', component: WorkSettingsComponent, canActivate: [ SessionGuard ], children: [
+    { path: 'settings', children: [
       { path: 'customer/:id', component: WorkCustomerComponent, canActivate: [ SessionGuard ] },
       { path: 'customers', component: WorkCustomersComponent, canActivate: [ SessionGuard ] },
     ]},
