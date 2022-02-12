@@ -1,4 +1,10 @@
 {
+  "calendar": {
+    "showAsGridTitle": "Als Kalender darstellen",
+    "showAsListTitle": "Als Liste darstellen",
+    "showWeek": "KW",
+    "showWeekTitle": "Kalenderwoche anzeigen"
+  },
   "common": {
     "back": "Zurück",
     "cancel": "Abbruch"
@@ -56,6 +62,9 @@
   "workmonth": {
     "pagetitle": "Monatsübersicht {0}",
     "pagetitleShort": "{0}",
+    "calendar": {
+      "title": "Kalender"
+    },
     "cards": {
       "target": {
         "title": "Monatsinfo",
@@ -69,27 +78,6 @@
         "takeover": "Übernahme",
         "balance": "Differenz",
         "carryover": "Übertrag"
-      }
-    },
-    "calendar": {
-      "title": "Kalender",
-      "showWeek": "KW",
-      "grid": {
-        "weekHeader": "KW",
-        "sundayHeader": "Sonntag",
-        "sundayHeaderSm": "So",
-        "mondayHeader": "Montag",
-        "mondayHeaderSm": "Mo",
-        "tuesdayHeader": "Dienstag",
-        "tuesdayHeaderSm": "Di",
-        "wednesdayHeader": "Mittwoch",
-        "wednesdayHeaderSm": "Mi",
-        "thursdayHeader": "Donnerstag",
-        "thursdayHeaderSm": "Do",
-        "fridayHeader": "Freitag",
-        "fridayHeaderSm": "Fr",
-        "saturdayHeader": "Samstag",
-        "saturdayHeaderSm": "Sa"
       }
     }
   }

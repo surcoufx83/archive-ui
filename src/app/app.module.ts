@@ -1,7 +1,12 @@
+import { registerLocaleData } from '@angular/common';
+import localeDe from '@angular/common/locales/de';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
 import { AccountComponent } from './account/account.component';
 import { AppComponent } from './app.component';
@@ -32,6 +37,8 @@ import { WorkProjectsComponent } from './work/settings/customers/projects/projec
 import { WorkTimeCategoriesComponent } from './work/settings/time-categories/time-categories.component';
 import { WorkYearComponent } from './work/work-year/work-year.component';
 import { Oauth2CallbackComponent } from './login/oauth2-callback/oauth2-callback.component';
+
+registerLocaleData(localeDe);
 
 @NgModule({
   declarations: [
@@ -64,8 +71,13 @@ import { Oauth2CallbackComponent } from './login/oauth2-callback/oauth2-callback
   imports: [
     AppRoutingModule,
     BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
     HttpClientModule,
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory,
+    }),
   ],
   providers: [
     {

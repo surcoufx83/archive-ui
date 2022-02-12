@@ -3,6 +3,8 @@
 @import "../node_modules/bootstrap/scss/variables";
 @import "../node_modules/bootstrap/scss/mixins";
 
+@import "../node_modules/angular-calendar/css/angular-calendar.css";
+
 .bg-dark {
   .form-control {
     background-color: $secondary;
