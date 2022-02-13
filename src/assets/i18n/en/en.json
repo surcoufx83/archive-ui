@@ -1,9 +1,9 @@
 {
   "calendar": {
-    "showAsGridTitle": "Als Kalender darstellen",
-    "showAsListTitle": "Als Liste darstellen",
-    "showWeek": "KW",
-    "showWeekTitle": "Kalenderwoche anzeigen"
+    "showAsGridTitle": "Display as calendar",
+    "showAsListTitle": "Show as list",
+    "showWeek": "week#",
+    "showWeekTitle": "Show week number"
   },
   "common": {
     "back": "Back",
