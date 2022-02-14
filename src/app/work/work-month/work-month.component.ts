@@ -2,12 +2,12 @@ import { AfterViewInit, Component, OnInit, TemplateRef, ViewChild  } from '@angu
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Subject } from 'rxjs';
 import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarView } from 'angular-calendar';
-import { add, format, getMonth, getYear, isSameMonth, sub } from 'date-fns';
+import { add, format, formatDuration, getMonth, getYear, isSameMonth, sub } from 'date-fns';
 
 import { AuthService } from '../../auth.service';
 import { ConfigService, AppConfig } from '../../config.service';
 import { I18nService } from '../../i18n.service';
-import { WorkMonth, WorkDay } from '../work';
+import { WorkMonth, WorkDay, WorkDayBooking } from '../work';
 import { SettingsService } from '../../user/settings/settings.service';
 import { Settings } from '../../user/settings/settings';
 
@@ -24,7 +24,6 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
   activeDayIsOpen: boolean = true;
   refresh = new Subject<void>();
 
-  activeDay: Date = new Date('2000-01-01');
   today: Date = new Date();
   selectedMonth: Date = new Date();
   year: number|undefined;
@@ -98,7 +97,7 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
         this.router.navigate(['work', 'month', this.year, (getMonth(this.selectedMonth) + 1)]);
       else {
         this.monthLoading = true;
-        this.selectedMonth = new Date(<number>this.year, <number>this.month - 1, 1);
+        this.selectedMonth = new Date(<number>this.year, <number>this.month - 1, this.today.getDate());
         this.ngAfterViewInitLoadFromBackend();
       }
     });
@@ -114,16 +113,21 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
           this.monthObj = <WorkMonth>reply.payload['month'];
           if (reply.payload['days'] != null) {
             this.dayObjs = <WorkDay[]>reply.payload['days'];
+            this.calendarEvents = [];
             for (const key in this.dayObjs) {
               let day: WorkDay = this.dayObjs[key];
               for (const id in day.bookings) {
                 let e = day.bookings[id];
                 this.calendarEvents.push({
                   id: 'event-' + e.id,
-                  title: e.description,
+                  title: this.fd(e.duration) + ': ' + this.getProjectDescription(e, true) + ' (' + this.i18n('work.timecategories.' + e.timecategory.name) + ')',
                   start: new Date(e.timefrom),
                   end: new Date(e.timeuntil),
-                  allDay: false
+                  allDay: false,
+                  color: e.timecategory.calendarcolor,
+                  meta: {
+                    booking: e
+                  }
                 });
               }
             }
@@ -146,6 +150,7 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     console.log('dayClicked', date, events);
+    this.selectedMonth = date;
     /*if (isSameMonth(date, this.viewDate)) {
       if (
         (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
@@ -183,12 +188,27 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
     return format(date, form);
   }
 
+  fd(duration: number) : string {
+    return this.i18n('calendar.duration.short', [ duration.toLocaleString(this.i18nService.Locale, { minimumFractionDigits: 1 }) ]);
+  }
+
+  getProjectDescription(entry: WorkDayBooking, inclCustomer: boolean = false) : string {
+    return (entry.customer && inclCustomer ? entry.customer.name + ' // ' : '') 
+         + (entry.project ? entry.project.name + ' // ' : '')
+         + (entry.projectstage !== '' ? entry.projectstage + ' // ' : '')
+         + entry.description;
+    // e.customer?.name + ' // ' + e.project?.name + ' // ' + e.projectstage + ' // ' + e.description
+  }
+
   s2d(datestr: string) : Date {
     return new Date(datestr);
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
     console.log('handleEvent', action, event);
+    if (action === 'Clicked') {
+      navigator.clipboard.writeText(this.getProjectDescription(event.meta.booking));
+    }
     /*
     this.modalData = { event, action };
     this.modal.open(this.modalContent, { size: 'lg' });

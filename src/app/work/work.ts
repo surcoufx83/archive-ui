@@ -1,4 +1,9 @@
 
+export interface WorkCalendarColor {
+  primary: string;
+  secondary: string;
+}
+
 export interface WorkCustomer {
   created: string;
   disabled: boolean;
@@ -81,6 +86,7 @@ export interface WorkProject {
 }
 
 export interface WorkTimeCategory {
+  calendarcolor: WorkCalendarColor;
   icon: string;
   iconcolor: string;
   id: number;
