@@ -3,7 +3,10 @@
     "showAsGridTitle": "Display as calendar",
     "showAsListTitle": "Show as list",
     "showWeek": "week#",
-    "showWeekTitle": "Show week number"
+    "showWeekTitle": "Show week number",
+    "duration": {
+      "short": "{0} h"
+    }
   },
   "common": {
     "back": "Back",
@@ -53,6 +56,18 @@
       "month": "Month",
       "settings": "Settings",
       "today": "Today"
+    }
+  },
+  "work": {
+    "timecategories": {
+      "administration": "Administratives",
+      "bugfixing": "Bugfixing",
+      "meeting": "Meeting intern",
+      "implementation": "Implementierung",
+      "presales": "Presales",
+      "support": "Support",
+      "trainingself": "Fortbildung",
+      "travel": "Reise"
     }
   },
   "workday": {
