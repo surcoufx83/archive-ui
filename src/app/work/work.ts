@@ -17,10 +17,13 @@ export interface WorkDay {
   bookings: WorkDayBooking[];
   date: string;
   day: number;
+  holiday: WorkHoliday|null;
   holidayid: number|null;
   id: number;
+  month: WorkMonth;
   monthid: number;
   note: string;
+  offcategory: WorkOffCategory|null;
   offcategoryid: number|null;
   stats: WorkDayStats|null;
 }
@@ -58,6 +61,15 @@ export interface WorkDayStats {
   projects: number;
 }
 
+export interface WorkHoliday {
+  daysAfterEaster: number|null;
+  fixdate: string|null;
+  fixmd: string|null;
+  id: number;
+  name: string;
+  userid: number;
+}
+
 export interface WorkMonth {
   datefrom: string;
   dateuntil: string;
@@ -72,6 +84,16 @@ export interface WorkMonth {
   userid: number;
   weekenddays: number;
   year: number;
+}
+
+export interface WorkOffCategory {
+  calendarcolor: WorkCalendarColor;
+  icon: string;
+  iconcolor: string;
+  id: number;
+  name: string;
+  rowcolor: string;
+  userid: number;
 }
 
 export interface WorkProject {

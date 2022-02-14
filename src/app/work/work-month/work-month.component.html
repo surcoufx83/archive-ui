@@ -160,7 +160,7 @@
 
     <div class="container pt-md-2 mb-2">
       <mwl-calendar-month-view
-        [viewDate]="selectedMonth"
+        [viewDate]="viewDate"
         [events]="calendarEvents"
         [refresh]="refresh"
         [activeDayIsOpen]="activeDayIsOpen"
@@ -169,65 +169,6 @@
         (eventTimesChanged)="eventTimesChanged($event)"
         [locale]="locale"
       ></mwl-calendar-month-view>
-      
-<!--
-      <ng-container *ngIf="!usersettingsObj.view.calendar.asList"> calendar grid view 
-        <div class="card container">
-          <div class="card-body p-0">
-            <div class="row">
-              <div class="card-header col" *ngIf="usersettingsObj.view.calendar.showWeek">{{ i18n('workmonth.calendar.grid.weekHeader') }}</div>
-              <div class="card-header col">
-                <span class="d-inline d-lg-none">{{ i18n('workmonth.calendar.grid.sundayHeaderSm') }}</span>
-                <span class="d-none d-lg-inline">{{ i18n('workmonth.calendar.grid.sundayHeader') }}</span>
-              </div>
-              <div class="card-header col">
-                <span class="d-inline d-lg-none">{{ i18n('workmonth.calendar.grid.mondayHeaderSm') }}</span>
-                <span class="d-none d-lg-inline">{{ i18n('workmonth.calendar.grid.mondayHeader') }}</span>
-              </div>
-              <div class="card-header col">
-                <span class="d-inline d-lg-none">{{ i18n('workmonth.calendar.grid.tuesdayHeaderSm') }}</span>
-                <span class="d-none d-lg-inline">{{ i18n('workmonth.calendar.grid.tuesdayHeader') }}</span>
-              </div>
-              <div class="card-header col">
-                <span class="d-inline d-lg-none">{{ i18n('workmonth.calendar.grid.wednesdayHeaderSm') }}</span>
-                <span class="d-none d-lg-inline">{{ i18n('workmonth.calendar.grid.wednesdayHeader') }}</span>
-              </div>
-              <div class="card-header col">
-                <span class="d-inline d-lg-none">{{ i18n('workmonth.calendar.grid.thursdayHeaderSm') }}</span>
-                <span class="d-none d-lg-inline">{{ i18n('workmonth.calendar.grid.thursdayHeader') }}</span>
-              </div>
-              <div class="card-header col">
-                <span class="d-inline d-lg-none">{{ i18n('workmonth.calendar.grid.fridayHeaderSm') }}</span>
-                <span class="d-none d-lg-inline">{{ i18n('workmonth.calendar.grid.fridayHeader') }}</span>
-              </div>
-              <div class="card-header col">
-                <span class="d-inline d-lg-none">{{ i18n('workmonth.calendar.grid.saturdayHeaderSm') }}</span>
-                <span class="d-none d-lg-inline">{{ i18n('workmonth.calendar.grid.saturdayHeader') }}</span>
-              </div>
-            </div>
-            <ng-container *ngFor="let week of weeks; let i = index;">
-              <div class="row">
-                <div class="card-header col" *ngIf="usersettingsObj.view.calendar.showWeek">
-                  {{ week.weekNo }}
-                </div>
-                <div *ngFor="let day of week.days;"
-                  class="col">
-                  {{ day.date }}
-                </div>
-              </div>
-            </ng-container>
-          </div>
-        </div>
-        {{lastOfMonth|json}}
-        {{weeks|json}}
-      </ng-container> calendar grid view -->
-
-      <div class="row">
-        {{ monthObj|json }}
-      </div>
-      <div class="row">
-        {{ dayObjs|json }}
-      </div>
     </div>
 
   </ng-container>

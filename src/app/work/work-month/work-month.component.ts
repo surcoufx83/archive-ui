@@ -2,7 +2,7 @@ import { AfterViewInit, Component, OnInit, TemplateRef, ViewChild  } from '@angu
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Subject } from 'rxjs';
 import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarView } from 'angular-calendar';
-import { add, format, formatDuration, getMonth, getYear, isSameMonth, sub } from 'date-fns';
+import { add, format, getMonth, getYear, isSameDay, isSameMonth, sub } from 'date-fns';
 
 import { AuthService } from '../../auth.service';
 import { ConfigService, AppConfig } from '../../config.service';
@@ -26,6 +26,7 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
 
   today: Date = new Date();
   selectedMonth: Date = new Date();
+  viewDate: Date = new Date();
   year: number|undefined;
   month: number|undefined;
   monthLoading: boolean = false;
@@ -98,6 +99,7 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
       else {
         this.monthLoading = true;
         this.selectedMonth = new Date(<number>this.year, <number>this.month - 1, this.today.getDate());
+        this.viewDate = this.selectedMonth;
         this.ngAfterViewInitLoadFromBackend();
       }
     });
@@ -130,6 +132,30 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
                   }
                 });
               }
+              if (day.holiday != null && day.offcategory != null) {
+                this.calendarEvents.push({
+                  id: 'holidayevent-' + day.id,
+                  title: this.i18n('work.offcategories.' + day.offcategory.name) + ': ' + this.i18n('calendar.holidays.' + day.holiday.name),
+                  start: new Date(day.date),
+                  allDay: true,
+                  color: day.offcategory.calendarcolor,
+                  meta: {
+                    holiday: day.holiday,
+                    category: day.offcategory
+                  }
+                });
+              } else if (day.offcategory != null) {
+                this.calendarEvents.push({
+                  id: 'holidayevent-' + day.id,
+                  title: this.i18n('work.offcategories.' + day.offcategory.name),
+                  start: new Date(day.date),
+                  allDay: true,
+                  color: day.offcategory.calendarcolor,
+                  meta: {
+                    category: day.offcategory
+                  }
+                });
+              }
             }
           }
         }
@@ -150,8 +176,8 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     console.log('dayClicked', date, events);
-    this.selectedMonth = date;
-    /*if (isSameMonth(date, this.viewDate)) {
+    // this.selectedMonth = date;
+    if (isSameMonth(date, this.viewDate)) {
       if (
         (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
         events.length === 0
@@ -161,7 +187,7 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
         this.activeDayIsOpen = true;
       }
       this.viewDate = date;
-    }*/
+    }
   }
 
   eventTimesChanged({
@@ -207,7 +233,8 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
   handleEvent(action: string, event: CalendarEvent): void {
     console.log('handleEvent', action, event);
     if (action === 'Clicked') {
-      navigator.clipboard.writeText(this.getProjectDescription(event.meta.booking));
+      if (event.meta.booking != null)
+        navigator.clipboard.writeText(this.getProjectDescription(event.meta.booking));
     }
     /*
     this.modalData = { event, action };
