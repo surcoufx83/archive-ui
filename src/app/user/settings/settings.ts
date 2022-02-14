@@ -11,7 +11,9 @@ export interface ViewSettings {
 
 export interface CalendarViewSettings {
   asList: boolean;
+  firstDayOfWeek: number;
   showWeek: boolean;
+  showWeekend: boolean;
 }
 
 export interface ListViewSettings {

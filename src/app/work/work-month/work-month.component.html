@@ -160,10 +160,12 @@
 
     <div class="container pt-md-2 mb-2">
       <mwl-calendar-month-view
+        [activeDayIsOpen]="activeDayIsOpen"
         [viewDate]="viewDate"
         [events]="calendarEvents"
+        [excludeDays]="(usersettingsObj.view.calendar.showWeekend ? [] : [0,6])"
         [refresh]="refresh"
-        [activeDayIsOpen]="activeDayIsOpen"
+        [weekStartsOn]="usersettingsObj.view.calendar.firstDayOfWeek"
         (dayClicked)="dayClicked($event.day)"
         (eventClicked)="handleEvent('Clicked', $event.event)"
         (eventTimesChanged)="eventTimesChanged($event)"
