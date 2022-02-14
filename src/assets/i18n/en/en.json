@@ -6,6 +6,20 @@
     "showWeekTitle": "Show week number",
     "duration": {
       "short": "{0} h"
+    },
+    "holidays": {
+      "ascension_day": "Himmelfahrt",
+      "boxing_day": "2. Weihnachtstag",
+      "christmas_day": "1. Weihnachtstag",
+      "easter_goodFriday": "Karfreitag",
+      "easter_monday": "Ostermontag",
+      "easter_sunday": "Ostersonntag",
+      "labor_day": "Tag der Arbeit",
+      "newYearsDay": "Neujahr",
+      "reformation_day": "Reformationstag",
+      "unity_day": "Tag der dt. Einheit",
+      "whit_monday": "Pfingstmontag",
+      "whit_sunday": "Pfingstsonntag"
     }
   },
   "common": {
@@ -59,6 +73,14 @@
     }
   },
   "work": {
+    "offcategories": {
+      "educationalLeave": "Bildungsurlaub",
+      "holidays": "Feiertag",
+      "sick": "Krank",
+      "specialLeave": "Sonderurlaub",
+      "vacation": "Urlaub",
+      "weekend": "Wochenende"
+    },
     "timecategories": {
       "administration": "Administratives",
       "bugfixing": "Bugfixing",
