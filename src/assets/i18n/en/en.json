@@ -14,12 +14,12 @@
       "easter_goodFriday": "Good Friday",
       "easter_monday": "Easter Monday",
       "easter_sunday": "Easter Day",
-      "labor_day": "Tag der Arbeit",
-      "newYearsDay": "Neujahr",
-      "reformation_day": "Reformationstag",
-      "unity_day": "Tag der dt. Einheit",
-      "whit_monday": "Pfingstmontag",
-      "whit_sunday": "Pfingstsonntag"
+      "labor_day": "Labour Day",
+      "newYearsDay": "New Year's Day",
+      "reformation_day": "Day of Reformation",
+      "unity_day": "Unity Day",
+      "whit_monday": "Whit Monday",
+      "whit_sunday": "Whit Sunday"
     }
   },
   "common": {
@@ -74,22 +74,22 @@
   },
   "work": {
     "offcategories": {
-      "educationalLeave": "Bildungsurlaub",
-      "holidays": "Feiertag",
-      "sick": "Krank",
-      "specialLeave": "Sonderurlaub",
-      "vacation": "Urlaub",
-      "weekend": "Wochenende"
+      "educationalLeave": "Educational leave",
+      "holidays": "Public Holiday",
+      "sick": "Sick Leave",
+      "specialLeave": "Special leave",
+      "vacation": "Vacation",
+      "weekend": "Weekend"
     },
     "timecategories": {
-      "administration": "Administratives",
-      "bugfixing": "Bugfixing",
-      "meeting": "Meeting intern",
-      "implementation": "Implementierung",
+      "administration": "Administration",
+      "bugfixing": "Bug fixing",
+      "meeting": "Meeting",
+      "implementation": "Implementation",
       "presales": "Presales",
       "support": "Support",
-      "trainingself": "Fortbildung",
-      "travel": "Reise"
+      "trainingself": "Advanced training",
+      "travel": "Travel time"
     }
   },
   "workday": {
@@ -117,7 +117,7 @@
       }
     },
     "offtime": {
-      "title": "Abwesenheiten buchen"
+      "title": "Submit time off"
     }
   }
 }
