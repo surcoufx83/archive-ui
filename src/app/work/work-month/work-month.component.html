@@ -51,30 +51,24 @@
               </h5>
             </div>
             <div class="card-body">
-              <table class="table table-sm table-fluid table-responsive table-borderless table-hover mb-0">
-                <tbody>
-                  <tr>
-                    <th scope="col">
-                      {{ i18n('workmonth.cards.target.businessDays') }}
-                      <span class="fw-normal fs-8 d-inline d-md-none d-xl-inline">[ {{ i18n('workmonth.cards.target.offDays') }} ]</span>
-                    </th>
-                    <td>
-                      <strong>{{ monthObj.days - monthObj.weekenddays - monthObj.holidays }}</strong>
-                      <span class="fs-8 ms-1 d-inline d-md-none d-xl-inline">[ {{ monthObj.weekenddays }} / {{ monthObj.holidays }} ]</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="col">
-                      <span class="d-inline d-md-none d-xl-inline">{{ i18n('workmonth.cards.target.lastEdit') }}</span>
-                      <span class="d-none d-md-inline d-xl-none">{{ i18n('workmonth.cards.target.lastEditShort') }}</span>
-                    </th>
-                    <td>
-                      <span class="d-inline d-md-none d-xl-inline">{{ f(s2d(monthObj.updated), 'PPPppp') }}</span>
-                      <span class="d-none d-md-inline d-xl-none">{{ f(s2d(monthObj.updated), 'PP') }}</span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+              <div class="d-flex justify-content-between mb-2">
+                <div class="fs-7">
+                  {{ i18n('workmonth.cards.target.businessDays') }} [ {{ i18n('workmonth.cards.target.offDays') }} ]
+                </div>
+                <div class="font-weight-bold">
+                  <strong>{{ monthObj.days - monthObj.weekenddays - monthObj.holidays }}</strong>
+                  <span class="fs-8 ms-1">[ {{ monthObj.weekenddays }} / {{ monthObj.holidays }} ]</span>
+                </div>
+              </div>
+              <div class="d-flex justify-content-between mb-2">
+                <div class="fs-7">
+                  {{ i18n('workmonth.cards.target.lastEdit') }}
+                </div>
+                <div class="font-weight-bold">
+                  <span class="d-none d-lg-inline">{{ f(s2d(monthObj.updated), 'PPpp') }}</span>
+                  <span class="d-inline d-lg-none">{{ f(s2d(monthObj.updated), 'PP') }}</span>
+                </div>
+              </div>
             </div>
           </div>
         </div><!-- card 1: container month info -->
@@ -88,34 +82,30 @@
               </h5>
             </div>
             <div class="card-body">
-              <table class="table table-sm table-fluid table-responsive table-borderless table-hover mb-0">
-                <tbody>
-                  <tr>
-                    <th scope="col">
-                      {{ i18n('workmonth.cards.time.takeover') }}
-                    </th>
-                    <td>
-                      {{ monthObj.timestart }}
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="col">
-                      {{ i18n('workmonth.cards.time.balance') }}
-                    </th>
-                    <td>
-                      <strong>{{ monthObj.timedif }}</strong>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="col">
-                      {{ i18n('workmonth.cards.time.carryover') }}
-                    </th>
-                    <td>
-                      {{ monthObj.timeclose }}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+              <div class="d-flex justify-content-between mb-2">
+                <div class="fs-7">
+                  {{ i18n('workmonth.cards.time.takeover') }}
+                </div>
+                <div class="font-weight-bold">
+                  {{ i18n('calendar.duration.short', ['' + monthObj.timestart]) }}
+                </div>
+              </div>
+              <div class="d-flex justify-content-between mb-2">
+                <div class="fs-7">
+                  {{ i18n('workmonth.cards.time.balance') }}
+                </div>
+                <div class="font-weight-bold">
+                  {{ i18n('calendar.duration.short', ['' + monthObj.timedif]) }}
+                </div>
+              </div>
+              <div class="d-flex justify-content-between mb-2">
+                <div class="fs-7">
+                  {{ i18n('workmonth.cards.time.carryover') }}
+                </div>
+                <div class="font-weight-bold">
+                  {{ i18n('calendar.duration.short', ['' + monthObj.timeclose]) }}
+                </div>
+              </div>
             </div>
           </div>
         </div><!-- card 2: time booked -->
@@ -166,11 +156,27 @@
         [excludeDays]="(usersettingsObj.view.calendar.showWeekend ? [] : [0,6])"
         [refresh]="refresh"
         [weekStartsOn]="usersettingsObj.view.calendar.firstDayOfWeek"
+        (beforeViewRender)="beforeMonthViewRender($event)"
         (dayClicked)="dayClicked($event.day)"
         (eventClicked)="handleEvent('Clicked', $event.event)"
         (eventTimesChanged)="eventTimesChanged($event)"
         [locale]="locale"
       ></mwl-calendar-month-view>
+      <div class="mt-3">
+        <h4>{{ i18n('workmonth.offtime.title') }}</h4>
+        <div class="row">
+          <ng-container *ngIf="workprops != undefined">
+            <div *ngFor="let item of offdayDroppableEvents"
+                 [ngClass]="['col-auto py-1 px-2 m-1 bg-white border rounded shadow-sm', item.meta.obj.rowcolor]"
+                 mwlDraggable [dropData]="{ event: item }"
+                 [touchStartLongPress]="{ delay: 300, delta: 30 }"
+                 dragActiveClass="drag-active">
+              <i *ngIf="item.meta.obj.icon !== ''" [ngClass]="[config.icons[item.meta.obj.icon] + ' ' + item.meta.obj.iconcolor, 'me-1']"></i>
+              {{ item.title }}
+            </div>
+          </ng-container>
+        </div>
+      </div>
     </div>
 
   </ng-container>

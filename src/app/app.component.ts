@@ -5,6 +5,7 @@ import { ConfigService, AppConfig } from './config.service';
 import { I18nService } from './i18n.service';
 import { SettingsService } from './user/settings/settings.service';
 import { Settings } from './user/settings/settings';
+import { WorkProperties } from './work/work';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,6 @@ import { Settings } from './user/settings/settings';
 export class AppComponent implements OnInit {
 
   routeUrl: string = '';
-  settingsObj?: Settings;
 
   constructor(private authService: AuthService,
               private configService: ConfigService,
@@ -23,11 +23,7 @@ export class AppComponent implements OnInit {
               private route: ActivatedRoute,
               private router: Router,
               private settings: SettingsService)
-  {
-    this.settings.settings$.subscribe((settings) => {
-      this.settingsObj = settings;
-    });
-  }
+  { }
 
   get config() : AppConfig {
     return this.configService.config;
@@ -44,8 +40,10 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     let url = this.config.api.baseUrl + '/user/settings';
     this.authService.queryApi(url).subscribe((reply) => {
-      if (reply.success && reply.payload != null)
+      if (reply.success && reply.payload != null) {
         this.settings.update(<Settings>reply.payload['settings']);
+        this.settings.updateWorkProps(<WorkProperties>reply.payload['work']);
+      }
     });
   }
 

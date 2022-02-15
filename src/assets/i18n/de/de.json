@@ -116,6 +116,9 @@
         "balance": "Differenz",
         "carryover": "Übertrag"
       }
+    },
+    "offtime": {
+      "title": "Abwesenheiten buchen"
     }
   }
 }

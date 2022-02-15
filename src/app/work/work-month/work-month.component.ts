@@ -1,15 +1,17 @@
 import { AfterViewInit, Component, OnInit, TemplateRef, ViewChild  } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Subject } from 'rxjs';
-import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarView } from 'angular-calendar';
-import { add, format, getMonth, getYear, isSameDay, isSameMonth, sub } from 'date-fns';
+import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarMonthViewDay, CalendarView } from 'angular-calendar';
+import { add, format, getDate, getMonth, getYear, isSameDay, isSameMonth, sub } from 'date-fns';
 
 import { AuthService } from '../../auth.service';
 import { ConfigService, AppConfig } from '../../config.service';
 import { I18nService } from '../../i18n.service';
-import { WorkMonth, WorkDay, WorkDayBooking } from '../work';
+import { WorkMonth, WorkDay, WorkDayBooking, WorkOffCategory, WorkProperties } from '../work';
 import { SettingsService } from '../../user/settings/settings.service';
 import { Settings } from '../../user/settings/settings';
+import { ApiReply } from '../../api-reply';
+import { EventColor } from '../../../../node_modules/calendar-utils/calendar-utils';
 
 @Component({
   selector: 'app-work-month',
@@ -33,6 +35,9 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
   dayObjs: WorkDay[] = [];
   monthObj?: WorkMonth;
   usersettingsObj?: Settings;
+  workprops?: WorkProperties;
+
+  offdayDroppableEvents: CalendarEvent[] = [];
 
   constructor(private authService: AuthService,
               private configService: ConfigService,
@@ -43,6 +48,25 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
   {
     this.userSettings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
+    });
+    this.userSettings.workprops$.subscribe((props) => {
+      this.workprops = props;
+      this.offdayDroppableEvents = [];
+      for (const offcat of props.offCategories) {
+        console.log(offcat);
+        this.offdayDroppableEvents.push({
+          title: this.i18n('work.offcategories.' + offcat.name),
+          start: new Date(),
+          draggable: true,
+          color: offcat.calendarcolor,
+          allDay: true,
+          meta: {
+            obj: offcat,
+            type: 'WorkOffCategory'
+          }
+        });
+      }
+      console.log(props);
     });
   }
 
@@ -128,7 +152,8 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
                   allDay: false,
                   color: e.timecategory.calendarcolor,
                   meta: {
-                    booking: e
+                    booking: e,
+                    incrementsBadgeTotal: true
                   }
                 });
               }
@@ -141,7 +166,8 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
                   color: day.offcategory.calendarcolor,
                   meta: {
                     holiday: day.holiday,
-                    category: day.offcategory
+                    category: day.offcategory,
+                    incrementsBadgeTotal: false
                   }
                 });
               } else if (day.offcategory != null) {
@@ -152,7 +178,8 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
                   allDay: true,
                   color: day.offcategory.calendarcolor,
                   meta: {
-                    category: day.offcategory
+                    category: day.offcategory,
+                    incrementsBadgeTotal: false
                   }
                 });
               }
@@ -169,10 +196,35 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
     this.userSettings.update(<Settings>this.usersettingsObj, true);
   }
 
-  /*strToDateFormat(date: string, format: string) : string {
-    let d = moment(date).locale(this.i18nService.Locale);
-    return d.format(format);
-  }*/
+  addEvent(id: string, title: string, start: Date, end: Date|undefined, allDay: boolean, 
+           color: EventColor|undefined, incrementBadgeCount: boolean,
+           workObject: any, objectType: string) : void {
+    this.calendarEvents = [
+      ...this.calendarEvents,
+      {
+        id: id,
+        title: title,
+        start: start,
+        end: end,
+        allDay: allDay,
+        color: color,
+        meta: {
+          obj: workObject,
+          type: objectType,
+          incrementsBadgeTotal: incrementBadgeCount
+        }
+      }
+    ];
+    console.log(this.calendarEvents);
+  }
+
+  beforeMonthViewRender({ body }: { body: CalendarMonthViewDay[] }): void {
+    body.forEach((day) => {
+      day.badgeTotal = day.events.filter(
+        (event) => event.meta.incrementsBadgeTotal
+      ).length;
+    });
+  }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     console.log('dayClicked', date, events);
@@ -196,6 +248,28 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
     newEnd,
   }: CalendarEventTimesChangedEvent): void {
     console.log('eventTimesChanged', event, newStart, newEnd);
+    if (event.meta.type == undefined)
+      return;
+    if (event.meta.type === 'WorkOffCategory') {
+      let cat: WorkOffCategory = event.meta.obj;
+      let date: number = getDate(newStart);
+      if (this.dayObjs[date] == undefined || !isSameMonth(newStart, new Date((<WorkMonth>this.monthObj).datefrom)))
+        return;
+      let day = this.dayObjs[date];
+      let url = this.config.api.baseUrl + `/work/day/${this.monthObj?.id}/${day.id}/offdays/set/${cat.id}`;
+      this.authService.updateApi(url, {}).subscribe((reply: ApiReply) => {
+        console.log(reply);
+        let remove = [];
+        if (reply.success) {
+          this.calendarEvents = [
+            ...this.calendarEvents.filter((e) => {
+              return !isSameDay(e.start, newStart);
+            })
+          ];
+          this.addEvent('' + Date.now(), event.title, newStart, undefined, true, cat.calendarcolor, false, cat, 'WorkOffCategory');
+        }
+      });
+    }
     /*
     this.events = this.events.map((iEvent) => {
       if (iEvent === event) {
@@ -240,35 +314,6 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
     this.modalData = { event, action };
     this.modal.open(this.modalContent, { size: 'lg' });
     */
-  }
-
-  addEvent(): void {
-    /*this.events = [
-      ...this.events,
-      {
-        title: 'New event',
-        start: startOfDay(new Date()),
-        end: endOfDay(new Date()),
-        color: colors.red,
-        draggable: true,
-        resizable: {
-          beforeStart: true,
-          afterEnd: true,
-        },
-      },
-    ];*/
-  }
-
-  deleteEvent(eventToDelete: CalendarEvent) {
-    // this.events = this.events.filter((event) => event !== eventToDelete);
-  }
-
-  setView(view: CalendarView) {
-    // this.view = view;
-  }
-
-  closeOpenMonthViewDay() {
-    // this.activeDayIsOpen = false;
   }
 
 }

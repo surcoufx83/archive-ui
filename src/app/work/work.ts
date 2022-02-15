@@ -107,6 +107,13 @@ export interface WorkProject {
   userid: number;
 }
 
+export interface WorkProperties {
+  customers: WorkCustomer[];
+  offCategories: WorkOffCategory[];
+  projects: WorkProject[];
+  timeCategories: WorkTimeCategory[];
+}
+
 export interface WorkTimeCategory {
   calendarcolor: WorkCalendarColor;
   icon: string;
