@@ -21,7 +21,14 @@ export interface ListViewSettings {
 }
 
 export interface WorkSettings {
+  leads: WorkLeadsSettings;
+  livetracking: LiveTrackingSettings;
+  tracking: TrackingSettings;
   worktime: WorkTimeSettings;
+}
+
+export interface WorkLeadsSettings {
+  enabled: boolean;
 }
 
 export interface WorkTimeSettings {
@@ -29,8 +36,6 @@ export interface WorkTimeSettings {
   holidays: number;
   other: number;
   weekend: number;
-  livetracking: LiveTrackingSettings;
-  tracking: TrackingSettings;
 }
 
 export interface LiveTrackingSettings {

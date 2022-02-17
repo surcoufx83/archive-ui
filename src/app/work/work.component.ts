@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { AuthService } from '../auth.service';
-import { ConfigService, AppConfig } from '../config.service';
+import { ConfigService, AppConfig, NavbarItem } from '../config.service';
 import { I18nService } from '../i18n.service';
 import { SettingsService } from '../user/settings/settings.service';
 import { Settings } from '../user/settings/settings';
@@ -41,6 +41,12 @@ export class WorkComponent implements OnInit {
     this.route.url.subscribe(url => {
       this.routeUrl = this.router.routerState.snapshot.url;
     });
+  }
+
+  onShowLink(item: NavbarItem) : boolean {
+    if (item['link'] !== '/work/leads')
+      return true;
+    return (this.settingsObj?.work.leads.enabled ? true : false);
   }
 
 }

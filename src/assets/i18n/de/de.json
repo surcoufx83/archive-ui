@@ -25,10 +25,13 @@
     }
   },
   "common": {
+    "add": "Neu",
     "back": "Zurück",
     "cancel": "Abbruch"
   },
-  "home": {
+  "home": {},
+  "leads": {
+    "title": "Leads + Incentives"
   },
   "login": {
     "title": "Benutzeranmeldung",
