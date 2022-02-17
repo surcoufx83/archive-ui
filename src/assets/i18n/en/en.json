@@ -4,6 +4,8 @@
     "showAsListTitle": "Show as list",
     "showWeek": "week#",
     "showWeekTitle": "Show week number",
+    "showWeekend": "WE",
+    "showWeekendTitle": "Wochenende anzeigen",
     "duration": {
       "short": "{0} hr"
     },
@@ -23,10 +25,14 @@
     }
   },
   "common": {
+    "add": "Neu",
     "back": "Back",
     "cancel": "Cancel"
   },
   "home": {},
+  "leads": {
+    "title": "Leads + Incentives"
+  },
   "login": {
     "title": "User login",
     "subtitle": "This website requires the input of credentials. Please login with your username and password.",
@@ -79,7 +85,8 @@
       "sick": "Sick Leave",
       "specialLeave": "Special leave",
       "vacation": "Vacation",
-      "weekend": "Weekend"
+      "weekend": "Weekend",
+      "none": "Keine"
     },
     "timecategories": {
       "administration": "Administration",
@@ -117,7 +124,8 @@
       }
     },
     "offtime": {
-      "title": "Submit time off"
+      "title": "Submit time off",
+      "subtitle": "Abwesenheitsmarker setzen das Tagessoll generell auf 0 Stunden. Es können für Abwesenheitstage keine Zeiten gebucht werden."
     }
   }
 }
