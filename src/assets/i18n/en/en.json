@@ -4,8 +4,8 @@
     "showAsListTitle": "Show as list",
     "showWeek": "week#",
     "showWeekTitle": "Show week number",
-    "showWeekend": "WE",
-    "showWeekendTitle": "Wochenende anzeigen",
+    "showWeekend": "Weekend",
+    "showWeekendTitle": "Show weekend days in calendar",
     "duration": {
       "short": "{0} hr"
     },
@@ -25,7 +25,7 @@
     }
   },
   "common": {
-    "add": "Neu",
+    "add": "New",
     "back": "Back",
     "cancel": "Cancel"
   },
@@ -86,7 +86,7 @@
       "specialLeave": "Special leave",
       "vacation": "Vacation",
       "weekend": "Weekend",
-      "none": "Keine"
+      "none": "None"
     },
     "timecategories": {
       "administration": "Administration",
@@ -125,7 +125,7 @@
     },
     "offtime": {
       "title": "Submit time off",
-      "subtitle": "Abwesenheitsmarker setzen das Tagessoll generell auf 0 Stunden. Es können für Abwesenheitstage keine Zeiten gebucht werden."
+      "subtitle": "Daily off time resets the day's target hours to 0. There are no bookings allowed for off time days."
     }
   }
 }
