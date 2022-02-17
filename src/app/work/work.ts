@@ -92,6 +92,7 @@ export interface WorkOffCategory {
   iconcolor: string;
   id: number;
   name: string;
+  quickselect: boolean;
   rowcolor: string;
   userid: number;
 }

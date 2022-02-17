@@ -121,25 +121,11 @@
           <nav class="h-100" style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
             <ol class="breadcrumb d-flex align-items-center h-100 mb-0">
               <li class="breadcrumb-item">
-                <button type="button" [ngClass]="['btn btn-sm', usersettingsObj.view.calendar.asList ? 'btn-primary' : 'btn-outline-primary']"
-                  (click)="usersettingsObj.view.calendar.asList = true; pushUserSettings();"
-                  [title]="i18n('calendar.showAsListTitle')">
-                  <i [class]="config.icons['list']"></i>
-                </button>
-              </li>
-              <li class="breadcrumb-item">
-                <button type="button" [ngClass]="['btn btn-sm', !usersettingsObj.view.calendar.asList ? 'btn-primary' : 'btn-outline-primary']"
-                  (click)="usersettingsObj.view.calendar.asList = false; pushUserSettings();"
-                  [title]="i18n('calendar.showAsGridTitle')">
-                  <i [class]="config.icons['grid']"></i>
-                </button>
-              </li>
-              <li class="breadcrumb-item">
                 <button type="button" class="btn btn-sm btn-secondary"
-                  (click)="usersettingsObj.view.calendar.showWeek = !usersettingsObj.view.calendar.showWeek; pushUserSettings();"
-                  [title]="i18n('calendar.showWeekTitle')">
-                  <i [class]="config.icons[usersettingsObj.view.calendar.showWeek ? 'toggle-on' : 'toggle-off'] + ' me-1'"></i>
-                  {{ i18n('calendar.showWeek') }}
+                  (click)="usersettingsObj.view.calendar.showWeekend = !usersettingsObj.view.calendar.showWeekend; pushUserSettings();"
+                  [title]="i18n('calendar.showWeekendTitle')">
+                  <i [class]="config.icons[usersettingsObj.view.calendar.showWeekend ? 'toggle-on' : 'toggle-off'] + ' me-1'"></i>
+                  {{ i18n('calendar.showWeekend') }}
                 </button>
               </li>
             </ol>
@@ -149,6 +135,27 @@
     </div>
 
     <div class="container pt-md-2 mb-2">
+      <div class="container-fluid p-0 mb-1 d-flex justify-content-end flex-wrap">
+        <ng-container *ngIf="workprops != undefined">
+          <nav class="h-100" style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
+            <ol class="breadcrumb d-flex align-items-center h-100 mb-0">
+              <ng-container *ngFor="let item of offdayDroppableEvents">
+                <li class="breadcrumb-item" *ngIf="item.meta.obj.quickselect">
+                  <button
+                        type="button"
+                        [ngClass]="['btn btn-sm btn-outline-dark py-0', item.meta.obj.rowcolor]"
+                        mwlDraggable [dropData]="{ event: item }"
+                        [touchStartLongPress]="{ delay: 300, delta: 30 }"
+                        dragActiveClass="drag-active">
+                    <i *ngIf="item.meta.obj.icon !== ''" [ngClass]="[config.icons[item.meta.obj.icon] + ' ' + item.meta.obj.iconcolor, 'me-1']"></i>
+                    {{ item.title }}
+                  </button>
+                </li>
+              </ng-container>
+            </ol>
+          </nav>
+        </ng-container>
+      </div>
       <mwl-calendar-month-view
         [activeDayIsOpen]="activeDayIsOpen"
         [viewDate]="viewDate"
@@ -162,21 +169,15 @@
         (eventTimesChanged)="eventTimesChanged($event)"
         [locale]="locale"
       ></mwl-calendar-month-view>
+
       <div class="mt-3">
         <h4>{{ i18n('workmonth.offtime.title') }}</h4>
+        <p class="text-muted">{{ i18n('workmonth.offtime.subtitle') }}</p>
         <div class="row">
-          <ng-container *ngIf="workprops != undefined">
-            <div *ngFor="let item of offdayDroppableEvents"
-                 [ngClass]="['col-auto py-1 px-2 m-1 bg-white border rounded shadow-sm', item.meta.obj.rowcolor]"
-                 mwlDraggable [dropData]="{ event: item }"
-                 [touchStartLongPress]="{ delay: 300, delta: 30 }"
-                 dragActiveClass="drag-active">
-              <i *ngIf="item.meta.obj.icon !== ''" [ngClass]="[config.icons[item.meta.obj.icon] + ' ' + item.meta.obj.iconcolor, 'me-1']"></i>
-              {{ item.title }}
-            </div>
-          </ng-container>
+          
         </div>
       </div>
+
     </div>
 
   </ng-container>

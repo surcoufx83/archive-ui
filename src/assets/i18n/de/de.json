@@ -4,6 +4,8 @@
     "showAsListTitle": "Als Liste darstellen",
     "showWeek": "KW",
     "showWeekTitle": "Kalenderwoche anzeigen",
+    "showWeekend": "WE",
+    "showWeekendTitle": "Wochenende anzeigen",
     "duration": {
       "short": "{0} h"
     },
@@ -80,7 +82,8 @@
       "sick": "Krank",
       "specialLeave": "Sonderurlaub",
       "vacation": "Urlaub",
-      "weekend": "Wochenende"
+      "weekend": "Wochenende",
+      "none": "Keine"
     },
     "timecategories": {
       "administration": "Administratives",
@@ -118,7 +121,8 @@
       }
     },
     "offtime": {
-      "title": "Abwesenheiten buchen"
+      "title": "Abwesenheiten buchen",
+      "subtitle": "Abwesenheitsmarker setzen das Tagessoll generell auf 0 Stunden. Es können für Abwesenheitstage keine Zeiten gebucht werden."
     }
   }
 }
