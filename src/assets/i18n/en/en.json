@@ -36,10 +36,10 @@
       "head": {
         "key": "[LI]",
         "customer": "Customer",
-        "project": "Projekt",
-        "created": "Erstellt",
-        "completed": "Abgeschlossen",
-        "payed": "Ausgezahlt"
+        "project": "Project",
+        "created": "Created",
+        "completed": "Finished",
+        "payed": "Paid"
       },
       "data": {
         "lead": "Lead",
