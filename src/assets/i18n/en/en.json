@@ -31,7 +31,22 @@
   },
   "home": {},
   "leads": {
-    "title": "Leads + Incentives"
+    "title": "Leads + Incentives",
+    "table": {
+      "head": {
+        "key": "[LI]",
+        "customer": "Kunde",
+        "project": "Projekt",
+        "created": "Erstellt",
+        "completed": "Abgeschlossen",
+        "payed": "Ausgezahlt"
+      },
+      "data": {
+        "lead": "Lead",
+        "incentive": "Incentive",
+        "leadincentive": "Lead+Incentive"
+      }
+    }
   },
   "login": {
     "title": "User login",
