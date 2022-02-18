@@ -298,7 +298,7 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
   }
 
   f(date: Date, form: string): string {
-    return format(date, form);
+    return format(date, form, { locale: this.i18nService.DateLocale });
   }
 
   fd(duration: number): string {

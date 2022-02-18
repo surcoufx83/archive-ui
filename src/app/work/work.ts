@@ -1,3 +1,5 @@
+import { ParsedEventType } from "@angular/compiler";
+import { Party } from "../common";
 
 export interface WorkCalendarColor {
   primary: string;
@@ -70,6 +72,56 @@ export interface WorkHoliday {
   userid: number;
 }
 
+export interface WorkLead {
+  id: number;
+  completed: boolean;
+  date_accepted: null|string;
+  date_completed: null|string;
+  date_reported: string;
+  cpo: WorkLeadCpo;
+  customer: null|WorkCustomer;
+  customerid: null|number;
+  customer_name: string;
+  incentive: WorkLeadIncentive;
+  lead: WorkLeadLead;
+  paid: boolean;
+  party: Party;
+  partyid: number;
+  products: string;
+  project_name: string;
+  project_description: string;
+  sales: string;
+  userid: number;
+}
+
+export interface WorkLeadCpo {
+  cpo_projectno: string;
+  cpo_projectname: string;
+}
+
+export interface WorkLeadIncentive {
+  isincentive: boolean;
+  incentive_completed: boolean;
+  incentive_gross_value: number;
+  incentive_net_value: number;
+  incentive_paid: string;
+  incentive_splitfactor: number;
+  incentive_value: number;
+}
+
+export interface WorkLeadLead {
+  islead: boolean;
+  lead_no: string;
+  lead_text: string;
+  opp_no: string;
+  state: string;
+  contract_value: number;
+  lead_gross_value: number;
+  lead_net_value: number;
+  lead_paid: string;
+  lead_completed: boolean;
+}
+
 export interface WorkMonth {
   datefrom: string;
   dateuntil: string;
@@ -110,6 +162,7 @@ export interface WorkProject {
 
 export interface WorkProperties {
   customers: WorkCustomer[];
+  leads: WorkLead[];
   offCategories: WorkOffCategory[];
   projects: WorkProject[];
   timeCategories: WorkTimeCategory[];

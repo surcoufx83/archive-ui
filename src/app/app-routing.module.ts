@@ -41,6 +41,7 @@ const routes: Routes = [
     { path: '', redirectTo: 'today', pathMatch: 'full' },
     { path: 'day/:date', component: WorkDayComponent, canActivate: [ SessionGuard ] },
     { path: 'leads', component: WorkLeadsComponent, canActivate: [ SessionGuard ] },
+    { path: 'lead/:id', component: WorkLeadComponent, canActivate: [ SessionGuard ] },
     { path: 'month', component: WorkMonthComponent, canActivate: [ SessionGuard ] },
     { path: 'month/:year/:month', component: WorkMonthComponent, canActivate: [ SessionGuard ] },
     { path: 'settings', children: [
