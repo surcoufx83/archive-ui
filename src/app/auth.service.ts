@@ -5,6 +5,7 @@ import { ApiReply } from './api-reply';
 import { ConfigService, AppConfig } from './config.service';
 import { Session } from './session';
 import { User } from './user';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class AuthService implements OnInit {
   private session?: Session;
   private storeName: string = 'ArcApiv2__Session';
 
-  constructor(private configService: ConfigService, private http: HttpClient) {
+  constructor(private configService: ConfigService, private http: HttpClient, private router: Router) {
     let localSession: Session|string|null = localStorage.getItem(this.storeName);
     if (localSession != null) {
       localSession = <Session>JSON.parse(localSession);
@@ -79,7 +80,10 @@ export class AuthService implements OnInit {
    */
   public logout() {
     console.log('AuthService.logout()');
-
+    localStorage.removeItem(this.storeName);
+    this.session = undefined;
+    this.loggedin = false;
+    this.router.navigate(['login']);
   }
 
   public processOauth2Redirect(state: string, code: string) : Subject<ApiReply> {

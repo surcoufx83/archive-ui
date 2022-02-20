@@ -43,6 +43,12 @@ export class AppComponent implements OnInit {
       if (reply.success && reply.payload != null) {
         this.settings.update(<Settings>reply.payload['settings']);
         this.settings.updateWorkProps(<WorkProperties>reply.payload['work']);
+      } else {
+        if (!reply.success && reply.redirect != null && reply.redirectTo != null) {
+          if (reply.redirect === true && reply.redirectTo === '/login') {
+            this.authService.logout();
+          }
+        }
       }
     });
   }
