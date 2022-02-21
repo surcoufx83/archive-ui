@@ -43,8 +43,7 @@
       },
       "data": {
         "lead": "Lead",
-        "incentive": "Incentive",
-        "leadincentive": "Lead+Incentive"
+        "incentive": "Incentive"
       }
     }
   },
