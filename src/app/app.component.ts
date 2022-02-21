@@ -4,7 +4,7 @@ import { AuthService } from './auth.service';
 import { ConfigService, AppConfig } from './config.service';
 import { I18nService } from './i18n.service';
 import { SettingsService } from './user/settings/settings.service';
-import { Settings } from './user/settings/settings';
+import { User } from './user/user';
 import { WorkProperties } from './work/work';
 
 @Component({
@@ -41,7 +41,7 @@ export class AppComponent implements OnInit {
     let url = this.config.api.baseUrl + '/user/settings';
     this.authService.queryApi(url).subscribe((reply) => {
       if (reply.success && reply.payload != null) {
-        this.settings.update(<Settings>reply.payload['settings']);
+        this.settings.updateUser(<User>reply.payload['user']);
         this.settings.updateWorkProps(<WorkProperties>reply.payload['work']);
       } else {
         if (!reply.success && reply.redirect != null && reply.redirectTo != null) {

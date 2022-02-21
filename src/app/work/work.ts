@@ -85,8 +85,8 @@ export interface WorkLead {
   incentive: WorkLeadIncentive;
   lead: WorkLeadLead;
   paid: boolean;
-  party: Party;
-  partyid: number;
+  party: null|Party;
+  partyid: null|number;
   products: string;
   project_name: string;
   project_description: string;
@@ -104,7 +104,7 @@ export interface WorkLeadIncentive {
   incentive_completed: boolean;
   incentive_gross_value: number;
   incentive_net_value: number;
-  incentive_paid: string;
+  incentive_paid: null|string;
   incentive_splitfactor: number;
   incentive_value: number;
 }
@@ -118,7 +118,7 @@ export interface WorkLeadLead {
   contract_value: number;
   lead_gross_value: number;
   lead_net_value: number;
-  lead_paid: string;
+  lead_paid: null|string;
   lead_completed: boolean;
 }
 

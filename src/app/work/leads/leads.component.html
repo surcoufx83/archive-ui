@@ -11,7 +11,7 @@
               <ui-busy-indicator></ui-busy-indicator>
             </li>
             <li class="breadcrumb-item">
-              <button type="button" class="btn btn-sm btn-outline-primary">
+              <button type="button" class="btn btn-sm btn-outline-primary" (click)="goto()">
                 <i [class]="config.icons['add'] + ' me-1'"></i>
                 {{ i18n('common.add') }}
               </button>

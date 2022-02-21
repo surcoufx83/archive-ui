@@ -5,7 +5,6 @@ import { ConfigService, AppConfig } from '../../config.service';
 import { I18nService } from '../../i18n.service';
 import { SettingsService } from '../../user/settings/settings.service';
 import { Settings } from '../../user/settings/settings';
-import { ApiReply } from '../../api-reply';
 import { WorkLead, WorkProperties } from '../work';
 import { format } from 'date-fns';
 import { Router } from '@angular/router';
@@ -47,8 +46,8 @@ export class WorkLeadsComponent implements OnInit {
     return format(date, form, { locale: this.i18nService.DateLocale });
   }
 
-  goto(lead: WorkLead) : void {
-    this.router.navigate(['work', 'lead', lead.id]);
+  goto(lead?: WorkLead) : void {
+    this.router.navigate(['work', 'lead', (lead == null ? 'new' : lead.id)]);
   }
 
   i18n(key: string, params: string[] = []): string {

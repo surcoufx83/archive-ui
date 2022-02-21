@@ -207,7 +207,7 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
   }
 
   pushUserSettings(): void {
-    this.userSettings.update(<Settings>this.usersettingsObj, true);
+    this.userSettings.updateSettings(<Settings>this.usersettingsObj, true);
   }
 
   addEvent(id: string, title: string, start: Date, end: Date | undefined, allDay: boolean,
