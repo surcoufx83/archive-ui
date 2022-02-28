@@ -3,6 +3,10 @@ export interface Address {
 
 }
 
+export interface Client {
+  
+}
+
 export interface Party {
   id: number;
   addresses: Address[];

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { SearchResults } from './search/searchresult';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +10,8 @@ export class ConfigService {
 
   private appConfig: AppConfig = <AppConfig>{ loaded: false };
   private startUrl: string = '';
+  private searches: SearchResults[] = [];
+  private searchIndexes: string[] = [];
 
   constructor(private http: HttpClient, private router: Router) {
     this.startUrl = location.href.substr(location.href.indexOf('#') + 1);
@@ -26,6 +29,23 @@ export class ConfigService {
 
   get config() : AppConfig {
     return this.appConfig;
+  }
+
+  getSearchResult(key: string) : SearchResults|null {
+    for (let i = 0; i < this.searchIndexes.length; i++) {
+      if (this.searchIndexes[i] === key)
+        return this.searches[i];
+    }
+    return null;
+  }
+
+  setSearchResult(key: string, result: SearchResults) : void {
+    if (this.searches.length === 5) {
+      this.searches.splice(0, 1);
+      this.searchIndexes.splice(0, 1);
+    }
+    this.searches.push(result);
+    this.searchIndexes.push(key);
   }
 
 }

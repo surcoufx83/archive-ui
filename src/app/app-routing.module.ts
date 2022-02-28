@@ -38,7 +38,8 @@ const routes: Routes = [
   ]},
   { path: 'logout', component: LogoutComponent, canActivate: [ SessionGuard ] },
   { path: 'notepad', component: NotepadComponent, canActivate: [ SessionGuard ] },
-  { path: 'search/:phrase/:token', component: SearchComponent, canActivate: [ SessionGuard ] },
+  { path: 'search/:phrase/:token/:tab', component: SearchComponent, canActivate: [ SessionGuard ] },
+  { path: 'search/:phrase/:token', component: SearchComponent, canActivate: [ SessionGuard ], pathMatch: 'full' },
   { path: 'search/:phrase', component: SearchComponent, canActivate: [ SessionGuard ], pathMatch: 'full' },
   { path: 'search', component: SearchComponent, canActivate: [ SessionGuard ], pathMatch: 'full' },
   { path: 'work', component: WorkComponent, canActivate: [ SessionGuard ], children: [
