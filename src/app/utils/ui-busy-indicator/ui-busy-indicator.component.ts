@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ConfigService } from '../../config.service';
+import { ConfigService, AppConfig } from '../../config.service';
 
 @Component({
   selector: 'ui-busy-indicator',
@@ -24,8 +24,8 @@ export class UiBusyIndicatorComponent {
     }, 3000);
   }
 
-  config() : ConfigService {
-    return this.configService;
+  get config() : AppConfig {
+    return this.configService.config;
   }
 
 }

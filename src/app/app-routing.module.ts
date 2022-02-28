@@ -9,9 +9,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { FinanceComponent } from './finance/finance.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
-import { LoginCheckComponent } from './login-check/login-check.component';
 import { LogoutComponent } from './logout/logout.component';
 import { NotepadComponent } from './notepad/notepad.component';
+import { Oauth2CallbackComponent } from './login/oauth2-callback/oauth2-callback.component';
 import { WorkCustomerComponent } from './work/settings/customers/customer/customer.component';
 import { WorkCustomersComponent } from './work/settings/customers/customers.component';
 import { WorkComponent } from './work/work.component';
@@ -22,9 +22,9 @@ import { WorkLeadsComponent } from './work/leads/leads.component';
 import { WorkMonthComponent } from './work/work-month/work-month.component';
 import { WorkOffCategoriesComponent } from './work/settings/off-categories/off-categories.component';
 import { WorkProjectsComponent } from './work/settings/customers/projects/projects.component';
-import { WorkSettingsComponent } from './work/settings/settings.component';
 import { WorkTimeCategoriesComponent } from './work/settings/time-categories/time-categories.component';
 import { WorkYearComponent } from './work/work-year/work-year.component';
+import { SearchComponent } from './search/search.component';
 
 const routes: Routes = [
   { path: 'account', component: AccountComponent, canActivate: [ SessionGuard ] },
@@ -32,17 +32,24 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent, canActivate: [ SessionGuard ] },
   { path: 'home', component: HomeComponent, canActivate: [ SessionGuard ] },
   { path: 'finance', component: FinanceComponent, canActivate: [ SessionGuard ] },
-  { path: 'login', component: LoginComponent, canActivate: [ SessionGuard ]},
-  { path: 'logincheck', component: LoginCheckComponent, canActivate: [ SessionGuard ]},
+  { path: 'login', children: [
+    { path: 'oauth2', component: Oauth2CallbackComponent, canActivate: [ SessionGuard ] },
+    { path: '', component: LoginComponent, canActivate: [ SessionGuard ], pathMatch: 'full' },
+  ]},
   { path: 'logout', component: LogoutComponent, canActivate: [ SessionGuard ] },
   { path: 'notepad', component: NotepadComponent, canActivate: [ SessionGuard ] },
+  { path: 'search/:phrase/:token/:tab', component: SearchComponent, canActivate: [ SessionGuard ] },
+  { path: 'search/:phrase/:token', component: SearchComponent, canActivate: [ SessionGuard ], pathMatch: 'full' },
+  { path: 'search/:phrase', component: SearchComponent, canActivate: [ SessionGuard ], pathMatch: 'full' },
+  { path: 'search', component: SearchComponent, canActivate: [ SessionGuard ], pathMatch: 'full' },
   { path: 'work', component: WorkComponent, canActivate: [ SessionGuard ], children: [
     { path: '', redirectTo: 'today', pathMatch: 'full' },
     { path: 'day/:date', component: WorkDayComponent, canActivate: [ SessionGuard ] },
     { path: 'leads', component: WorkLeadsComponent, canActivate: [ SessionGuard ] },
+    { path: 'lead/:id', component: WorkLeadComponent, canActivate: [ SessionGuard ] },
     { path: 'month', component: WorkMonthComponent, canActivate: [ SessionGuard ] },
     { path: 'month/:year/:month', component: WorkMonthComponent, canActivate: [ SessionGuard ] },
-    { path: 'settings', component: WorkSettingsComponent, canActivate: [ SessionGuard ], children: [
+    { path: 'settings', children: [
       { path: 'customer/:id', component: WorkCustomerComponent, canActivate: [ SessionGuard ] },
       { path: 'customers', component: WorkCustomersComponent, canActivate: [ SessionGuard ] },
     ]},
@@ -53,7 +60,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { useHash: true })],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

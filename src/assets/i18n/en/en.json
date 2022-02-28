@@ -1,9 +1,52 @@
 {
+  "calendar": {
+    "showAsGridTitle": "Display as calendar",
+    "showAsListTitle": "Show as list",
+    "showWeek": "week#",
+    "showWeekTitle": "Show week number",
+    "showWeekend": "Weekend",
+    "showWeekendTitle": "Show weekend days in calendar",
+    "duration": {
+      "short": "{0} hr"
+    },
+    "holidays": {
+      "ascension_day": "Ascension Day",
+      "boxing_day": "Christmas",
+      "christmas_day": "Christmas Day",
+      "easter_goodFriday": "Good Friday",
+      "easter_monday": "Easter Monday",
+      "easter_sunday": "Easter Day",
+      "labor_day": "Labour Day",
+      "newYearsDay": "New Year's Day",
+      "reformation_day": "Day of Reformation",
+      "unity_day": "Unity Day",
+      "whit_monday": "Whit Monday",
+      "whit_sunday": "Whit Sunday"
+    }
+  },
   "common": {
+    "add": "New",
     "back": "Back",
     "cancel": "Cancel"
   },
   "home": {},
+  "leads": {
+    "title": "Leads + Incentives",
+    "table": {
+      "head": {
+        "key": "[LI]",
+        "customer": "Customer",
+        "project": "Project",
+        "created": "Created",
+        "completed": "Finished",
+        "payed": "Paid"
+      },
+      "data": {
+        "lead": "Lead",
+        "incentive": "Incentive"
+      }
+    }
+  },
   "login": {
     "title": "User login",
     "subtitle": "This website requires the input of credentials. Please login with your username and password.",
@@ -16,6 +59,11 @@
     "sessioncheck": {
       "title": "User login",
       "subtitle": "Please wait, the login is being checked..."
+    },
+    "oauth2": {
+      "title": "User login",
+      "subtitle": "This website requires a login via Nextcloud. Please click on the button to proceed.",
+      "button": "Login"
     }
   },
   "navbar": {
@@ -44,11 +92,54 @@
       "today": "Today"
     }
   },
+  "work": {
+    "offcategories": {
+      "educationalLeave": "Educational leave",
+      "holidays": "Public Holiday",
+      "sick": "Sick Leave",
+      "specialLeave": "Special leave",
+      "vacation": "Vacation",
+      "weekend": "Weekend",
+      "none": "None"
+    },
+    "timecategories": {
+      "administration": "Administration",
+      "bugfixing": "Bug fixing",
+      "meeting": "Meeting",
+      "implementation": "Implementation",
+      "presales": "Presales",
+      "support": "Support",
+      "trainingself": "Advanced training",
+      "travel": "Travel time"
+    }
+  },
   "workday": {
     "pagetitle": "Day bookings {0}"
   },
   "workmonth": {
     "pagetitle": "Monthly calendar {0}",
-    "pagetitleShort": "Calendar {0}"
+    "pagetitleShort": "{0}",
+    "calendar": {
+      "title": "Calendar"
+    },
+    "cards": {
+      "target": {
+        "title": "Info",
+        "businessDays": "Business days",
+        "offDays": "WE / HD",
+        "lastEdit": "Last Update",
+        "lastEditShort": "Last update"
+      },
+      "time": {
+        "title": "Booked time",
+        "takeover": "Take-over",
+        "balance": "Balance",
+        "carryover": "Carry-over"
+      }
+    },
+    "offtime": {
+      "title": "Submit time off",
+      "subtitle": "Daily off time resets the day's target hours to 0. There are no bookings allowed for off time days."
+    }
   }
 }

@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { SearchResults } from './search/searchresult';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConfigService {
 
-  private appConfig: any;
+  private appConfig: AppConfig = <AppConfig>{ loaded: false };
   private startUrl: string = '';
+  private searches: SearchResults[] = [];
+  private searchIndexes: string[] = [];
 
   constructor(private http: HttpClient, private router: Router) {
     this.startUrl = location.href.substr(location.href.indexOf('#') + 1);
@@ -18,46 +21,76 @@ export class ConfigService {
     return this.http.get('/assets/config/config.json')
       .toPromise()
       .then(config => {
-        this.appConfig = config;
+        this.appConfig = <AppConfig>config;
+        this.appConfig.api.startUrl = this.startUrl;
+        this.appConfig.loaded = true;
       });
   }
 
-  get ApiBaseUrl() : string {
-    return <string>this.appConfig.api.baseUrl;
+  get config() : AppConfig {
+    return this.appConfig;
   }
 
-  get AuthUrl() : string {
-    return <string>this.appConfig.auth.authUrl;
+  getSearchResult(key: string) : SearchResults|null {
+    for (let i = 0; i < this.searchIndexes.length; i++) {
+      if (this.searchIndexes[i] === key)
+        return this.searches[i];
+    }
+    return null;
   }
 
-  get AuthCheckUrl() : string {
-    return <string>this.appConfig.auth.authCheck;
+  setSearchResult(key: string, result: SearchResults) : void {
+    if (this.searches.length === 5) {
+      this.searches.splice(0, 1);
+      this.searchIndexes.splice(0, 1);
+    }
+    this.searches.push(result);
+    this.searchIndexes.push(key);
   }
 
-  get FirstUrl() : string {
-    return this.startUrl;
-  }
+}
 
-  get NavbarItems() : any[] {
-    if (this.appConfig != undefined && this.appConfig.navbar !== undefined && this.appConfig.navbar.items !== undefined)
-      return <any[]>this.appConfig.navbar.items;
-    return [];
-  }
+export interface ApiConfig {
+  baseUrl: string;
+  startUrl: string;
+}
 
-  getIcon(iconName: string) : string {
-    if (this.appConfig != undefined && this.appConfig.icons !== undefined && this.appConfig.icons[iconName] !== undefined)
-      return <string>this.appConfig.icons[iconName];
-    return 'fas fa-question';
-  }
+export interface AppConfig {
+  api: ApiConfig;
+  auth: AuthConfig;
+  icons: { [key: string]: string };
+  loaded: boolean;
+  navbar: NavbarConfig;
+  storage: StorageConfig;
+}
 
-  get StoragePrefix() : string {
-    return <string>this.appConfig.storage.prefix;
-  }
+export interface AuthConfig {
+  authUrl: string;
+  authCheck: string;
+  oauth2: OAuth2Config;
+}
 
-  get WorkNavbarItems() : any[] {
-    if (this.appConfig != undefined && this.appConfig.navbar !== undefined && this.appConfig.navbar.workitems !== undefined)
-      return <any[]>this.appConfig.navbar.workitems;
-    return [];
-  }
+export interface NavbarConfig {
+  items: NavbarItem[];
+  workitems: NavbarItem[];
+}
 
+export interface NavbarItem {
+  title: string;
+  icon: string;
+  link: string;
+}
+
+export interface OAuth2Config {
+  enabled: boolean;
+  endpoint: string;
+  tokenEndpoint: string;
+  clientId: string;
+  clientSecret: string;
+  redirectUrl: string;
+  state: string;
+}
+
+export interface StorageConfig {
+  prefix: string;
 }

@@ -3,4 +3,6 @@ export interface ApiReply {
   errno?: number;
   error?: string;
   payload?: { [key: string]: string|any; };
+  redirect?: boolean;
+  redirectTo?: string;
 }

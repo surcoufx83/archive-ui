@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { de } from 'date-fns/locale';
+import { Locale } from 'date-fns';
 
 @Injectable({
   providedIn: 'root'
@@ -50,6 +52,14 @@ export class I18nService {
       return str;
     }
     return '<I18n: string \'' + key + '\' missing!>';
+  }
+
+  get DateLocale() : undefined|Locale {
+    switch (this.locale) {
+      case 'de':
+        return de;
+    }
+    return undefined;
   }
 
   get Locale() : string {
