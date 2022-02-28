@@ -37,6 +37,7 @@ import { WorkProjectsComponent } from './work/settings/customers/projects/projec
 import { WorkTimeCategoriesComponent } from './work/settings/time-categories/time-categories.component';
 import { WorkYearComponent } from './work/work-year/work-year.component';
 import { Oauth2CallbackComponent } from './login/oauth2-callback/oauth2-callback.component';
+import { SearchComponent } from './search/search.component';
 
 registerLocaleData(localeDe);
 
@@ -67,6 +68,7 @@ registerLocaleData(localeDe);
     WorkTimeCategoriesComponent,
     WorkYearComponent,
     Oauth2CallbackComponent,
+    SearchComponent,
   ],
   imports: [
     AppRoutingModule,

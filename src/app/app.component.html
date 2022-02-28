@@ -23,13 +23,14 @@
           </ul>
         </div>
         <div class="d-none d-lg-block text-white d-flex align-items-center">
-          <form>
+          <form (submit)="submitSearch()">
             <div class="input-group">
               <label class="input-group-text" id="navbar-main-search-label" for="navbar-main-search-input">
                 <i [class]="config.icons['search']"></i>
               </label>
               <input type="text" class="form-control form-control-sm" [placeholder]="i18n('navbar.search.placeholder')"
-                aria-describedby="navbar-main-search-label" id="navbar-main-search-input">
+                aria-describedby="navbar-main-search-label" id="navbar-main-search-input" name="navbar-main-search-input"
+                [(ngModel)]="searchphrase">
               <button class="btn btn-sm btn-secondary" type="submit">
                 {{ i18n('navbar.search.submit') }}
               </button>

@@ -24,6 +24,7 @@ import { WorkOffCategoriesComponent } from './work/settings/off-categories/off-c
 import { WorkProjectsComponent } from './work/settings/customers/projects/projects.component';
 import { WorkTimeCategoriesComponent } from './work/settings/time-categories/time-categories.component';
 import { WorkYearComponent } from './work/work-year/work-year.component';
+import { SearchComponent } from './search/search.component';
 
 const routes: Routes = [
   { path: 'account', component: AccountComponent, canActivate: [ SessionGuard ] },
@@ -37,6 +38,9 @@ const routes: Routes = [
   ]},
   { path: 'logout', component: LogoutComponent, canActivate: [ SessionGuard ] },
   { path: 'notepad', component: NotepadComponent, canActivate: [ SessionGuard ] },
+  { path: 'search/:phrase/:token', component: SearchComponent, canActivate: [ SessionGuard ] },
+  { path: 'search/:phrase', component: SearchComponent, canActivate: [ SessionGuard ], pathMatch: 'full' },
+  { path: 'search', component: SearchComponent, canActivate: [ SessionGuard ], pathMatch: 'full' },
   { path: 'work', component: WorkComponent, canActivate: [ SessionGuard ], children: [
     { path: '', redirectTo: 'today', pathMatch: 'full' },
     { path: 'day/:date', component: WorkDayComponent, canActivate: [ SessionGuard ] },

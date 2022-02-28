@@ -16,6 +16,7 @@ import { WorkProperties } from './work/work';
 export class AppComponent implements OnInit {
 
   routeUrl: string = '';
+  searchphrase: string = '';
 
   constructor(private authService: AuthService,
               private configService: ConfigService,
@@ -51,6 +52,13 @@ export class AppComponent implements OnInit {
         }
       }
     });
+  }
+
+  submitSearch() : void {
+    if (this.searchphrase !== '')
+      this.router.navigate(['search', this.searchphrase, Math.floor(Date.now() / 1000)]);
+    else
+      this.router.navigate(['search', '', Math.floor(Date.now() / 1000)]);
   }
 
 }
