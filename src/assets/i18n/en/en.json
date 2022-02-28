@@ -30,6 +30,9 @@
     "cancel": "Cancel"
   },
   "home": {},
+  "lead": {
+    "title": "Lead #{0}"
+  },
   "leads": {
     "title": "Leads + Incentives",
     "table": {
