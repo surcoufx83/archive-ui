@@ -1,1 +1,28 @@
-<p>lead works!</p>
+<ui-centered-busy-indicator *ngIf="usersettingsObj == undefined || lead == undefined"></ui-centered-busy-indicator>
+
+<ng-container *ngIf="usersettingsObj != undefined && lead != undefined">
+  <div class="container pt-4 pt-md-2 mb-2">
+    <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between">
+      <h2>{{ i18n('lead.title', [''+lead.id]) }}</h2>
+      <div>
+        <nav class="h-100" style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
+          <ol class="breadcrumb d-flex align-items-center h-100 mb-0">
+            <li class="breadcrumb-item">
+              <ui-busy-indicator *ngIf="busy"></ui-busy-indicator>
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <ng-container *ngIf="">
+
+    <div class="container pt-md-2 mb-2">
+
+      
+        </div>
+
+  </ng-container>
+
+</ng-container>

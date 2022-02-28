@@ -54,52 +54,73 @@ export class WorkLeadComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      if (params['id'] != null) {
-        if (params['id'] === 'new') {
-          this.lead = {
-            id: 0,
-            completed: false,
-            date_accepted: null,
-            date_completed: null,
-            date_reported: (new Date()).toISOString(),
-            cpo: { cpo_projectno: '', cpo_projectname: '' },
-            customer: null,
-            customerid: null,
-            customer_name: '',
-            incentive: {
-              isincentive: false,
-              incentive_completed: false,
-              incentive_gross_value: 0.0,
-              incentive_net_value: 0.0,
-              incentive_paid: null,
-              incentive_splitfactor: 100.0,
-              incentive_value: 0.0
-            },
-            lead: {
-              islead: false,
-              lead_no: '',
-              lead_text: '',
-              opp_no: '',
-              state: '',
-              contract_value: 0.0,
-              lead_gross_value: 0.0,
-              lead_net_value: 0.0,
-              lead_paid: null,
-              lead_completed: false
-            },
-            paid: false,
-            party: null,
-            partyid: null,
-            products: '',
-            project_name: '',
-            project_description: '',
-            sales: '',
-            userid: 1
-          };
-        }
+    this.route.paramMap.subscribe(params => {
+      this.busy = true;
+      if (params.has('id')) {
+        let url = this.configService.config.api.baseUrl + '/work/lead/' + (params.get('id') ?? 0);
+        this.authService.queryApi(url).subscribe(reply => {
+          if (reply.success && reply.payload != null) {
+            this.update(reply.payload['lead'], false);
+          }
+          this.busy = false;
+        });
+      } else {
+        this.update({
+          id: 0,
+          completed: false,
+          date_accepted: null,
+          date_completed: null,
+          date_reported: (new Date()).toISOString(),
+          cpo: { cpo_projectno: '', cpo_projectname: '' },
+          customer: null,
+          customerid: null,
+          customer_name: '',
+          incentive: {
+            isincentive: false,
+            incentive_completed: false,
+            incentive_gross_value: 0.0,
+            incentive_net_value: 0.0,
+            incentive_paid: null,
+            incentive_splitfactor: 100.0,
+            incentive_value: 0.0
+          },
+          lead: {
+            islead: false,
+            lead_no: '',
+            lead_text: '',
+            opp_no: '',
+            state: '',
+            contract_value: 0.0,
+            lead_gross_value: 0.0,
+            lead_net_value: 0.0,
+            lead_paid: null,
+            lead_completed: false
+          },
+          paid: false,
+          party: null,
+          partyid: null,
+          products: '',
+          project_name: '',
+          project_description: '',
+          sales: '',
+          userid: 1
+        }, false);
+        this.busy = false;
       }
     });
+  }
+
+  update(lead: WorkLead, push: boolean) : void {
+    console.log('WorkLeadComponent', 'update()', lead, push);
+    if (this.workpropsObj != undefined) {
+      for(let i = 0; i < this.workpropsObj.leads.length; i++) {
+        if (this.workpropsObj.leads[i].id === lead.id) {
+          this.workpropsObj.leads[i] = lead;
+          this.userSettings.updateWorkProps(this.workpropsObj, push);
+        }
+      }
+    }
+    this.lead = lead;
   }
 
 }

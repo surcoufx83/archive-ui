@@ -30,11 +30,15 @@ export class SettingsService {
 
   updateUser(user: User, push: boolean = false) {
     this.user.next(user);
-    this.updateSettings(user.settings);
+    this.updateSettings(user.settings, push);
   }
 
   updateWorkProps(props: WorkProperties, push: boolean = false) {
     this.workprops.next(props);
+    if (push) {
+      let url = this.configService.config.api.baseUrl + '/work/settings';
+      this.authService.updateApi(url, {workSettings: props});
+    }
   }
 
 }
