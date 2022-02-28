@@ -27,7 +27,8 @@
   "common": {
     "add": "New",
     "back": "Back",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "none": "None"
   },
   "home": {},
   "lead": {
@@ -94,6 +95,20 @@
       "settings": "Settings",
       "today": "Today"
     }
+  },
+  "search": {
+    "title": "{0} Treffer",
+    "subtitle": "{0} Treffer in {1}",
+    "group": {
+      "bankaccount": "Konten",
+      "bankstandingorder": "Daueraufträge",
+      "casesitem": "Cases",
+      "directoriesitem": "Verzeichnisse",
+      "filesitem": "Dateien",
+      "noteitem": "Notizen"
+    },
+    "showHistoric": "Hist.",
+    "showHistoricTooltip": "Auch ältere Werte aus der Historie anzeigen?"
   },
   "work": {
     "offcategories": {
