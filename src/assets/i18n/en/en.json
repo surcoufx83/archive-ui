@@ -97,18 +97,18 @@
     }
   },
   "search": {
-    "title": "{0} Treffer",
-    "subtitle": "{0} Treffer in {1}",
+    "title": "{0} hits",
+    "subtitle": "{0} hits for {1}",
     "group": {
-      "bankaccount": "Konten",
-      "bankstandingorder": "Daueraufträge",
+      "bankaccount": "Bank accounts",
+      "bankstandingorder": "Standing orders",
       "casesitem": "Cases",
-      "directoriesitem": "Verzeichnisse",
-      "filesitem": "Dateien",
-      "noteitem": "Notizen"
+      "directoriesitem": "Directories",
+      "filesitem": "Files",
+      "noteitem": "Notes"
     },
-    "showHistoric": "Hist.",
-    "showHistoricTooltip": "Auch ältere Werte aus der Historie anzeigen?"
+    "showHistoric": "hist.",
+    "showHistoricTooltip": "Also show older entries from history?"
   },
   "work": {
     "offcategories": {
