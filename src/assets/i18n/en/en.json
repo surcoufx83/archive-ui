@@ -32,7 +32,11 @@
   },
   "home": {},
   "lead": {
-    "title": "Lead #{0}"
+    "title": "Lead #{0}",
+    "common": {
+      "title": "Allgemeine Angaben",
+      "party": "Firma"
+    }
   },
   "leads": {
     "title": "Leads + Incentives",
@@ -97,18 +101,35 @@
     }
   },
   "search": {
-    "title": "{0} hits",
-    "subtitle": "{0} hits for {1}",
-    "group": {
-      "bankaccount": "Bank accounts",
-      "bankstandingorder": "Standing orders",
-      "casesitem": "Cases",
-      "directoriesitem": "Directories",
-      "filesitem": "Files",
-      "noteitem": "Notes"
+    "title": "Search",
+    "setup": {
+      "phrase": "Suchbegriff(e)",
+      "groups": {
+        "accounts": "Konten",
+        "cases": "Cases",
+        "directories": "Verzeichnisse",
+        "files": "Dateien (Metadaten)",
+        "filecontents": "Dateiinhalte (wird sehr lange dauern!)",
+        "notepad": "Notizen",
+        "standingorders": "Daueraufträge"
+      },
+      "groupstitle": "Suchbereiche",
+      "runSearch": "Suche starten"
     },
-    "showHistoric": "hist.",
-    "showHistoricTooltip": "Also show older entries from history?"
+    "result": {
+      "title": "{0} Treffer",
+      "subtitle": "{0} Treffer in {1}",
+      "group": {
+        "bankaccount": "Konten",
+        "bankstandingorder": "Daueraufträge",
+        "casesitem": "Cases",
+        "directoriesitem": "Verzeichnisse",
+        "filesitem": "Dateien",
+        "noteitem": "Notizen"
+      },
+      "showHistoric": "Hist.",
+      "showHistoricTooltip": "Auch ältere Werte aus der Historie anzeigen?"
+    }
   },
   "work": {
     "offcategories": {
