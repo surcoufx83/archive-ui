@@ -23,9 +23,27 @@ export class SearchComponent implements OnInit {
   resultcount: number = 0;
   resultgroupcount: {[key: string]: number} = {};
   resultgroups: string[] = ['noteitem', 'casesitem', 'bankaccount', 'bankstandingorder', 'filesitem', 'directoriesitem'];
+  phrase: string = '';
   searchphrase: string = '';
   searchtoken: string = '';
   searchresults: SearchResults = {};
+  searchgroups: {[key: string]: {}}[] = [
+    { groupName: 'notepad', searchPath: 'notepad', active: true },
+    { groupName: 'cases', searchPath: 'cases', active: true },
+    { groupName: 'files', searchPath: 'files', active: true },
+    { groupName: 'filecontents', searchPath: 'filecontents', active: false },
+    { groupName: 'directories', searchPath: 'directories', active: true },
+    { groupName: 'accounts', searchPath: 'accounts', active: true },
+    { groupName: 'standingorders', searchPath: 'standingorders', active: true }
+  ]/*{
+    'notepad': true,
+    'cases': true,
+    'accounts': true,
+    'standingorders': true,
+    'files': true,
+    'filecontents': false,
+    'directories': true
+  }*/;
   showgroup: string = 'noteitem';
   showHistoric: boolean = false;
   usersettingsObj?: Settings;
@@ -88,8 +106,9 @@ export class SearchComponent implements OnInit {
     this.route.paramMap.subscribe((params) => {
       this.reset();
       this.showgroup = params.get('tab') ?? 'noteitem';
+      this.phrase = params.get('phrase') ?? '';
+      this.searchphrase = params.get('phrase') ?? '';
       this.searchtoken = params.get('token') ?? '';
-      this.search((params.get('phrase') ?? ''), (params.get('token') ?? ''));
     });
   }
 
@@ -105,27 +124,24 @@ export class SearchComponent implements OnInit {
     this.searchresults = {};
   }
 
-  search(phrase: string, token: string) : void {
-    if (phrase === '')
+  onSearch() : void {
+    console.log('onSearch()', this.phrase);
+    if (this.phrase === '')
       return;
     if (this.busy)
       return;
     this.busy = true;
-    this.searchphrase = phrase;
 
-    let storeitem = this.configService.getSearchResult(this.config.storage.prefix + phrase + token);
-    if (storeitem != null) {
-      this.searchresults = storeitem;
-      this.onSearchCompleted();
-      return;
-    }
-
+    let phrase = this.phrase;
+    let token = Math.floor(Date.now() / 1000);
     let url = this.config.api.baseUrl + '/search';
     this.authService.updateApi(url, { search: phrase }).subscribe((reply) => {
       this.reset();
       if (reply.success && reply.payload != null) {
+        this.searchphrase = phrase;
+        this.searchtoken = '' + token;
         this.searchresults = <SearchResults>reply.payload['resultitems'];
-        this.configService.setSearchResult(this.config.storage.prefix + phrase + token, this.searchresults);
+        this.configService.setSearchResult(this.config.storage.prefix + this.searchphrase + this.searchtoken, this.searchresults);
         this.onSearchCompleted();
       } else {
         

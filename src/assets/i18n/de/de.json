@@ -32,7 +32,11 @@
   },
   "home": {},
   "lead": {
-    "title": "Lead #{0}"
+    "title": "Lead #{0}",
+    "common": {
+      "title": "Allgemeine Angaben",
+      "party": "Firma"
+    }
   },
   "leads": {
     "title": "Leads + Incentives",
@@ -97,18 +101,35 @@
     }
   },
   "search": {
-    "title": "{0} Treffer",
-    "subtitle": "{0} Treffer in {1}",
-    "group": {
-      "bankaccount": "Konten",
-      "bankstandingorder": "Daueraufträge",
-      "casesitem": "Akten",
-      "directoriesitem": "Verzeichnisse",
-      "filesitem": "Dateien",
-      "noteitem": "Notizen"
+    "title": "Suchen",
+    "setup": {
+      "phrase": "Suchbegriff(e)",
+      "groups": {
+        "accounts": "Konten",
+        "cases": "Akten",
+        "directories": "Verzeichnisse",
+        "files": "Dateien (Metadaten)",
+        "filecontents": "Dateiinhalte (wird sehr lange dauern!)",
+        "notepad": "Notizen",
+        "standingorders": "Daueraufträge"
+      },
+      "groupstitle": "Suchbereiche",
+      "runSearch": "Suche starten"
     },
-    "showHistoric": "Hist.",
-    "showHistoricTooltip": "Auch ältere Werte aus der Historie anzeigen?"
+    "result": {
+      "title": "{0} Treffer",
+      "subtitle": "{0} Treffer in {1}",
+      "group": {
+        "bankaccount": "Konten",
+        "bankstandingorder": "Daueraufträge",
+        "casesitem": "Akten",
+        "directoriesitem": "Verzeichnisse",
+        "filesitem": "Dateien",
+        "noteitem": "Notizen"
+      },
+      "showHistoric": "Hist.",
+      "showHistoricTooltip": "Auch ältere Werte aus der Historie anzeigen?"
+    }
   },
   "work": {
     "offcategories": {

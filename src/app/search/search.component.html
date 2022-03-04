@@ -1,6 +1,51 @@
 <div class="container pt-4 pt-md-2 mb-2">
   <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between">
-    <h2><span class="text-primary">{{searchphrase}}</span>: {{ i18n('search.title', [''+resultcount]) }}</h2>
+    <h2>{{ i18n('search.title') }}</h2>
+  </div>
+</div>
+<div class="container pt-4 pt-md-2 mb-2">
+  <div class="card col-12 col-md-9 col-lg-6">
+    <form (submit)="onSearch();">
+      <div class="card-body">
+        <div class="row mb-3">
+          <div class="col">
+            <div class="form-group">
+              <label for="search-phrase" class="form-label">{{ i18n('search.setup.phrase') }}</label>
+              <input type="text" class="form-control" id="search-phrase" name="search-phrase"
+                     [(ngModel)]="phrase">
+            </div>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col">
+            <ul class="list-group">
+              <label class="form-label">{{ i18n('search.setup.groupstitle') }}</label>
+              <li class="list-group-item" *ngFor="let item of searchgroups; let i = index;">
+                <input class="form-check-input" type="checkbox" [(ngModel)]="searchgroups[i]['active']"
+                       [name]="'search-group-' + searchgroups[i]['groupName']" [id]="'search-group-' + searchgroups[i]['groupName']">
+                <label [for]="'search-group-' + searchgroups[i]['groupName']" class="form-check-label ms-2">{{ i18n('search.setup.groups.' + searchgroups[i]['groupName']) }}</label>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col">
+            <div class="form-group">
+              <button type="submit" class="form-control btn btn-primary" [disabled]="busy">
+                <i [class]="config.icons['busy'] + ' me-1'" *ngIf="busy"></i>
+                {{ i18n('search.setup.runSearch') }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="container pt-4 pt-md-2 mb-2">
+  <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between">
+    <h2><span class="text-primary">{{searchphrase}}</span>: {{ i18n('search.result.title', [''+resultcount]) }}</h2>
     <div>
       <nav class="h-100" style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
         <ol class="breadcrumb d-flex align-items-center h-100 mb-0">
@@ -8,9 +53,9 @@
             <ui-busy-indicator *ngIf="busy"></ui-busy-indicator>
             <button type="button" class="btn btn-sm btn-secondary"
               (click)="showHistoric = !showHistoric;"
-              [title]="i18n('search.showHistoricTooltip')">
+              [title]="i18n('search.result.showHistoricTooltip')">
               <i [class]="config.icons[showHistoric ? 'toggle-on' : 'toggle-off'] + ' me-1'"></i>
-              {{ i18n('search.showHistoric') }}
+              {{ i18n('search.result.showHistoric') }}
             </button>
           </li>
         </ol>
@@ -26,7 +71,7 @@
            [routerLink]="['/search', searchphrase, searchtoken, group]" 
            [id]="group + '-tab-button'" data-bs-toggle="tab" [attr.data-bs-target]="group + '-tab'"
            type="button" role="tab" [attr.aria-controls]="group" [attr.aria-selected]="showgroup === group">
-           {{ i18n('search.group.' + group) }} [{{ resultgroupcount[group] == undefined ? 0 : resultgroupcount[group] }}]
+           {{ i18n('search.result.group.' + group) }} [{{ resultgroupcount[group] == undefined ? 0 : resultgroupcount[group] }}]
         </a>
       </li>
     </ng-container>
@@ -35,7 +80,7 @@
 
     <div [ngClass]="['tab-pane fade show container pt-4 pt-md-2 mb-2', this.showgroup === 'bankaccount' ? 'active' : '']"
       id="bankaccount-tab" role="tabpanel" aria-labelledby="bankaccount-tab-button">
-      <h4>{{ i18n('search.subtitle', [(resultgroupcount['bankaccount'] == undefined ? i18n('common.none') : ''+resultgroupcount['bankaccount']), i18n('search.group.bankaccount')]) }}</h4>
+      <h4>{{ i18n('search.result.subtitle', [(resultgroupcount['bankaccount'] == undefined ? i18n('common.none') : ''+resultgroupcount['bankaccount']), i18n('search.result.group.bankaccount')]) }}</h4>
       <ul class="list-group" *ngIf="searchresults.bankaccount">
         <a class="list-group-item" *ngFor="let account of bankaccounts;"
           [routerLink]="['/finance', 'accounts']">
@@ -46,7 +91,7 @@
 
     <div [ngClass]="['tab-pane fade show container pt-4 pt-md-2 mb-2', this.showgroup === 'bankstandingorder' ? 'active' : '']"
       id="bankstandingorder-tab" role="tabpanel" aria-labelledby="bankstandingorder-tab-button">
-      <h4>{{ i18n('search.subtitle', [(resultgroupcount['bankstandingorder'] == undefined ? i18n('common.none') : ''+resultgroupcount['bankstandingorder']), i18n('search.group.bankstandingorder')]) }}</h4>
+      <h4>{{ i18n('search.result.subtitle', [(resultgroupcount['bankstandingorder'] == undefined ? i18n('common.none') : ''+resultgroupcount['bankstandingorder']), i18n('search.result.group.bankstandingorder')]) }}</h4>
       <ul class="list-group" *ngIf="searchresults.bankstandingorder">
         <a class="list-group-item" *ngFor="let order of standingorders;"
           [routerLink]="['/finance', 'standingorders']">
@@ -57,7 +102,7 @@
 
     <div [ngClass]="['tab-pane fade show container pt-4 pt-md-2 mb-2', this.showgroup === 'casesitem' ? 'active' : '']"
       id="casesitem-tab" role="tabpanel" aria-labelledby="casesitem-tab-button">
-      <h4>{{ i18n('search.subtitle', [(resultgroupcount['casesitem'] == undefined ? i18n('common.none') : ''+resultgroupcount['casesitem']), i18n('search.group.casesitem')]) }}</h4>
+      <h4>{{ i18n('search.result.subtitle', [(resultgroupcount['casesitem'] == undefined ? i18n('common.none') : ''+resultgroupcount['casesitem']), i18n('search.result.group.casesitem')]) }}</h4>
       <ul class="list-group" *ngIf="searchresults.casesitem">
         <a class="list-group-item" *ngFor="let case of cases;"
           [routerLink]="['/case', case.id]">
@@ -68,7 +113,7 @@
 
     <div [ngClass]="['tab-pane fade show container pt-4 pt-md-2 mb-2', this.showgroup === 'directoriesitem' ? 'active' : '']"
       id="directoriesitem-tab" role="tabpanel" aria-labelledby="directoriesitem-tab-button">
-      <h4>{{ i18n('search.subtitle', [(resultgroupcount['directoriesitem'] == undefined ? i18n('common.none') : ''+resultgroupcount['directoriesitem']), i18n('search.group.directoriesitem')]) }}</h4>
+      <h4>{{ i18n('search.result.subtitle', [(resultgroupcount['directoriesitem'] == undefined ? i18n('common.none') : ''+resultgroupcount['directoriesitem']), i18n('search.result.group.directoriesitem')]) }}</h4>
       <ul class="list-group" *ngIf="searchresults.directoriesitem">
         <a class="list-group-item" *ngFor="let dir of directories;"
           [routerLink]="['/dir', dir.id]">
@@ -79,7 +124,7 @@
 
     <div [ngClass]="['tab-pane fade show container pt-4 pt-md-2 mb-2', this.showgroup === 'filesitem' ? 'active' : '']"
       id="filesitem-tab" role="tabpanel" aria-labelledby="filesitem-tab-button">
-      <h4>{{ i18n('search.subtitle', [(resultgroupcount['filesitem'] == undefined ? i18n('common.none') : ''+resultgroupcount['filesitem']), i18n('search.group.filesitem')]) }}</h4>
+      <h4>{{ i18n('search.result.subtitle', [(resultgroupcount['filesitem'] == undefined ? i18n('common.none') : ''+resultgroupcount['filesitem']), i18n('search.result.group.filesitem')]) }}</h4>
       <ul class="list-group" *ngIf="searchresults.filesitem">
         <a class="list-group-item" *ngFor="let file of files;"
           [routerLink]="['/file', file.id]">
@@ -90,7 +135,7 @@
 
     <div [ngClass]="['tab-pane fade show container pt-4 pt-md-2 mb-2', this.showgroup === 'noteitem' ? 'active' : '']"
       id="noteitem-tab" role="tabpanel" aria-labelledby="noteitem-tab-button">
-      <h4>{{ i18n('search.subtitle', [(resultgroupcount['noteitem'] == undefined ? i18n('common.none') : ''+resultgroupcount['noteitem']), i18n('search.group.noteitem')]) }}</h4>
+      <h4>{{ i18n('search.result.subtitle', [(resultgroupcount['noteitem'] == undefined ? i18n('common.none') : ''+resultgroupcount['noteitem']), i18n('search.result.group.noteitem')]) }}</h4>
       <ul class="list-group" *ngIf="searchresults.noteitem">
         <a class="list-group-item" *ngFor="let note of notes;"
           [routerLink]="['/notepad', note.id]">
