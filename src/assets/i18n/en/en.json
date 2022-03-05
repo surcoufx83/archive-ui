@@ -24,12 +24,77 @@
       "whit_sunday": "Whit Sunday"
     }
   },
+  "classify": {
+    "classes": {
+      "In_AnnualBonus": "Annual bonus, special payments, etc.",
+      "In_AnnualReport": "Annual report, -tax statement, -value information",
+      "In_BankEarnings": "Income from banking/securities transactions",
+      "In_BankOrders": "Purchases, sales, orders from bank/securities transactions",
+      "In_BankStatement": "Account/deposit statement monthly",
+      "In_Certificate": "Certificate, certificate of attendance",
+      "In_ClaimSettlement": "Claims settlement",
+      "In_Common": "General inbox",
+      "In_Contract": "Contract, order",
+      "In_ContractAdjustment": "Contract/contribution adjustment or amendment",
+      "In_ContractApplication": "Application",
+      "In_ContractTermination": "Confirmation of termination, dissolution",
+      "In_ContractTermsAndConditions": "Terms of Service",
+      "In_HomeAnnualSettlement": "Settlement of incidental rental costs",
+      "In_Information": "General information",
+      "In_InsuranceStatement": "Meldebestätigung Sozialversicherung",
+      "In_Invoice": "Rechnung",
+      "In_Mandate": "Vollmacht, Mandat",
+      "In_MeterReading": "Zählerablesung",
+      "In_PayRollTaxCertificate": "Lohnsteuerbescheinigung",
+      "In_PaySlip": "Lohnzettel",
+      "In_PostReceipt": "Einlieferungsbeleg Post/Paket",
+      "In_RepairOrder": "Reparaturauftrag",
+      "In_RepairReport": "Reparaturbericht",
+      "In_TaxAssessment": "Steuerbescheid",
+      "In_TaxVL": "Steuererklärung Anlage VL",
+      "Out_ClaimReport": "Schadensmeldung",
+      "Out_Contradiction": "Wiederspruch",
+      "Out_ExpenseReport": "Spesenabrechnung und -belege",
+      "Out_Questionnaire": "Fragebogen",
+      "Out_Revocation": "Wiederruf",
+      "Out_SepaMandate": "SEPA Lastschriftmandat",
+      "Out_TaxDeclaration": "Steuererklärung",
+      "Out_Termination": "Kündigung",
+      "In_DeliveryNote": "Lieferschein",
+      "In_QuarterReport": "Quartalsabschluss",
+      "In_Approval": "Freigabe / Bewilligung",
+      "In_AccountData": "Zugangsdaten, Credentials, Passwörter",
+      "In_LegalNotice": "Schreiben zu Verfahren oder Behörden- und Gerichtsvorgängen",
+      "In_ExpenseClearing": "Freigabe und Erstattung von Spesenabrechnungen",
+      "In_OrderConfirmation": "Bestell-/ Kauf-/ Auftragsbestätigung",
+      "In_DonationReceipt": "Spendenquittung",
+      "In_BallotDocs": "Wahlunterlagen",
+      "In_DeviceManuals": "Handbuch",
+      "In_DeviceRecords": "Gerätedaten",
+      "In_Rejection": "Ablehnung, Ablehnungsbescheid",
+      "In_AU": "AU Krankmeldung (AG+Versicherung)",
+      "In_TrafficTicket": "Blitzer, Knöllchen, Verkehrsordnungswidrigkeit",
+      "In_Voucher": "Gutschein",
+      "In_Id": "Ausweis uä.",
+      "In_VacationResp": "Urlaub, Krank, Mehrarbeit",
+      "In_LeadStatus": "Lead Status",
+      "Out_Inquiry": "Anfrage"
+    }
+  },
   "common": {
     "add": "New",
     "back": "Back",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "none": "None"
   },
   "home": {},
+  "lead": {
+    "title": "Lead #{0}",
+    "common": {
+      "title": "Allgemeine Angaben",
+      "party": "Firma"
+    }
+  },
   "leads": {
     "title": "Leads + Incentives",
     "table": {
@@ -90,6 +155,38 @@
       "month": "Month",
       "settings": "Settings",
       "today": "Today"
+    }
+  },
+  "search": {
+    "title": "Search",
+    "setup": {
+      "phrase": "Suchbegriff(e)",
+      "groups": {
+        "accounts": "Konten",
+        "cases": "Cases",
+        "directories": "Verzeichnisse",
+        "files": "Dateien (Metadaten)",
+        "pages": "Dateiinhalte",
+        "notepad": "Notizen"
+      },
+      "groupstitle": "Suchbereiche",
+      "runSearch": "Suche starten"
+    },
+    "result": {
+      "title": "{0} Treffer",
+      "subtitle": "{0} Treffer in {1}",
+      "group": {
+        "accounts": "Konten",
+        "cases": "Cases",
+        "directories": "Verzeichnisse",
+        "files": "Dateien",
+        "notes": "Notizen",
+        "pages": "Dateiinhalte",
+        "onPageNo": "Seite {0}"
+      },
+      "points": "{0} P.",
+      "showHistoric": "Hist.",
+      "showHistoricTooltip": "Auch ältere Werte aus der Historie anzeigen?"
     }
   },
   "work": {
