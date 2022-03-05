@@ -87,6 +87,11 @@
     "cancel": "Cancel",
     "none": "None"
   },
+  "file": {
+    "title": "Datei {0}",
+    "previewButton": "Vorschau",
+    "common": {}
+  },
   "home": {},
   "lead": {
     "title": "Lead #{0}",
