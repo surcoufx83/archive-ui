@@ -103,7 +103,7 @@ export class SearchComponent implements OnInit {
 
     localStorage.setItem(this.configService.config.storage.prefix + 'Search', JSON.stringify(this.searchgroups));
 
-    let storeitem = this.configService.getSearchResult(this.config.storage.prefix + this.phrase + token);
+    let storeitem = this.configService.getCacheItem('search__' + this.phrase + token);
     if (storeitem != null) {
       this.searchresults = storeitem;
       this.onSearchCompleted(formSubmit);
@@ -161,7 +161,7 @@ export class SearchComponent implements OnInit {
       this.resultgroupcount[key] = Object.keys(obj).length;
       this.resultcount += this.resultgroupcount[key];
     }
-    this.configService.setSearchResult(this.config.storage.prefix + this.searchphrase + this.searchtoken, this.searchresults);
+    this.configService.setCacheItem('search__' + this.searchphrase + this.searchtoken, this.searchresults);
     if (formSubmit && (this.resultgroupcount[this.showgroup] == undefined || this.resultgroupcount[this.showgroup] === 0)) {
       for (let i = 0; i < this.resultgroups.length; i++) {
         if (this.resultgroupcount[this.resultgroups[i]] > 0) {

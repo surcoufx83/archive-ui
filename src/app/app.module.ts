@@ -39,6 +39,7 @@ import { WorkTimeCategoriesComponent } from './work/settings/time-categories/tim
 import { WorkYearComponent } from './work/work-year/work-year.component';
 import { Oauth2CallbackComponent } from './login/oauth2-callback/oauth2-callback.component';
 import { SearchComponent } from './search/search.component';
+import { FileComponent } from './files/file/file.component';
 
 registerLocaleData(localeDe);
 
@@ -70,6 +71,7 @@ registerLocaleData(localeDe);
     WorkYearComponent,
     Oauth2CallbackComponent,
     SearchComponent,
+    FileComponent,
   ],
   imports: [
     AppRoutingModule,
