@@ -4,32 +4,33 @@
   </div>
 </div>
 <div class="container pt-4 pt-md-2 mb-2">
-  <div class="card col-12 col-md-9 col-lg-6">
+  <div class="card col-12">
     <form (submit)="onSearch(true);">
       <div class="card-body">
-        <div class="row mb-3">
-          <div class="col">
+        <div class="row">
+          <div class="col-12 col-md-9 col-lg-6 mb-3">
             <div class="form-group">
               <label for="search-phrase" class="form-label">{{ i18n('search.setup.phrase') }}</label>
               <input type="text" class="form-control" id="search-phrase" name="search-phrase"
                      [(ngModel)]="phrase">
             </div>
           </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col">
+          <div class="col-12 col-md-9 col-lg-6 mb-3">
             <ul class="list-group">
               <label class="form-label">{{ i18n('search.setup.groupstitle') }}</label>
-              <li class="list-group-item" *ngFor="let item of searchgroups; let i = index;">
-                <input class="form-check-input" type="checkbox" [(ngModel)]="searchgroups[i]['active']"
-                       [name]="'search-group-' + searchgroups[i]['groupName']" [id]="'search-group-' + searchgroups[i]['groupName']">
-                <label [for]="'search-group-' + searchgroups[i]['groupName']" class="form-check-label ms-2">{{ i18n('search.setup.groups.' + searchgroups[i]['groupName']) }}</label>
-              </li>
+              <div class="d-flex flex-wrap">
+                <div class="form-check me-2 mb-2 border-muted rounded p-1 px-2 user-select-none pointer" *ngFor="let item of searchgroups; let i = index;"
+                     style="padding-left: 2.0rem!important;">
+                  <input class="form-check-input pointer" type="checkbox" [(ngModel)]="searchgroups[i]['active']"
+                  [name]="'search-group-' + searchgroups[i]['groupName']" [id]="'search-group-' + searchgroups[i]['groupName']">
+                  <label [for]="'search-group-' + searchgroups[i]['groupName']" class="form-check-label pointer">{{ i18n('search.setup.groups.' + searchgroups[i]['groupName']) }}</label>
+                </div>
+              </div>
             </ul>
           </div>
         </div>
         <div class="row mb-3">
-          <div class="col">
+          <div class="col-12 col-md-9 col-lg-6">
             <div class="form-group">
               <button type="submit" class="form-control btn btn-primary" [disabled]="busy">
                 <i [class]="config.icons['busy'] + ' me-1'" *ngIf="busy"></i>
