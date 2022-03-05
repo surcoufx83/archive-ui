@@ -45,3 +45,11 @@ export interface File {
     attributes: any;
     versions: any;
 }
+
+export interface Page {
+    id: number;
+    versionid: number;
+    pageno: number;
+    pagetype: number;
+    pagedata: string;
+}

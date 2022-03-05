@@ -9,7 +9,7 @@ import { Directory, File } from '../files/file';
 import { Note } from '../notepad/note';
 import { Settings } from '../user/settings/settings';
 import { SettingsService } from '../user/settings/settings.service';
-import { SearchResultCaseItem, SearchResultDirectoryItem, SearchResultFileItem, SearchResultNoteItem, SearchResults } from './searchresult';
+import { SearchResultAccountItem, SearchResultCaseItem, SearchResultDirectoryItem, SearchResultFileItem, SearchResultNoteItem, SearchResultPageItem, SearchResults } from './searchresult';
 import { BankAccount, StandingOrder } from '../account/account';
 
 @Component({
@@ -23,7 +23,7 @@ export class SearchComponent implements OnInit {
   debounce: any = null;
   resultcount: number = 0;
   resultgroupcount: {[key: string]: number} = {};
-  resultgroups: string[] = ['notes', 'cases', 'files', 'directories', 'accounts', 'standingorders'];
+  resultgroups: string[] = ['notes', 'cases', 'files', 'pages', 'directories', 'accounts'];
   phrase: string = '';
   searchactive: string[] = [];
   searchphrase: string = '';
@@ -32,10 +32,9 @@ export class SearchComponent implements OnInit {
     { groupName: 'notepad', searchPath: '/notepad/search', active: true },
     { groupName: 'cases', searchPath: '/cases/search', active: true },
     { groupName: 'files', searchPath: '/files/search', active: true },
-    { groupName: 'filecontents', searchPath: '/files/searchContent', active: false },
+    { groupName: 'pages', searchPath: '/files/searchContent', active: false },
     { groupName: 'directories', searchPath: '/directories/search', active: true },
-    { groupName: 'accounts', searchPath: '/accounts/search', active: true },
-    { groupName: 'standingorders', searchPath: '/standingorders/search', active: true }
+    { groupName: 'accounts', searchPath: '/accounts/search', active: true }
   ];
   searchtoken: string = '';
   showgroup: string = 'notes';
@@ -53,6 +52,10 @@ export class SearchComponent implements OnInit {
     this.settings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
     });
+    let search = localStorage.getItem(this.configService.config.storage.prefix + 'Search');
+    if (search != null) {
+      this.searchgroups = JSON.parse(search);
+    }
   }
 
   get config(): AppConfig {
@@ -98,6 +101,8 @@ export class SearchComponent implements OnInit {
       return;
     this.busy = true;
 
+    localStorage.setItem(this.configService.config.storage.prefix + 'Search', JSON.stringify(this.searchgroups));
+
     let storeitem = this.configService.getSearchResult(this.config.storage.prefix + this.phrase + token);
     if (storeitem != null) {
       this.searchresults = storeitem;
@@ -116,7 +121,11 @@ export class SearchComponent implements OnInit {
         let url = this.config.api.baseUrl + group['searchPath'];
         this.authService.updateApi(url, { search: phrase }).subscribe((reply) => {
           if (reply.success && reply.payload != null) {
+            console.log(group['groupName'], reply.payload['items'])
             switch(group['groupName']) {
+              case 'accounts':
+                this.searchresults.accounts = <SearchResultAccountItem[]>reply.payload['items'];
+                break;
               case 'cases':
                 this.searchresults.cases = <SearchResultCaseItem[]>reply.payload['items'];
                 break;
@@ -129,18 +138,23 @@ export class SearchComponent implements OnInit {
               case 'notepad':
                 this.searchresults.notes = <SearchResultNoteItem[]>reply.payload['items'];
                 break;
+              case 'pages':
+                this.searchresults.pages = <SearchResultPageItem[]>reply.payload['items'];
+                console.log(this.searchresults.pages);
+                break;
             }
           }
           this.searchactive.splice(this.searchactive.indexOf(group['groupName']));
           let $this = this;
           clearTimeout(this.debounce);
-          this.debounce = setTimeout(function() { $this.onSearchCompleted(formSubmit); }, 100);
+          this.debounce = setTimeout(function() { $this.onSearchCompleted(formSubmit); }, 200);
         });
       }
     }
   }
 
   onSearchCompleted(formSubmit: boolean) : void {
+    console.log('onSearchCompleted', this.searchresults)
     this.resultcount = 0;
     this.resultgroupcount = {};
     for (let [key, obj] of Object.entries(this.searchresults)) {

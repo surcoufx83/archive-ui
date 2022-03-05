@@ -166,9 +166,8 @@
         "cases": "Akten",
         "directories": "Verzeichnisse",
         "files": "Dateien (Metadaten)",
-        "filecontents": "Dateiinhalte (wird sehr lange dauern!)",
-        "notepad": "Notizen",
-        "standingorders": "Daueraufträge"
+        "pages": "Dateiinhalte",
+        "notepad": "Notizen"
       },
       "groupstitle": "Suchbereiche",
       "runSearch": "Suche starten"
@@ -182,7 +181,8 @@
         "directories": "Verzeichnisse",
         "files": "Dateien",
         "notes": "Notizen",
-        "standingorders": "Daueraufträge"
+        "pages": "Dateiinhalte",
+        "onPageNo": "Seite {0}"
       },
       "points": "{0} P.",
       "showHistoric": "Hist.",

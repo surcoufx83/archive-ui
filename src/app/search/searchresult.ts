@@ -1,6 +1,6 @@
-import { BankAccount, StandingOrder } from "../account/account";
+import { BankAccount } from "../account/account";
 import { Case } from "../cases/case";
-import { Directory, File } from "../files/file";
+import { Directory, File, Page } from "../files/file";
 import { Note } from "../notepad/note";
 
 export interface SearchResults {
@@ -9,35 +9,36 @@ export interface SearchResults {
     directories?: SearchResultDirectoryItem[];
     files?: SearchResultFileItem[];
     notes?: SearchResultNoteItem[];
-    standingorders?: SearchResultStordItem[];
+    pages?: SearchResultPageItem[];
 }
 
 export interface SearchResultAccountItem {
-    account: any;
+    account: BankAccount;
     relevance: number;
 }
 
 export interface SearchResultCaseItem {
-    case: any;
+    case: Case;
     relevance: number;
 }
 
 export interface SearchResultDirectoryItem {
-    directory: any;
+    directory: Directory;
     relevance: number;
 }
 
 export interface SearchResultFileItem {
-    file: any;
+    file: File;
     relevance: number;
 }
 
 export interface SearchResultNoteItem {
-    note: any;
+    note: Note;
     relevance: number;
 }
 
-export interface SearchResultStordItem {
-    stord: any;
+export interface SearchResultPageItem {
+    file: File;
+    page: Page;
     relevance: number;
 }
