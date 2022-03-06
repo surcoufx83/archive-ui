@@ -88,8 +88,8 @@
     "none": "None"
   },
   "file": {
-    "title": "Datei {0}",
-    "previewButton": "Vorschau",
+    "title": "File {0}",
+    "previewButton": "Preview",
     "common": {}
   },
   "home": {},
@@ -166,7 +166,7 @@
     "title": "Search",
     "setup": {
       "phrase": "Search terms",
-      "helpSearching": "Mehr Informationen zu den Suchstrategien auf mariadb.com",
+      "helpSearching": "More information on search strategies at mariadb.com",
       "groups": {
         "accounts": "Accounts",
         "cases": "Cases",
@@ -189,7 +189,7 @@
         "notes": "Notes",
         "pages": "File Content",
         "onPageNo": "Page {0}",
-        "gotoPreviewTitle": "Direkt zur Dateianzeige springen"
+        "gotoPreviewTitle": "Jump directly to the file view"
       },
       "points": "{0} P.",
       "showHistoric": "hist.",
