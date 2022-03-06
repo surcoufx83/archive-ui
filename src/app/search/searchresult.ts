@@ -1,6 +1,6 @@
 import { BankAccount } from "../account/account";
 import { Case } from "../cases/case";
-import { Directory, File, Page } from "../files/file";
+import { Directory, File, Page, Version } from "../files/file";
 import { Note } from "../notepad/note";
 
 export interface SearchResults {
@@ -29,6 +29,7 @@ export interface SearchResultDirectoryItem {
 
 export interface SearchResultFileItem {
     file: File;
+    version: Version;
     relevance: number;
 }
 
@@ -40,5 +41,6 @@ export interface SearchResultNoteItem {
 export interface SearchResultPageItem {
     file: File;
     page: Page;
+    version: Version;
     relevance: number;
 }

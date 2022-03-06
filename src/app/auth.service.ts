@@ -1,6 +1,6 @@
 import { Injectable, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Subject } from 'rxjs';
+import { map, Subject } from 'rxjs';
 import { ApiReply } from './api-reply';
 import { ConfigService, AppConfig } from './config.service';
 import { Session } from './session';
@@ -31,6 +31,21 @@ export class AuthService implements OnInit {
 
   private get config() : AppConfig {
     return this.configService.config;
+  }
+
+  public download(url: string) : Subject<any> {
+    let reply: Subject<any> = new Subject<any>();
+    if (this.session == undefined) {
+      reply.next({ success: false });
+      return reply;
+    }
+    this.http.get(url, { 
+        headers: new HttpHeaders().set('AuthToken', this.session.token),
+        responseType: 'blob'
+      }).subscribe((result) => {
+        reply.next(result);
+      });
+    return reply;
   }
 
   get hasSession() : boolean {

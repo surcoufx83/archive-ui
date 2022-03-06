@@ -121,7 +121,6 @@ export class SearchComponent implements OnInit {
         let url = this.config.api.baseUrl + group['searchPath'];
         this.authService.updateApi(url, { search: phrase }).subscribe((reply) => {
           if (reply.success && reply.payload != null) {
-            console.log(group['groupName'], reply.payload['items'])
             switch(group['groupName']) {
               case 'accounts':
                 this.searchresults.accounts = <SearchResultAccountItem[]>reply.payload['items'];
@@ -140,7 +139,6 @@ export class SearchComponent implements OnInit {
                 break;
               case 'pages':
                 this.searchresults.pages = <SearchResultPageItem[]>reply.payload['items'];
-                console.log(this.searchresults.pages);
                 break;
             }
           }
@@ -154,7 +152,6 @@ export class SearchComponent implements OnInit {
   }
 
   onSearchCompleted(formSubmit: boolean) : void {
-    console.log('onSearchCompleted', this.searchresults)
     this.resultcount = 0;
     this.resultgroupcount = {};
     for (let [key, obj] of Object.entries(this.searchresults)) {
@@ -162,15 +159,7 @@ export class SearchComponent implements OnInit {
       this.resultcount += this.resultgroupcount[key];
     }
     this.configService.setCacheItem('search__' + this.searchphrase + this.searchtoken, this.searchresults);
-    if (formSubmit && (this.resultgroupcount[this.showgroup] == undefined || this.resultgroupcount[this.showgroup] === 0)) {
-      for (let i = 0; i < this.resultgroups.length; i++) {
-        if (this.resultgroupcount[this.resultgroups[i]] > 0) {
-          this.showgroup = this.resultgroups[i];
-          this.router.navigate(['/search', this.searchphrase, this.searchtoken, this.resultgroups[i]]);
-        }
-      }
-    }
-    else if (this.urltoken !== this.searchtoken) {
+    if (this.urltoken !== this.searchtoken) {
       this.router.navigate(['/search', this.searchphrase, this.searchtoken]);
     }
     this.busy = false;

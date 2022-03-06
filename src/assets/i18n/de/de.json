@@ -167,6 +167,7 @@
     "title": "Suchen",
     "setup": {
       "phrase": "Suchbegriff(e)",
+      "helpSearching": "Mehr Informationen zu den Suchstrategien auf mariadb.com",
       "groups": {
         "accounts": "Konten",
         "cases": "Akten",
@@ -188,7 +189,8 @@
         "files": "Dateien",
         "notes": "Notizen",
         "pages": "Dateiinhalte",
-        "onPageNo": "Seite {0}"
+        "onPageNo": "Seite {0}",
+        "gotoPreviewTitle": "Direkt zur Dateianzeige springen"
       },
       "points": "{0} P.",
       "showHistoric": "Hist.",
