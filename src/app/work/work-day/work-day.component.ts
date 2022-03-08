@@ -19,6 +19,7 @@ export class WorkDayComponent implements OnInit {
   booking?: WorkDayBooking;
   busy: boolean = false;
   day?: WorkDay;
+  livetrackingActive: boolean = false;
   timepattern: RegExp = /^(?<hr>\d{1,2}):?(?<min>\d{2})$/;
   today: Date = new Date();
   usersettingsObj?: Settings;
@@ -36,6 +37,7 @@ export class WorkDayComponent implements OnInit {
     });
     this.userSettings.workprops$.subscribe((props) => {
       this.workprops = props;
+      console.log(props);
     });
   }
 
@@ -55,6 +57,14 @@ export class WorkDayComponent implements OnInit {
     return this.i18nService.i18n(key, params);
   }
 
+  get liveButtonColor(): string {
+    if (!this.usersettingsObj?.work.livetracking.enabled)
+      return 'btn-secondary';
+    if (!this.livetrackingActive)
+      return 'btn-primary';
+    return 'btn-success';
+  }
+
   get locale(): string {
     return this.i18nService.Locale;
   }
@@ -64,15 +74,15 @@ export class WorkDayComponent implements OnInit {
       break: 0,
       customer: null,
       customerid: null,
-      dayid: dayid ?? -1,
+      dayid: dayid ?? 0,
       description: '',
       duration: 0,
-      id: -1,
+      id: 0,
       project: null,
       projectid: null,
       projectstage: '',
       timecategory: <WorkTimeCategory>{},
-      timecategoryid: -1,
+      timecategoryid: 0,
       timefrom: '',
       timeuntil: ''
     };
@@ -80,7 +90,7 @@ export class WorkDayComponent implements OnInit {
 
   ngOnInit(): void {
     this.busy = true;
-    let url = this.config.api.baseUrl + '/work/2022-03-01';
+    let url = this.config.api.baseUrl + '/work/today';
     this.authService.queryApi(url).subscribe((reply) => {
       if (reply.success && reply.payload) {
         this.day = <WorkDay>reply.payload['day'];
@@ -89,6 +99,21 @@ export class WorkDayComponent implements OnInit {
       }
       this.busy = false;
     });
+  }
+
+  onChangeCategory() : void {
+    if (!this.booking || !this.workprops)
+      return;
+    if (this.booking.timecategoryid === 0)
+      this.booking.timecategory = <WorkTimeCategory>{};
+    else {
+      for (let i = 0; i < this.workprops.timeCategories.length; i++) {
+        if (this.workprops.timeCategories[i].id == this.booking.timecategoryid) {
+          this.booking.timecategory = this.workprops.timeCategories[i];
+          break;
+        }
+      }
+    }
   }
 
   onChangeTime() : void {

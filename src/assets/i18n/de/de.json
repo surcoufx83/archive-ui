@@ -86,7 +86,10 @@
     "add": "Neu",
     "back": "Zurück",
     "cancel": "Abbruch",
-    "none": "Keine"
+    "none": "Keine",
+    "select": {
+      "pickOne": " Bitte wählen "
+    }
   },
   "file": {
     "title": "Datei {0}",
@@ -237,6 +240,7 @@
         "breakPlaceholder": "mm",
         "duration": "Arbeitszeit",
         "from": "Von",
+        "timeCategory": "Kategorie",
         "timePlaceholder": "hh:mm | hhmm | hmm",
         "until": "Bis"
       }

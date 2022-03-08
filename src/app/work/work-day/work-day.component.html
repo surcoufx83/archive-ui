@@ -87,7 +87,7 @@
               <ui-busy-indicator *ngIf="busy"></ui-busy-indicator>
             </li>
             <li class="breadcrumb-item">
-              <button type="button" class="btn btn-sm btn-secondary"
+              <button type="button" [ngClass]="['btn btn-sm', liveButtonColor]"
                 (click)="usersettingsObj.work.livetracking.enabled = !usersettingsObj.work.livetracking.enabled; pushUserSettings();"
                 [title]="i18n('workday.tracking.livebtnTitle')">
                 <i [class]="config.icons[usersettingsObj.work.livetracking.enabled ? 'toggle-on' : 'toggle-off'] + ' me-1'"></i>
@@ -140,6 +140,26 @@
                   <label for="tracking-duration" class="form-label">{{ i18n('workday.tracking.common.duration') }}</label>
                   <input type="text" class="form-control" id="tracking-duration" name="tracking-duration"
                     [(ngModel)]="booking.duration" readonly>
+                </div>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-12 col-lg-6 col-xl-4 mb-3">
+                <div class="form-group">
+                  <label for="tracking-category" class="form-label">{{ i18n('workday.tracking.common.timeCategory') }}</label>
+                  <div class="input-group">
+                    <select class="form-select" id="tracking-category" name="tracking-category"
+                      [(ngModel)]="booking.timecategoryid" (change)="onChangeCategory()">
+                      <option value="0">{{ i18n('common.select.pickOne') }}</option>
+                      <option *ngFor="let category of workprops?.timeCategories"
+                              [value]="category.id">{{ i18n('work.timecategories.' + category.name) }}</option>
+                    </select>
+                    <label class="input-group-text" for="tracking-category">
+                      <i *ngIf="booking.timecategory"
+                        [class]="booking.timecategory.icon + ' ' + booking.timecategory.iconcolor"></i>
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>

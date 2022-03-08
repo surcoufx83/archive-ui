@@ -58,7 +58,6 @@ export class AuthService implements OnInit {
       header = header.append('Authorization', 'Basic ' + window.btoa(this.config.auth.basic.user + ':' + this.config.auth.basic.password));
     if (this.session)
       header = header.append('AuthToken', this.session.token);
-    console.log(header, this.config.auth.basic, this.session);
     return header;
   }
 
