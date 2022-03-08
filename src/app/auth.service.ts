@@ -40,7 +40,7 @@ export class AuthService implements OnInit {
       return reply;
     }
     this.http.get(url, { 
-        headers: new HttpHeaders().set('AuthToken', this.session.token),
+        headers: this.header,
         responseType: 'blob'
       }).subscribe((result) => {
         reply.next(result);
@@ -50,6 +50,13 @@ export class AuthService implements OnInit {
 
   get hasSession() : boolean {
     return (this.session != undefined);
+  }
+
+  private get header() : HttpHeaders{
+    let header = new HttpHeaders();
+    if (this.session)
+      header.set('AuthToken', this.session.token);
+    return header;
   }
 
   get isLoggedin() : boolean {
@@ -145,7 +152,7 @@ export class AuthService implements OnInit {
       reply.next({ success: false });
       return reply;
     }
-    this.http.get<ApiReply>(url, { headers: new HttpHeaders().set('AuthToken', this.session.token)}).subscribe(
+    this.http.get<ApiReply>(url, { headers: this.header}).subscribe(
       (response) => {
         reply.next(response);
       },
@@ -163,7 +170,7 @@ export class AuthService implements OnInit {
       reply.next({ success: false });
       return reply;
     }
-    this.http.post<ApiReply>(url, payload, { headers: new HttpHeaders().set('AuthToken', this.session.token)}).subscribe(
+    this.http.post<ApiReply>(url, payload, { headers: this.header}).subscribe(
       (response) => {
         reply.next(response);
       },
