@@ -6,7 +6,7 @@
     "showWeekTitle": "Show week number",
     "showWeekend": "Weekend",
     "showWeekendTitle": "Show weekend days in calendar",
-    "weekday": "Wochentag",
+    "weekday": "Weekday",
     "duration": {
       "short": "{0} hr"
     },
@@ -206,7 +206,7 @@
       "vacation": "Vacation",
       "weekend": "Weekend",
       "none": "None",
-      "title": "Abwesenheit"
+      "title": "Absence"
     },
     "timecategories": {
       "administration": "Administration",
@@ -217,20 +217,20 @@
       "support": "Support",
       "trainingself": "Advanced training",
       "travel": "Travel time",
-      "title": "Zeitart"
+      "title": "Time categorie"
     }
   },
   "workday": {
     "pagetitle": "Day bookings {0}",
     "daycard": {
-      "title": "Übersicht",
-      "booked": "Gebucht"
+      "title": "Summary",
+      "booked": "Booked"
     },
     "tracking": {
-      "title": "Zeitbuchung",
-      "liveTitle": "Live Zeitbuchung",
+      "title": "Time tracking",
+      "liveTitle": "Live tracking",
       "livebtn": "Live",
-      "livebtnTitle": "Livetracking Funktion"
+      "livebtnTitle": "Live tracking functionality"
     }
   },
   "workmonth": {
