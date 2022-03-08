@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Subject } from 'rxjs';
-import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarMonthViewDay, CalendarView } from 'angular-calendar';
+import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarMonthViewDay } from 'angular-calendar';
 import { add, format, getDate, getMonth, getYear, isSameDay, isSameMonth, sub } from 'date-fns';
 
 import { AuthService } from '../../auth.service';
@@ -101,18 +101,14 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
 
   get IsToday(): boolean {
     return isSameMonth(this.today, this.selectedMonth);
-    // return this.today.isSame(this.selectedMonth, 'month');
-    return false;
   }
 
   get LastMonth(): Date {
     return sub(this.selectedMonth, { months: 1 });
-    //return moment(this.selectedMonth).subtract(1, 'months');
   }
 
   get NextMonth(): Date {
     return add(this.selectedMonth, { months: 1 });
-    //return moment(this.selectedMonth).add(1, 'months');
   }
 
   ngOnInit(): void {
@@ -240,8 +236,6 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
   }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
-    console.log('dayClicked', date, events);
-    // this.selectedMonth = date;
     if (isSameMonth(date, this.viewDate)) {
       if (
         (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
@@ -271,7 +265,6 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
       let day = this.dayObjs[date];
       let url = this.config.api.baseUrl + `/work/day/${this.monthObj?.id}/${day.id}/offdays/set/${cat.id}`;
       this.authService.updateApi(url, {}).subscribe((reply: ApiReply) => {
-        let remove = [];
         if (reply.success) {
           this.calendarEvents = [
             ...this.calendarEvents.filter((e) => {
@@ -283,18 +276,6 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
         }
       });
     }
-    /*
-    this.events = this.events.map((iEvent) => {
-      if (iEvent === event) {
-        return {
-          ...event,
-          start: newStart,
-          end: newEnd,
-        };
-      }
-      return iEvent;
-    });
-    this.handleEvent('Dropped or resized', event);*/
   }
 
   f(date: Date, form: string): string {
@@ -310,7 +291,6 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
       + (entry.project ? entry.project.name + ' // ' : '')
       + (entry.projectstage !== '' ? entry.projectstage + ' // ' : '')
       + entry.description;
-    // e.customer?.name + ' // ' + e.project?.name + ' // ' + e.projectstage + ' // ' + e.description
   }
 
   s2d(datestr: string): Date {
@@ -323,10 +303,6 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
       if (event.meta.booking != null)
         navigator.clipboard.writeText(this.getProjectDescription(event.meta.booking));
     }
-    /*
-    this.modalData = { event, action };
-    this.modal.open(this.modalContent, { size: 'lg' });
-    */
   }
 
 }
