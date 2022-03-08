@@ -1,12 +1,149 @@
-<div class="container pt-4 pt-md-2">
-  <h2 class="pb-2 border-bottom border-secondary border-2">{{ i18n('workday.pagetitle', [today.format('LL')]) }}</h2>
-</div>
+<ui-centered-busy-indicator *ngIf="!usersettingsObj || !day"></ui-centered-busy-indicator>
 
+<ng-container *ngIf="usersettingsObj && day">
+  <div class="container pt-4 pt-md-2 mb-2">
+    <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between">
+      <h2>{{ i18n('workday.pagetitle', [ f(today, 'PP') ]) }}</h2>
+      <div>
+        <nav class="h-100" style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
+          <ol class="breadcrumb d-flex align-items-center h-100 mb-0">
+            <li class="breadcrumb-item">
+              <ui-busy-indicator *ngIf="busy"></ui-busy-indicator>
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
 
-<!--
-<div class="progress">
-  <div class="progress-bar" role="progressbar" style="width: 15%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
-  <div class="progress-bar bg-success" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
-  <div class="progress-bar bg-info" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-</div>
--->
+  <div class="container pt-md-2 mb-2">
+
+    <div class="row g-2">
+      <!-- container with info cards -->
+
+      <div class="col-12 col-md-4">
+        <!-- card 1: container day info -->
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">
+              <i [class]="config.icons['info'] + ' me-1'"></i>
+              {{ i18n('workday.daycard.title') }}
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="d-flex justify-content-between">
+              <div class="fs-7">
+                {{ i18n('calendar.weekday') }}
+              </div>
+              <div class="font-weight-bold">
+                <strong>{{ f(today, 'EEEE') }}</strong>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between" *ngIf="day.offcategory">
+              <div class="fs-7">
+                {{ i18n('work.offcategories.title') }}
+              </div>
+              <div class="font-weight-bold">
+                <strong>{{ i18n('work.offcategories.' + day.offcategory.name) }}</strong>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between" *ngIf="day.stats">
+              <div class="fs-7">
+                {{ i18n('workday.daycard.booked') }}
+              </div>
+              <div class="font-weight-bold">
+                <strong>{{ fd(day.stats.duration) }}</strong>
+                <span class="fs-8 ms-2" *ngIf="usersettingsObj.work.worktime.default > day.stats.duration">[{{
+                  fd(day.stats.duration - usersettingsObj.work.worktime.default) }}]</span>
+                <span class="fs-8 ms-2" *ngIf="usersettingsObj.work.worktime.default < day.stats.duration">[+{{
+                  fd(day.stats.duration - usersettingsObj.work.worktime.default) }}]</span>
+              </div>
+            </div>
+          </div>
+          <div class="progress rounded-0 rounded-bottom" *ngIf="day.stats && !this.day.offcategory">
+            <div class="progress-bar bg-success border-end border-white" role="progressbar"
+              [style]="'width: ' + progressdone + '%'" [attr.aria-valuenow]="progressdone" aria-valuemin="0"
+              aria-valuemax="100"></div>
+            <div class="progress-bar bg-warning" role="progressbar" [style]="'width: ' + progressmissing + '%'"
+              [attr.aria-valuenow]="progressmissing" aria-valuemin="0" aria-valuemax="100"></div>
+            <div class="progress-bar bg-danger" role="progressbar" [style]="'width: ' + progressovertime + '%'"
+              [attr.aria-valuenow]="progressovertime" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+      </div><!-- card 1: container day info -->
+
+    </div><!-- container with info cards -->
+
+  </div>
+
+  <div class="container pt-4 pt-md-2 mb-2">
+    <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between">
+      <h3 *ngIf="usersettingsObj.work.livetracking.enabled">{{ i18n('workday.tracking.liveTitle') }}</h3>
+      <h3 *ngIf="!usersettingsObj.work.livetracking.enabled">{{ i18n('workday.tracking.title') }}</h3>
+      <div>
+        <nav class="h-100" style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
+          <ol class="breadcrumb d-flex align-items-center h-100 mb-0">
+            <li class="breadcrumb-item">
+              <ui-busy-indicator *ngIf="busy"></ui-busy-indicator>
+            </li>
+            <li class="breadcrumb-item">
+              <button type="button" class="btn btn-sm btn-secondary"
+                (click)="usersettingsObj.work.livetracking.enabled = !usersettingsObj.work.livetracking.enabled; pushUserSettings();"
+                [title]="i18n('workday.tracking.livebtnTitle')">
+                <i [class]="config.icons[usersettingsObj.work.livetracking.enabled ? 'toggle-on' : 'toggle-off'] + ' me-1'"></i>
+                {{ i18n('workday.tracking.livebtn') }}
+              </button>
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <div class="container pt-md-2 mb-2" *ngIf="!usersettingsObj.work.livetracking.enabled">
+
+    <div class="row g-2">
+      <!-- container tracking -->
+
+      <div class="col-12 col-md-4">
+        
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between">
+              <div class="fs-7">
+                {{ i18n('calendar.weekday') }}
+              </div>
+              <div class="font-weight-bold">
+                <strong>{{ f(today, 'EEEE') }}</strong>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between" *ngIf="day.offcategory">
+              <div class="fs-7">
+                {{ i18n('work.offcategories.title') }}
+              </div>
+              <div class="font-weight-bold">
+                <strong>{{ i18n('work.offcategories.' + day.offcategory.name) }}</strong>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between" *ngIf="day.stats">
+              <div class="fs-7">
+                {{ i18n('workday.daycard.booked') }}
+              </div>
+              <div class="font-weight-bold">
+                <strong>{{ fd(day.stats.duration) }}</strong>
+                <span class="fs-8 ms-2" *ngIf="usersettingsObj.work.worktime.default > day.stats.duration">[{{
+                  fd(day.stats.duration - usersettingsObj.work.worktime.default) }}]</span>
+                <span class="fs-8 ms-2" *ngIf="usersettingsObj.work.worktime.default < day.stats.duration">[+{{
+                  fd(day.stats.duration - usersettingsObj.work.worktime.default) }}]</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+
+    </div><!-- container tracking -->
+
+  </div>
+
+</ng-container>
