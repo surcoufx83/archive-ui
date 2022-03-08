@@ -231,8 +231,15 @@
       "title": "Zeitbuchung",
       "liveTitle": "Live Zeitbuchung",
       "livebtn": "Live",
-      "livebtnTitle": "Livetracking Funktion"
-
+      "livebtnTitle": "Livetracking Funktion",
+      "common": {
+        "break": "Ab Pause",
+        "breakPlaceholder": "mm",
+        "duration": "Arbeitszeit",
+        "from": "Von",
+        "timePlaceholder": "hh:mm | hhmm | hmm",
+        "until": "Bis"
+      }
     }
   },
   "workmonth": {

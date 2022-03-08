@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { format } from 'date-fns';
+import { differenceInMinutes, format, set } from 'date-fns';
 import { AuthService } from '../../auth.service';
 import { SettingsService } from '../../user/settings/settings.service';
 
 import { AppConfig, ConfigService } from '../../config.service';
 import { I18nService } from '../../i18n.service';
 import { Settings } from '../../user/settings/settings';
-import { WorkDay, WorkProperties } from '../work';
+import { WorkDay, WorkDayBooking, WorkProperties, WorkTimeCategory } from '../work';
 
 @Component({
   selector: 'app-work-day',
@@ -16,8 +16,10 @@ import { WorkDay, WorkProperties } from '../work';
 })
 export class WorkDayComponent implements OnInit {
 
+  booking?: WorkDayBooking;
   busy: boolean = false;
   day?: WorkDay;
+  timepattern: RegExp = /^(?<hr>\d{1,2}):?(?<min>\d{2})$/;
   today: Date = new Date();
   usersettingsObj?: Settings;
   workprops?: WorkProperties;
@@ -57,16 +59,62 @@ export class WorkDayComponent implements OnInit {
     return this.i18nService.Locale;
   }
 
+  newBooking(dayid: number|null): void {
+    this.booking = {
+      break: 0,
+      customer: null,
+      customerid: null,
+      dayid: dayid ?? -1,
+      description: '',
+      duration: 0,
+      id: -1,
+      project: null,
+      projectid: null,
+      projectstage: '',
+      timecategory: <WorkTimeCategory>{},
+      timecategoryid: -1,
+      timefrom: '',
+      timeuntil: ''
+    };
+  }
+
   ngOnInit(): void {
     this.busy = true;
     let url = this.config.api.baseUrl + '/work/2022-03-01';
     this.authService.queryApi(url).subscribe((reply) => {
       if (reply.success && reply.payload) {
         this.day = <WorkDay>reply.payload['day'];
+        this.newBooking(this.day.id);
         console.log(this.day);
       }
       this.busy = false;
     });
+  }
+
+  onChangeTime() : void {
+    if (!this.booking)
+      return;
+    let start = this.parseTime(this.booking.timefrom);
+    let end = this.parseTime(this.booking.timeuntil);
+    let breakmin = this.booking.break;
+
+    if (start && end) {
+      let dif = differenceInMinutes(end, start);
+      if (dif > 0) {
+        dif = (dif - breakmin) / 60;
+        this.booking.duration = dif;
+        return;
+      }
+    }
+    this.booking.duration = 0;
+  }
+
+  parseTime(time: string) : Date|null {
+    let match = time.match(this.timepattern);
+    if (match && match.groups) {
+      return set(this.today, { hours: +match.groups['hr'], minutes: +match.groups['min'], seconds: 0});
+    }
+    return null;
   }
 
   get progressdone(): string {
