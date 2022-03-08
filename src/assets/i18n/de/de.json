@@ -25,15 +25,82 @@
       "whit_sunday": "Pfingstsonntag"
     }
   },
+  "classify": {
+    "classes": {
+      "In_AnnualBonus": "Jahresbonus, Sonderzahlungen, etc.",
+      "In_AnnualReport": "Jahresbericht, -steuerauszug, -wertinformation",
+      "In_BankEarnings": "Einnahmen aus Bank/Wertpapiergeschäften",
+      "In_BankOrders": "Käufe, Verkäufe, Orders aus Bank/Wertpapiergeschäften",
+      "In_BankStatement": "Konto-/Depotauszug monatlich",
+      "In_Certificate": "Urkunde, Zertifikat, Teilnahmebescheinigung",
+      "In_ClaimSettlement": "Schadesregulienrung",
+      "In_Common": "Allgemeiner Posteingang",
+      "In_Contract": "Vertrag, Auftrag",
+      "In_ContractAdjustment": "Vertrags-/Beitragsanpassung oder -ergänzung",
+      "In_ContractApplication": "Antrag",
+      "In_ContractTermination": "Kündigungsbestätigung, Auflösung",
+      "In_ContractTermsAndConditions": "AGBs",
+      "In_HomeAnnualSettlement": "Abrechnung Mietnebenkosten",
+      "In_Information": "Allgemeine Informationen",
+      "In_InsuranceStatement": "Meldebestätigung Sozialversicherung",
+      "In_Invoice": "Rechnung",
+      "In_Mandate": "Vollmacht, Mandat",
+      "In_MeterReading": "Zählerablesung",
+      "In_PayRollTaxCertificate": "Lohnsteuerbescheinigung",
+      "In_PaySlip": "Lohnzettel",
+      "In_PostReceipt": "Einlieferungsbeleg Post/Paket",
+      "In_RepairOrder": "Reparaturauftrag",
+      "In_RepairReport": "Reparaturbericht",
+      "In_TaxAssessment": "Steuerbescheid",
+      "In_TaxVL": "Steuererklärung Anlage VL",
+      "Out_ClaimReport": "Schadensmeldung",
+      "Out_Contradiction": "Wiederspruch",
+      "Out_ExpenseReport": "Spesenabrechnung und -belege",
+      "Out_Questionnaire": "Fragebogen",
+      "Out_Revocation": "Wiederruf",
+      "Out_SepaMandate": "SEPA Lastschriftmandat",
+      "Out_TaxDeclaration": "Steuererklärung",
+      "Out_Termination": "Kündigung",
+      "In_DeliveryNote": "Lieferschein",
+      "In_QuarterReport": "Quartalsabschluss",
+      "In_Approval": "Freigabe / Bewilligung",
+      "In_AccountData": "Zugangsdaten, Credentials, Passwörter",
+      "In_LegalNotice": "Schreiben zu Verfahren oder Behörden- und Gerichtsvorgängen",
+      "In_ExpenseClearing": "Freigabe und Erstattung von Spesenabrechnungen",
+      "In_OrderConfirmation": "Bestell-/ Kauf-/ Auftragsbestätigung",
+      "In_DonationReceipt": "Spendenquittung",
+      "In_BallotDocs": "Wahlunterlagen",
+      "In_DeviceManuals": "Handbuch",
+      "In_DeviceRecords": "Gerätedaten",
+      "In_Rejection": "Ablehnung, Ablehnungsbescheid",
+      "In_AU": "AU Krankmeldung (AG+Versicherung)",
+      "In_TrafficTicket": "Blitzer, Knöllchen, Verkehrsordnungswidrigkeit",
+      "In_Voucher": "Gutschein",
+      "In_Id": "Ausweis uä.",
+      "In_VacationResp": "Urlaub, Krank, Mehrarbeit",
+      "In_LeadStatus": "Lead Status",
+      "Out_Inquiry": "Anfrage"
+    }
+  },
   "common": {
     "add": "Neu",
     "back": "Zurück",
     "cancel": "Abbruch",
     "none": "Keine"
   },
+  "file": {
+    "title": "Datei {0}",
+    "previewButton": "Vorschau",
+    "common": {
+    }
+  },
   "home": {},
   "lead": {
-    "title": "Lead #{0}"
+    "title": "Lead #{0}",
+    "common": {
+      "title": "Allgemeine Angaben",
+      "party": "Firma"
+    }
   },
   "leads": {
     "title": "Leads + Incentives",
@@ -98,18 +165,38 @@
     }
   },
   "search": {
-    "title": "{0} Treffer",
-    "subtitle": "{0} Treffer in {1}",
-    "group": {
-      "bankaccount": "Konten",
-      "bankstandingorder": "Daueraufträge",
-      "casesitem": "Akten",
-      "directoriesitem": "Verzeichnisse",
-      "filesitem": "Dateien",
-      "noteitem": "Notizen"
+    "title": "Suchen",
+    "setup": {
+      "phrase": "Suchbegriff(e)",
+      "helpSearching": "Mehr Informationen zu den Suchstrategien auf mariadb.com",
+      "groups": {
+        "accounts": "Konten",
+        "cases": "Akten",
+        "directories": "Verzeichnisse",
+        "files": "Dateien (Metadaten)",
+        "pages": "Dateiinhalte",
+        "notepad": "Notizen"
+      },
+      "groupstitle": "Suchbereiche",
+      "runSearch": "Suche starten"
     },
-    "showHistoric": "Hist.",
-    "showHistoricTooltip": "Auch ältere Werte aus der Historie anzeigen?"
+    "result": {
+      "title": "{0} Treffer",
+      "subtitle": "{0} Treffer in {1}",
+      "group": {
+        "accounts": "Konten",
+        "cases": "Akten",
+        "directories": "Verzeichnisse",
+        "files": "Dateien",
+        "notes": "Notizen",
+        "pages": "Dateiinhalte",
+        "onPageNo": "Seite {0}",
+        "gotoPreviewTitle": "Direkt zur Dateianzeige springen"
+      },
+      "points": "{0} P.",
+      "showHistoric": "Hist.",
+      "showHistoricTooltip": "Auch ältere Werte aus der Historie anzeigen?"
+    }
   },
   "work": {
     "offcategories": {

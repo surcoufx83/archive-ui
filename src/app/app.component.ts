@@ -56,9 +56,9 @@ export class AppComponent implements OnInit {
 
   submitSearch() : void {
     if (this.searchphrase !== '')
-      this.router.navigate(['search', this.searchphrase, Math.floor(Date.now() / 1000)]);
+      this.router.navigate(['search', this.searchphrase]);
     else
-      this.router.navigate(['search', '', Math.floor(Date.now() / 1000)]);
+      this.router.navigate(['search']);
   }
 
 }

@@ -1,6 +1,6 @@
 import { Injectable, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Subject } from 'rxjs';
+import { map, Subject } from 'rxjs';
 import { ApiReply } from './api-reply';
 import { ConfigService, AppConfig } from './config.service';
 import { Session } from './session';
@@ -33,8 +33,30 @@ export class AuthService implements OnInit {
     return this.configService.config;
   }
 
+  public download(url: string) : Subject<any> {
+    let reply: Subject<any> = new Subject<any>();
+    if (this.session == undefined) {
+      reply.next({ success: false });
+      return reply;
+    }
+    this.http.get(url, { 
+        headers: this.header,
+        responseType: 'blob'
+      }).subscribe((result) => {
+        reply.next(result);
+      });
+    return reply;
+  }
+
   get hasSession() : boolean {
     return (this.session != undefined);
+  }
+
+  private get header() : HttpHeaders{
+    let header = new HttpHeaders();
+    if (this.session)
+      header.set('AuthToken', this.session.token);
+    return header;
   }
 
   get isLoggedin() : boolean {
@@ -130,7 +152,7 @@ export class AuthService implements OnInit {
       reply.next({ success: false });
       return reply;
     }
-    this.http.get<ApiReply>(url, { headers: new HttpHeaders().set('AuthToken', this.session.token)}).subscribe(
+    this.http.get<ApiReply>(url, { headers: this.header}).subscribe(
       (response) => {
         reply.next(response);
       },
@@ -148,7 +170,7 @@ export class AuthService implements OnInit {
       reply.next({ success: false });
       return reply;
     }
-    this.http.post<ApiReply>(url, payload, { headers: new HttpHeaders().set('AuthToken', this.session.token)}).subscribe(
+    this.http.post<ApiReply>(url, payload, { headers: this.header}).subscribe(
       (response) => {
         reply.next(response);
       },

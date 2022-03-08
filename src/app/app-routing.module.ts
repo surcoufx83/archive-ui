@@ -25,12 +25,15 @@ import { WorkProjectsComponent } from './work/settings/customers/projects/projec
 import { WorkTimeCategoriesComponent } from './work/settings/time-categories/time-categories.component';
 import { WorkYearComponent } from './work/work-year/work-year.component';
 import { SearchComponent } from './search/search.component';
+import { FileComponent } from './files/file/file.component';
 
 const routes: Routes = [
   { path: 'account', component: AccountComponent, canActivate: [ SessionGuard ] },
   { path: 'cases', component: CasesComponent, canActivate: [ SessionGuard ] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [ SessionGuard ] },
   { path: 'home', component: HomeComponent, canActivate: [ SessionGuard ] },
+  { path: 'file/:id/:view', component: FileComponent, canActivate: [ SessionGuard ] },
+  { path: 'file/:id', component: FileComponent, canActivate: [ SessionGuard ] },
   { path: 'finance', component: FinanceComponent, canActivate: [ SessionGuard ] },
   { path: 'login', children: [
     { path: 'oauth2', component: Oauth2CallbackComponent, canActivate: [ SessionGuard ] },
