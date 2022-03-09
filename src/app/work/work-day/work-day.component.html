@@ -110,31 +110,31 @@
         <div class="card">
           <div class="card-body">
 
-            <form #f (submit)="onSubmitBooking()">
+            <form #f (submit)="onSubmitBooking()" ngNativeValidate>
             
               <div class="row">
                 <div class="col-6 col-lg-3 col-xl-2 mb-3">
                   <div class="form-group">
-                    <label for="tracking-from" class="form-label">{{ i18n('workday.tracking.common.from') }}</label>
-                    <input type="text" class="form-control" id="tracking-from" name="tracking-from"
+                    <label for="tracking-from" class="form-label required">{{ i18n('workday.tracking.common.from') }}</label>
+                    <input type="text" #focus class="form-control" id="tracking-from" name="tracking-from"
                       [(ngModel)]="booking.timefrom" [placeholder]="i18n('workday.tracking.common.timePlaceholder')"
-                      (change)="onChangeTime()">
+                      (change)="onChangeTime()" pattern="^(\d{1,2}):?(\d{2})$" required>
                   </div>
                 </div>
                 <div class="col-6 col-lg-3 col-xl-2 mb-3">
                   <div class="form-group">
-                    <label for="tracking-until" class="form-label">{{ i18n('workday.tracking.common.until') }}</label>
+                    <label for="tracking-until" class="form-label required">{{ i18n('workday.tracking.common.until') }}</label>
                     <input type="text" class="form-control" id="tracking-until" name="tracking-until"
                       [(ngModel)]="booking.timeuntil" [placeholder]="i18n('workday.tracking.common.timePlaceholder')"
-                      (change)="onChangeTime()">
+                      (change)="onChangeTime()" pattern="^(\d{1,2}):?(\d{2})$" required>
                   </div>
                 </div>
                 <div class="col-6 col-lg-3 col-xl-2 mb-3">
                   <div class="form-group">
-                    <label for="tracking-break" class="form-label">{{ i18n('workday.tracking.common.break') }}</label>
+                    <label for="tracking-break" class="form-label required">{{ i18n('workday.tracking.common.break') }}</label>
                     <input type="text" class="form-control" id="tracking-break" name="tracking-break"
                       [(ngModel)]="booking.break" [placeholder]="i18n('workday.tracking.common.breakPlaceholder')"
-                      (change)="onChangeTime()">
+                      (change)="onChangeTime()" pattern="^(\d+)$" required>
                   </div>
                 </div>
                 <div class="col-6 col-lg-3 col-xl-2 mb-3">
@@ -149,10 +149,10 @@
               <div class="row">
                 <div class="col-12 col-lg-6 col-xl-4 mb-3">
                   <div class="form-group">
-                    <label for="tracking-category" class="form-label">{{ i18n('workday.tracking.common.timeCategory') }}</label>
+                    <label for="tracking-category" class="form-label required">{{ i18n('workday.tracking.common.timeCategory') }}</label>
                     <div class="input-group">
                       <select class="form-select" id="tracking-category" name="tracking-category"
-                        [(ngModel)]="bookingProps['timecategory']" (change)="onChangeCategory()">
+                        [(ngModel)]="bookingProps['timecategory']" (change)="onChangeCategory()" required>
                         <option *ngFor="let category of categories; let i = index"
                                 [value]="i">{{ i18n('work.timecategories.' + category.name) }}</option>
                       </select>
@@ -167,9 +167,9 @@
               <div class="row" *ngIf="usersettingsObj.work.tracking.trackCustomer">
                 <div class="col-12 col-lg-4 col-xl-3 mb-3">
                   <div class="form-group">
-                    <label for="tracking-customer" class="form-label">{{ i18n('workday.tracking.common.customer') }}</label>
+                    <label for="tracking-customer" class="form-label required">{{ i18n('workday.tracking.common.customer') }}</label>
                     <select class="form-select" id="tracking-customer" name="tracking-customer"
-                      [(ngModel)]="bookingProps['customer']" (change)="onChangeCustomer()">
+                      [(ngModel)]="bookingProps['customer']" (change)="onChangeCustomer()" required>
                       <option *ngFor="let customer of customers; let i = index"
                               [value]="i">{{ customer.name }}</option>
                     </select>
@@ -199,9 +199,9 @@
               <div class="row">
                 <div class="col-12 col-xl-9 mb-3">
                   <div class="form-group">
-                    <label for="tracking-description" class="form-label">{{ i18n('workday.tracking.common.description') }}</label>
+                    <label for="tracking-description" class="form-label required">{{ i18n('workday.tracking.common.description') }}</label>
                     <textarea class="form-control" id="tracking-description" name="tracking-description"
-                      [(ngModel)]="booking.description"></textarea>
+                      [(ngModel)]="booking.description" required></textarea>
                   </div>
                 </div>
               </div>
@@ -209,7 +209,7 @@
               <div class="row">
                 <div class="col-12 col-xl-9 mb-3">
                   <div class="form-group">
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-primary" [disabled]="busy">
                       <i [class]="config.icons['busy'] + ' me-1'" *ngIf="busy"></i>
                       <i [class]="config.icons['save'] + ' me-1'" *ngIf="!busy"></i>
                       {{ i18n('common.save') }}

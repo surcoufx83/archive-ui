@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { differenceInMinutes, format, set } from 'date-fns';
+import { differenceInMinutes, format, parseISO, set } from 'date-fns';
 import { AuthService } from '../../auth.service';
 import { SettingsService } from '../../user/settings/settings.service';
 
@@ -15,6 +15,8 @@ import { WorkCustomer, WorkDay, WorkDayBooking, WorkProject, WorkProperties, Wor
   styleUrls: ['./work-day.component.scss']
 })
 export class WorkDayComponent implements OnInit {
+
+  @ViewChild('focus') focusElement?: ElementRef;
 
   booking?: WorkDayBooking;
   bookingProps: {[key: string]: number} = {};
@@ -73,7 +75,7 @@ export class WorkDayComponent implements OnInit {
     return this.i18nService.Locale;
   }
 
-  newBooking(dayid: number|null): void {
+  newBooking(dayid: number|undefined): void {
     this.booking = {
       break: 0,
       customer: null,
@@ -94,14 +96,21 @@ export class WorkDayComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.busy = true;
-    let url = this.config.api.baseUrl + '/work/today';
-    this.authService.queryApi(url).subscribe((reply) => {
-      if (reply.success && reply.payload) {
-        this.day = <WorkDay>reply.payload['day'];
-        this.newBooking(this.day.id);
-      }
-      this.busy = false;
+    this.route.paramMap.subscribe((params) => {
+      console.log(params);
+      let date = 'today';
+      if (params.has('date'))
+        date =  params.get('date') ?? '';
+      this.busy = true;
+      let url = this.config.api.baseUrl + '/work/' + date;
+      this.authService.queryApi(url).subscribe((reply) => {
+        if (reply.success && reply.payload) {
+          this.day = <WorkDay>reply.payload['day'];
+          this.newBooking(this.day.id);
+          this.today = parseISO(this.day.date);
+        }
+        this.busy = false;
+      });
     });
   }
 
@@ -165,6 +174,21 @@ export class WorkDayComponent implements OnInit {
 
   onSubmitBooking() : void {
     console.log('onSubmitBooking', this.booking);
+    if (this.busy || !this.day)
+      return;
+    this.busy = true;
+    let url = this.config.api.baseUrl + '/work/month/' + this.day.monthid + '/day/' + this.day.day + '/booking/create';
+    this.authService.updateApi(url, this.booking).subscribe((reply) => {
+      if (reply.success) {
+        this.newBooking(this.day?.id);
+        if (reply.payload && reply.payload['day'])
+          this.day = <WorkDay>reply.payload['day'];
+        if (this.focusElement != undefined)
+          this.focusElement.nativeElement.focus();
+      }
+      this.busy = false;
+      console.log(reply);
+    });
   }
 
   parseTime(time: string) : Date|null {
