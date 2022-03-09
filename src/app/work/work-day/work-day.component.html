@@ -109,60 +109,116 @@
         
         <div class="card">
           <div class="card-body">
+
+            <form #f (submit)="onSubmitBooking()">
             
-            <div class="row">
-              <div class="col-6 col-lg-3 col-xl-2 mb-3">
-                <div class="form-group">
-                  <label for="tracking-from" class="form-label">{{ i18n('workday.tracking.common.from') }}</label>
-                  <input type="text" class="form-control" id="tracking-from" name="tracking-from"
-                    [(ngModel)]="booking.timefrom" [placeholder]="i18n('workday.tracking.common.timePlaceholder')"
-                    (change)="onChangeTime()">
+              <div class="row">
+                <div class="col-6 col-lg-3 col-xl-2 mb-3">
+                  <div class="form-group">
+                    <label for="tracking-from" class="form-label">{{ i18n('workday.tracking.common.from') }}</label>
+                    <input type="text" class="form-control" id="tracking-from" name="tracking-from"
+                      [(ngModel)]="booking.timefrom" [placeholder]="i18n('workday.tracking.common.timePlaceholder')"
+                      (change)="onChangeTime()">
+                  </div>
                 </div>
-              </div>
-              <div class="col-6 col-lg-3 col-xl-2 mb-3">
-                <div class="form-group">
-                  <label for="tracking-until" class="form-label">{{ i18n('workday.tracking.common.until') }}</label>
-                  <input type="text" class="form-control" id="tracking-until" name="tracking-until"
-                    [(ngModel)]="booking.timeuntil" [placeholder]="i18n('workday.tracking.common.timePlaceholder')"
-                    (change)="onChangeTime()">
+                <div class="col-6 col-lg-3 col-xl-2 mb-3">
+                  <div class="form-group">
+                    <label for="tracking-until" class="form-label">{{ i18n('workday.tracking.common.until') }}</label>
+                    <input type="text" class="form-control" id="tracking-until" name="tracking-until"
+                      [(ngModel)]="booking.timeuntil" [placeholder]="i18n('workday.tracking.common.timePlaceholder')"
+                      (change)="onChangeTime()">
+                  </div>
                 </div>
-              </div>
-              <div class="col-6 col-lg-3 col-xl-2 mb-3">
-                <div class="form-group">
-                  <label for="tracking-break" class="form-label">{{ i18n('workday.tracking.common.break') }}</label>
-                  <input type="text" class="form-control" id="tracking-break" name="tracking-break"
-                    [(ngModel)]="booking.break" [placeholder]="i18n('workday.tracking.common.breakPlaceholder')"
-                    (change)="onChangeTime()">
+                <div class="col-6 col-lg-3 col-xl-2 mb-3">
+                  <div class="form-group">
+                    <label for="tracking-break" class="form-label">{{ i18n('workday.tracking.common.break') }}</label>
+                    <input type="text" class="form-control" id="tracking-break" name="tracking-break"
+                      [(ngModel)]="booking.break" [placeholder]="i18n('workday.tracking.common.breakPlaceholder')"
+                      (change)="onChangeTime()">
+                  </div>
                 </div>
-              </div>
-              <div class="col-6 col-lg-3 col-xl-2 mb-3">
-                <div class="form-group">
-                  <label for="tracking-duration" class="form-label">{{ i18n('workday.tracking.common.duration') }}</label>
-                  <input type="text" class="form-control" id="tracking-duration" name="tracking-duration"
-                    [(ngModel)]="booking.duration" readonly>
-                </div>
-              </div>
-            </div>
-            
-            <div class="row">
-              <div class="col-12 col-lg-6 col-xl-4 mb-3">
-                <div class="form-group">
-                  <label for="tracking-category" class="form-label">{{ i18n('workday.tracking.common.timeCategory') }}</label>
-                  <div class="input-group">
-                    <select class="form-select" id="tracking-category" name="tracking-category"
-                      [(ngModel)]="booking.timecategoryid" (change)="onChangeCategory()">
-                      <option value="0">{{ i18n('common.select.pickOne') }}</option>
-                      <option *ngFor="let category of workprops?.timeCategories"
-                              [value]="category.id">{{ i18n('work.timecategories.' + category.name) }}</option>
-                    </select>
-                    <label class="input-group-text" for="tracking-category">
-                      <i *ngIf="booking.timecategory"
-                        [class]="booking.timecategory.icon + ' ' + booking.timecategory.iconcolor"></i>
-                    </label>
+                <div class="col-6 col-lg-3 col-xl-2 mb-3">
+                  <div class="form-group">
+                    <label for="tracking-duration" class="form-label">{{ i18n('workday.tracking.common.duration') }}</label>
+                    <input type="text" class="form-control" id="tracking-duration" name="tracking-duration"
+                      [(ngModel)]="booking.duration" readonly>
                   </div>
                 </div>
               </div>
-            </div>
+              
+              <div class="row">
+                <div class="col-12 col-lg-6 col-xl-4 mb-3">
+                  <div class="form-group">
+                    <label for="tracking-category" class="form-label">{{ i18n('workday.tracking.common.timeCategory') }}</label>
+                    <div class="input-group">
+                      <select class="form-select" id="tracking-category" name="tracking-category"
+                        [(ngModel)]="bookingProps['timecategory']" (change)="onChangeCategory()">
+                        <option *ngFor="let category of categories; let i = index"
+                                [value]="i">{{ i18n('work.timecategories.' + category.name) }}</option>
+                      </select>
+                      <label class="input-group-text" for="tracking-category" *ngIf="booking.timecategory.icon">
+                        <i [class]="booking.timecategory.icon + ' ' + booking.timecategory.iconcolor"></i>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row" *ngIf="usersettingsObj.work.tracking.trackCustomer">
+                <div class="col-12 col-lg-4 col-xl-3 mb-3">
+                  <div class="form-group">
+                    <label for="tracking-customer" class="form-label">{{ i18n('workday.tracking.common.customer') }}</label>
+                    <select class="form-select" id="tracking-customer" name="tracking-customer"
+                      [(ngModel)]="bookingProps['customer']" (change)="onChangeCustomer()">
+                      <option *ngFor="let customer of customers; let i = index"
+                              [value]="i">{{ customer.name }}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-12 col-lg-4 col-xl-3 mb-3" *ngIf="usersettingsObj.work.tracking.trackCustomerProject">
+                  <div class="form-group">
+                    <label for="tracking-project" class="form-label">{{ i18n('workday.tracking.common.project') }}</label>
+                    <select class="form-select" id="tracking-project" name="tracking-project"
+                      [(ngModel)]="bookingProps['project']" (change)="onChangeProject()">
+                      <option>{{ i18n('common.select.pickOne') }}</option>
+                      <ng-container *ngFor="let project of projects; let i = index">
+                        <option [value]="i">{{ project.name }}</option>
+                      </ng-container>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-12 col-lg-4 col-xl-3 mb-3" *ngIf="usersettingsObj.work.tracking.trackProjectTask">
+                  <div class="form-group">
+                    <label for="tracking-task" class="form-label">{{ i18n('workday.tracking.common.task') }}</label>
+                    <input type="text" class="form-control" id="tracking-task" name="tracking-task"
+                      [(ngModel)]="booking.projectstage">
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="col-12 col-xl-9 mb-3">
+                  <div class="form-group">
+                    <label for="tracking-description" class="form-label">{{ i18n('workday.tracking.common.description') }}</label>
+                    <textarea class="form-control" id="tracking-description" name="tracking-description"
+                      [(ngModel)]="booking.description"></textarea>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="col-12 col-xl-9 mb-3">
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-primary">
+                      <i [class]="config.icons['busy'] + ' me-1'" *ngIf="busy"></i>
+                      <i [class]="config.icons['save'] + ' me-1'" *ngIf="!busy"></i>
+                      {{ i18n('common.save') }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+            </form>
 
           </div>
         </div>

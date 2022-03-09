@@ -41,6 +41,7 @@
     "login": "fa-solid fa-user-lock",
     "notepad": "fa-regular fa-lightbulb",
     "preview": "fa-solid fa-image",
+    "save": "fa-solid fa-cloud-arrow-up",
     "search": "fa-brands fa-searchengin",
     "settings": "fa-solid fa-cog",
     "stopwatch": "fa-solid fa-stopwatch",

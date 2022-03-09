@@ -87,6 +87,7 @@
     "back": "Zurück",
     "cancel": "Abbruch",
     "none": "Keine",
+    "save": "Speichern",
     "select": {
       "pickOne": " Bitte wählen "
     }
@@ -238,11 +239,18 @@
       "common": {
         "break": "Ab Pause",
         "breakPlaceholder": "mm",
+        "customer": "Kunde",
+        "description": "Beschreibung der durchgeführten Arbeiten",
         "duration": "Arbeitszeit",
         "from": "Von",
+        "project": "Kundenprojekt",
+        "task": "Arbeitspaket",
         "timeCategory": "Kategorie",
         "timePlaceholder": "hh:mm | hhmm | hmm",
         "until": "Bis"
+      },
+      "live": {
+
       }
     }
   },

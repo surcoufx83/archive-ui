@@ -7,7 +7,7 @@ import { SettingsService } from '../../user/settings/settings.service';
 import { AppConfig, ConfigService } from '../../config.service';
 import { I18nService } from '../../i18n.service';
 import { Settings } from '../../user/settings/settings';
-import { WorkDay, WorkDayBooking, WorkProperties, WorkTimeCategory } from '../work';
+import { WorkCustomer, WorkDay, WorkDayBooking, WorkProject, WorkProperties, WorkTimeCategory } from '../work';
 
 @Component({
   selector: 'app-work-day',
@@ -17,9 +17,13 @@ import { WorkDay, WorkDayBooking, WorkProperties, WorkTimeCategory } from '../wo
 export class WorkDayComponent implements OnInit {
 
   booking?: WorkDayBooking;
+  bookingProps: {[key: string]: number} = {};
   busy: boolean = false;
+  categories: WorkTimeCategory[] = [];
+  customers: WorkCustomer[] = [];
   day?: WorkDay;
   livetrackingActive: boolean = false;
+  projects: WorkProject[] = [];
   timepattern: RegExp = /^(?<hr>\d{1,2}):?(?<min>\d{2})$/;
   today: Date = new Date();
   usersettingsObj?: Settings;
@@ -33,11 +37,11 @@ export class WorkDayComponent implements OnInit {
     private userSettings: SettingsService) {
     this.userSettings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
-      console.log(settings);
     });
     this.userSettings.workprops$.subscribe((props) => {
       this.workprops = props;
-      console.log(props);
+      this.customers = props.customers.sort((a, b) => a.name > b.name ? 1 : a.name === b.name ? 0 : -1);
+      this.categories = props.timeCategories.sort((a, b) => this.i18n('work.timecategories.' + a.name) > this.i18n('work.timecategories.' + b.name) ? 1 : this.i18n('work.timecategories.' + a.name) === this.i18n('work.timecategories.' + b.name) ? 0 : -1);
     });
   }
 
@@ -73,19 +77,20 @@ export class WorkDayComponent implements OnInit {
     this.booking = {
       break: 0,
       customer: null,
-      customerid: null,
+      customerid: -1,
       dayid: dayid ?? 0,
       description: '',
       duration: 0,
       id: 0,
       project: null,
-      projectid: null,
+      projectid: -1,
       projectstage: '',
       timecategory: <WorkTimeCategory>{},
-      timecategoryid: 0,
+      timecategoryid: -1,
       timefrom: '',
       timeuntil: ''
     };
+    this.bookingProps = {};
   }
 
   ngOnInit(): void {
@@ -95,7 +100,6 @@ export class WorkDayComponent implements OnInit {
       if (reply.success && reply.payload) {
         this.day = <WorkDay>reply.payload['day'];
         this.newBooking(this.day.id);
-        console.log(this.day);
       }
       this.busy = false;
     });
@@ -104,16 +108,41 @@ export class WorkDayComponent implements OnInit {
   onChangeCategory() : void {
     if (!this.booking || !this.workprops)
       return;
-    if (this.booking.timecategoryid === 0)
+    if (this.bookingProps['timecategory'] == -1) {
       this.booking.timecategory = <WorkTimeCategory>{};
-    else {
-      for (let i = 0; i < this.workprops.timeCategories.length; i++) {
-        if (this.workprops.timeCategories[i].id == this.booking.timecategoryid) {
-          this.booking.timecategory = this.workprops.timeCategories[i];
-          break;
-        }
-      }
+      this.booking.timecategoryid = -1;
+      return;
     }
+    this.booking.timecategory = this.categories[this.bookingProps['timecategory']];
+    this.booking.timecategoryid = this.categories[this.bookingProps['timecategory']].id;
+  }
+
+  onChangeCustomer() : void {
+    this.projects = [];
+    if (!this.booking || !this.workprops)
+      return;
+    if (this.bookingProps['customer'] == -1) {
+      this.booking.customer = null;
+      this.booking.customerid = -1;
+      return;
+    }
+    this.booking.customer = this.customers[this.bookingProps['customer']];
+    this.booking.customerid = this.customers[this.bookingProps['customer']].id;
+    this.projects = this.workprops.projects.filter((e) => {
+      return !e.disabled && +e.customerid === (<WorkDayBooking>this.booking).customerid;
+    }).sort((a, b) => a.name > b.name ? 1 : a.name === b.name ? 0 : -1);
+  }
+
+  onChangeProject() : void {
+    if (!this.booking || !this.workprops)
+      return;
+    if (this.bookingProps['project'] == -1) {
+      this.booking.project = null;
+      this.booking.projectid = -1;
+      return;
+    }
+    this.booking.project = this.projects[this.bookingProps['project']];
+    this.booking.projectid = this.projects[this.bookingProps['project']].id;
   }
 
   onChangeTime() : void {
@@ -132,6 +161,10 @@ export class WorkDayComponent implements OnInit {
       }
     }
     this.booking.duration = 0;
+  }
+
+  onSubmitBooking() : void {
+    console.log('onSubmitBooking', this.booking);
   }
 
   parseTime(time: string) : Date|null {
