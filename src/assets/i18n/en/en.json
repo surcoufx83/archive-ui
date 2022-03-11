@@ -6,7 +6,7 @@
     "showWeekTitle": "Show week number",
     "showWeekend": "Weekend",
     "showWeekendTitle": "Show weekend days in calendar",
-    "weekday": "weekday",
+    "weekday": "Day of week",
     "duration": {
       "short": "{0} hr"
     },
@@ -173,7 +173,7 @@
     "title": "Search",
     "setup": {
       "phrase": "Search terms",
-      "helpSearching": "More information about search strategies at mariadb.com",
+      "helpSearching": "More information on search strategies at mariadb.com",
       "groups": {
         "accounts": "Accounts",
         "cases": "Cases",
@@ -212,7 +212,7 @@
       "vacation": "Vacation",
       "weekend": "Weekend",
       "none": "None",
-      "title": "absence"
+      "title": "Absence"
     },
     "timecategories": {
       "administration": "Administration",
