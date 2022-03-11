@@ -6,6 +6,7 @@
     "showWeekTitle": "Show week number",
     "showWeekend": "Weekend",
     "showWeekendTitle": "Show weekend days in calendar",
+    "weekday": "weekday",
     "duration": {
       "short": "{0} hr"
     },
@@ -85,9 +86,20 @@
     "add": "New",
     "back": "Back",
     "cancel": "Cancel",
-    "none": "None"
+    "none": "None",
+    "save": "Save",
+    "select": {
+      "pickOne": " Please choose"
+    }
   },
-  "home": {},
+  "file": {
+    "title": "File {0}",
+    "previewButton": "Preview",
+    "common": {
+    }
+  },
+  "home": {
+  },
   "lead": {
     "title": "Lead #{0}",
     "common": {
@@ -161,6 +173,7 @@
     "title": "Search",
     "setup": {
       "phrase": "Search terms",
+      "helpSearching": "More information about search strategies at mariadb.com",
       "groups": {
         "accounts": "Accounts",
         "cases": "Cases",
@@ -182,7 +195,8 @@
         "files": "Files",
         "notes": "Notes",
         "pages": "File Content",
-        "onPageNo": "Page {0}"
+        "onPageNo": "Page {0}",
+        "gotoPreviewTitle": "Jump directly to the file view"
       },
       "points": "{0} P.",
       "showHistoric": "hist.",
@@ -197,7 +211,8 @@
       "specialLeave": "Special leave",
       "vacation": "Vacation",
       "weekend": "Weekend",
-      "none": "None"
+      "none": "None",
+      "title": "absence"
     },
     "timecategories": {
       "administration": "Administration",
@@ -207,11 +222,37 @@
       "presales": "Presales",
       "support": "Support",
       "trainingself": "Advanced training",
-      "travel": "Travel time"
+      "travel": "Travel time",
+      "title": "Category"
     }
   },
   "workday": {
-    "pagetitle": "Day bookings {0}"
+    "pagetitle": "Day bookings {0}",
+    "daycard": {
+      "title": "Summary",
+      "booked": "Tracked"
+    },
+    "tracking": {
+      "title": "Time tracking",
+      "liveTitle": "Live time tracking",
+      "livebtn": "Live",
+      "livebtnTitle": "Live tracking function",
+      "common": {
+        "break": "Minus break",
+        "breakPlaceholder": "mm",
+        "customer": "Customer",
+        "description": "Description of the work carried out",
+        "duration": "Working hours",
+        "from": "Of",
+        "project": "Customer project",
+        "task": "Work package",
+        "timeCategory": "Category",
+        "timePlaceholder": "hh:mm | hmm | hmm",
+        "until": "To"
+      },
+      "live": {
+      }
+    }
   },
   "workmonth": {
     "pagetitle": "Monthly calendar {0}",
