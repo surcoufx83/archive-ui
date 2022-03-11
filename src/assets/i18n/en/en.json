@@ -95,11 +95,9 @@
   "file": {
     "title": "File {0}",
     "previewButton": "Preview",
-    "common": {
-    }
+    "common": {}
   },
-  "home": {
-  },
+  "home": {},
   "lead": {
     "title": "Lead #{0}",
     "common": {
@@ -250,8 +248,7 @@
         "timePlaceholder": "hh:mm | hmm | hmm",
         "until": "To"
       },
-      "live": {
-      }
+      "live": {}
     }
   },
   "workmonth": {
