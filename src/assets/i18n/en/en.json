@@ -6,6 +6,7 @@
     "showWeekTitle": "Show week number",
     "showWeekend": "Weekend",
     "showWeekendTitle": "Show weekend days in calendar",
+    "weekday": "Weekday",
     "duration": {
       "short": "{0} hr"
     },
@@ -87,6 +88,11 @@
     "cancel": "Cancel",
     "none": "None"
   },
+  "file": {
+    "title": "File {0}",
+    "previewButton": "Preview",
+    "common": {}
+  },
   "home": {},
   "lead": {
     "title": "Lead #{0}",
@@ -161,6 +167,7 @@
     "title": "Search",
     "setup": {
       "phrase": "Search terms",
+      "helpSearching": "More information on search strategies at mariadb.com",
       "groups": {
         "accounts": "Accounts",
         "cases": "Cases",
@@ -182,7 +189,8 @@
         "files": "Files",
         "notes": "Notes",
         "pages": "File Content",
-        "onPageNo": "Page {0}"
+        "onPageNo": "Page {0}",
+        "gotoPreviewTitle": "Jump directly to the file view"
       },
       "points": "{0} P.",
       "showHistoric": "hist.",
@@ -197,7 +205,8 @@
       "specialLeave": "Special leave",
       "vacation": "Vacation",
       "weekend": "Weekend",
-      "none": "None"
+      "none": "None",
+      "title": "Absence"
     },
     "timecategories": {
       "administration": "Administration",
@@ -207,11 +216,22 @@
       "presales": "Presales",
       "support": "Support",
       "trainingself": "Advanced training",
-      "travel": "Travel time"
+      "travel": "Travel time",
+      "title": "Time categorie"
     }
   },
   "workday": {
-    "pagetitle": "Day bookings {0}"
+    "pagetitle": "Day bookings {0}",
+    "daycard": {
+      "title": "Summary",
+      "booked": "Booked"
+    },
+    "tracking": {
+      "title": "Time tracking",
+      "liveTitle": "Live tracking",
+      "livebtn": "Live",
+      "livebtnTitle": "Live tracking functionality"
+    }
   },
   "workmonth": {
     "pagetitle": "Monthly calendar {0}",
