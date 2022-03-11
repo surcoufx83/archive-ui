@@ -6,6 +6,7 @@
     "showWeekTitle": "Show week number",
     "showWeekend": "Weekend",
     "showWeekendTitle": "Show weekend days in calendar",
+    "weekday": "weekday",
     "duration": {
       "short": "{0} hr"
     },
@@ -85,9 +86,18 @@
     "add": "New",
     "back": "Back",
     "cancel": "Cancel",
-    "none": "None"
+    "none": "None",
+    "select": {
+      "pickOne": " Please choose"
+    }
   },
-  "home": {},
+  "file": {
+    "title": "File {0}",
+    "common": {
+    }
+  },
+  "home": {
+  },
   "lead": {
     "title": "Lead #{0}",
     "common": {
@@ -161,6 +171,7 @@
     "title": "Search",
     "setup": {
       "phrase": "Search terms",
+      "helpSearching": "More information about search strategies at mariadb.com",
       "groups": {
         "accounts": "Accounts",
         "cases": "Cases",
@@ -197,7 +208,8 @@
       "specialLeave": "Special leave",
       "vacation": "Vacation",
       "weekend": "Weekend",
-      "none": "None"
+      "none": "None",
+      "title": "absence"
     },
     "timecategories": {
       "administration": "Administration",
@@ -211,7 +223,21 @@
     }
   },
   "workday": {
-    "pagetitle": "Day bookings {0}"
+    "pagetitle": "Day bookings {0}",
+    "daycard": {
+    },
+    "tracking": {
+      "livebtnTitle": "Live tracking function",
+      "common": {
+        "breakPlaceholder": "mm",
+        "description": "Description of the work carried out",
+        "from": "Of",
+        "timePlaceholder": "hh:mm | hmm | hmm",
+        "until": "To"
+      },
+      "live": {
+      }
+    }
   },
   "workmonth": {
     "pagetitle": "Monthly calendar {0}",
