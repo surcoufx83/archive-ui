@@ -87,12 +87,14 @@
     "back": "Back",
     "cancel": "Cancel",
     "none": "None",
+    "save": "Save",
     "select": {
       "pickOne": " Please choose"
     }
   },
   "file": {
     "title": "File {0}",
+    "previewButton": "Preview",
     "common": {
     }
   },
@@ -193,7 +195,8 @@
         "files": "Files",
         "notes": "Notes",
         "pages": "File Content",
-        "onPageNo": "Page {0}"
+        "onPageNo": "Page {0}",
+        "gotoPreviewTitle": "Jump directly to the file view"
       },
       "points": "{0} P.",
       "showHistoric": "hist.",
@@ -219,19 +222,31 @@
       "presales": "Presales",
       "support": "Support",
       "trainingself": "Advanced training",
-      "travel": "Travel time"
+      "travel": "Travel time",
+      "title": "Category"
     }
   },
   "workday": {
     "pagetitle": "Day bookings {0}",
     "daycard": {
+      "title": "Summary",
+      "booked": "Tracked"
     },
     "tracking": {
+      "title": "Time tracking",
+      "liveTitle": "Live time tracking",
+      "livebtn": "Live",
       "livebtnTitle": "Live tracking function",
       "common": {
+        "break": "Minus break",
         "breakPlaceholder": "mm",
+        "customer": "Customer",
         "description": "Description of the work carried out",
+        "duration": "Working hours",
         "from": "Of",
+        "project": "Customer project",
+        "task": "Work package",
+        "timeCategory": "Category",
         "timePlaceholder": "hh:mm | hmm | hmm",
         "until": "To"
       },
