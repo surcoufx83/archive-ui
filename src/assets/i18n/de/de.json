@@ -86,7 +86,11 @@
     "add": "Neu",
     "back": "Zurück",
     "cancel": "Abbruch",
-    "none": "Keine"
+    "none": "Keine",
+    "save": "Speichern",
+    "select": {
+      "pickOne": " Bitte wählen "
+    }
   },
   "file": {
     "title": "Datei {0}",
@@ -231,8 +235,23 @@
       "title": "Zeitbuchung",
       "liveTitle": "Live Zeitbuchung",
       "livebtn": "Live",
-      "livebtnTitle": "Livetracking Funktion"
+      "livebtnTitle": "Livetracking Funktion",
+      "common": {
+        "break": "Ab Pause",
+        "breakPlaceholder": "mm",
+        "customer": "Kunde",
+        "description": "Beschreibung der durchgeführten Arbeiten",
+        "duration": "Arbeitszeit",
+        "from": "Von",
+        "project": "Kundenprojekt",
+        "task": "Arbeitspaket",
+        "timeCategory": "Kategorie",
+        "timePlaceholder": "hh:mm | hhmm | hmm",
+        "until": "Bis"
+      },
+      "live": {
 
+      }
     }
   },
   "workmonth": {

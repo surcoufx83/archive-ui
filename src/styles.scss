@@ -58,6 +58,14 @@
   }
 }
 
+.form-label.required:after { 
+  color: map-get($theme-colors, 'primary');
+  content: "*";
+  font-weight: bold;
+  position: absolute;
+  margin-left: .2rem;
+}
+
 .fs-7 { font-size: $font-size-base * .9!important; }
 .fs-8 { font-size: $font-size-base * .8!important; }
 

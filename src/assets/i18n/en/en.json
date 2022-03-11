@@ -6,7 +6,7 @@
     "showWeekTitle": "Show week number",
     "showWeekend": "Weekend",
     "showWeekendTitle": "Show weekend days in calendar",
-    "weekday": "Weekday",
+    "weekday": "Day of week",
     "duration": {
       "short": "{0} hr"
     },
@@ -86,14 +86,20 @@
     "add": "New",
     "back": "Back",
     "cancel": "Cancel",
-    "none": "None"
+    "none": "None",
+    "save": "Save",
+    "select": {
+      "pickOne": " Please choose"
+    }
   },
   "file": {
     "title": "File {0}",
     "previewButton": "Preview",
-    "common": {}
+    "common": {
+    }
   },
-  "home": {},
+  "home": {
+  },
   "lead": {
     "title": "Lead #{0}",
     "common": {
@@ -217,20 +223,35 @@
       "support": "Support",
       "trainingself": "Advanced training",
       "travel": "Travel time",
-      "title": "Time categorie"
+      "title": "Category"
     }
   },
   "workday": {
     "pagetitle": "Day bookings {0}",
     "daycard": {
       "title": "Summary",
-      "booked": "Booked"
+      "booked": "Tracked"
     },
     "tracking": {
       "title": "Time tracking",
-      "liveTitle": "Live tracking",
+      "liveTitle": "Live time tracking",
       "livebtn": "Live",
-      "livebtnTitle": "Live tracking functionality"
+      "livebtnTitle": "Live tracking function",
+      "common": {
+        "break": "Minus break",
+        "breakPlaceholder": "mm",
+        "customer": "Customer",
+        "description": "Description of the work carried out",
+        "duration": "Working hours",
+        "from": "Of",
+        "project": "Customer project",
+        "task": "Work package",
+        "timeCategory": "Category",
+        "timePlaceholder": "hh:mm | hmm | hmm",
+        "until": "To"
+      },
+      "live": {
+      }
     }
   },
   "workmonth": {

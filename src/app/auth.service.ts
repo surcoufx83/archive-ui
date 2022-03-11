@@ -27,6 +27,7 @@ export class AuthService implements OnInit {
         this.loggedin = true;
       }
     }
+    setTimeout(() => { this.ping(); }, 60000);
   }
 
   private get config() : AppConfig {
@@ -54,8 +55,10 @@ export class AuthService implements OnInit {
 
   private get header() : HttpHeaders{
     let header = new HttpHeaders();
+    if (this.config.auth.basic.enabled) 
+      header = header.append('Authorization', 'Basic ' + window.btoa(this.config.auth.basic.user + ':' + this.config.auth.basic.password));
     if (this.session)
-      header.set('AuthToken', this.session.token);
+      header = header.append('AuthToken', this.session.token);
     return header;
   }
 
@@ -146,6 +149,17 @@ export class AuthService implements OnInit {
     return reply;
   }
 
+  private ping() : void {
+    if (this.isLoggedin) {
+      this.queryApi(this.config.api.baseUrl + '/ping').subscribe((reply) => {
+        console.log(reply);
+        setTimeout(() => { this.ping(); }, 60000);
+      });
+    }
+    else
+      setTimeout(() => { this.ping(); }, 60000);
+  }
+
   public queryApi(url: string, payload: any = {}) : Subject<ApiReply> {
     let reply: Subject<ApiReply> = new Subject<ApiReply>();
     if (this.session == undefined) {
@@ -159,6 +173,9 @@ export class AuthService implements OnInit {
       (error) => {
         console.log(error);
         reply.next({ success: false });
+        if (error.status === 401) {
+          this.logout();
+        }
       }
     );
     return reply;
@@ -177,6 +194,9 @@ export class AuthService implements OnInit {
       (error) => {
         console.log(error);
         reply.next({ success: false });
+        if (error.status === 401) {
+          this.logout();
+        }
       }
     );
     return reply;

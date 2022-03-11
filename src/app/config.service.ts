@@ -58,7 +58,14 @@ export interface AppConfig {
 export interface AuthConfig {
   authUrl: string;
   authCheck: string;
+  basic: BasicAuthConfig;
   oauth2: OAuth2Config;
+}
+
+export interface BasicAuthConfig {
+  enabled: boolean;
+  user: string;
+  password: string;
 }
 
 export interface NavbarConfig {

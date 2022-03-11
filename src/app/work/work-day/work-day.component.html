@@ -1,6 +1,6 @@
 <ui-centered-busy-indicator *ngIf="!usersettingsObj || !day"></ui-centered-busy-indicator>
 
-<ng-container *ngIf="usersettingsObj && day">
+<ng-container *ngIf="usersettingsObj && day && booking">
   <div class="container pt-4 pt-md-2 mb-2">
     <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between">
       <h2>{{ i18n('workday.pagetitle', [ f(today, 'PP') ]) }}</h2>
@@ -87,7 +87,7 @@
               <ui-busy-indicator *ngIf="busy"></ui-busy-indicator>
             </li>
             <li class="breadcrumb-item">
-              <button type="button" class="btn btn-sm btn-secondary"
+              <button type="button" [ngClass]="['btn btn-sm', liveButtonColor]"
                 (click)="usersettingsObj.work.livetracking.enabled = !usersettingsObj.work.livetracking.enabled; pushUserSettings();"
                 [title]="i18n('workday.tracking.livebtnTitle')">
                 <i [class]="config.icons[usersettingsObj.work.livetracking.enabled ? 'toggle-on' : 'toggle-off'] + ' me-1'"></i>
@@ -105,38 +105,121 @@
     <div class="row g-2">
       <!-- container tracking -->
 
-      <div class="col-12 col-md-4">
+      <div class="col-12">
         
         <div class="card">
           <div class="card-body">
-            <div class="d-flex justify-content-between">
-              <div class="fs-7">
-                {{ i18n('calendar.weekday') }}
+
+            <form #f (submit)="onSubmitBooking()" ngNativeValidate>
+            
+              <div class="row">
+                <div class="col-6 col-lg-3 col-xl-2 mb-3">
+                  <div class="form-group">
+                    <label for="tracking-from" class="form-label required">{{ i18n('workday.tracking.common.from') }}</label>
+                    <input type="text" #focus class="form-control" id="tracking-from" name="tracking-from"
+                      [(ngModel)]="booking.timefrom" [placeholder]="i18n('workday.tracking.common.timePlaceholder')"
+                      (change)="onChangeTime()" pattern="^(\d{1,2}):?(\d{2})$" required>
+                  </div>
+                </div>
+                <div class="col-6 col-lg-3 col-xl-2 mb-3">
+                  <div class="form-group">
+                    <label for="tracking-until" class="form-label required">{{ i18n('workday.tracking.common.until') }}</label>
+                    <input type="text" class="form-control" id="tracking-until" name="tracking-until"
+                      [(ngModel)]="booking.timeuntil" [placeholder]="i18n('workday.tracking.common.timePlaceholder')"
+                      (change)="onChangeTime()" pattern="^(\d{1,2}):?(\d{2})$" required>
+                  </div>
+                </div>
+                <div class="col-6 col-lg-3 col-xl-2 mb-3">
+                  <div class="form-group">
+                    <label for="tracking-break" class="form-label required">{{ i18n('workday.tracking.common.break') }}</label>
+                    <input type="text" class="form-control" id="tracking-break" name="tracking-break"
+                      [(ngModel)]="booking.break" [placeholder]="i18n('workday.tracking.common.breakPlaceholder')"
+                      (change)="onChangeTime()" pattern="^(\d+)$" required>
+                  </div>
+                </div>
+                <div class="col-6 col-lg-3 col-xl-2 mb-3">
+                  <div class="form-group">
+                    <label for="tracking-duration" class="form-label">{{ i18n('workday.tracking.common.duration') }}</label>
+                    <input type="text" class="form-control" id="tracking-duration" name="tracking-duration"
+                      [(ngModel)]="booking.duration" readonly>
+                  </div>
+                </div>
               </div>
-              <div class="font-weight-bold">
-                <strong>{{ f(today, 'EEEE') }}</strong>
+              
+              <div class="row">
+                <div class="col-12 col-lg-6 col-xl-4 mb-3">
+                  <div class="form-group">
+                    <label for="tracking-category" class="form-label required">{{ i18n('workday.tracking.common.timeCategory') }}</label>
+                    <div class="input-group">
+                      <select class="form-select" id="tracking-category" name="tracking-category"
+                        [(ngModel)]="bookingProps['timecategory']" (change)="onChangeCategory()" required>
+                        <option *ngFor="let category of categories; let i = index"
+                                [value]="i">{{ i18n('work.timecategories.' + category.name) }}</option>
+                      </select>
+                      <label class="input-group-text" for="tracking-category" *ngIf="booking.timecategory.icon">
+                        <i [class]="booking.timecategory.icon + ' ' + booking.timecategory.iconcolor"></i>
+                      </label>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div class="d-flex justify-content-between" *ngIf="day.offcategory">
-              <div class="fs-7">
-                {{ i18n('work.offcategories.title') }}
+              
+              <div class="row" *ngIf="usersettingsObj.work.tracking.trackCustomer">
+                <div class="col-12 col-lg-4 col-xl-3 mb-3">
+                  <div class="form-group">
+                    <label for="tracking-customer" class="form-label required">{{ i18n('workday.tracking.common.customer') }}</label>
+                    <select class="form-select" id="tracking-customer" name="tracking-customer"
+                      [(ngModel)]="bookingProps['customer']" (change)="onChangeCustomer()" required>
+                      <option *ngFor="let customer of customers; let i = index"
+                              [value]="i">{{ customer.name }}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-12 col-lg-4 col-xl-3 mb-3" *ngIf="usersettingsObj.work.tracking.trackCustomerProject">
+                  <div class="form-group">
+                    <label for="tracking-project" class="form-label">{{ i18n('workday.tracking.common.project') }}</label>
+                    <select class="form-select" id="tracking-project" name="tracking-project"
+                      [(ngModel)]="bookingProps['project']" (change)="onChangeProject()">
+                      <option>{{ i18n('common.select.pickOne') }}</option>
+                      <ng-container *ngFor="let project of projects; let i = index">
+                        <option [value]="i">{{ project.name }}</option>
+                      </ng-container>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-12 col-lg-4 col-xl-3 mb-3" *ngIf="usersettingsObj.work.tracking.trackProjectTask">
+                  <div class="form-group">
+                    <label for="tracking-task" class="form-label">{{ i18n('workday.tracking.common.task') }}</label>
+                    <input type="text" class="form-control" id="tracking-task" name="tracking-task"
+                      [(ngModel)]="booking.projectstage">
+                  </div>
+                </div>
               </div>
-              <div class="font-weight-bold">
-                <strong>{{ i18n('work.offcategories.' + day.offcategory.name) }}</strong>
+              
+              <div class="row">
+                <div class="col-12 col-xl-9 mb-3">
+                  <div class="form-group">
+                    <label for="tracking-description" class="form-label required">{{ i18n('workday.tracking.common.description') }}</label>
+                    <textarea class="form-control" id="tracking-description" name="tracking-description"
+                      [(ngModel)]="booking.description" required></textarea>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div class="d-flex justify-content-between" *ngIf="day.stats">
-              <div class="fs-7">
-                {{ i18n('workday.daycard.booked') }}
+              
+              <div class="row">
+                <div class="col-12 col-xl-9 mb-3">
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-primary" [disabled]="busy">
+                      <i [class]="config.icons['busy'] + ' me-1'" *ngIf="busy"></i>
+                      <i [class]="config.icons['save'] + ' me-1'" *ngIf="!busy"></i>
+                      {{ i18n('common.save') }}
+                    </button>
+                  </div>
+                </div>
               </div>
-              <div class="font-weight-bold">
-                <strong>{{ fd(day.stats.duration) }}</strong>
-                <span class="fs-8 ms-2" *ngIf="usersettingsObj.work.worktime.default > day.stats.duration">[{{
-                  fd(day.stats.duration - usersettingsObj.work.worktime.default) }}]</span>
-                <span class="fs-8 ms-2" *ngIf="usersettingsObj.work.worktime.default < day.stats.duration">[+{{
-                  fd(day.stats.duration - usersettingsObj.work.worktime.default) }}]</span>
-              </div>
-            </div>
+
+            </form>
+
           </div>
         </div>
         
