@@ -243,6 +243,7 @@
         "duration": "Working hours",
         "from": "Of",
         "project": "Customer project",
+        "recentTitle": "Anklicken um diese Daten zu übernehmen",
         "task": "Work package",
         "timeCategory": "Category",
         "timePlaceholder": "hh:mm | hmm | hmm",
