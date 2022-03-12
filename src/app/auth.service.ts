@@ -152,7 +152,6 @@ export class AuthService implements OnInit {
   private ping() : void {
     if (this.isLoggedin) {
       this.queryApi(this.config.api.baseUrl + '/ping').subscribe((reply) => {
-        console.log(reply);
         setTimeout(() => { this.ping(); }, 60000);
       });
     }

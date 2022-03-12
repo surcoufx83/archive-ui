@@ -7,7 +7,7 @@ import { SettingsService } from '../../user/settings/settings.service';
 import { AppConfig, ConfigService } from '../../config.service';
 import { I18nService } from '../../i18n.service';
 import { Settings } from '../../user/settings/settings';
-import { WorkCustomer, WorkDay, WorkDayBooking, WorkProject, WorkProperties, WorkTimeCategory } from '../work';
+import { RecentBooking, WorkCustomer, WorkDay, WorkDayBooking, WorkProject, WorkProperties, WorkTimeCategory } from '../work';
 
 @Component({
   selector: 'app-work-day',
@@ -26,6 +26,7 @@ export class WorkDayComponent implements OnInit {
   day?: WorkDay;
   livetrackingActive: boolean = false;
   projects: WorkProject[] = [];
+  recentEntries: RecentBooking[] = [];
   timepattern: RegExp = /^(?<hr>\d{1,2}):?(?<min>\d{2})$/;
   today: Date = new Date();
   usersettingsObj?: Settings;
@@ -45,10 +46,46 @@ export class WorkDayComponent implements OnInit {
       this.customers = props.customers.sort((a, b) => a.name > b.name ? 1 : a.name === b.name ? 0 : -1);
       this.categories = props.timeCategories.sort((a, b) => this.i18n('work.timecategories.' + a.name) > this.i18n('work.timecategories.' + b.name) ? 1 : this.i18n('work.timecategories.' + a.name) === this.i18n('work.timecategories.' + b.name) ? 0 : -1);
     });
+    setTimeout(() => { this.refreshRecentBookings(); }, 1000);
+  }
+
+  category(id: number) : WorkTimeCategory|undefined {
+    return this.workprops?.timeCategories.find(e => e.id == id);
   }
 
   get config(): AppConfig {
     return this.configService.config;
+  }
+
+  copyFromRecent(item: RecentBooking) : void {
+    console.log(item);
+    this.bookingProps = {};
+    for (let i = 0; i < this.categories.length; i++) {
+      if (this.categories[i].id == item.timecategoryid) {
+        this.bookingProps['timecategory'] = i;
+        this.onChangeCategory();
+      }
+    }
+    for (let i = 0; i < this.customers.length; i++) {
+      if (this.customers[i].id == item.customerid) {
+        this.bookingProps['customer'] = i;
+        this.onChangeCustomer();
+      }
+    }
+    for (let i = 0; i < this.projects.length; i++) {
+      if (this.projects[i].id == item.projectid) {
+        this.bookingProps['project'] = i;
+        this.onChangeProject();
+      }
+    }
+    if (this.booking) {
+      this.booking.projectstage = item.projectstage;
+      this.booking.description = item.description;
+    }
+  }
+
+  customer(id: number) : WorkCustomer|undefined {
+    return this.workprops?.customers.find(e => e.id == id);
   }
 
   f(date: Date, form: string): string {
@@ -223,8 +260,21 @@ export class WorkDayComponent implements OnInit {
     return '0';
   }
 
+  project(id: number) : WorkProject|undefined {
+    return this.workprops?.projects.find(e => e.id == id);
+  }
+
   pushUserSettings(): void {
     this.userSettings.updateSettings(<Settings>this.usersettingsObj, true);
+  }
+
+  refreshRecentBookings() : void {
+    this.authService.queryApi(this.config.api.baseUrl + '/work/bookings/recent').subscribe((reply) => {
+      console.log(reply);
+      if (reply.success && reply.payload && reply.payload['items'])
+        this.recentEntries = <RecentBooking[]>reply.payload['items'];
+      setTimeout(() => { this.refreshRecentBookings(); }, 60000);
+    });
   }
 
   s2d(datestr: string): Date {

@@ -105,7 +105,7 @@
     <div class="row g-2">
       <!-- container tracking -->
 
-      <div class="col-12">
+      <div class="col">
         
         <div class="card">
           <div class="card-body">
@@ -113,7 +113,7 @@
             <form #f (submit)="onSubmitBooking()" ngNativeValidate>
             
               <div class="row">
-                <div class="col-6 col-lg-3 col-xl-2 mb-3">
+                <div class="col-6 col-lg-3 mb-3">
                   <div class="form-group">
                     <label for="tracking-from" class="form-label required">{{ i18n('workday.tracking.common.from') }}</label>
                     <input type="text" #focus class="form-control" id="tracking-from" name="tracking-from"
@@ -121,7 +121,7 @@
                       (change)="onChangeTime()" pattern="^(\d{1,2}):?(\d{2})$" required>
                   </div>
                 </div>
-                <div class="col-6 col-lg-3 col-xl-2 mb-3">
+                <div class="col-6 col-lg-3 mb-3">
                   <div class="form-group">
                     <label for="tracking-until" class="form-label required">{{ i18n('workday.tracking.common.until') }}</label>
                     <input type="text" class="form-control" id="tracking-until" name="tracking-until"
@@ -129,7 +129,7 @@
                       (change)="onChangeTime()" pattern="^(\d{1,2}):?(\d{2})$" required>
                   </div>
                 </div>
-                <div class="col-6 col-lg-3 col-xl-2 mb-3">
+                <div class="col-6 col-lg-3 mb-3">
                   <div class="form-group">
                     <label for="tracking-break" class="form-label required">{{ i18n('workday.tracking.common.break') }}</label>
                     <input type="text" class="form-control" id="tracking-break" name="tracking-break"
@@ -137,7 +137,7 @@
                       (change)="onChangeTime()" pattern="^(\d+)$" required>
                   </div>
                 </div>
-                <div class="col-6 col-lg-3 col-xl-2 mb-3">
+                <div class="col-6 col-lg-3 mb-3">
                   <div class="form-group">
                     <label for="tracking-duration" class="form-label">{{ i18n('workday.tracking.common.duration') }}</label>
                     <input type="text" class="form-control" id="tracking-duration" name="tracking-duration"
@@ -147,7 +147,7 @@
               </div>
               
               <div class="row">
-                <div class="col-12 col-lg-6 col-xl-4 mb-3">
+                <div class="col-12 col-lg-6 mb-3">
                   <div class="form-group">
                     <label for="tracking-category" class="form-label required">{{ i18n('workday.tracking.common.timeCategory') }}</label>
                     <div class="input-group">
@@ -165,7 +165,7 @@
               </div>
               
               <div class="row" *ngIf="usersettingsObj.work.tracking.trackCustomer">
-                <div class="col-12 col-lg-4 col-xl-3 mb-3">
+                <div class="col-12 col-lg-4 mb-3">
                   <div class="form-group">
                     <label for="tracking-customer" class="form-label required">{{ i18n('workday.tracking.common.customer') }}</label>
                     <select class="form-select" id="tracking-customer" name="tracking-customer"
@@ -175,7 +175,7 @@
                     </select>
                   </div>
                 </div>
-                <div class="col-12 col-lg-4 col-xl-3 mb-3" *ngIf="usersettingsObj.work.tracking.trackCustomerProject">
+                <div class="col-12 col-lg-4 mb-3" *ngIf="usersettingsObj.work.tracking.trackCustomerProject">
                   <div class="form-group">
                     <label for="tracking-project" class="form-label">{{ i18n('workday.tracking.common.project') }}</label>
                     <select class="form-select" id="tracking-project" name="tracking-project"
@@ -187,7 +187,7 @@
                     </select>
                   </div>
                 </div>
-                <div class="col-12 col-lg-4 col-xl-3 mb-3" *ngIf="usersettingsObj.work.tracking.trackProjectTask">
+                <div class="col-12 col-lg-4 mb-3" *ngIf="usersettingsObj.work.tracking.trackProjectTask">
                   <div class="form-group">
                     <label for="tracking-task" class="form-label">{{ i18n('workday.tracking.common.task') }}</label>
                     <input type="text" class="form-control" id="tracking-task" name="tracking-task"
@@ -197,7 +197,7 @@
               </div>
               
               <div class="row">
-                <div class="col-12 col-xl-9 mb-3">
+                <div class="col-12 mb-3">
                   <div class="form-group">
                     <label for="tracking-description" class="form-label required">{{ i18n('workday.tracking.common.description') }}</label>
                     <textarea class="form-control" id="tracking-description" name="tracking-description"
@@ -207,7 +207,7 @@
               </div>
               
               <div class="row">
-                <div class="col-12 col-xl-9 mb-3">
+                <div class="col-12 mb-3">
                   <div class="form-group">
                     <button type="submit" class="btn btn-primary" [disabled]="busy">
                       <i [class]="config.icons['busy'] + ' me-1'" *ngIf="busy"></i>
@@ -223,6 +223,43 @@
           </div>
         </div>
         
+      </div>
+
+      <div class="col-12 col-lg-4">
+        <ng-container *ngIf="recentEntries.length > 0">
+          <div class="card">
+            <div class="card-body">
+              <ul class="list-group">
+                <li class="list-group-item pointer" *ngFor="let item of recentEntries;"
+                  [title]="i18n('workday.tracking.common.recentTitle')"
+                  (click)="copyFromRecent(item)">
+                  <div class="d-flex">
+                    <div class="me-1">
+                      <span class="badge bg-light text-dark fw-lighter">{{ i18n('search.result.points', ['' + (item.count | number)]) }}</span>
+                    </div>
+                    <div>
+                      <div>
+                        <ng-container *ngIf="category(item.timecategoryid) != undefined">
+                          <i [class]="category(item.timecategoryid)?.icon + ' fs-7 me-1 ' + category(item.timecategoryid)?.iconcolor"></i>
+                        </ng-container>
+                        <ng-container *ngIf="customer(item.customerid) != undefined">
+                          {{ customer(item.customerid)?.name }}
+                        </ng-container>
+                        {{ item.projectstage }}
+                        <ng-container *ngIf="item.projectid != null && project(item.projectid) != undefined">
+                          {{ project(item.projectid)?.name }}
+                        </ng-container>
+                      </div>
+                      <div class="fs-8">
+                        {{ item.description }}
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </ng-container>
       </div>
 
     </div><!-- container tracking -->

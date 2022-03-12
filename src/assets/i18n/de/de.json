@@ -244,6 +244,7 @@
         "duration": "Arbeitszeit",
         "from": "Von",
         "project": "Kundenprojekt",
+        "recentTitle": "Anklicken um diese Daten zu übernehmen",
         "task": "Arbeitspaket",
         "timeCategory": "Kategorie",
         "timePlaceholder": "hh:mm | hhmm | hmm",
