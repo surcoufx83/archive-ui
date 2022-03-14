@@ -97,6 +97,18 @@ export class WorkDayComponent implements OnInit {
     return this.workprops?.customers.find(e => e.id == id);
   }
 
+  deleteBooking(item: WorkDayBooking) : void {
+    console.log(item);
+    let url = this.config.api.baseUrl + '/work/bookings/' + item.id + '/delete';
+    this.authService.updateApi(url, {}).subscribe((reply) => {
+      console.log(reply);
+      if (reply.payload && reply.payload['day'])
+        this.day = <WorkDay>reply.payload['day'];
+      if (this.focusElement != undefined)
+        this.focusElement.nativeElement.focus();
+    });
+  }
+
   f(date: Date|string, form: string): string {
     if (typeof(date) === 'string')
       date = new Date(date);

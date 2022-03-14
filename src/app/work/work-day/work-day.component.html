@@ -110,10 +110,18 @@
                          [title]="i18n('work.timecategories.' + item.timecategory.name)"></i>
                       {{ i18n('calendar.duration.short', ['' + item.duration])  }}
                     </div>
-                    <div class="col-12 col-lg-6">
-                      {{ item.customer?.name }}
-                      {{ item.project?.name }}
-                      <div class="fs-7">{{ item.projectstage }}  {{ item.description }}</div>
+                    <div class="col-12 col-lg-6 d-flex justify-content-between">
+                      <div>
+                        {{ item.customer?.name }}
+                        {{ item.project?.name }}
+                        <div class="fs-7">{{ item.projectstage }}  {{ item.description }}</div>
+                      </div>
+                      <div>
+                        <button class="btn btn-outline-danger"
+                          (click)="deleteBooking(item); $event.stopPropagation();">
+                          <i [class]="config.icons['delete']"></i>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </ng-container>
