@@ -8,6 +8,7 @@ import { AppConfig, ConfigService } from '../../config.service';
 import { I18nService } from '../../i18n.service';
 import { Settings } from '../../user/settings/settings';
 import { RecentBooking, WorkCustomer, WorkDay, WorkDayBooking, WorkProject, WorkProperties, WorkTimeCategory } from '../work';
+import { ViewportScroller } from '@angular/common';
 
 @Component({
   selector: 'app-work-day',
@@ -37,7 +38,8 @@ export class WorkDayComponent implements OnInit {
     private i18nService: I18nService,
     private route: ActivatedRoute,
     private router: Router,
-    private userSettings: SettingsService) {
+    private userSettings: SettingsService,
+    private scroller: ViewportScroller) {
     this.userSettings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
     });
@@ -49,6 +51,12 @@ export class WorkDayComponent implements OnInit {
     setTimeout(() => { this.refreshRecentBookings(); }, 1000);
   }
 
+  get bookings() : WorkDayBooking[] {
+    if (!this.day)
+      return [];
+    return Object.values(this.day.bookings);
+  }
+
   category(id: number) : WorkTimeCategory|undefined {
     return this.workprops?.timeCategories.find(e => e.id == id);
   }
@@ -57,8 +65,7 @@ export class WorkDayComponent implements OnInit {
     return this.configService.config;
   }
 
-  copyFromRecent(item: RecentBooking) : void {
-    console.log(item);
+  copyFromRecent(item: RecentBooking|WorkDayBooking) : void {
     this.bookingProps = {};
     for (let i = 0; i < this.categories.length; i++) {
       if (this.categories[i].id == item.timecategoryid) {
@@ -82,18 +89,28 @@ export class WorkDayComponent implements OnInit {
       this.booking.projectstage = item.projectstage;
       this.booking.description = item.description;
     }
+    this.scroller.scrollToAnchor('scroll-anchor');
+    this.focusElement?.nativeElement.focus();
   }
 
   customer(id: number) : WorkCustomer|undefined {
     return this.workprops?.customers.find(e => e.id == id);
   }
 
-  f(date: Date, form: string): string {
+  f(date: Date|string, form: string): string {
+    if (typeof(date) === 'string')
+      date = new Date(date);
     return format(date, form, { locale: this.i18nService.DateLocale });
   }
 
   fd(duration: number): string {
     return this.i18n('calendar.duration.short', [duration.toLocaleString(this.i18nService.Locale, { minimumFractionDigits: 1 })]);
+  }
+
+  get hasBookings() : boolean {
+    if (!this.day)
+      return false;
+    return Object.keys(this.day.bookings).length > 0;
   }
 
   i18n(key: string, params: string[] = []) : string {
@@ -134,7 +151,6 @@ export class WorkDayComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
-      console.log(params);
       let date = 'today';
       if (params.has('date'))
         date =  params.get('date') ?? '';
@@ -224,7 +240,6 @@ export class WorkDayComponent implements OnInit {
           this.focusElement.nativeElement.focus();
       }
       this.busy = false;
-      console.log(reply);
     });
   }
 
@@ -270,7 +285,6 @@ export class WorkDayComponent implements OnInit {
 
   refreshRecentBookings() : void {
     this.authService.queryApi(this.config.api.baseUrl + '/work/bookings/recent').subscribe((reply) => {
-      console.log(reply);
       if (reply.success && reply.payload && reply.payload['items'])
         this.recentEntries = <RecentBooking[]>reply.payload['items'];
       setTimeout(() => { this.refreshRecentBookings(); }, 60000);

@@ -76,7 +76,56 @@
 
   </div>
 
-  <div class="container pt-4 pt-md-2 mb-2">
+  <ng-container *ngIf="hasBookings">
+    <div class="container pt-4 pt-md-2 mb-2">
+      <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between">
+        <h3>{{ i18n('workday.tracked.title') }}</h3>
+      </div>
+    </div>
+    <div class="container pt-md-2 mb-2">
+      <div class="row g-2">
+        <div class="col">
+          <div class="card">
+            <div class="card-body p-0">
+              <div class="flex-table flex-table-sm mb-3">
+                <div class="flex-table-head row">
+                  <div class="col-4 col-lg-2">{{ i18n('workday.tracked.fromUntilTitle') }}</div>
+                  <div class="col-4 col-lg-2">{{ i18n('workday.tracking.common.break') }}</div>
+                  <div class="col-4 col-lg-2">{{ i18n('workday.tracking.common.duration') }}</div>
+                  <div class="col-12 col-lg-6">{{ i18n('workday.tracked.description') }}</div>
+                </div>
+                <ng-container *ngFor="let item of bookings; let i = index;">
+                  <div [ngClass]="['flex-table-body row pointer']"
+                  (click)="copyFromRecent(item);">
+                    <div class="col-4 col-lg-2">
+                      {{ i18n('workday.tracked.fromUntil', [f(item.timefrom, 'p'), f(item.timeuntil, 'p')])  }}
+                    </div>
+                    <div class="col-4 col-lg-2">
+                      <ng-container *ngIf="item.break > 0">
+                        {{ i18n('calendar.duration.short', ['' + item.break])  }}
+                      </ng-container>
+                    </div>
+                    <div class="col-4 col-lg-2">
+                      <i [class]="item.timecategory.icon + ' ' + item.timecategory.iconcolor + ' me-1'"
+                         [title]="i18n('work.timecategories.' + item.timecategory.name)"></i>
+                      {{ i18n('calendar.duration.short', ['' + item.duration])  }}
+                    </div>
+                    <div class="col-12 col-lg-6">
+                      {{ item.customer?.name }}
+                      {{ item.project?.name }}
+                      <div class="fs-7">{{ item.projectstage }}  {{ item.description }}</div>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <div class="container pt-4 pt-md-2 mb-2" id="scroll-anchor">
     <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between">
       <h3 *ngIf="usersettingsObj.work.livetracking.enabled">{{ i18n('workday.tracking.liveTitle') }}</h3>
       <h3 *ngIf="!usersettingsObj.work.livetracking.enabled">{{ i18n('workday.tracking.title') }}</h3>
@@ -232,7 +281,7 @@
               <ul class="list-group">
                 <li class="list-group-item pointer" *ngFor="let item of recentEntries;"
                   [title]="i18n('workday.tracking.common.recentTitle')"
-                  (click)="copyFromRecent(item)">
+                  (click)="copyFromRecent(item);">
                   <div class="d-flex">
                     <div class="me-1">
                       <span class="badge bg-light text-dark fw-lighter">{{ i18n('search.result.points', ['' + (item.count | number)]) }}</span>

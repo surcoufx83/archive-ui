@@ -25,7 +25,7 @@ export interface WorkCustomer {
 }
 
 export interface WorkDay {
-  bookings: WorkDayBooking[];
+  bookings: {[key: number]: WorkDayBooking};
   date: string;
   day: number;
   holiday: WorkHoliday|null;
