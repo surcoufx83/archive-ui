@@ -231,10 +231,10 @@
       "booked": "Tracked"
     },
     "tracked": {
-      "title": "Heutige Buchungen",
-      "description": "Beschreibung",
-      "fromUntil": "{0} bis {1}",
-      "fromUntilTitle": "Von Bis"
+      "title": "Today's tracked time",
+      "description": "Description",
+      "fromUntil": "{0} to {1}",
+      "fromUntilTitle": "From - To"
     },
     "tracking": {
       "title": "Time tracking",
@@ -249,7 +249,7 @@
         "duration": "Working hours",
         "from": "Of",
         "project": "Customer project",
-        "recentTitle": "Anklicken um diese Daten zu übernehmen",
+        "recentTitle": "Click to apply",
         "task": "Work package",
         "timeCategory": "Category",
         "timePlaceholder": "hh:mm | hmm | hmm",
