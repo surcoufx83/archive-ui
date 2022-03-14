@@ -230,6 +230,12 @@
       "title": "Summary",
       "booked": "Tracked"
     },
+    "tracked": {
+      "title": "Heutige Buchungen",
+      "description": "Beschreibung",
+      "fromUntil": "{0} bis {1}",
+      "fromUntilTitle": "Von Bis"
+    },
     "tracking": {
       "title": "Time tracking",
       "liveTitle": "Live time tracking",
