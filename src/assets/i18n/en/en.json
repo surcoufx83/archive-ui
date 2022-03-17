@@ -195,7 +195,7 @@
         "notes": "Notes",
         "pages": "File Content",
         "onPageNo": "Page {0}",
-        "downloadFileTitle": "Datei herunterladen",
+        "downloadFileTitle": "Download file",
         "gotoPreviewTitle": "Jump directly to the file view"
       },
       "points": "{0} P.",
