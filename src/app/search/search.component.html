@@ -91,7 +91,7 @@
         <a class="list-group-item" *ngFor="let item of searchresults.accounts;"
           [routerLink]="['/finance', 'accounts', item.account.id]">
           <div class="d-flex">
-            <div>
+            <div class="d-none d-lg-block">
               <span class="badge bg-light text-dark fw-lighter">{{ i18n('search.result.points', ['' + (item.relevance |
                 number)]) }}</span>
             </div>
@@ -114,7 +114,7 @@
       <ul class="list-group" *ngIf="searchresults.cases">
         <a class="list-group-item" *ngFor="let item of searchresults.cases;" [routerLink]="['/case', item.case.id]">
           <div class="d-flex">
-            <div>
+            <div class="d-none d-lg-block">
               <span class="badge bg-light text-dark fw-lighter">{{ i18n('search.result.points', ['' + (item.relevance |
                 number)]) }}</span>
             </div>
@@ -137,7 +137,7 @@
       <ul class="list-group" *ngIf="searchresults.directories">
         <a class="list-group-item" *ngFor="let item of searchresults.directories;"
           [routerLink]="['/dir', item.directory.id]">
-          <span class="badge bg-light text-dark fw-lighter">{{ i18n('search.result.points', ['' + (item.relevance |
+          <span class="badge bg-light text-dark fw-lighter d-none d-lg-inline-block">{{ i18n('search.result.points', ['' + (item.relevance |
             number)]) }}</span>
           {{ item.directory.relpath }}
         </a>
@@ -151,19 +151,13 @@
       <ul class="list-group" *ngIf="searchresults.files">
         <li class="list-group-item" *ngFor="let item of searchresults.files;">
           <div class="d-flex">
-            <div [routerLink]="['/file', item.file.id]" class="pointer">
+            <div [routerLink]="['/file', item.file.id]" class="pointer d-none d-lg-block">
               <span class="badge bg-light text-dark fw-lighter">{{ i18n('search.result.points', ['' + (item.relevance |
                 number)]) }}</span>
             </div>
             <div [routerLink]="['/file', item.file.id]" class="flex-grow-1 pointer">
               <div>{{ item.file.name }}</div>
-              <div class="fs-8">
-                <span class="text-primary" *ngIf="item.file.class">
-                  {{ i18n('classify.classes.' + item.file.class.techname) }} •
-                </span>
-                {{ item.file.size | filesize }} •
-                {{ item.file.relpath }}
-              </div>
+              
             </div>
             <div *ngIf="item.version.ext?.displayable" class="ms-2 ms-lg-1">
               <a [routerLink]="['/file', item.file.id, 'preview']" [title]="i18n('search.result.group.gotoPreviewTitle')">
@@ -180,6 +174,13 @@
               </a>
             </div>
           </div>
+          <div class="fs-8 text-wrap text-break">
+            <span class="text-primary" *ngIf="item.file.class">
+              {{ i18n('classify.classes.' + item.file.class.techname) }} •
+            </span>
+            {{ item.file.size | filesize }} •
+            {{ item.file.relpath }}
+          </div>
         </li>
       </ul>
     </div>
@@ -191,21 +192,15 @@
       <ul class="list-group" *ngIf="searchresults.pages">
         <a class="list-group-item" *ngFor="let item of searchresults.pages;" [routerLink]="['/file', item.file.id]">
           <div class="d-flex">
-            <div>
+            <div [routerLink]="['/file', item.file.id]" class="pointer d-none d-lg-block">
               <span class="badge bg-light text-dark fw-lighter">{{ i18n('search.result.points', ['' + (item.relevance |
                 number)]) }}</span>
             </div>
-            <div class="flex-grow-1">
+            <div [routerLink]="['/file', item.file.id]" class="flex-grow-1 pointer">
               <div>{{ item.file.name }}</div>
-              <div class="fs-8">
-                <span class="text-primary">
-                  {{ i18n('search.result.group.onPageNo', ['' + item.page.pageno]) }} •
-                </span>
-                {{ item.file.size | filesize }} •
-                {{ item.file.relpath }}
-              </div>
+              
             </div>
-            <div *ngIf="item.version.ext?.displayable" class="ms-2">
+            <div *ngIf="item.version.ext?.displayable" class="ms-2 ms-lg-1">
               <a [routerLink]="['/file', item.file.id, 'preview']" [title]="i18n('search.result.group.gotoPreviewTitle')">
                 <button type="button" class="form-control btn-sm btn-outline-secondary text-nowrap">
                   <i [class]="config.icons['preview'] + ' mx-1'"></i>
@@ -220,6 +215,13 @@
               </a>
             </div>
           </div>
+          <div class="fs-8 text-wrap text-break">
+            <span class="text-primary" *ngIf="item.file.class">
+              {{ i18n('classify.classes.' + item.file.class.techname) }} •
+            </span>
+            {{ item.file.size | filesize }} •
+            {{ item.file.relpath }}
+          </div>
         </a>
       </ul>
     </div>
@@ -230,7 +232,7 @@
         ''+resultgroupcount['notes']), i18n('search.result.group.notes')]) }}</h4>
       <ul class="list-group" *ngIf="searchresults.notes">
         <a class="list-group-item" *ngFor="let item of searchresults.notes;" [routerLink]="['/notepad', item.note.id]">
-          <span class="badge bg-light text-dark fw-lighter">{{ i18n('search.result.points', ['' + (item.relevance |
+          <span class="badge bg-light text-dark fw-lighter d-none d-lg-inline-block">{{ i18n('search.result.points', ['' + (item.relevance |
             number)]) }}</span>
           {{ item.note.title }}
         </a>
