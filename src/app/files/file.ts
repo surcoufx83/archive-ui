@@ -17,6 +17,7 @@ export interface Directory {
 export interface Extension {
     id: number;
     displayable: boolean;
+    downloadable: boolean;
     ext: string;
     indexable: boolean;
     mimetype: string;

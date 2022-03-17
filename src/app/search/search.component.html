@@ -149,13 +149,13 @@
       <h4>{{ i18n('search.result.subtitle', [(resultgroupcount['files'] == undefined ? i18n('common.none') :
         ''+resultgroupcount['files']), i18n('search.result.group.files')]) }}</h4>
       <ul class="list-group" *ngIf="searchresults.files">
-        <a class="list-group-item" *ngFor="let item of searchresults.files;" [routerLink]="['/file', item.file.id]">
+        <li class="list-group-item" *ngFor="let item of searchresults.files;">
           <div class="d-flex">
-            <div>
+            <div [routerLink]="['/file', item.file.id]" class="pointer">
               <span class="badge bg-light text-dark fw-lighter">{{ i18n('search.result.points', ['' + (item.relevance |
                 number)]) }}</span>
             </div>
-            <div class="flex-grow-1">
+            <div [routerLink]="['/file', item.file.id]" class="flex-grow-1 pointer">
               <div>{{ item.file.name }}</div>
               <div class="fs-8">
                 <span class="text-primary" *ngIf="item.file.class">
@@ -165,15 +165,22 @@
                 {{ item.file.relpath }}
               </div>
             </div>
-            <div *ngIf="item.version.ext?.displayable" class="ms-2">
+            <div *ngIf="item.version.ext?.displayable" class="ms-2 ms-lg-1">
               <a [routerLink]="['/file', item.file.id, 'preview']" [title]="i18n('search.result.group.gotoPreviewTitle')">
                 <button type="button" class="form-control btn-sm btn-outline-secondary text-nowrap">
                   <i [class]="config.icons['preview'] + ' mx-1'"></i>
                 </button>
               </a>
             </div>
+            <div *ngIf="item.version.ext?.downloadable" class="ms-2 ms-lg-1">
+              <a (click)="download(item)" [title]="i18n('search.result.group.downloadFileTitle')">
+                <button type="button" class="form-control btn-sm btn-outline-secondary text-nowrap">
+                  <i [class]="config.icons['download'] + ' mx-1'"></i>
+                </button>
+              </a>
+            </div>
           </div>
-        </a>
+        </li>
       </ul>
     </div>
 
@@ -202,6 +209,13 @@
               <a [routerLink]="['/file', item.file.id, 'preview']" [title]="i18n('search.result.group.gotoPreviewTitle')">
                 <button type="button" class="form-control btn-sm btn-outline-secondary text-nowrap">
                   <i [class]="config.icons['preview'] + ' mx-1'"></i>
+                </button>
+              </a>
+            </div>
+            <div *ngIf="item.version.ext?.downloadable" class="ms-2 ms-lg-1">
+              <a (click)="download(item)" [title]="i18n('search.result.group.downloadFileTitle')">
+                <button type="button" class="form-control btn-sm btn-outline-secondary text-nowrap">
+                  <i [class]="config.icons['download'] + ' mx-1'"></i>
                 </button>
               </a>
             </div>

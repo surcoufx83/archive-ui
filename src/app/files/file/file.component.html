@@ -4,17 +4,23 @@
     <div class="container pt-4 pt-md-2 mb-2">
         <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between align-items-center">
             <h2 class="text-nowrap text-truncate">{{ i18n('file.title', [file.name]) }}</h2>
-            <div class="ps-3 mb-2" *ngIf="file.fileexists">
-                <a [routerLink]="['/file', file.id]" *ngIf="view === 'preview'" class="text-decoration-none">
+            <div class="ps-3 mb-2 d-flex" *ngIf="file.fileexists">
+                <a [routerLink]="['/file', file.id]" *ngIf="view === 'preview'" class="text-decoration-none ms-3 ms-lg-1">
                     <button type="button" class="form-control btn-sm btn-secondary text-nowrap">
-                        <i [class]="config.icons['go-left'] + ' me-1'"></i>
-                        {{ i18n('common.back') }}
+                        <i [class]="config.icons['go-left']"></i>
+                        <span class="d-none d-lg-inline ms-1">{{ i18n('common.back') }}</span>
                     </button>
                 </a>
-                <a [routerLink]="['/file', file.id, 'preview']" *ngIf="view !== 'preview'" class="text-decoration-none">
+                <a [routerLink]="['/file', file.id, 'preview']" *ngIf="view !== 'preview' && displayable" class="text-decoration-none ms-3 ms-lg-1">
                     <button type="button" class="form-control btn-sm btn-secondary text-nowrap">
-                        <i [class]="config.icons['preview'] + ' me-1'"></i>
-                        {{ i18n('file.previewButton') }}
+                        <i [class]="config.icons['preview']"></i>
+                        <span class="d-none d-lg-inline ms-1">{{ i18n('file.previewButton') }}</span>
+                    </button>
+                </a>
+                <a (click)="download()" *ngIf="downloadable" class="text-decoration-none ms-3 ms-lg-1">
+                    <button type="button" class="form-control btn-sm btn-secondary text-nowrap">
+                        <i [class]="config.icons['download']"></i>
+                        <span class="d-none d-lg-inline ms-1">{{ i18n('file.downloadButton') }}</span>
                     </button>
                 </a>
             </div>
@@ -37,6 +43,13 @@
                 <div class="card col-12 w-100 h-100">
                     <div class="card-body">
                         <iframe #htmlViewer class="w-100 h-100" src="about:blank"></iframe>
+                    </div>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="getViewer() == 'img'">
+                <div class="card col-12 w-100 h-100">
+                    <div class="card-body">
+                        <img #imgViewer src="" style="max-width: 100%; height: auto;">
                     </div>
                 </div>
             </ng-container>

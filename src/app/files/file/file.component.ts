@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import * as saveAs from 'file-saver';
 import { PdfJsViewerComponent } from 'ng2-pdfjs-viewer';
 import { AuthService } from '../../auth.service';
 import { AppConfig, ConfigService } from '../../config.service';
@@ -15,6 +16,7 @@ import { File, Version } from '../file';
 })
 export class FileComponent implements OnInit {
 
+  @ViewChild('imgViewer') imgViewer?: ElementRef;
   @ViewChild('htmlViewer') htmlViewer?: ElementRef;
   @ViewChild(PdfJsViewerComponent) pdfViewer?: PdfJsViewerComponent;
 
@@ -42,17 +44,38 @@ export class FileComponent implements OnInit {
     return this.configService.config;
   }
 
-  private downloadFile(id: number): void {
-    if (this.view !== 'preview') {
-      this.busy = false;
+  get displayable() : boolean {
+    if (!this.recentVersion || !this.recentVersion.ext)
+      return false;
+    return this.recentVersion.ext.displayable;
+  }
+
+  get downloadable() : boolean {
+    if (!this.recentVersion || !this.recentVersion.ext)
+      return false;
+    return this.recentVersion.ext.downloadable;
+  }
+
+  download() : void {
+    if (this.file == null)
       return;
-    }
+    let file = this.file;
+    this.authService.download(this.fileurl).subscribe(blob => saveAs(blob, file.name));
+  }
+
+  private downloadFile(id: number): void {
     if (this.file != undefined && Object.keys(this.file.versions).length > 0) {
       this.recentVersion = this.file.versions[+(Object.keys(this.file.versions)[Object.keys(this.file.versions).length - 1])];
       if (!this.recentVersion.ext?.displayable) {
         this.busy = false;
         return;
       }
+    }
+    if (this.view !== 'preview') {
+      this.busy = false;
+      return;
+    }
+    if (this.file != undefined && this.recentVersion != undefined) {
       let url = this.config.api.baseUrl + '/file/' + id + '/download';
       this.authService.download(url).subscribe(async (reply) => {
         this.filecontent = reply;
@@ -61,12 +84,15 @@ export class FileComponent implements OnInit {
           this.pdfViewer.refresh();
         }
         else if (this.getViewer() === 'html' && this.htmlViewer != undefined) {
-          console.log(this.getViewer());
-          console.log(this.htmlViewer);
           let document = this.htmlViewer.nativeElement.contentWindow.document;
           document.open();
-          document.write((await new Response(this.filecontent).text()));
+          document.write(await new Response(this.filecontent).text());
           document.close();
+        }
+        else if (this.getViewer() === 'img' && this.imgViewer != undefined) {
+          let urlCreator = window.URL || window.webkitURL;
+          let url = urlCreator.createObjectURL(await new Response(this.filecontent).blob());
+          this.imgViewer.nativeElement.src = url;
         }
         else {
           let reader = new FileReader();
@@ -132,8 +158,18 @@ export class FileComponent implements OnInit {
     switch(this.recentVersion.ext.mimetype) {
       case 'application/pdf':
         return 'ng2-pdfjs-viewer';
+      case 'image/gif':
+      case 'image/jpeg':
+      case 'image/png':
+      case 'image/tiff':
+        return 'img';
       case 'text/html':
         return 'html';
+      case 'application/xml':
+      case 'text/css':
+      case 'text/csv':
+      case 'text/markdown':
+      case 'text/plain':
       default:
         return 'plaintext';
     }

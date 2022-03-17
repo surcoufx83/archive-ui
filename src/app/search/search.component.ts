@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { format } from 'date-fns';
+import { saveAs } from 'file-saver';
 import { AuthService } from '../auth.service';
 import { Case } from '../cases/case';
 import { AppConfig, ConfigService } from '../config.service';
@@ -62,10 +63,18 @@ export class SearchComponent implements OnInit {
     return this.configService.config;
   }
 
+  download(item: SearchResultFileItem) : void {
+    this.authService.download(this.fileurl(item)).subscribe(blob => saveAs(blob, item.file.name));
+  }
+
   f(date: Date|string, form: string): string {
     if (typeof date === 'string')
       date = new Date(date);
     return format(date, form, { locale: this.i18nService.DateLocale });
+  }
+
+  fileurl(item: SearchResultFileItem): string {
+    return this.config.api.baseUrl + '/file/' + item.file.id + '/download';
   }
 
   i18n(key: string, params: string[] = []): string {
