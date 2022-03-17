@@ -29,7 +29,14 @@
             <ng-container *ngIf="getViewer() == 'plaintext'">
                 <div class="card col-12">
                     <div class="card-body">
-                        <pre class="codeblock linenumbers"><code><span *ngFor="let line of textcontent">{{ line }}</span></code></pre>
+                        <pre class="codeblock linenumbers"><code><ul class="p-0"><li *ngFor="let line of textcontent; let i = index" class="d-flex"><div class="counter">{{ (i+1) }}</div><div class="content flex-shrink-1">{{ line }}</div></li></ul></code></pre>
+                    </div>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="getViewer() == 'html'">
+                <div class="card col-12 w-100 h-100">
+                    <div class="card-body">
+                        <iframe #htmlViewer class="w-100 h-100" src="about:blank"></iframe>
                     </div>
                 </div>
             </ng-container>

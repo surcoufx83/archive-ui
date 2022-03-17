@@ -90,27 +90,22 @@
 
 pre {
   &.codeblock.linenumbers {
-    counter-reset: line;
-    span {
-      display: block;
-      line-height: 1.5rem;
-      &:before {
-        counter-increment: line;
-        content: '   ' counter(line);
-        display: inline-block;
+    li {
+      .content {
+        line-height: 1.5rem;
+        margin-left: .5rem;
+        padding: 0 .4rem;
+        word-wrap: break-word;
+        white-space: pre;
+      }
+      .counter {
         border-right: 1px solid #ddd;
-        padding: 0 .5em;
-        margin-right: .5em;
-        color: #888
-      }
-      &:nth-child(n + 10)::before {
-        content: '  ' counter(line);
-      }
-      &:nth-child(n + 100)::before {
-        content: ' ' counter(line);
-      }
-      &:nth-child(n + 1000)::before {
-        content: counter(line);
+        padding: 0 .4rem;
+        color: #888;
+        max-width: 3rem!important;
+        min-width: 3rem!important;
+        width: 3rem!important;
+        text-align: right;
       }
     }
   }

@@ -15,6 +15,7 @@ import { File, Version } from '../file';
 })
 export class FileComponent implements OnInit {
 
+  @ViewChild('htmlViewer') htmlViewer?: ElementRef;
   @ViewChild(PdfJsViewerComponent) pdfViewer?: PdfJsViewerComponent;
 
   busy: boolean = false;
@@ -58,7 +59,16 @@ export class FileComponent implements OnInit {
         if (this.pdfViewer && this.recentVersion?.ext?.mimetype === 'application/pdf' && this.filecontent) {
           this.pdfViewer.pdfSrc = this.filecontent;
           this.pdfViewer.refresh();
-        } else {
+        }
+        else if (this.getViewer() === 'html' && this.htmlViewer != undefined) {
+          console.log(this.getViewer());
+          console.log(this.htmlViewer);
+          let document = this.htmlViewer.nativeElement.contentWindow.document;
+          document.open();
+          document.write((await new Response(this.filecontent).text()));
+          document.close();
+        }
+        else {
           let reader = new FileReader();
           this.textcontent = (await new Response(this.filecontent).text()).split('\n');
         }
@@ -122,6 +132,8 @@ export class FileComponent implements OnInit {
     switch(this.recentVersion.ext.mimetype) {
       case 'application/pdf':
         return 'ng2-pdfjs-viewer';
+      case 'text/html':
+        return 'html';
       default:
         return 'plaintext';
     }
