@@ -8,7 +8,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { NgxFilesizeModule } from 'ngx-filesize';
-import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { PdfJsViewerModule } from 'ng2-pdfjs-viewer';
 
 import { AccountComponent } from './account/account.component';
@@ -87,7 +86,6 @@ registerLocaleData(localeDe);
     }),
     NgxFilesizeModule,
     PdfJsViewerModule,
-    NgxExtendedPdfViewerModule,
   ],
   providers: [
     {
