@@ -94,6 +94,7 @@
   },
   "file": {
     "title": "File {0}",
+    "downloadButton": "Download",
     "previewButton": "Preview",
     "common": {}
   },
@@ -194,6 +195,7 @@
         "notes": "Notes",
         "pages": "File Content",
         "onPageNo": "Page {0}",
+        "downloadFileTitle": "Datei herunterladen",
         "gotoPreviewTitle": "Jump directly to the file view"
       },
       "points": "{0} P.",
