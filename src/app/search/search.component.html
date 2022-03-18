@@ -149,39 +149,11 @@
       <h4>{{ i18n('search.result.subtitle', [(resultgroupcount['files'] == undefined ? i18n('common.none') :
         ''+resultgroupcount['files']), i18n('search.result.group.files')]) }}</h4>
       <ul class="list-group" *ngIf="searchresults.files">
-        <li class="list-group-item" *ngFor="let item of searchresults.files;">
-          <div class="d-flex">
-            <div [routerLink]="['/file', item.file.id]" class="pointer d-none d-lg-block">
-              <span class="badge bg-light text-dark fw-lighter">{{ i18n('search.result.points', ['' + (item.relevance |
-                number)]) }}</span>
-            </div>
-            <div [routerLink]="['/file', item.file.id]" class="flex-grow-1 pointer">
-              <div>{{ item.file.name }}</div>
-              
-            </div>
-            <div *ngIf="item.version.ext?.displayable" class="ms-2 ms-lg-1">
-              <a [routerLink]="['/file', item.file.id, 'preview']" [title]="i18n('search.result.group.gotoPreviewTitle')">
-                <button type="button" class="form-control btn-sm btn-outline-secondary text-nowrap">
-                  <i [class]="config.icons['preview'] + ' mx-1'"></i>
-                </button>
-              </a>
-            </div>
-            <div *ngIf="item.version.ext?.downloadable" class="ms-2 ms-lg-1">
-              <a (click)="download(item)" [title]="i18n('search.result.group.downloadFileTitle')">
-                <button type="button" class="form-control btn-sm btn-outline-secondary text-nowrap">
-                  <i [class]="config.icons['download'] + ' mx-1'"></i>
-                </button>
-              </a>
-            </div>
-          </div>
-          <div class="fs-8 text-wrap text-break">
-            <span class="text-primary" *ngIf="item.file.class">
-              {{ i18n('classify.classes.' + item.file.class.techname) }} •
-            </span>
-            {{ item.file.size | filesize }} •
-            {{ item.file.relpath }}
-          </div>
-        </li>
+        <file-list-item *ngFor="let item of searchresults.files;" [file]="item.file" [relevance]="item.relevance"
+          (clicked)="router.navigate(['/file', item.file.id])"
+          (downloadClicked)="download(item)"
+          (previewClicked)="router.navigate(['/file', item.file.id, 'preview'])"
+        ></file-list-item>
       </ul>
     </div>
 
@@ -190,39 +162,11 @@
       <h4>{{ i18n('search.result.subtitle', [(resultgroupcount['pages'] == undefined ? i18n('common.none') :
         ''+resultgroupcount['pages']), i18n('search.result.group.pages')]) }}</h4>
       <ul class="list-group" *ngIf="searchresults.pages">
-        <a class="list-group-item" *ngFor="let item of searchresults.pages;" [routerLink]="['/file', item.file.id]">
-          <div class="d-flex">
-            <div [routerLink]="['/file', item.file.id]" class="pointer d-none d-lg-block">
-              <span class="badge bg-light text-dark fw-lighter">{{ i18n('search.result.points', ['' + (item.relevance |
-                number)]) }}</span>
-            </div>
-            <div [routerLink]="['/file', item.file.id]" class="flex-grow-1 pointer">
-              <div>{{ item.file.name }}</div>
-              
-            </div>
-            <div *ngIf="item.version.ext?.displayable" class="ms-2 ms-lg-1">
-              <a [routerLink]="['/file', item.file.id, 'preview']" [title]="i18n('search.result.group.gotoPreviewTitle')">
-                <button type="button" class="form-control btn-sm btn-outline-secondary text-nowrap">
-                  <i [class]="config.icons['preview'] + ' mx-1'"></i>
-                </button>
-              </a>
-            </div>
-            <div *ngIf="item.version.ext?.downloadable" class="ms-2 ms-lg-1">
-              <a (click)="download(item)" [title]="i18n('search.result.group.downloadFileTitle')">
-                <button type="button" class="form-control btn-sm btn-outline-secondary text-nowrap">
-                  <i [class]="config.icons['download'] + ' mx-1'"></i>
-                </button>
-              </a>
-            </div>
-          </div>
-          <div class="fs-8 text-wrap text-break">
-            <span class="text-primary" *ngIf="item.file.class">
-              {{ i18n('classify.classes.' + item.file.class.techname) }} •
-            </span>
-            {{ item.file.size | filesize }} •
-            {{ item.file.relpath }}
-          </div>
-        </a>
+        <file-list-item *ngFor="let item of searchresults.pages;" [file]="item.file" [relevance]="item.relevance"
+          (clicked)="router.navigate(['/file', item.file.id])"
+          (downloadClicked)="download(item)"
+          (previewClicked)="router.navigate(['/file', item.file.id, 'preview'])"
+        ></file-list-item>
       </ul>
     </div>
 

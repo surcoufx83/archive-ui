@@ -26,6 +26,7 @@ import { WorkTimeCategoriesComponent } from './work/settings/time-categories/tim
 import { WorkYearComponent } from './work/work-year/work-year.component';
 import { SearchComponent } from './search/search.component';
 import { FileComponent } from './files/file/file.component';
+import { FilesComponent } from './files/files/files.component';
 
 const routes: Routes = [
   { path: 'account', component: AccountComponent, canActivate: [ SessionGuard ] },
@@ -34,6 +35,8 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [ SessionGuard ] },
   { path: 'file/:id/:view', component: FileComponent, canActivate: [ SessionGuard ] },
   { path: 'file/:id', component: FileComponent, canActivate: [ SessionGuard ] },
+  { path: 'files/:id', component: FilesComponent, canActivate: [ SessionGuard ] },
+  { path: 'files', component: FilesComponent, canActivate: [ SessionGuard ], pathMatch: 'full' },
   { path: 'finance', component: FinanceComponent, canActivate: [ SessionGuard ] },
   { path: 'login', children: [
     { path: 'oauth2', component: Oauth2CallbackComponent, canActivate: [ SessionGuard ] },

@@ -62,6 +62,14 @@ export class I18nService {
     return undefined;
   }
 
+  formatDate(n: Date, options: Intl.DateTimeFormatOptions) {
+    return n.toLocaleDateString(this.locale, options);
+  }
+
+  formatNumber(n: number, options: Intl.NumberFormatOptions) {
+    return n.toLocaleString(this.locale, options);
+  }
+
   get Locale() : string {
     return this.locale;
   }

@@ -41,6 +41,8 @@ import { WorkYearComponent } from './work/work-year/work-year.component';
 import { Oauth2CallbackComponent } from './login/oauth2-callback/oauth2-callback.component';
 import { SearchComponent } from './search/search.component';
 import { FileComponent } from './files/file/file.component';
+import { FilesComponent } from './files/files/files.component';
+import { FileListItemComponent } from './files/file-list-item/file-list-item.component';
 
 registerLocaleData(localeDe);
 
@@ -73,6 +75,8 @@ registerLocaleData(localeDe);
     Oauth2CallbackComponent,
     SearchComponent,
     FileComponent,
+    FilesComponent,
+    FileListItemComponent,
   ],
   imports: [
     AppRoutingModule,

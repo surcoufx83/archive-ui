@@ -69,6 +69,26 @@
 .fs-7 { font-size: $font-size-base * .9!important; }
 .fs-8 { font-size: $font-size-base * .8!important; }
 
+.list-group{
+  &.list-group-flush,&.flush {
+    >file-list-item .list-group-item {
+      border-width: 0 0 1px;
+    }
+  }
+  &.list-group-hover,&.hover {
+    >file-list-item .list-group-item:hover {
+      background-color: rgba(0, 0, 0, .08);
+      color: #212529;
+    }
+  }
+  &.sm {
+    .list-group-item {
+      padding: .125rem .5rem;
+    }
+  }
+}
+
+
 .navbar.navbar-sm {
   .navbar-nav .nav-link {
     font-size: 92%;

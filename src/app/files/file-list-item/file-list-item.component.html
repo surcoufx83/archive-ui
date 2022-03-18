@@ -1,0 +1,30 @@
+<li class="list-group-item pointer" (click)="click(); $event.stopPropagation();">
+    <div class="d-flex">
+        <div class="pointer d-none d-lg-block" *ngIf="relevance">
+            <span class="badge bg-light text-dark fw-lighter">{{ i18n('search.result.points', ['' + fn(relevance)])
+                }}</span>
+        </div>
+        <div class="flex-grow-1 pointer">
+            <div>{{ file.name }}</div>
+        </div>
+        <div *ngIf="showButtons && version && version.ext?.displayable" class="ms-2 ms-lg-1">
+            <button type="button" class="form-control btn-sm btn-outline-secondary text-nowrap"
+                (click)="preview(); $event.stopPropagation();" [title]="i18n('search.result.group.gotoPreviewTitle')">
+                <i [class]="config.icons['preview'] + ' mx-1'"></i>
+            </button>
+        </div>
+        <div *ngIf="showButtons && version && version.ext?.downloadable" class="ms-2 ms-lg-1">
+            <button type="button" class="form-control btn-sm btn-outline-secondary text-nowrap"
+                (click)="download(); $event.stopPropagation();" [title]="i18n('search.result.group.downloadFileTitle')">
+                <i [class]="config.icons['download'] + ' mx-1'"></i>
+            </button>
+        </div>
+    </div>
+    <div class="fs-8 text-wrap text-break">
+        <span class="text-primary" *ngIf="file.class">
+            {{ i18n('classify.classes.' + file.class.techname) }} •
+        </span>
+        {{ file.size | filesize }} •
+        {{ file.relpath }}
+    </div>
+</li>

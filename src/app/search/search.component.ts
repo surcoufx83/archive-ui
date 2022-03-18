@@ -47,7 +47,7 @@ export class SearchComponent implements OnInit {
     private configService: ConfigService,
     private i18nService: I18nService,
     private route: ActivatedRoute,
-    private router: Router,
+    public router: Router,
     private settings: SettingsService)
   {
     this.settings.settings$.subscribe((settings) => {

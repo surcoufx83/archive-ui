@@ -99,7 +99,26 @@
     "common": {
     }
   },
-  "home": {},
+  "home": {
+    "title": "Archiv Start",
+    "cases": {
+      "title": "Akten zur Prüfung"
+    },
+    "inbox": {
+      "title": "Neue Dokumente"
+    },
+    "stats": {
+      "title": "Schnelle Statistiken...",
+      "files1": "Das Archiv verwaltet aktuell {0} Dateien in {1} Verzeichnissen mit insgesamt {2}.",
+      "files2": "{0} der Dateien wurden Klassifiziert, {1} wurden einer Akte zugeordnert. Von {2} konnte kein OCR-Text erzeugt werden.",
+      "files3": "Diesen Monat wurden {0} neue Dateien hinzugefügt.",
+      "casesLink": "Akten",
+      "filesLink": "Alle Dateien",
+      "noclassFilesLink": "Nicht klassifiziert",
+      "noocrFilesLink": "Kein OCR",
+      "storageLink": "Speicher"
+    }
+  },
   "lead": {
     "title": "Lead #{0}",
     "common": {
