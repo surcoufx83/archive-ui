@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from './auth.service';
 import { ConfigService, AppConfig } from './config.service';
@@ -13,7 +13,7 @@ import { WorkProperties } from './work/work';
   styleUrls: ['./app.component.scss'],
   providers: [ SettingsService ]
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
 
   routeUrl: string = '';
   searchphrase: string = '';
@@ -36,22 +36,6 @@ export class AppComponent implements OnInit {
 
   get isLoggedin() : boolean {
     return this.authService.isLoggedin;
-  }
-
-  ngOnInit() {
-    let url = this.config.api.baseUrl + '/user/settings';
-    this.authService.queryApi(url).subscribe((reply) => {
-      if (reply.success && reply.payload != null) {
-        this.settings.updateUser(<User>reply.payload['user']);
-        this.settings.updateWorkProps(<WorkProperties>reply.payload['work']);
-      } else {
-        if (!reply.success && reply.redirect != null && reply.redirectTo != null) {
-          if (reply.redirect === true && reply.redirectTo === '/login') {
-            this.authService.logout();
-          }
-        }
-      }
-    });
   }
 
   submitSearch() : void {

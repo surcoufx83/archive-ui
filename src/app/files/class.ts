@@ -1,6 +1,7 @@
 export interface Class {
-    id: number;
     description: string;
+    email: string;
+    id: number;
     isdefault: boolean;
     name: string;
     namepattern: string;

@@ -141,8 +141,12 @@
             <div class="row"><!-- file header data directory + filename -->
               <div class="col-12 col-lg-6 mb-3">
                 <div class="form-group">
-                  <label for="file-name" class="form-label required">{{ i18n('file.classify.class') }}</label>
-                  
+                  <label for="file-class" class="form-label">{{ i18n('file.classify.class') }}</label>
+                  <select class="form-select" id="file-class" name="file-class"
+                      [(ngModel)]="file.classid" (change)="setClassId();">
+                      <option [value]="null">{{ i18n('common.select.pickOne') }}</option>
+                      <option *ngFor="let item of classes" [value]="item.id">{{ i18n('classify.classes.' + item.techname) }}</option>
+                    </select>
                 </div>
               </div>
             </div><!-- file header data directory + filename -->

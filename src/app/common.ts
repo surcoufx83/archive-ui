@@ -1,10 +1,25 @@
 
 export interface Address {
-
+  id: number;
+  city: string;
+  department: string;
+  firstnames: string;
+  houseno: string
+  lastnames: string;
+  name1: string;
+  name2: string;
+  partyid: number;
+  search1: string;
+  search2: string;
+  search3: string;
+  street: string;
+  zip: string;
 }
 
-export interface Client {
-  
+export interface ContactType {
+  id: number;
+  icon: string;
+  name: string;
 }
 
 export interface Party {
@@ -28,5 +43,13 @@ export interface Party {
 }
 
 export interface PartyContact {
+  id: number;
+  partyid: number;
+  typeid: number;
+  value: string;
+}
 
+export interface PartyRole {
+  id: number;
+  name: string;
 }

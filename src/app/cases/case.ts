@@ -1,10 +1,10 @@
-import { Client } from "../common";
+import { Party } from "../common";
 import { Directory } from "../files/file";
 
 export interface Case {
     id: number;
     casepath: string;
-    client: Client|null;
+    client: Party|null;
     clientid: number|null;
     comment: string;
     directory: Directory|null;
@@ -17,7 +17,7 @@ export interface Case {
     notification: CaseNotification;
     parent: Case|null;
     parentid: number|null;
-    party: Client|null;
+    party: Party|null;
     partyid: number|null;
     period: CasePeriod;
     search1: string;

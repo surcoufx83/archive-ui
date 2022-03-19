@@ -11,6 +11,10 @@ import { SettingsService } from '../../user/settings/settings.service';
 import { File, Page, Version } from '../file';
 import { FormatService } from 'src/app/utils/format.service';
 import { FileService } from 'src/app/utils/file.service';
+import { Address, ContactType, Party, PartyContact } from 'src/app/common';
+import { ReplaySubject } from 'rxjs';
+import { Case, CaseFiletype } from 'src/app/cases/case';
+import { Class } from '../class';
 
 @Component({
   selector: 'app-file',
@@ -24,6 +28,8 @@ export class FileComponent implements OnInit {
   @ViewChild(PdfJsViewerComponent) pdfViewer?: PdfJsViewerComponent;
 
   busy: boolean = false;
+  changes: {[key: string]: any} = {};
+  debounce?: any;
   file?: File;
   filecontent?: Blob;
   fileid: number = -1;
@@ -31,6 +37,15 @@ export class FileComponent implements OnInit {
   textcontent: string[] = [];
   usersettingsObj?: Settings;
   view: string = '';
+
+  addresses: Address[] = [];
+  cases: Case[] = [];
+  classes: Class[] = [];
+  clients: Party[] = [];
+  contacts: PartyContact[] = [];
+  contacttypes: ContactType[] = [];
+  filetypes: CaseFiletype[] = [];
+  parties: Party[] = [];
 
   constructor(private authService: AuthService,
     private configService: ConfigService,
@@ -40,9 +55,20 @@ export class FileComponent implements OnInit {
     private userSettings: SettingsService,
     public formatService: FormatService,
     private fileService: FileService) {
-    this.userSettings.settings$.subscribe((settings) => {
-      this.usersettingsObj = settings;
+    this.userSettings.loadArchiveSettings();
+    this.userSettings.settings$.subscribe((settings) => { this.usersettingsObj = settings; });
+    this.userSettings.addresses$.subscribe((addresses) => { this.addresses = addresses; });
+    this.userSettings.cases$.subscribe((cases) => { this.cases = cases; });
+    this.userSettings.classes$.subscribe((classes) => {
+      this.classes = classes;
+      this.classes.forEach((item) => {item.name = this.i18n('classify.classes.' + item.techname)});
+      this.classes.sort((a, b) => { return a.name > b.name ? 1 : a.name < b.name ? -1 : 0  });
     });
+    this.userSettings.clients$.subscribe((clients) => { this.clients = clients; });
+    this.userSettings.contacts$.subscribe((contacts) => { this.contacts = contacts; });
+    this.userSettings.contacttypes$.subscribe((contacttypes) => { this.contacttypes = contacttypes; });
+    this.userSettings.filetypes$.subscribe((filetypes) => { this.filetypes = filetypes; });
+    this.userSettings.parties$.subscribe((parties) => { this.parties = parties; });
   }
 
   get config(): AppConfig {
@@ -143,6 +169,7 @@ export class FileComponent implements OnInit {
     this.recentVersion = undefined;
     let key = 'file__' + id;
     let cachefile = this.configService.getCacheItem(key);
+    this.changes = {};
     if (cachefile) {
       this.file = <File>cachefile;
       this.fileid = this.file.id;
@@ -180,8 +207,25 @@ export class FileComponent implements OnInit {
     });
   }
 
+  setClassId() : void {
+    this.file!.class = this.classes.find(item => item.id == this.file?.classid) ?? null;
+    console.log(this.file);
+    this.changes['classid'] = this.file!.classid != null ? +this.file!.classid : null;
+    this.submitFile();
+  }
+
   submitFile() : void {
     console.log(this.file)
+    if (this.debounce)
+      clearTimeout(this.debounce);
+    if (Object.keys(this.changes).length == 0)
+      return;
+    this.debounce = setTimeout(() => {
+      let url = this.config.api.baseUrl + '/file/' + this.file!.id;
+      this.authService.updateApi(url, this.changes).subscribe((reply) => {
+        console.log(reply);
+      });
+    }, 1000);
   }
 
   get version() : Version|null {

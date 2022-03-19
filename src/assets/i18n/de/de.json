@@ -246,6 +246,23 @@
       "today": "Tagesbuchung"
     }
   },
+  "partyroles": {
+    "bank": "Bank",
+    "borrower": "Kreditnehmer",
+    "buyer": "Käufer",
+    "doctor": "Arzt",
+    "employee": "Arbeitnehmer",
+    "employer": "Arbeitgeber",
+    "insuredperson": "Versicherter",
+    "insurer": "Versicherer",
+    "landlord": "Vermieter",
+    "lender": "Kreditgeber",
+    "main": "Hauptbeteiligter",
+    "patient": "Patient",
+    "renter": "Mieter",
+    "vendor": "Verkäufer",
+    "authority": "Behörde"
+  },
   "search": {
     "title": "Suchen",
     "setup": {
