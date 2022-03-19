@@ -26,48 +26,48 @@
     }
   },
   "casefiletypes": {
-    "draft": "Entwurf",
-    "signed_draft": "Unterschriebener Entwurf",
-    "contract": "Vertrag",
-    "termination_draft": "Entwurf Kündigung",
+    "draft": "Draft",
+    "signed_draft": "Draft signed",
+    "contract": "Contract",
+    "termination_draft": "Termination draft",
     "termination": "Termination"
   },
   "cases": {
-    "reference": "Referenz {0}"
+    "reference": "Reference {0}"
   },
   "casestatus": {
     "created": "Created",
-    "draft": "Entwurf",
-    "draftsign": "Unterschrieben",
-    "entered": "Eingegangen",
-    "active": "Aktiv",
-    "activeexpiring": "Läuft aus",
-    "activenoncontributory": "Beitragsfrei aktiv",
-    "activeterminated": "Gekündigt",
-    "activeterminating": "Wird gekündigt",
-    "cancelled": "Verworfen",
-    "expired": "Ausgelaufen",
-    "terminated": "Beendet",
-    "retentiondeletion": "Aufbewahrung",
-    "retentionhidden": "Ausgeblendet",
-    "todelete": "Zum Löschen"
+    "draft": "Draft",
+    "draftsign": "Signed",
+    "entered": "Received",
+    "active": "Active",
+    "activeexpiring": "Expires",
+    "activenoncontributory": "Active (non-contributory)",
+    "activeterminated": "Terminated",
+    "activeterminating": "Terminating",
+    "cancelled": "Discarded",
+    "expired": "Expired",
+    "terminated": "Ended",
+    "retentiondeletion": "Retention",
+    "retentionhidden": "Hidden",
+    "todelete": "To delete"
   },
   "casetype": {
-    "apartment": "Wohnen",
-    "bankaccounts": "Bank und Konten",
-    "car": "Auto",
-    "carbusiness": "Firmenwagen",
-    "communication": "Kommunikation",
-    "consumables": "Nebenkosten / Verbraucher",
-    "contracts": "Verträge",
-    "damage": "Schäden und Schadensmeldungen",
-    "insurance": "Versicherungen",
-    "legals": "Verfahren (Behörden/Gerichte)",
-    "misc": "Sonstige",
-    "repair": "Reparaturen und Wartung",
-    "studies": "Ausbildung und Studium",
-    "taxes": "Finanzamt und Steuern",
-    "work": "Beschäftigungsverhältnis"
+    "apartment": "Residential",
+    "bankaccounts": "Bank and accounts",
+    "car": "Car",
+    "carbusiness": "Company Vehicle",
+    "communication": "Communication",
+    "consumables": "Consumables",
+    "contracts": "Contracts",
+    "damage": "Damage",
+    "insurance": "Insurances",
+    "legals": "Legal cases",
+    "misc": "Miscellaneous",
+    "repair": "Repair and maintenance",
+    "studies": "Education and studies",
+    "taxes": "Taxes",
+    "work": "Work"
   },
   "classify": {
     "classes": {
@@ -131,6 +131,7 @@
     "back": "Back",
     "cancel": "Cancel",
     "none": "None",
+    "novalue": "---",
     "save": "Save",
     "select": {
       "pickOne": " Please choose"
@@ -140,18 +141,31 @@
     "title": "File {0}",
     "downloadButton": "Download",
     "previewButton": "Preview",
-    "common": {}
+    "main": {
+      "title": "File-Information",
+      "dir": "Parent directory",
+      "name": "File name",
+      "created": "Created",
+      "deleted": "Deleted",
+      "size": "File size",
+      "pages": "Page count",
+      "words": "Word count"
+    },
+    "classify": {
+      "title": "Classification",
+      "class": "Document type"
+    }
   },
   "home": {
-    "title": "Archiv Start",
+    "title": "Archive home",
     "cases": {
-      "title": "Akten zur Prüfung"
+      "title": "Cases for review"
     },
     "inbox": {
-      "title": "Neue Dokumente"
+      "title": "New Documents"
     },
     "stats": {
-      "title": "Schnelle Statistiken...",
+      "title": "Quick Stats...",
       "files1": "Das Archiv verwaltet aktuell {0} Dateien in {1} Verzeichnissen mit insgesamt {2}.",
       "files2": "{0} der Dateien wurden Klassifiziert, {1} wurden einer Akte zugeordnert. Von {2} konnte kein OCR-Text erzeugt werden.",
       "files3": "Diesen Monat wurden {0} neue Dateien hinzugefügt.",
