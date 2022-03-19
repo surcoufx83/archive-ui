@@ -71,12 +71,12 @@
 
 .list-group{
   &.list-group-flush,&.flush {
-    >file-list-item .list-group-item {
+    >:not(ul) .list-group-item {
       border-width: 0 0 1px;
     }
   }
   &.list-group-hover,&.hover {
-    >file-list-item .list-group-item:hover {
+    >:not(ul) .list-group-item:hover {
       background-color: rgba(0, 0, 0, .08);
       color: #212529;
     }

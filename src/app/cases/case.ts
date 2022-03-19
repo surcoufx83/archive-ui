@@ -40,7 +40,27 @@ export interface CaseNotification {
 }
 
 export interface CaseStatus {
+    flag: string;
+    flags: CaseStatusFlags;
+    icon: string;
+    iconcolor: string;
+    id: number;
+    name: string;
+    nextstatus?: CaseStatus;
+}
+
+export interface CaseStatusFlags {
+    active: boolean;
+    cancelled: boolean;
+    created: boolean;
+    deleted: boolean;
+    deletion: boolean;
+    expired: boolean;
+    hidden: boolean;
 }
 
 export interface CaseType {
+    icon: string;
+    id: number;
+    name: string;
 }

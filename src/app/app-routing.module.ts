@@ -27,9 +27,11 @@ import { WorkYearComponent } from './work/work-year/work-year.component';
 import { SearchComponent } from './search/search.component';
 import { FileComponent } from './files/file/file.component';
 import { FilesComponent } from './files/files/files.component';
+import { CaseComponent } from './cases/case/case.component';
 
 const routes: Routes = [
   { path: 'account', component: AccountComponent, canActivate: [ SessionGuard ] },
+  { path: 'case/:id', component: CaseComponent, canActivate: [ SessionGuard ] },
   { path: 'cases', component: CasesComponent, canActivate: [ SessionGuard ] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [ SessionGuard ] },
   { path: 'home', component: HomeComponent, canActivate: [ SessionGuard ] },

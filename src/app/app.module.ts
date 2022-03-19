@@ -43,6 +43,8 @@ import { SearchComponent } from './search/search.component';
 import { FileComponent } from './files/file/file.component';
 import { FilesComponent } from './files/files/files.component';
 import { FileListItemComponent } from './files/file-list-item/file-list-item.component';
+import { CaseListItemComponent } from './cases/case-list-item/case-list-item.component';
+import { CaseComponent } from './cases/case/case.component';
 
 registerLocaleData(localeDe);
 
@@ -77,6 +79,8 @@ registerLocaleData(localeDe);
     FileComponent,
     FilesComponent,
     FileListItemComponent,
+    CaseListItemComponent,
+    CaseComponent,
   ],
   imports: [
     AppRoutingModule,

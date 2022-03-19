@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { I18nService } from 'src/app/i18n.service';
 import { File, Version } from '../file';
 import * as _filesize from 'filesize';
@@ -9,7 +9,7 @@ import { AppConfig, ConfigService } from 'src/app/config.service';
   templateUrl: './file-list-item.component.html',
   styleUrls: ['./file-list-item.component.scss']
 })
-export class FileListItemComponent implements OnInit {
+export class FileListItemComponent {
 
   @Input() file!: File;
   @Input() relevance: number|null = null;
@@ -42,9 +42,6 @@ export class FileListItemComponent implements OnInit {
 
   i18n(key: string, params: string[] = []): string {
     return this.i18nService.i18n(key, params);
-  }
-
-  ngOnInit(): void {
   }
 
   preview() : void {
