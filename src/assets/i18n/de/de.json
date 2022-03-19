@@ -25,6 +25,13 @@
       "whit_sunday": "Pfingstsonntag"
     }
   },
+  "casefiletypes": {
+    "draft": "Entwurf",
+    "signed_draft": "Unterschriebener Entwurf",
+    "contract": "Vertrag",
+    "termination_draft": "Entwurf Kündigung",
+    "termination": "Kündigung"
+  },
   "cases": {
 
     "reference": "Referenz {0}"
