@@ -1,7 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { format } from 'date-fns';
-import * as _filesize from 'filesize';
 import * as saveAs from 'file-saver';
 import { PdfJsViewerComponent } from 'ng2-pdfjs-viewer';
 import { AuthService } from '../../auth.service';
@@ -10,6 +9,8 @@ import { I18nService } from '../../i18n.service';
 import { Settings } from '../../user/settings/settings';
 import { SettingsService } from '../../user/settings/settings.service';
 import { File, Page, Version } from '../file';
+import { FormatService } from 'src/app/utils/format.service';
+import { FileService } from 'src/app/utils/file.service';
 
 @Component({
   selector: 'app-file',
@@ -26,7 +27,7 @@ export class FileComponent implements OnInit {
   file?: File;
   filecontent?: Blob;
   fileid: number = -1;
-  recentVersion?: Version;
+  recentVersion: Version|null|undefined;
   textcontent: string[] = [];
   usersettingsObj?: Settings;
   view: string = '';
@@ -36,7 +37,9 @@ export class FileComponent implements OnInit {
     private i18nService: I18nService,
     private route: ActivatedRoute,
     private router: Router,
-    private userSettings: SettingsService) {
+    private userSettings: SettingsService,
+    public formatService: FormatService,
+    private fileService: FileService) {
     this.userSettings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
     });
@@ -47,15 +50,11 @@ export class FileComponent implements OnInit {
   }
 
   get displayable() : boolean {
-    if (!this.recentVersion || !this.recentVersion.ext)
-      return false;
-    return this.recentVersion.ext.displayable;
+    return this.fileService.displayable(this.recentVersion);
   }
 
   get downloadable() : boolean {
-    if (!this.recentVersion || !this.recentVersion.ext)
-      return false;
-    return this.recentVersion.ext.downloadable;
+    return this.fileService.downloadable(this.recentVersion);
   }
 
   download() : void {
@@ -67,8 +66,8 @@ export class FileComponent implements OnInit {
 
   private downloadFile(id: number): void {
     if (this.file != undefined && Object.keys(this.file.versions).length > 0) {
-      this.recentVersion = this.file.versions[+(Object.keys(this.file.versions)[Object.keys(this.file.versions).length - 1])];
-      if (!this.recentVersion.ext?.displayable) {
+      this.recentVersion = this.version;
+      if (this.recentVersion && !this.recentVersion.ext?.displayable) {
         this.busy = false;
         return;
       }
@@ -106,16 +105,8 @@ export class FileComponent implements OnInit {
       this.busy = false;
   }
 
-  filesize(size: number) : string {
-    return _filesize(size);
-  }
-
   get fileurl(): string {
     return this.config.api.baseUrl + '/file/' + this.file?.id + '/download';
-  }
-
-  fn(n: number, fd: number = 0) : string {
-    return this.i18nService.formatNumber(n, {minimumFractionDigits: fd})
   }
 
   getViewer() : string {
@@ -175,10 +166,7 @@ export class FileComponent implements OnInit {
   }
 
   get pages() : Page[]|null {
-    if (this.version && this.version.pages) {
-      return Object.values(this.version.pages);
-    }
-    return null;
+    return this.fileService.pages(this.file);
   }
 
   ngOnInit(): void {
@@ -196,22 +184,8 @@ export class FileComponent implements OnInit {
     console.log(this.file)
   }
 
-  time(date: Date|string|null, form: string): string {
-    if (date == null)
-      return this.i18n('common.novalue');
-    if (typeof(date) === 'string')
-      date = new Date(date);
-    return format(date, form, { locale: this.i18nService.DateLocale });
-  }
-
   get version() : Version|null {
-    if (!this.file)
-      return null;
-    if (Object.keys(this.file.versions).length > 0) {
-      let key = +(Object.keys(this.file.versions)[Object.keys(this.file.versions).length-1]);
-      return this.file.versions[key];
-    }
-    return null;
+    return this.fileService.version(this.file);
   }
 
 }
