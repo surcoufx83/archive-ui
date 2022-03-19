@@ -166,14 +166,14 @@
     },
     "stats": {
       "title": "Quick Stats...",
-      "files1": "Das Archiv verwaltet aktuell {0} Dateien in {1} Verzeichnissen mit insgesamt {2}.",
-      "files2": "{0} der Dateien wurden Klassifiziert, {1} wurden einer Akte zugeordnert. Von {2} konnte kein OCR-Text erzeugt werden.",
-      "files3": "Diesen Monat wurden {0} neue Dateien hinzugefügt.",
+      "files1": "The archive currently manages {0} files in {1} directories with a total of {2}.",
+      "files2": "{0} of the files are classified, {1} are assigned to a file. No OCR text could be generated for {2} files.",
+      "files3": "This month {0} new files have been added.",
       "casesLink": "Cases",
-      "filesLink": "Alle Dateien",
-      "noclassFilesLink": "Nicht klassifiziert",
-      "noocrFilesLink": "Kein OCR",
-      "storageLink": "Speicher"
+      "filesLink": "All files",
+      "noclassFilesLink": "Not yet classified",
+      "noocrFilesLink": "No OCR",
+      "storageLink": "Storage"
     }
   },
   "lead": {
