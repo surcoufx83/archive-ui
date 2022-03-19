@@ -25,6 +25,13 @@
       "whit_sunday": "Whit Sunday"
     }
   },
+  "casefiletypes": {
+    "draft": "Entwurf",
+    "signed_draft": "Unterschriebener Entwurf",
+    "contract": "Vertrag",
+    "termination_draft": "Entwurf Kündigung",
+    "termination": "Termination"
+  },
   "cases": {
     "reference": "Referenz {0}"
   },
