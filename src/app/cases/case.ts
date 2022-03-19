@@ -14,15 +14,15 @@ export interface Case {
     followupcase: Case|null;
     followupcaseid: number|null;
     issub: boolean;
-    search1: string;
-    search2: string;
-    search3: string;
     notification: CaseNotification;
     parent: Case|null;
     parentid: number|null;
     party: Client|null;
     partyid: number|null;
-    period: any;
+    period: CasePeriod;
+    search1: string;
+    search2: string;
+    search3: string;
     status: CaseStatus;
     statusid: number;
     title: string;
@@ -31,12 +31,32 @@ export interface Case {
 }
 
 export interface CaseFiletype {
-    
+    icon: string;
+    iconcolor: string;
+    id: number;
+    name: string;
 }
 
 export interface CaseNotification {
     forecast: boolean;
     upcoming: boolean;
+}
+
+export interface CasePeriod {
+    end: string;
+    minperiod: Duration;
+    minperiodFullfilled: boolean;
+    period: Duration;
+    renewal: CasePeriodRenewal;
+    start: string;
+    terminationperiod: Duration;
+}
+
+export interface CasePeriodRenewal {
+    after: Duration;
+    enabled: boolean;
+    nextdate: string|null;
+    period: Duration;
 }
 
 export interface CaseStatus {
