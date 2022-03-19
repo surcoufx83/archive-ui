@@ -1,59 +1,158 @@
 <ui-centered-busy-indicator *ngIf="usersettingsObj == undefined || file == undefined"></ui-centered-busy-indicator>
 
 <ng-container *ngIf="usersettingsObj != undefined && file != undefined">
-    <div class="container pt-4 pt-md-2 mb-2">
-        <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between align-items-center">
-            <h2 class="text-nowrap text-truncate">{{ i18n('file.title', [file.name]) }}</h2>
-            <div class="ps-3 mb-2 d-flex" *ngIf="file.fileexists">
-                <a [routerLink]="['/file', file.id]" *ngIf="view === 'preview'" class="text-decoration-none ms-3 ms-lg-1">
-                    <button type="button" class="form-control btn-sm btn-secondary text-nowrap">
-                        <i [class]="config.icons['go-left']"></i>
-                        <span class="d-none d-lg-inline ms-1">{{ i18n('common.back') }}</span>
-                    </button>
-                </a>
-                <a [routerLink]="['/file', file.id, 'preview']" *ngIf="view !== 'preview' && displayable" class="text-decoration-none ms-3 ms-lg-1">
-                    <button type="button" class="form-control btn-sm btn-secondary text-nowrap">
-                        <i [class]="config.icons['preview']"></i>
-                        <span class="d-none d-lg-inline ms-1">{{ i18n('file.previewButton') }}</span>
-                    </button>
-                </a>
-                <a (click)="download()" *ngIf="downloadable" class="text-decoration-none ms-3 ms-lg-1">
-                    <button type="button" class="form-control btn-sm btn-secondary text-nowrap">
-                        <i [class]="config.icons['download']"></i>
-                        <span class="d-none d-lg-inline ms-1">{{ i18n('file.downloadButton') }}</span>
-                    </button>
-                </a>
-            </div>
+  <div class="container pt-4 pt-md-2 mb-2">
+    <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between align-items-center">
+      <h2 class="text-nowrap text-truncate">{{ i18n('file.title', [file.name]) }}</h2>
+      <div class="ps-3 mb-2 d-flex" *ngIf="file.fileexists">
+        <a [routerLink]="['/file', file.id]" *ngIf="view === 'preview'" class="text-decoration-none ms-3 ms-lg-1">
+          <button type="button" class="form-control btn-sm btn-secondary text-nowrap">
+            <i [class]="config.icons['go-left']"></i>
+            <span class="d-none d-lg-inline ms-1">{{ i18n('common.back') }}</span>
+          </button>
+        </a>
+        <a [routerLink]="['/file', file.id, 'preview']" *ngIf="view !== 'preview' && displayable"
+          class="text-decoration-none ms-3 ms-lg-1">
+          <button type="button" class="form-control btn-sm btn-secondary text-nowrap">
+            <i [class]="config.icons['preview']"></i>
+            <span class="d-none d-lg-inline ms-1">{{ i18n('file.previewButton') }}</span>
+          </button>
+        </a>
+        <a (click)="download()" *ngIf="downloadable" class="text-decoration-none ms-3 ms-lg-1">
+          <button type="button" class="form-control btn-sm btn-secondary text-nowrap">
+            <i [class]="config.icons['download']"></i>
+            <span class="d-none d-lg-inline ms-1">{{ i18n('file.downloadButton') }}</span>
+          </button>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <ng-container *ngIf="view === 'preview' && recentVersion; else notPreview">
+    <div class="container pt-4 pt-md-2 mb-2 ratio-2x3">
+      <ng-container *ngIf="getViewer() == 'ng2-pdfjs-viewer'">
+        <ng2-pdfjs-viewer #pdfViewer></ng2-pdfjs-viewer>
+      </ng-container>
+      <ng-container *ngIf="getViewer() == 'plaintext'">
+        <div class="card col-12">
+          <div class="card-body">
+            <pre
+              class="codeblock linenumbers"><code><ul class="p-0"><li *ngFor="let line of textcontent; let i = index" class="d-flex"><div class="counter">{{ (i+1) }}</div><div class="content flex-shrink-1">{{ line }}</div></li></ul></code></pre>
+          </div>
         </div>
+      </ng-container>
+      <ng-container *ngIf="getViewer() == 'html'">
+        <div class="card col-12 w-100 h-100">
+          <div class="card-body">
+            <iframe #htmlViewer class="w-100 h-100" src="about:blank"></iframe>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="getViewer() == 'img'">
+        <div class="card col-12 w-100 h-100">
+          <div class="card-body">
+            <img #imgViewer src="" style="max-width: 100%; height: auto;">
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </ng-container>
+
+  <ng-template #notPreview>
+
+    <div class="container pt-4 pt-md-2 mb-2">
+      <form #f (submit)="submitFile()" ngNativeValidate>
+        <div class="card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h3 class="text-nowrap text-truncate">{{ i18n('file.main.title') }}</h3>
+            <div>
+              <button type="submit" class="form-control btn-sm btn-primary text-nowrap">
+                <i [class]="config.icons['save']"></i>
+                <span class="d-none d-lg-inline ms-1">{{ i18n('common.save') }}</span>
+              </button>
+            </div>
+          </div>
+          <div class="card-body">
+
+            <div class="row"><!-- file header data directory + filename -->
+              <div class="col-12 col-lg-6 mb-3">
+                <div class="form-group">
+                  <label for="file-name" class="form-label required">{{ i18n('file.main.name') }}</label>
+                  <input type="text" class="form-control" id="file-name" name="file-name"
+                    [(ngModel)]="file.name" required>
+                </div>
+              </div>
+              <div class="col-12 col-lg-6 mb-3" *ngIf="file.directory">
+                <div class="form-group">
+                  <label for="file-directory" class="form-label required">{{ i18n('file.main.dir') }}</label>
+                  <input type="text" class="form-control-plaintext form-control-px" id="file-directory" name="file-directory"
+                    [(ngModel)]="file.directory.relpath" readonly>
+                </div>
+              </div>
+            </div><!-- file header data directory + filename -->
+
+            <div class="row"><!-- file meta information -->
+              <div class="col-6 col-lg-3 mb-3">
+                <div class="form-group">
+                  <label for="file-created" class="form-label">{{ i18n('file.main.created') }}</label>
+                  <input type="text" class="form-control-plaintext form-control-px" id="file-created" name="file-created"
+                    [value]="time(file.mtime, 'Pp')" readonly>
+                </div>
+              </div>
+              <div class="col-6 col-lg-3 mb-3" *ngIf="file.deldate">
+                <div class="form-group">
+                  <label for="file-deleted" class="form-label">{{ i18n('file.main.deleted') }}</label>
+                  <input type="text" class="form-control-plaintext form-control-px" id="file-deleted" name="file-deleted"
+                    [value]="time(file.deldate, 'Pp')" readonly>
+                </div>
+              </div>
+              <div class="col-6 col-lg-3 mb-3">
+                <div class="form-group">
+                  <label for="file-size" class="form-label">{{ i18n('file.main.size') }}</label>
+                  <input type="text" class="form-control-plaintext form-control-px" id="file-size" name="file-size"
+                    [value]="filesize(file.size)" readonly>
+                </div>
+              </div>
+              <div class="col-6 col-lg-3 mb-3" *ngIf="pages">
+                <div class="form-group">
+                  <label for="file-pages" class="form-label">{{ i18n('file.main.pages') }}</label>
+                  <input type="text" class="form-control-plaintext form-control-px" id="file-pages" name="file-pages"
+                    [value]="fn(pages.length)" readonly>
+                </div>
+              </div>
+              <div class="col-6 col-lg-3 mb-3" *ngIf="version && version.stats">
+                <div class="form-group">
+                  <label for="file-words" class="form-label">{{ i18n('file.main.words') }}</label>
+                  <input type="text" class="form-control-plaintext form-control-px" id="file-words" name="file-words"
+                    [value]="fn(version.stats.votedWordcount)" readonly>
+                </div>
+              </div>
+            </div><!-- file meta information -->
+
+          </div>
+        </div>
+
+        <div class="card mt-4 mt-lg-2">
+          <div class="card-header">
+            <h3 class="text-nowrap text-truncate">{{ i18n('file.classify.title') }}</h3>
+          </div>
+          <div class="card-body">
+
+            <div class="row"><!-- file header data directory + filename -->
+              <div class="col-12 col-lg-6 mb-3">
+                <div class="form-group">
+                  <label for="file-name" class="form-label required">{{ i18n('file.classify.class') }}</label>
+                  
+                </div>
+              </div>
+            </div><!-- file header data directory + filename -->
+
+          </div>
+        </div>
+
+      </form>
     </div>
 
-    <ng-container *ngIf="view === 'preview' && recentVersion">
-        <div class="container pt-4 pt-md-2 mb-2 ratio-2x3">
-            <ng-container *ngIf="getViewer() == 'ng2-pdfjs-viewer'">
-                <ng2-pdfjs-viewer #pdfViewer></ng2-pdfjs-viewer>
-            </ng-container>
-            <ng-container *ngIf="getViewer() == 'plaintext'">
-                <div class="card col-12">
-                    <div class="card-body">
-                        <pre class="codeblock linenumbers"><code><ul class="p-0"><li *ngFor="let line of textcontent; let i = index" class="d-flex"><div class="counter">{{ (i+1) }}</div><div class="content flex-shrink-1">{{ line }}</div></li></ul></code></pre>
-                    </div>
-                </div>
-            </ng-container>
-            <ng-container *ngIf="getViewer() == 'html'">
-                <div class="card col-12 w-100 h-100">
-                    <div class="card-body">
-                        <iframe #htmlViewer class="w-100 h-100" src="about:blank"></iframe>
-                    </div>
-                </div>
-            </ng-container>
-            <ng-container *ngIf="getViewer() == 'img'">
-                <div class="card col-12 w-100 h-100">
-                    <div class="card-body">
-                        <img #imgViewer src="" style="max-width: 100%; height: auto;">
-                    </div>
-                </div>
-            </ng-container>
-        </div>
-    </ng-container>
+  </ng-template>
 
 </ng-container>

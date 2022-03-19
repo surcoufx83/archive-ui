@@ -73,9 +73,9 @@ export interface Version {
     hasocr: boolean;
     ext: Extension|null;
     extid: number|null;
-    pages: Page[];
-    words: any[];
-    stats: VersionStats;
+    pages: {[key: number]: Page}|null;
+    words: {[key: string]: number}|null;
+    stats: VersionStats|null;
 }
 
 export interface VersionStats {

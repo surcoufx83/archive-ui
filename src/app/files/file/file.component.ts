@@ -1,5 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { format } from 'date-fns';
+import * as _filesize from 'filesize';
 import * as saveAs from 'file-saver';
 import { PdfJsViewerComponent } from 'ng2-pdfjs-viewer';
 import { AuthService } from '../../auth.service';
@@ -7,7 +9,7 @@ import { AppConfig, ConfigService } from '../../config.service';
 import { I18nService } from '../../i18n.service';
 import { Settings } from '../../user/settings/settings';
 import { SettingsService } from '../../user/settings/settings.service';
-import { File, Version } from '../file';
+import { File, Page, Version } from '../file';
 
 @Component({
   selector: 'app-file',
@@ -104,8 +106,39 @@ export class FileComponent implements OnInit {
       this.busy = false;
   }
 
+  filesize(size: number) : string {
+    return _filesize(size);
+  }
+
   get fileurl(): string {
     return this.config.api.baseUrl + '/file/' + this.file?.id + '/download';
+  }
+
+  fn(n: number, fd: number = 0) : string {
+    return this.i18nService.formatNumber(n, {minimumFractionDigits: fd})
+  }
+
+  getViewer() : string {
+    if (!this.recentVersion || !this.recentVersion.ext || !this.recentVersion.ext.mimetype)
+      return 'plaintext';
+    switch(this.recentVersion.ext.mimetype) {
+      case 'application/pdf':
+        return 'ng2-pdfjs-viewer';
+      case 'image/gif':
+      case 'image/jpeg':
+      case 'image/png':
+      case 'image/tiff':
+        return 'img';
+      case 'text/html':
+        return 'html';
+      case 'application/xml':
+      case 'text/css':
+      case 'text/csv':
+      case 'text/markdown':
+      case 'text/plain':
+      default:
+        return 'plaintext';
+    }
   }
 
   i18n(key: string, params: string[] = []): string {
@@ -141,6 +174,13 @@ export class FileComponent implements OnInit {
     return this.i18nService.Locale;
   }
 
+  get pages() : Page[]|null {
+    if (this.version && this.version.pages) {
+      return Object.values(this.version.pages);
+    }
+    return null;
+  }
+
   ngOnInit(): void {
     this.route.paramMap.subscribe((params: ParamMap) => {
       let showview = params.get('view');
@@ -152,27 +192,26 @@ export class FileComponent implements OnInit {
     });
   }
 
-  getViewer() : string {
-    if (!this.recentVersion || !this.recentVersion.ext || !this.recentVersion.ext.mimetype)
-      return 'plaintext';
-    switch(this.recentVersion.ext.mimetype) {
-      case 'application/pdf':
-        return 'ng2-pdfjs-viewer';
-      case 'image/gif':
-      case 'image/jpeg':
-      case 'image/png':
-      case 'image/tiff':
-        return 'img';
-      case 'text/html':
-        return 'html';
-      case 'application/xml':
-      case 'text/css':
-      case 'text/csv':
-      case 'text/markdown':
-      case 'text/plain':
-      default:
-        return 'plaintext';
+  submitFile() : void {
+    console.log(this.file)
+  }
+
+  time(date: Date|string|null, form: string): string {
+    if (date == null)
+      return this.i18n('common.novalue');
+    if (typeof(date) === 'string')
+      date = new Date(date);
+    return format(date, form, { locale: this.i18nService.DateLocale });
+  }
+
+  get version() : Version|null {
+    if (!this.file)
+      return null;
+    if (Object.keys(this.file.versions).length > 0) {
+      let key = +(Object.keys(this.file.versions)[Object.keys(this.file.versions).length-1]);
+      return this.file.versions[key];
     }
+    return null;
   }
 
 }

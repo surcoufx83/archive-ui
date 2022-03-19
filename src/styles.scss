@@ -58,12 +58,25 @@
   }
 }
 
-.form-label.required:after { 
-  color: map-get($theme-colors, 'primary');
-  content: "*";
-  font-weight: bold;
-  position: absolute;
-  margin-left: .2rem;
+.form-group {
+  .form-label {
+    font-style: italic;
+    font-weight: 200;
+    margin-bottom: 0!important;
+    &.required:after { 
+      color: map-get($theme-colors, 'primary');
+      content: "*";
+      font-weight: bold;
+      position: absolute;
+      margin-left: .2rem;
+    }
+  }
+}
+.form-control-plaintext {
+  border-bottom: 1px solid #ced4da!important;
+  &.form-control-px {
+    padding: .375rem calc(.75rem + 1px);
+  }
 }
 
 .fs-7 { font-size: $font-size-base * .9!important; }

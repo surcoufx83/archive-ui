@@ -63,10 +63,14 @@ export class I18nService {
   }
 
   formatDate(n: Date, options: Intl.DateTimeFormatOptions) {
+    if (n == undefined)
+      return '';
     return n.toLocaleDateString(this.locale, options);
   }
 
   formatNumber(n: number, options: Intl.NumberFormatOptions) {
+    if (n == undefined)
+      return '';
     return n.toLocaleString(this.locale, options);
   }
 
