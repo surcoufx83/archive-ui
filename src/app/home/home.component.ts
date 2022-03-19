@@ -8,6 +8,7 @@ import { File } from '../files/file';
 import { I18nService } from '../i18n.service';
 import { Settings } from '../user/settings/settings';
 import { SettingsService } from '../user/settings/settings.service';
+import { FormatService } from '../utils/format.service';
 
 @Component({
   selector: 'app-home',
@@ -27,7 +28,8 @@ export class HomeComponent implements OnInit {
     private i18nService: I18nService,
     private route: ActivatedRoute,
     public router: Router,
-    private userSettings: SettingsService) {
+    private userSettings: SettingsService,
+    public formatService: FormatService) {
     this.userSettings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
     });
@@ -35,14 +37,6 @@ export class HomeComponent implements OnInit {
 
   get config(): AppConfig {
     return this.configService.config;
-  }
-
-  filesize(size: number) : string {
-    return _filesize(size);
-  }
-
-  fn(n: number, fd: number = 0) : string {
-    return this.i18nService.formatNumber(n, {minimumFractionDigits: fd})
   }
 
   i18n(key: string, params: string[] = []): string {

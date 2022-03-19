@@ -1,7 +1,7 @@
 <li class="list-group-item pointer" (click)="click(); $event.stopPropagation();">
     <div class="d-flex">
         <div class="pointer d-none d-lg-block" *ngIf="relevance">
-            <span class="badge bg-light text-dark fw-lighter">{{ i18n('search.result.points', ['' + fn(relevance)])
+            <span class="badge bg-light text-dark fw-lighter">{{ i18n('search.result.points', ['' + formatService.fnumber(relevance)])
                 }}</span>
         </div>
         <div class="flex-grow-1 pointer">
@@ -24,7 +24,7 @@
         <span class="text-primary" *ngIf="file.class">
             {{ i18n('classify.classes.' + file.class.techname) }} •
         </span>
-        {{ file.size | filesize }} •
+        {{ formatService.filesize(file.size) }} •
         {{ file.relpath }}
     </div>
 </li>

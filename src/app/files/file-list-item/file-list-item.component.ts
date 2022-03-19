@@ -3,6 +3,8 @@ import { I18nService } from 'src/app/i18n.service';
 import { File, Version } from '../file';
 import * as _filesize from 'filesize';
 import { AppConfig, ConfigService } from 'src/app/config.service';
+import { FormatService } from 'src/app/utils/format.service';
+import { FileService } from 'src/app/utils/file.service';
 
 @Component({
   selector: 'file-list-item',
@@ -18,7 +20,7 @@ export class FileListItemComponent {
   @Output() clicked = new EventEmitter();
   @Output() previewClicked = new EventEmitter();
 
-  constructor(private configService: ConfigService, private i18nService: I18nService) { }
+  constructor(private configService: ConfigService, private i18nService: I18nService, public formatService: FormatService, private fileService: FileService) { }
 
   click() : void {
     this.clicked.emit();
@@ -32,14 +34,6 @@ export class FileListItemComponent {
     this.downloadClicked.emit();
   }
 
-  filesize(size: number) : string {
-    return _filesize(size);
-  }
-
-  fn(n: number, fd: number = 0) : string {
-    return this.i18nService.formatNumber(n, {minimumFractionDigits: fd})
-  }
-
   i18n(key: string, params: string[] = []): string {
     return this.i18nService.i18n(key, params);
   }
@@ -49,11 +43,7 @@ export class FileListItemComponent {
   }
 
   get version() : Version|null {
-    if (Object.keys(this.file.versions).length > 0) {
-      let key = +(Object.keys(this.file.versions)[Object.keys(this.file.versions).length-1]);
-      return this.file.versions[key];
-    }
-    return null;
+    return this.fileService.version(this.file);
   }
 
 }

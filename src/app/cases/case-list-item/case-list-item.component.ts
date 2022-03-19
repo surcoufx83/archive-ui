@@ -3,6 +3,7 @@ import { I18nService } from 'src/app/i18n.service';
 import * as _filesize from 'filesize';
 import { AppConfig, ConfigService } from 'src/app/config.service';
 import { Case } from '../case';
+import { FormatService } from 'src/app/utils/format.service';
 
 @Component({
   selector: 'case-list-item',
@@ -15,7 +16,7 @@ export class CaseListItemComponent {
   @Input() relevance: number|null = null;
   @Output() clicked = new EventEmitter();
 
-  constructor(private configService: ConfigService, private i18nService: I18nService) { }
+  constructor(private configService: ConfigService, private i18nService: I18nService, public formatService: FormatService) { }
 
   click() : void {
     this.clicked.emit();
@@ -23,10 +24,6 @@ export class CaseListItemComponent {
 
   get config(): AppConfig {
     return this.configService.config;
-  }
-
-  fn(n: number, fd: number = 0) : string {
-    return this.i18nService.formatNumber(n, {minimumFractionDigits: fd})
   }
 
   i18n(key: string, params: string[] = []): string {

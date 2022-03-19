@@ -51,9 +51,9 @@
             <ul class="list-group list-group-flush sm rounded">
               <li class="list-group-item px-0 pb-0">
                 <div class="px-2">
-                  {{ i18n('home.stats.files1', [ fn(stats.general.file_count), fn(stats.general.dir_count),
-                  filesize(stats.general.file_size_total) ]) }}
-                  {{ i18n('home.stats.files3', [ fn(stats.newfiles.count) ]) }}
+                  {{ i18n('home.stats.files1', [ formatService.fnumber(stats.general.file_count), formatService.fnumber(stats.general.dir_count),
+                  formatService.filesize(stats.general.file_size_total) ]) }}
+                  {{ i18n('home.stats.files3', [ formatService.fnumber(stats.newfiles.count) ]) }}
                 </div>
                 <div class="card-footer px-2 py-1 fs-7">
                   <a [routerLink]="['/files']">
@@ -66,8 +66,8 @@
               </li>
               <li class="list-group-item px-0 pb-0">
                 <div class="px-2">
-                  {{ i18n('home.stats.files2', [ fn(stats.general.file_with_classid),
-                  fn(stats.general.file_with_caseid), fn(stats.general.file_count - stats.general.file_withocr_count) ])
+                  {{ i18n('home.stats.files2', [ formatService.fnumber(stats.general.file_with_classid),
+                  formatService.fnumber(stats.general.file_with_caseid), formatService.fnumber(stats.general.file_count - stats.general.file_withocr_count) ])
                   }}
                 </div>
                 <div class="card-footer px-2 py-1 fs-7">

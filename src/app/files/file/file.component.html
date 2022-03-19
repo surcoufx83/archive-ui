@@ -96,35 +96,35 @@
                 <div class="form-group">
                   <label for="file-created" class="form-label">{{ i18n('file.main.created') }}</label>
                   <input type="text" class="form-control-plaintext form-control-px" id="file-created" name="file-created"
-                    [value]="time(file.mtime, 'Pp')" readonly>
+                    [value]="formatService.fdate(file.mtime, 'Pp')" readonly>
                 </div>
               </div>
               <div class="col-6 col-lg-3 mb-3" *ngIf="file.deldate">
                 <div class="form-group">
                   <label for="file-deleted" class="form-label">{{ i18n('file.main.deleted') }}</label>
                   <input type="text" class="form-control-plaintext form-control-px" id="file-deleted" name="file-deleted"
-                    [value]="time(file.deldate, 'Pp')" readonly>
+                    [value]="formatService.fdate(file.deldate, 'Pp')" readonly>
                 </div>
               </div>
               <div class="col-6 col-lg-3 mb-3">
                 <div class="form-group">
                   <label for="file-size" class="form-label">{{ i18n('file.main.size') }}</label>
                   <input type="text" class="form-control-plaintext form-control-px" id="file-size" name="file-size"
-                    [value]="filesize(file.size)" readonly>
+                    [value]="formatService.filesize(file.size)" readonly>
                 </div>
               </div>
               <div class="col-6 col-lg-3 mb-3" *ngIf="pages">
                 <div class="form-group">
                   <label for="file-pages" class="form-label">{{ i18n('file.main.pages') }}</label>
                   <input type="text" class="form-control-plaintext form-control-px" id="file-pages" name="file-pages"
-                    [value]="fn(pages.length)" readonly>
+                    [value]="formatService.fnumber(pages.length)" readonly>
                 </div>
               </div>
               <div class="col-6 col-lg-3 mb-3" *ngIf="version && version.stats">
                 <div class="form-group">
                   <label for="file-words" class="form-label">{{ i18n('file.main.words') }}</label>
                   <input type="text" class="form-control-plaintext form-control-px" id="file-words" name="file-words"
-                    [value]="fn(version.stats.votedWordcount)" readonly>
+                    [value]="formatService.fnumber(version.stats.votedWordcount)" readonly>
                 </div>
               </div>
             </div><!-- file meta information -->
