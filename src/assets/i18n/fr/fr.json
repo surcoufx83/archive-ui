@@ -131,6 +131,7 @@
     "back": "Zurück",
     "cancel": "Abbruch",
     "none": "Keine",
+    "novalue": "---",
     "save": "Speichern",
     "select": {
       "pickOne": " Bitte wählen "
@@ -140,7 +141,20 @@
     "title": "Datei {0}",
     "downloadButton": "Download",
     "previewButton": "Vorschau",
-    "common": {}
+    "main": {
+      "title": "Dateiinformationen",
+      "dir": "Übergeordnetes Verzeichnis",
+      "name": "Dateiname",
+      "created": "Erstellt",
+      "deleted": "Gelöscht",
+      "size": "Dateigröße",
+      "pages": "Seitenzahl",
+      "words": "Anzahl Wörter"
+    },
+    "classify": {
+      "title": "Klassifizierung und Zuordnung",
+      "class": "Dokumentenart"
+    }
   },
   "home": {
     "title": "Archiv Start",
