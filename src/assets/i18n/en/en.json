@@ -25,6 +25,50 @@
       "whit_sunday": "Whit Sunday"
     }
   },
+  "casefiletypes": {
+    "draft": "Draft",
+    "signed_draft": "Draft signed",
+    "contract": "Contract",
+    "termination_draft": "Termination draft",
+    "termination": "Termination"
+  },
+  "cases": {
+    "reference": "Reference {0}"
+  },
+  "casestatus": {
+    "created": "Created",
+    "draft": "Draft",
+    "draftsign": "Signed",
+    "entered": "Received",
+    "active": "Active",
+    "activeexpiring": "Expires",
+    "activenoncontributory": "Active (non-contributory)",
+    "activeterminated": "Terminated",
+    "activeterminating": "Terminating",
+    "cancelled": "Discarded",
+    "expired": "Expired",
+    "terminated": "Ended",
+    "retentiondeletion": "Retention",
+    "retentionhidden": "Hidden",
+    "todelete": "To delete"
+  },
+  "casetype": {
+    "apartment": "Residential",
+    "bankaccounts": "Bank and accounts",
+    "car": "Car",
+    "carbusiness": "Company Vehicle",
+    "communication": "Communication",
+    "consumables": "Consumables",
+    "contracts": "Contracts",
+    "damage": "Damage",
+    "insurance": "Insurances",
+    "legals": "Legal cases",
+    "misc": "Miscellaneous",
+    "repair": "Repair and maintenance",
+    "studies": "Education and studies",
+    "taxes": "Taxes",
+    "work": "Work"
+  },
   "classify": {
     "classes": {
       "In_AnnualBonus": "Annual bonus, special payments, etc.",
@@ -87,6 +131,7 @@
     "back": "Back",
     "cancel": "Cancel",
     "none": "None",
+    "novalue": "---",
     "save": "Save",
     "select": {
       "pickOne": " Please choose"
@@ -94,11 +139,42 @@
   },
   "file": {
     "title": "File {0}",
+    "downloadButton": "Download",
     "previewButton": "Preview",
-    "common": {
+    "main": {
+      "title": "File-Information",
+      "dir": "Parent directory",
+      "name": "File name",
+      "created": "Created",
+      "deleted": "Deleted",
+      "size": "File size",
+      "pages": "Page count",
+      "words": "Word count"
+    },
+    "classify": {
+      "title": "Classification",
+      "class": "Document type"
     }
   },
   "home": {
+    "title": "Archive home",
+    "cases": {
+      "title": "Cases for review"
+    },
+    "inbox": {
+      "title": "New Documents"
+    },
+    "stats": {
+      "title": "Quick Stats...",
+      "files1": "Das Archiv verwaltet aktuell {0} Dateien in {1} Verzeichnissen mit insgesamt {2}.",
+      "files2": "{0} der Dateien wurden Klassifiziert, {1} wurden einer Akte zugeordnert. Von {2} konnte kein OCR-Text erzeugt werden.",
+      "files3": "Diesen Monat wurden {0} neue Dateien hinzugefügt.",
+      "casesLink": "Cases",
+      "filesLink": "Alle Dateien",
+      "noclassFilesLink": "Nicht klassifiziert",
+      "noocrFilesLink": "Kein OCR",
+      "storageLink": "Speicher"
+    }
   },
   "lead": {
     "title": "Lead #{0}",
@@ -196,6 +272,7 @@
         "notes": "Notes",
         "pages": "File Content",
         "onPageNo": "Page {0}",
+        "downloadFileTitle": "Download file",
         "gotoPreviewTitle": "Jump directly to the file view"
       },
       "points": "{0} P.",
@@ -232,6 +309,12 @@
       "title": "Summary",
       "booked": "Tracked"
     },
+    "tracked": {
+      "title": "Today's tracked time",
+      "description": "Description",
+      "fromUntil": "{0} to {1}",
+      "fromUntilTitle": "From - To"
+    },
     "tracking": {
       "title": "Time tracking",
       "liveTitle": "Live time tracking",
@@ -245,13 +328,13 @@
         "duration": "Working hours",
         "from": "Of",
         "project": "Customer project",
+        "recentTitle": "Click to apply",
         "task": "Work package",
         "timeCategory": "Category",
         "timePlaceholder": "hh:mm | hmm | hmm",
         "until": "To"
       },
-      "live": {
-      }
+      "live": {}
     }
   },
   "workmonth": {

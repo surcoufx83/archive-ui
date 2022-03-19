@@ -1,0 +1,366 @@
+{
+  "calendar": {
+    "showAsGridTitle": "Als Kalender darstellen",
+    "showAsListTitle": "Als Liste darstellen",
+    "showWeek": "KW",
+    "showWeekTitle": "Kalenderwoche anzeigen",
+    "showWeekend": "WE",
+    "showWeekendTitle": "Wochenende anzeigen",
+    "weekday": "Wochentag",
+    "duration": {
+      "short": "{0} h"
+    },
+    "holidays": {
+      "ascension_day": "Himmelfahrt",
+      "boxing_day": "2. Weihnachtstag",
+      "christmas_day": "1. Weihnachtstag",
+      "easter_goodFriday": "Karfreitag",
+      "easter_monday": "Ostermontag",
+      "easter_sunday": "Ostersonntag",
+      "labor_day": "Tag der Arbeit",
+      "newYearsDay": "Neujahr",
+      "reformation_day": "Reformationstag",
+      "unity_day": "Tag der dt. Einheit",
+      "whit_monday": "Pfingstmontag",
+      "whit_sunday": "Pfingstsonntag"
+    }
+  },
+  "casefiletypes": {
+    "draft": "Entwurf",
+    "signed_draft": "Unterschriebener Entwurf",
+    "contract": "Vertrag",
+    "termination_draft": "Entwurf Kündigung",
+    "termination": "Kündigung"
+  },
+  "cases": {
+    "reference": "Referenz {0}"
+  },
+  "casestatus": {
+    "created": "Erstellt",
+    "draft": "Entwurf",
+    "draftsign": "Unterschrieben",
+    "entered": "Eingegangen",
+    "active": "Aktiv",
+    "activeexpiring": "Läuft aus",
+    "activenoncontributory": "Beitragsfrei aktiv",
+    "activeterminated": "Gekündigt",
+    "activeterminating": "Wird gekündigt",
+    "cancelled": "Verworfen",
+    "expired": "Ausgelaufen",
+    "terminated": "Beendet",
+    "retentiondeletion": "Aufbewahrung",
+    "retentionhidden": "Ausgeblendet",
+    "todelete": "Zum Löschen"
+  },
+  "casetype": {
+    "apartment": "Wohnen",
+    "bankaccounts": "Bank und Konten",
+    "car": "Auto",
+    "carbusiness": "Firmenwagen",
+    "communication": "Kommunikation",
+    "consumables": "Nebenkosten / Verbraucher",
+    "contracts": "Verträge",
+    "damage": "Schäden und Schadensmeldungen",
+    "insurance": "Versicherungen",
+    "legals": "Verfahren (Behörden/Gerichte)",
+    "misc": "Sonstige",
+    "repair": "Reparaturen und Wartung",
+    "studies": "Ausbildung und Studium",
+    "taxes": "Finanzamt und Steuern",
+    "work": "Beschäftigungsverhältnis"
+  },
+  "classify": {
+    "classes": {
+      "In_AnnualBonus": "Jahresbonus, Sonderzahlungen, etc.",
+      "In_AnnualReport": "Jahresbericht, -steuerauszug, -wertinformation",
+      "In_BankEarnings": "Einnahmen aus Bank/Wertpapiergeschäften",
+      "In_BankOrders": "Käufe, Verkäufe, Orders aus Bank/Wertpapiergeschäften",
+      "In_BankStatement": "Konto-/Depotauszug monatlich",
+      "In_Certificate": "Urkunde, Zertifikat, Teilnahmebescheinigung",
+      "In_ClaimSettlement": "Schadesregulienrung",
+      "In_Common": "Allgemeiner Posteingang",
+      "In_Contract": "Vertrag, Auftrag",
+      "In_ContractAdjustment": "Vertrags-/Beitragsanpassung oder -ergänzung",
+      "In_ContractApplication": "Antrag",
+      "In_ContractTermination": "Kündigungsbestätigung, Auflösung",
+      "In_ContractTermsAndConditions": "AGBs",
+      "In_HomeAnnualSettlement": "Abrechnung Mietnebenkosten",
+      "In_Information": "Allgemeine Informationen",
+      "In_InsuranceStatement": "Meldebestätigung Sozialversicherung",
+      "In_Invoice": "Rechnung",
+      "In_Mandate": "Vollmacht, Mandat",
+      "In_MeterReading": "Zählerablesung",
+      "In_PayRollTaxCertificate": "Lohnsteuerbescheinigung",
+      "In_PaySlip": "Lohnzettel",
+      "In_PostReceipt": "Einlieferungsbeleg Post/Paket",
+      "In_RepairOrder": "Reparaturauftrag",
+      "In_RepairReport": "Reparaturbericht",
+      "In_TaxAssessment": "Steuerbescheid",
+      "In_TaxVL": "Steuererklärung Anlage VL",
+      "Out_ClaimReport": "Schadensmeldung",
+      "Out_Contradiction": "Wiederspruch",
+      "Out_ExpenseReport": "Spesenabrechnung und -belege",
+      "Out_Questionnaire": "Fragebogen",
+      "Out_Revocation": "Wiederruf",
+      "Out_SepaMandate": "SEPA Lastschriftmandat",
+      "Out_TaxDeclaration": "Steuererklärung",
+      "Out_Termination": "Kündigung",
+      "In_DeliveryNote": "Lieferschein",
+      "In_QuarterReport": "Quartalsabschluss",
+      "In_Approval": "Freigabe / Bewilligung",
+      "In_AccountData": "Zugangsdaten, Credentials, Passwörter",
+      "In_LegalNotice": "Schreiben zu Verfahren oder Behörden- und Gerichtsvorgängen",
+      "In_ExpenseClearing": "Freigabe und Erstattung von Spesenabrechnungen",
+      "In_OrderConfirmation": "Bestell-/ Kauf-/ Auftragsbestätigung",
+      "In_DonationReceipt": "Spendenquittung",
+      "In_BallotDocs": "Wahlunterlagen",
+      "In_DeviceManuals": "Handbuch",
+      "In_DeviceRecords": "Gerätedaten",
+      "In_Rejection": "Ablehnung, Ablehnungsbescheid",
+      "In_AU": "AU Krankmeldung (AG+Versicherung)",
+      "In_TrafficTicket": "Blitzer, Knöllchen, Verkehrsordnungswidrigkeit",
+      "In_Voucher": "Gutschein",
+      "In_Id": "Ausweis uä.",
+      "In_VacationResp": "Urlaub, Krank, Mehrarbeit",
+      "In_LeadStatus": "Lead Status",
+      "Out_Inquiry": "Anfrage"
+    }
+  },
+  "common": {
+    "add": "Neu",
+    "back": "Zurück",
+    "cancel": "Abbruch",
+    "none": "Keine",
+    "novalue": "---",
+    "save": "Speichern",
+    "select": {
+      "pickOne": " Bitte wählen "
+    }
+  },
+  "file": {
+    "title": "Datei {0}",
+    "downloadButton": "Download",
+    "previewButton": "Vorschau",
+    "main": {
+      "title": "Dateiinformationen",
+      "dir": "Übergeordnetes Verzeichnis",
+      "name": "Dateiname",
+      "created": "Erstellt",
+      "deleted": "Gelöscht",
+      "size": "Dateigröße",
+      "pages": "Seitenzahl",
+      "words": "Anzahl Wörter"
+    },
+    "classify": {
+      "title": "Klassifizierung und Zuordnung",
+      "class": "Dokumentenart"
+    }
+  },
+  "home": {
+    "title": "Archiv Start",
+    "cases": {
+      "title": "Akten zur Prüfung"
+    },
+    "inbox": {
+      "title": "Neue Dokumente"
+    },
+    "stats": {
+      "title": "Schnelle Statistiken...",
+      "files1": "Das Archiv verwaltet aktuell {0} Dateien in {1} Verzeichnissen mit insgesamt {2}.",
+      "files2": "{0} der Dateien wurden Klassifiziert, {1} wurden einer Akte zugeordnert. Von {2} konnte kein OCR-Text erzeugt werden.",
+      "files3": "Diesen Monat wurden {0} neue Dateien hinzugefügt.",
+      "casesLink": "Akten",
+      "filesLink": "Alle Dateien",
+      "noclassFilesLink": "Nicht klassifiziert",
+      "noocrFilesLink": "Kein OCR",
+      "storageLink": "Speicher"
+    }
+  },
+  "lead": {
+    "title": "Lead #{0}",
+    "common": {
+      "title": "Allgemeine Angaben",
+      "party": "Firma"
+    }
+  },
+  "leads": {
+    "title": "Leads + Incentives",
+    "table": {
+      "head": {
+        "key": "[LI]",
+        "customer": "Kunde",
+        "project": "Projekt",
+        "created": "Erstellt",
+        "completed": "Abgeschlossen",
+        "payed": "Ausgezahlt"
+      },
+      "data": {
+        "lead": "Lead",
+        "incentive": "Incentive"
+      }
+    }
+  },
+  "login": {
+    "title": "Benutzeranmeldung",
+    "subtitle": "Diese Webseite erfordert die Eingabe von Zugangsdaten. Bitte mit Benutzername und Passwort anmelden.",
+    "button": "Anmelden",
+    "password": "Passwort",
+    "passwordPlaceholder": "*********",
+    "username": "Benutzername",
+    "usernamePlaceholder": "pete@archive.org",
+    "failed": "Fehler bei der Anmeldung. Bitte Eingabe prüfen und nochmal versuchen.",
+    "sessioncheck": {
+      "title": "Benutzeranmeldung",
+      "subtitle": "Bitte warten, die Anmeldung wird überprüft..."
+    },
+    "oauth2": {
+      "title": "Benutzeranmeldung",
+      "subtitle": "Diese Webseite erfordert eine Anmeldung via Nextcloud. Bitte klicke auf den Button um die Anmeldung vorzunehmen.",
+      "button": "Anmelden"
+    }
+  },
+  "navbar": {
+    "brand": {
+      "title": "Archiv"
+    },
+    "items": {
+      "account": "Konto",
+      "cases": "Akten",
+      "dashboard": "Dashboard",
+      "finance": "Finanzen",
+      "home": "Start",
+      "notepad": "Notepad",
+      "settings": "Einstellungen",
+      "work": "Arbeit"
+    },
+    "search": {
+      "label": "Durchsuchen des Archivs",
+      "placeholder": "Suchbegriff",
+      "submit": "Suchen"
+    },
+    "workitems": {
+      "leads": "Leads",
+      "month": "Monatsansicht",
+      "settings": "Einstellungen",
+      "today": "Tagesbuchung"
+    }
+  },
+  "search": {
+    "title": "Suchen",
+    "setup": {
+      "phrase": "Suchbegriff(e)",
+      "helpSearching": "Mehr Informationen zu den Suchstrategien auf mariadb.com",
+      "groups": {
+        "accounts": "Konten",
+        "cases": "Akten",
+        "directories": "Verzeichnisse",
+        "files": "Dateien (Metadaten)",
+        "pages": "Dateiinhalte",
+        "notepad": "Notizen"
+      },
+      "groupstitle": "Suchbereiche",
+      "runSearch": "Suche starten"
+    },
+    "result": {
+      "title": "{0} Treffer",
+      "subtitle": "{0} Treffer in {1}",
+      "group": {
+        "accounts": "Konten",
+        "cases": "Akten",
+        "directories": "Verzeichnisse",
+        "files": "Dateien",
+        "notes": "Notizen",
+        "pages": "Dateiinhalte",
+        "onPageNo": "Seite {0}",
+        "downloadFileTitle": "Datei herunterladen",
+        "gotoPreviewTitle": "Direkt zur Dateianzeige springen"
+      },
+      "points": "{0} P.",
+      "showHistoric": "Hist.",
+      "showHistoricTooltip": "Auch ältere Werte aus der Historie anzeigen?"
+    }
+  },
+  "work": {
+    "offcategories": {
+      "educationalLeave": "Bildungsurlaub",
+      "holidays": "Feiertag",
+      "sick": "Krank",
+      "specialLeave": "Sonderurlaub",
+      "vacation": "Urlaub",
+      "weekend": "Wochenende",
+      "none": "Keine",
+      "title": "Abwesenheit"
+    },
+    "timecategories": {
+      "administration": "Administratives",
+      "bugfixing": "Bugfixing",
+      "meeting": "Meeting intern",
+      "implementation": "Implementierung",
+      "presales": "Presales",
+      "support": "Support",
+      "trainingself": "Fortbildung",
+      "travel": "Reise",
+      "title": "Zeitart"
+    }
+  },
+  "workday": {
+    "pagetitle": "Tagesbuchungen {0}",
+    "daycard": {
+      "title": "Übersicht",
+      "booked": "Gebucht"
+    },
+    "tracked": {
+      "title": "Heutige Buchungen",
+      "description": "Beschreibung",
+      "fromUntil": "{0} bis {1}",
+      "fromUntilTitle": "Von Bis"
+    },
+    "tracking": {
+      "title": "Zeitbuchung",
+      "liveTitle": "Live Zeitbuchung",
+      "livebtn": "Live",
+      "livebtnTitle": "Livetracking Funktion",
+      "common": {
+        "break": "Ab Pause",
+        "breakPlaceholder": "mm",
+        "customer": "Kunde",
+        "description": "Beschreibung der durchgeführten Arbeiten",
+        "duration": "Arbeitszeit",
+        "from": "Von",
+        "project": "Kundenprojekt",
+        "recentTitle": "Anklicken um diese Daten zu übernehmen",
+        "task": "Arbeitspaket",
+        "timeCategory": "Kategorie",
+        "timePlaceholder": "hh:mm | hhmm | hmm",
+        "until": "Bis"
+      },
+      "live": {}
+    }
+  },
+  "workmonth": {
+    "pagetitle": "Monatsübersicht {0}",
+    "pagetitleShort": "{0}",
+    "calendar": {
+      "title": "Kalender"
+    },
+    "cards": {
+      "target": {
+        "title": "Monatsinfo",
+        "businessDays": "Arbeitstage",
+        "offDays": "WE / FT",
+        "lastEdit": "Letzte Änderung",
+        "lastEditShort": "Letzte Änd."
+      },
+      "time": {
+        "title": "Gebuchte Zeiten",
+        "takeover": "Übernahme",
+        "balance": "Differenz",
+        "carryover": "Übertrag"
+      }
+    },
+    "offtime": {
+      "title": "Abwesenheiten buchen",
+      "subtitle": "Abwesenheitsmarker setzen das Tagessoll generell auf 0 Stunden. Es können für Abwesenheitstage keine Zeiten gebucht werden."
+    }
+  }
+}
