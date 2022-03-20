@@ -142,6 +142,9 @@
               <div class="col-12 col-lg-6 mb-3">
                 <div class="form-group">
                   <label for="file-class" class="form-label">{{ i18n('file.classify.class') }}</label>
+                  <label class="form-label text-primary pointer" *ngIf="ai_classifiedAs" (click)="file.classid = ai_classifiedAs.id; setClassId();">
+                    , {{ i18n('file.classify.suggestion', [i18n('classify.classes.' + ai_classifiedAs.techname), formatService.fnumber(ai_classifiedConfidence * 100, 1)]) }}
+                  </label>
                   <select class="form-select" id="file-class" name="file-class"
                       [(ngModel)]="file.classid" (change)="setClassId();">
                       <option [value]="null">{{ i18n('common.select.pickOne') }}</option>

@@ -47,6 +47,9 @@ export class FileComponent implements OnInit {
   filetypes: CaseFiletype[] = [];
   parties: Party[] = [];
 
+  ai_classifiedAs: Class|null = null;
+  ai_classifiedConfidence: number = 0.0;
+
   constructor(private authService: AuthService,
     private configService: ConfigService,
     private i18nService: I18nService,
@@ -91,7 +94,20 @@ export class FileComponent implements OnInit {
   }
 
   private downloadFile(id: number): void {
-    if (this.file != undefined && Object.keys(this.file.versions).length > 0) {
+    if (this.file == undefined)
+      return;
+    if (this.file.class == null) {
+      let url = this.config.api.baseUrl + '/file/' + id + '/classify';
+      this.authService.queryApi(url).subscribe((reply) => {
+        if (reply.success && reply.payload != undefined) {
+          if (reply.payload['result'] && +reply.payload['result']['confidence'] > 0.0) {
+            this.ai_classifiedAs = this.classes.filter((c) => c.techname === reply.payload!['result']['determinedClass'])[0];
+            this.ai_classifiedConfidence = +reply.payload['result']['confidence'];
+          }
+        }
+      });
+    }
+    if (Object.keys(this.file.versions).length > 0) {
       this.recentVersion = this.version;
       if (this.recentVersion && !this.recentVersion.ext?.displayable) {
         this.busy = false;
