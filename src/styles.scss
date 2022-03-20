@@ -146,6 +146,9 @@ pre {
 
 .ratio-2x3 {
   aspect-ratio: 2/3;
+}
+
+.ratio-md-3x2 {
   @include media-breakpoint-up(md) {
     aspect-ratio: 3/2;
   }

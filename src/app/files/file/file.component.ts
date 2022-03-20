@@ -35,11 +35,13 @@ export class FileComponent implements OnInit {
   fileid: number = -1;
   recentVersion: Version|null|undefined;
   textcontent: string[] = [];
+  updating: boolean = false;
   usersettingsObj?: Settings;
   view: string = '';
 
   addresses: Address[] = [];
   cases: Case[] = [];
+  casefilestatus: string[] = [];
   classes: Class[] = [];
   clients: Party[] = [];
   contacts: PartyContact[] = [];
@@ -60,18 +62,35 @@ export class FileComponent implements OnInit {
     private fileService: FileService) {
     this.userSettings.loadArchiveSettings();
     this.userSettings.settings$.subscribe((settings) => { this.usersettingsObj = settings; });
-    this.userSettings.addresses$.subscribe((addresses) => { this.addresses = addresses; });
-    this.userSettings.cases$.subscribe((cases) => { this.cases = cases; });
+    this.userSettings.addresses$.subscribe((addresses) => { 
+      this.addresses = addresses;
+      this.addresses.sort((a, b) => { return (a.name1+a.street+a.zip+a.city).toLowerCase() > (b.name1+b.street+b.zip+b.city).toLowerCase() ? 1 : (a.name1+a.street+a.zip+a.city).toLowerCase() < (b.name1+b.street+b.zip+b.city).toLowerCase() ? -1 : 0  });
+     });
+    this.userSettings.cases$.subscribe((cases) => { 
+      this.cases = cases;
+      this.cases.sort((a, b) => { return a.casepath > b.casepath ? 1 : a.casepath < b.casepath ? -1 : 0  });
+    });
+    this.userSettings.caseFileStatus$.subscribe((status) => { this.casefilestatus = status; });
     this.userSettings.classes$.subscribe((classes) => {
       this.classes = classes;
       this.classes.forEach((item) => {item.name = this.i18n('classify.classes.' + item.techname)});
       this.classes.sort((a, b) => { return a.name > b.name ? 1 : a.name < b.name ? -1 : 0  });
     });
-    this.userSettings.clients$.subscribe((clients) => { this.clients = clients; });
+    this.userSettings.clients$.subscribe((clients) => { 
+      this.clients = clients;
+      this.clients.sort((a, b) => { return a.name1 > b.name1 ? 1 : a.name1 < b.name1 ? -1 : 0  });
+     });
     this.userSettings.contacts$.subscribe((contacts) => { this.contacts = contacts; });
     this.userSettings.contacttypes$.subscribe((contacttypes) => { this.contacttypes = contacttypes; });
-    this.userSettings.filetypes$.subscribe((filetypes) => { this.filetypes = filetypes; });
-    this.userSettings.parties$.subscribe((parties) => { this.parties = parties; });
+    this.userSettings.filetypes$.subscribe((filetypes) => {
+      this.filetypes = filetypes;
+      this.filetypes.forEach((item) => {item.i18nname = this.i18n('casefiletypes.' + item.name)});
+      this.filetypes.sort((a, b) => { return a.i18nname > b.i18nname ? 1 : a.i18nname < b.i18nname ? -1 : 0  });
+    });
+    this.userSettings.parties$.subscribe((parties) => { 
+      this.parties = parties;
+      this.parties.sort((a, b) => { return a.name1 > b.name1 ? 1 : a.name1 < b.name1 ? -1 : 0  });
+     });
   }
 
   get config(): AppConfig {
@@ -114,11 +133,7 @@ export class FileComponent implements OnInit {
         return;
       }
     }
-    if (this.view !== 'preview') {
-      this.busy = false;
-      return;
-    }
-    if (this.file != undefined && this.recentVersion != undefined) {
+    if (this.recentVersion != undefined) {
       let url = this.config.api.baseUrl + '/file/' + id + '/download';
       this.authService.download(url).subscribe(async (reply) => {
         this.filecontent = reply;
@@ -208,8 +223,21 @@ export class FileComponent implements OnInit {
     return this.i18nService.Locale;
   }
 
-  get pages() : Page[]|null {
-    return this.fileService.pages(this.file);
+  nextFile() : void {
+    let url = this.config.api.baseUrl + '/file/next';
+    this.authService.queryApi(url).subscribe((reply) => {
+      if (reply.success && reply.payload != undefined) {
+        let id = <number>reply.payload['file'];
+        if (id == this.file?.id)
+          return;
+        this.file = undefined;
+        this.recentVersion = undefined;
+        this.filecontent = undefined;
+        this.ai_classifiedAs = null;
+        this.ai_classifiedConfidence = 0.0;
+        this.router.navigate(['/file', id]);
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -223,10 +251,42 @@ export class FileComponent implements OnInit {
     });
   }
 
+  get pages() : Page[]|null {
+    return this.fileService.pages(this.file);
+  }
+
+  setCaseFilestatus() : void {
+    this.changes['filestatus'] = this.file!.case_filestatus;
+    this.submitFile();
+  }
+
+  setCaseFiletypeId() : void {
+    this.file!.case_filetype = this.filetypes.find(item => item.id == this.file?.case_filetypeid) ?? null;
+    this.changes['filetypeid'] = this.file!.case_filetypeid != null ? +this.file!.case_filetypeid : null;
+    this.submitFile();
+  }
+
+  setCaseId() : void {
+    this.file!.case = this.cases.find(item => item.id == this.file?.caseid) ?? null;
+    this.changes['caseid'] = this.file!.caseid != null ? +this.file!.caseid : null;
+    this.submitFile();
+  }
+
   setClassId() : void {
     this.file!.class = this.classes.find(item => item.id == this.file?.classid) ?? null;
-    console.log(this.file);
     this.changes['classid'] = this.file!.classid != null ? +this.file!.classid : null;
+    this.submitFile();
+  }
+
+  setClientId() : void {
+    this.file!.client = this.clients.find(item => item.id == this.file?.clientid) ?? null;
+    this.changes['clientid'] = this.file!.clientid != null ? +this.file!.clientid : null;
+    this.submitFile();
+  }
+
+  setPartyAddressId() : void {
+    this.file!.partyaddress = this.addresses.find(item => item.id == this.file?.partyaddressid) ?? null;
+    this.changes['partyaddressid'] = this.file!.partyaddressid != null ? +this.file!.partyaddressid : null;
     this.submitFile();
   }
 
@@ -236,10 +296,11 @@ export class FileComponent implements OnInit {
       clearTimeout(this.debounce);
     if (Object.keys(this.changes).length == 0)
       return;
+    this.updating = true;
     this.debounce = setTimeout(() => {
       let url = this.config.api.baseUrl + '/file/' + this.file!.id;
       this.authService.updateApi(url, this.changes).subscribe((reply) => {
-        console.log(reply);
+        this.updating = false;
       });
     }, 1000);
   }

@@ -38,6 +38,7 @@ export class SettingsService {
         this.updateRoles(reply.payload['roles']);
       }
     });
+    this.caseFileStatus.next(['new', 'checked', 'approved']);
   }
 
   private loadUserSettings() : void {
@@ -55,6 +56,9 @@ export class SettingsService {
 
   private cases: ReplaySubject<Case[]> = new ReplaySubject<Case[]>();
   cases$ = this.cases.asObservable();
+
+  private caseFileStatus: ReplaySubject<string[]> = new ReplaySubject<string[]>();
+  caseFileStatus$ = this.caseFileStatus.asObservable();
 
   private classes: ReplaySubject<Class[]> = new ReplaySubject<Class[]>();
   classes$ = this.classes.asObservable();

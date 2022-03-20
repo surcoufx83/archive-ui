@@ -35,6 +35,7 @@ export interface CaseFiletype {
     iconcolor: string;
     id: number;
     name: string;
+    i18nname: string;
 }
 
 export interface CaseNotification {

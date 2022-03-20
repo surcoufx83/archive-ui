@@ -29,6 +29,7 @@ export interface File {
     directoryid: number|null;
     class: Class|null;
     classid: number|null;
+    classifyDisabled: boolean;
     case: Case|null;
     caseid: number|null;
     case_filetype: CaseFiletype|null;
