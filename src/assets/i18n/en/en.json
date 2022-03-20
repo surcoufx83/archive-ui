@@ -154,7 +154,7 @@
     "classify": {
       "title": "Classification",
       "class": "Document type",
-      "suggestion": "Vorschlag: {0} {1}%"
+      "suggestion": "Suggestion: {0} {1}%"
     }
   },
   "home": {
@@ -248,20 +248,20 @@
   },
   "partyroles": {
     "bank": "Bank",
-    "borrower": "Kreditnehmer",
-    "buyer": "Käufer",
-    "doctor": "Arzt",
-    "employee": "Arbeitnehmer",
-    "employer": "Arbeitgeber",
-    "insuredperson": "Versicherter",
-    "insurer": "Versicherer",
-    "landlord": "Vermieter",
-    "lender": "Kreditgeber",
-    "main": "Hauptbeteiligter",
+    "borrower": "Borrower",
+    "buyer": "Buyer",
+    "doctor": "Doctor",
+    "employee": "Employee",
+    "employer": "Employer",
+    "insuredperson": "Insured person",
+    "insurer": "Insurer",
+    "landlord": "Landlord",
+    "lender": "Lender",
+    "main": "Main participant",
     "patient": "Patient",
-    "renter": "Mieter",
-    "vendor": "Verkäufer",
-    "authority": "Behörde"
+    "renter": "Renter",
+    "vendor": "Vendor",
+    "authority": "Authority"
   },
   "search": {
     "title": "Search",
