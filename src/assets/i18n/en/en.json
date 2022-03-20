@@ -153,7 +153,8 @@
     },
     "classify": {
       "title": "Classification",
-      "class": "Document type"
+      "class": "Document type",
+      "suggestion": "Vorschlag: {0} {1}%"
     }
   },
   "home": {
