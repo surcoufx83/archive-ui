@@ -153,7 +153,8 @@
     },
     "classify": {
       "title": "Klassifizierung und Zuordnung",
-      "class": "Dokumentenart"
+      "class": "Dokumentenart",
+      "suggestion": "Vorschlag: {0} {1}%"
     }
   },
   "home": {
