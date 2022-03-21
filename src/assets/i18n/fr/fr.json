@@ -93,6 +93,7 @@
       "In_Contract": "Vertrag",
       "In_ContractAdjustment": "Vertragsänderung",
       "In_ContractAmendment": "Vertragsergänzung",
+      "In_ContractRenewal": "Vertragsverlängerung",
       "In_ContractTermination": "Kündigungsbestätigung, Auflösung",
       "In_ContractTermsAndConditions": "AGBs",
       "In_DeliveryNote": "Lieferschein",
@@ -180,7 +181,24 @@
       "caseFiledesc": "Beschreibung",
       "client": "Mandant",
       "party": "Korrespondent"
+    },
+    "housekeeping": {
+      "title": "Organisation",
+      "move": {
+        "title": "Datei Verschieben",
+        "description": "Verschiebt die Datei im Archiv in ein anderes Verzeichnis.",
+        "btn": "Ziel wählen"
+      },
+      "delete": {
+        "title": "Datei Löschen",
+        "description": "Löscht die Datei unwiderruflich aus dem Archiv.",
+        "btn": "Löschen"
+      }
     }
+  },
+  "folderbrowser": {
+    "title": "Ordner durchsuchen",
+    "selected": "Gewählt: {0}"
   },
   "home": {
     "title": "Archiv Start",
@@ -193,7 +211,7 @@
     "stats": {
       "title": "Schnelle Statistiken...",
       "files1": "Das Archiv verwaltet aktuell {0} Dateien in {1} Verzeichnissen mit insgesamt {2}.",
-      "files2": "{0} der Dateien wurden Klassifiziert, {1} wurden einer Akte zugeordnert. Von {2} konnte kein OCR-Text erzeugt werden.",
+      "files2": "{0} der Dateien wurden klassifiziert, {1} wurden einer Akte zugeordnert. Für {2} konnte kein OCR-Text erzeugt werden.",
       "files3": "Diesen Monat wurden {0} neue Dateien hinzugefügt.",
       "casesLink": "Akten",
       "filesLink": "Alle Dateien",
