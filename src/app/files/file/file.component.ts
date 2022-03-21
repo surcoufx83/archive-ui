@@ -11,10 +11,11 @@ import { SettingsService } from '../../user/settings/settings.service';
 import { File, Page, Version } from '../file';
 import { FormatService } from 'src/app/utils/format.service';
 import { FileService } from 'src/app/utils/file.service';
-import { Address, ContactType, Party, PartyContact } from 'src/app/common';
+import { Address, ButtonType, ContactType, Party, PartyContact } from 'src/app/common';
 import { ReplaySubject } from 'rxjs';
 import { Case, CaseFiletype } from 'src/app/cases/case';
 import { Class } from '../class';
+import { SelectedItem } from '../folder-browser-dialog/folder-browser-dialog.component';
 
 @Component({
   selector: 'app-file',
@@ -51,6 +52,8 @@ export class FileComponent implements OnInit {
 
   ai_classifiedAs: Class|null = null;
   ai_classifiedConfidence: number = 0.0;
+
+  showMoveToFolderBrowser: boolean = false;
 
   constructor(private authService: AuthService,
     private configService: ConfigService,
@@ -215,12 +218,34 @@ export class FileComponent implements OnInit {
         this.configService.setCacheItem(key, this.file);
         this.downloadFile(this.file.id);
       }
+      else
+        alert("Error calling API :(");
       this.busy = false;
     });
   }
 
   get locale(): string {
     return this.i18nService.Locale;
+  }
+
+  moveTo(e: SelectedItem) : void {
+    console.log(e);
+    if (e.clickedButton == ButtonType.Ok && this.file && e.selectedFolder) {
+      let url = this.config.api.baseUrl + '/file/' + this.file.id + '/move';
+      this.authService.updateApi(url, {
+        folder: e.selectedFolder.id
+      }).subscribe((reply) => {
+        if (reply.success && reply.payload && reply.payload['file']) {
+          this.file = <File>reply.payload['file'];
+          let key = 'file__' + this.file.id;
+          this.fileid = this.file.id;
+          this.configService.setCacheItem(key, this.file);
+          this.downloadFile(this.file.id);
+        }
+        else
+          alert("Error calling API :(");
+      });
+    }
   }
 
   nextFile() : void {
@@ -237,6 +262,8 @@ export class FileComponent implements OnInit {
         this.ai_classifiedConfidence = 0.0;
         this.router.navigate(['/file', id]);
       }
+      else
+        alert("Error calling API :(");
     });
   }
 

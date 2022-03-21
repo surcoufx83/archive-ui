@@ -16,6 +16,11 @@ export interface Address {
   zip: string;
 }
 
+export enum ButtonType {
+  Ok,
+  Cancel
+}
+
 export interface ContactType {
   id: number;
   icon: string;

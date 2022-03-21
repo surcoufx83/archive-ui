@@ -65,12 +65,6 @@
         <div class="card">
           <div class="card-header d-flex justify-content-between align-items-center">
             <h3 class="text-nowrap text-truncate">{{ i18n('file.main.title') }}</h3>
-            <div>
-              <button type="submit" class="form-control btn-sm btn-primary text-nowrap">
-                <i [class]="config.icons[updating ? 'busy' : 'save']"></i>
-                <span class="d-none d-lg-inline ms-1">{{ i18n('common.save') }}</span>
-              </button>
-            </div>
           </div>
           <div class="card-body">
 
@@ -79,7 +73,7 @@
                 <div class="form-group">
                   <label for="file-name" class="form-label required">{{ i18n('file.main.name') }}</label>
                   <input type="text" class="form-control" id="file-name" name="file-name"
-                    [(ngModel)]="file.name" required>
+                    [(ngModel)]="file.name" (change)="changes['name'] = file.name; submitFile();" required>
                 </div>
               </div>
               <div class="col-12 col-lg-6 mb-3" *ngIf="file.directory">
@@ -120,13 +114,6 @@
                     [value]="formatService.fnumber(pages.length)" readonly>
                 </div>
               </div>
-              <div class="col-6 col-lg-3 mb-3" *ngIf="version && version.stats">
-                <div class="form-group">
-                  <label for="file-words" class="form-label">{{ i18n('file.main.words') }}</label>
-                  <input type="text" class="form-control-plaintext form-control-px" id="file-words" name="file-words"
-                    [value]="formatService.fnumber(version.stats.votedWordcount)" readonly>
-                </div>
-              </div>
             </div><!-- file meta information -->
 
           </div>
@@ -141,8 +128,8 @@
                 <i [class]="config.icons[file.classifyDisabled ? 'toggle-on' : 'toggle-off']"></i>
               </button>
               <button type="button" class="form-control btn-sm btn-primary text-nowrap ms-3 ms-lg-1"
-                (click)="nextFile()">
-                <i [class]="config.icons['go-right']"></i>
+                (click)="nextFile()" [disabled]="busy">
+                <i [class]="config.icons[updating ? 'busy' : 'go-right']"></i>
                 <span class="d-none d-lg-inline ms-1">{{ i18n('file.classify.nextFile') }}</span>
               </button>
             </div>
@@ -242,6 +229,49 @@
                   <ng-container *ngIf="getViewer() == 'ng2-pdfjs-viewer'">
                     <ng2-pdfjs-viewer #pdfViewer></ng2-pdfjs-viewer>
                   </ng-container>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="card mt-4 mt-lg-2 border-danger">
+          <div class="card-header d-flex justify-content-between align-items-center border-danger">
+            <h3 class="text-nowrap text-truncate">{{ i18n('file.housekeeping.title') }}</h3>
+          </div>
+          <div class="card-body">
+
+            <div class="row border-bottom border-danger pb-2" *ngIf="file.directory">
+              <div class="col-12 d-flex justify-content-between">
+                <div>
+                  <div class="fw-bold">{{ i18n('file.housekeeping.move.title') }}</div>
+                  <div class="text-muted">{{ i18n('file.housekeeping.move.description') }}</div>
+                </div>
+                <div class="ms-3 ms-lg-4">
+                  <button type="button" class="form-control btn-sm btn-outline-danger text-nowrap"
+                    (click)="showMoveToFolderBrowser = true;" [disabled]="busy">
+                    <i [class]="config.icons[updating ? 'busy' : 'copy']"></i>
+                    <span class="ms-1">{{ i18n('file.housekeeping.move.btn') }}</span>
+                  </button>
+                </div>
+              </div>
+              <folder-browser-dialog *ngIf="showMoveToFolderBrowser" 
+                [initialFolder]="file.directory"
+                (select)="moveTo($event); showMoveToFolderBrowser = false;"></folder-browser-dialog>
+            </div>
+            <div class="row py-2">
+              <div class="col-12 d-flex justify-content-between">
+                <div>
+                  <div class="fw-bold">{{ i18n('file.housekeeping.delete.title') }}</div>
+                  <div class="text-muted">{{ i18n('file.housekeeping.delete.description') }}</div>
+                </div>
+                <div class="ms-3 ms-lg-4">
+                  <button type="button" class="form-control btn-sm btn-outline-danger text-nowrap"
+                    (click)="true" [disabled]="busy">
+                    <i [class]="config.icons[updating ? 'busy' : 'delete']"></i>
+                    <span class="ms-1">{{ i18n('file.housekeeping.delete.btn') }}</span>
+                  </button>
                 </div>
               </div>
             </div>

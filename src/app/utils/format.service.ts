@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { format } from 'date-fns';
 import * as _filesize from 'filesize';
-import { AppConfig, ConfigService } from '../config.service';
 import { I18nService } from '../i18n.service';
 
 @Injectable({
@@ -9,7 +8,7 @@ import { I18nService } from '../i18n.service';
 })
 export class FormatService {
 
-  constructor(private configService: ConfigService, private i18nService: I18nService,) { }
+  constructor(private i18nService: I18nService) { }
 
   filesize(size: number) : string {
     return _filesize(size);

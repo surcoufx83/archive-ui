@@ -45,6 +45,7 @@ import { FilesComponent } from './files/files/files.component';
 import { FileListItemComponent } from './files/file-list-item/file-list-item.component';
 import { CaseListItemComponent } from './cases/case-list-item/case-list-item.component';
 import { CaseComponent } from './cases/case/case.component';
+import { FolderBrowserDialogComponent } from './files/folder-browser-dialog/folder-browser-dialog.component';
 
 registerLocaleData(localeDe);
 
@@ -81,6 +82,7 @@ registerLocaleData(localeDe);
     FileListItemComponent,
     CaseListItemComponent,
     CaseComponent,
+    FolderBrowserDialogComponent,
   ],
   imports: [
     AppRoutingModule,
