@@ -157,6 +157,9 @@
       "pickOne": " Please choose"
     }
   },
+  "country": {
+    "germany": "Deutschland"
+  },
   "file": {
     "title": "File {0}",
     "downloadButton": "Download",
@@ -291,6 +294,10 @@
       "today": "Today"
     }
   },
+  "notepad": {
+    "title": "Notes",
+    "filterPlaceholder": "Filtern"
+  },
   "partyroles": {
     "bank": "Bank",
     "borrower": "Borrower",
@@ -307,6 +314,21 @@
     "renter": "Renter",
     "vendor": "Vendor",
     "authority": "Authority"
+  },
+  "receipts": {
+    "title": "Belegerfassung",
+    "date": "Datum",
+    "party": "Händler",
+    "amount": "Betrag",
+    "items": {
+      "title": "Positionen",
+      "article": "Artikel",
+      "quantity": "Menge",
+      "singleprice": "E-Preis",
+      "discount": "Rabatt",
+      "deposit": "Pfand",
+      "totalnet": "G-Preis"
+    }
   },
   "search": {
     "title": "Search",
