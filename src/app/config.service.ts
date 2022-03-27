@@ -10,8 +10,8 @@ export class ConfigService {
 
   private appConfig: AppConfig = <AppConfig>{ loaded: false };
   private startUrl: string = '';
-  private searches: SearchResults[] = [];
-  private searchIndexes: string[] = [];
+
+  private cache: {[ key: string ]: any } = {};
 
   constructor(private http: HttpClient, private router: Router) {
     this.startUrl = location.href.substr(location.href.indexOf('#') + 1);
@@ -31,21 +31,12 @@ export class ConfigService {
     return this.appConfig;
   }
 
-  getSearchResult(key: string) : SearchResults|null {
-    for (let i = 0; i < this.searchIndexes.length; i++) {
-      if (this.searchIndexes[i] === key)
-        return this.searches[i];
-    }
-    return null;
+  getCacheItem(key: string) : any|null {
+    return this.cache[key];
   }
 
-  setSearchResult(key: string, result: SearchResults) : void {
-    if (this.searches.length === 5) {
-      this.searches.splice(0, 1);
-      this.searchIndexes.splice(0, 1);
-    }
-    this.searches.push(result);
-    this.searchIndexes.push(key);
+  setCacheItem(key: string, obj: any) : void {
+    this.cache[key] = obj;
   }
 
 }
@@ -67,7 +58,14 @@ export interface AppConfig {
 export interface AuthConfig {
   authUrl: string;
   authCheck: string;
+  basic: BasicAuthConfig;
   oauth2: OAuth2Config;
+}
+
+export interface BasicAuthConfig {
+  enabled: boolean;
+  user: string;
+  password: string;
 }
 
 export interface NavbarConfig {

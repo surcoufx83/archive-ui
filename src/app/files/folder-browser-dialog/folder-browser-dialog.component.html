@@ -1,0 +1,50 @@
+<div class="backdrop" *ngIf="initialFolder">
+    <div class="dialog modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{ title }}</h5>
+                <button type="button" class="btn-close" aria-label="Close" (click)="cancel"></button>
+            </div>
+            <div class="modal-header py-1 d-flex justify-content-between">
+                <div class="text-nowrap text-truncate">
+                    {{dir.relpath}}&nbsp;
+                </div>
+                <div>
+                    <ui-busy-indicator *ngIf="busy"></ui-busy-indicator>
+                </div>
+            </div>
+            <div class="modal-body flex-grow-1 py-1">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item pointer" *ngIf="dir.parent"
+                        (click)="dir = dir.parent; reload();">
+                        <i [class]="config.icons['folder-up'] + ' me-1'"></i>
+                        ..
+                    </li>
+                    <li class="list-group-item pointer" *ngFor="let item of folders" 
+                        (click)="dir = item; file = null; reload();">
+                        <i [class]="config.icons['folder'] + ' me-1'"></i>
+                        {{ item.name }}
+                    </li>
+                    <li class="list-group-item pointer" *ngFor="let item of files" 
+                        (click)="file = item;">
+                        <i [class]="config.icons['file'] + ' me-1'"></i>
+                        {{ item.name }}
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer d-flex justify-content-between align-items-center">
+                <div class="text-nowrap text-truncate">
+                    <ng-container *ngIf="initialFolder.id != dir.id">
+                        <ng-container *ngIf="file != null">{{ i18n('folderbrowser.selected', [file.name]) }}</ng-container>
+                        <ng-container *ngIf="file == null">{{ i18n('folderbrowser.selected', [dir.name]) }}</ng-container>
+                    </ng-container>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" (click)="cancel">{{ cancelBtnTitle }}</button>
+                    <button type="button" class="btn btn-sm btn-primary ms-2" 
+                        *ngIf="initialFolder.id != dir.id" (click)="submit()">{{ okBtnTitle }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,287 @@
+<ui-centered-busy-indicator *ngIf="usersettingsObj == undefined || file == undefined"></ui-centered-busy-indicator>
+
+<ng-container *ngIf="usersettingsObj != undefined && file != undefined">
+  <div class="container pt-4 pt-md-2 mb-2">
+    <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between align-items-center">
+      <h2 class="text-nowrap text-truncate">{{ i18n('file.title', [file.name]) }}</h2>
+      <div class="ps-3 mb-2 d-flex" *ngIf="file.fileexists">
+        <a [routerLink]="['/file', file.id]" *ngIf="view === 'preview'" class="text-decoration-none ms-3 ms-lg-1">
+          <button type="button" class="form-control btn-sm btn-secondary text-nowrap">
+            <i [class]="config.icons['go-left']"></i>
+            <span class="d-none d-lg-inline ms-1">{{ i18n('common.back') }}</span>
+          </button>
+        </a>
+        <a [routerLink]="['/file', file.id, 'preview']" *ngIf="view !== 'preview' && displayable"
+          class="text-decoration-none ms-3 ms-lg-1">
+          <button type="button" class="form-control btn-sm btn-secondary text-nowrap">
+            <i [class]="config.icons['preview']"></i>
+            <span class="d-none d-lg-inline ms-1">{{ i18n('file.previewButton') }}</span>
+          </button>
+        </a>
+        <a (click)="download()" *ngIf="downloadable" class="text-decoration-none ms-3 ms-lg-1">
+          <button type="button" class="form-control btn-sm btn-secondary text-nowrap">
+            <i [class]="config.icons['download']"></i>
+            <span class="d-none d-lg-inline ms-1">{{ i18n('file.downloadButton') }}</span>
+          </button>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <ng-container *ngIf="view === 'preview' && recentVersion; else notPreview">
+    <div class="container pt-4 pt-md-2 mb-2 ratio-2x3 ratio-md-3x2">
+      <ng-container *ngIf="getViewer() == 'ng2-pdfjs-viewer'">
+        <ng2-pdfjs-viewer #pdfViewer></ng2-pdfjs-viewer>
+      </ng-container>
+      <ng-container *ngIf="getViewer() == 'plaintext'">
+        <div class="card col-12">
+          <div class="card-body">
+            <pre
+              class="codeblock linenumbers"><code><ul class="p-0"><li *ngFor="let line of textcontent; let i = index" class="d-flex"><div class="counter">{{ (i+1) }}</div><div class="content flex-shrink-1">{{ line }}</div></li></ul></code></pre>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="getViewer() == 'html'">
+        <div class="card col-12 w-100 h-100">
+          <div class="card-body">
+            <iframe #htmlViewer class="w-100 h-100" src="about:blank"></iframe>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="getViewer() == 'img'">
+        <div class="card col-12 w-100 h-100">
+          <div class="card-body">
+            <img #imgViewer src="" style="max-width: 100%; height: auto;">
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </ng-container>
+
+  <ng-template #notPreview>
+
+    <div class="container pt-4 pt-md-2 mb-2">
+      <form #f (submit)="submitFile()" ngNativeValidate>
+        <div class="card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h3 class="text-nowrap text-truncate">{{ i18n('file.main.title') }}</h3>
+          </div>
+          <div class="card-body">
+
+            <div class="row"><!-- file header data directory + filename -->
+              <div class="col-12 col-lg-6 mb-3">
+                <div class="form-group">
+                  <label for="file-name" class="form-label required">{{ i18n('file.main.name') }}</label>
+                  <input type="text" class="form-control" id="file-name" name="file-name"
+                    [(ngModel)]="file.name" (change)="changes['name'] = file.name; submitFile();" required>
+                </div>
+              </div>
+              <div class="col-12 col-lg-6 mb-3" *ngIf="file.directory">
+                <div class="form-group">
+                  <label for="file-directory" class="form-label required">{{ i18n('file.main.dir') }}</label>
+                  <input type="text" class="form-control-plaintext form-control-px" id="file-directory" name="file-directory"
+                    [(ngModel)]="file.directory.relpath" readonly>
+                </div>
+              </div>
+            </div><!-- file header data directory + filename -->
+
+            <div class="row"><!-- file meta information -->
+              <div class="col-6 col-lg-3 mb-3">
+                <div class="form-group">
+                  <label for="file-created" class="form-label">{{ i18n('file.main.created') }}</label>
+                  <input type="text" class="form-control-plaintext form-control-px" id="file-created" name="file-created"
+                    [value]="formatService.fdate(file.mtime, 'Pp')" readonly>
+                </div>
+              </div>
+              <div class="col-6 col-lg-3 mb-3" *ngIf="file.deldate">
+                <div class="form-group">
+                  <label for="file-deleted" class="form-label">{{ i18n('file.main.deleted') }}</label>
+                  <input type="text" class="form-control-plaintext form-control-px" id="file-deleted" name="file-deleted"
+                    [value]="formatService.fdate(file.deldate, 'Pp')" readonly>
+                </div>
+              </div>
+              <div class="col-6 col-lg-3 mb-3">
+                <div class="form-group">
+                  <label for="file-size" class="form-label">{{ i18n('file.main.size') }}</label>
+                  <input type="text" class="form-control-plaintext form-control-px" id="file-size" name="file-size"
+                    [value]="formatService.filesize(file.size)" readonly>
+                </div>
+              </div>
+              <div class="col-6 col-lg-3 mb-3" *ngIf="pages">
+                <div class="form-group">
+                  <label for="file-pages" class="form-label">{{ i18n('file.main.pages') }}</label>
+                  <input type="text" class="form-control-plaintext form-control-px" id="file-pages" name="file-pages"
+                    [value]="formatService.fnumber(pages.length)" readonly>
+                </div>
+              </div>
+            </div><!-- file meta information -->
+
+          </div>
+        </div>
+
+        <div class="card mt-4 mt-lg-2">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h3 class="text-nowrap text-truncate">{{ i18n('file.classify.title') }}</h3>
+            <div class="d-flex">
+              <button type="button" class="form-control btn-sm btn-secondary text-nowrap"
+                (click)="file.classifyDisabled = !file.classifyDisabled; changes['classifyDisabled'] = file.classifyDisabled; submitFile();">
+                <i [class]="config.icons[file.classifyDisabled ? 'toggle-on' : 'toggle-off']"></i>
+              </button>
+              <button type="button" class="form-control btn-sm btn-primary text-nowrap ms-3 ms-lg-1"
+                (click)="nextFile()" [disabled]="busy">
+                <i [class]="config.icons[updating ? 'busy' : 'go-right']"></i>
+                <span class="d-none d-lg-inline ms-1">{{ i18n('file.classify.nextFile') }}</span>
+              </button>
+            </div>
+          </div>
+          <div class="card-body" *ngIf="!file.classifyDisabled">
+
+            <div class="row">
+              <div class="col-12 col-lg-6 mb-3">
+                <div class="row"><!-- file class -->
+                  <div class="col-12 mb-3">
+                    <div class="form-group">
+                      <label for="file-class" class="form-label">{{ i18n('file.classify.class') }}</label>
+                      <label class="form-label text-primary pointer" *ngIf="ai_classifiedAs" (click)="file.classid = ai_classifiedAs.id; setClassId();">
+                        , {{ i18n('file.classify.suggestion', [i18n('classify.classes.' + ai_classifiedAs.techname), formatService.fnumber(ai_classifiedConfidence * 100, 1)]) }}
+                      </label>
+                      <select class="form-select" id="file-class" name="file-class"
+                          [(ngModel)]="file.classid" (change)="setClassId();">
+                          <option [value]="null">{{ i18n('common.select.pickOne') }}</option>
+                          <option *ngFor="let item of classes" [value]="item.id">{{ i18n('classify.classes.' + item.techname) }}</option>
+                        </select>
+                    </div>
+                  </div>
+                </div><!-- file class -->
+    
+                <div class="row"><!-- file case -->
+                  <div class="col-12 mb-3">
+                    <div class="form-group">
+                      <label for="file-case" class="form-label">{{ i18n('file.classify.case') }}</label>
+                      <select class="form-select" id="file-case" name="file-case"
+                          [(ngModel)]="file.caseid" (change)="setCaseId();">
+                          <option [value]="null">{{ i18n('common.select.pickOne') }}</option>
+                          <option *ngFor="let item of cases" [value]="item.id">{{ item.casepath }}</option>
+                        </select>
+                    </div>
+                  </div>
+                  <div class="col-6 mb-3">
+                    <div class="form-group">
+                      <label for="file-case-filetype" class="form-label">{{ i18n('file.classify.caseFiletype') }}</label>
+                      <select class="form-select" id="file-case-filetype" name="file-case-filetype"
+                          [(ngModel)]="file.case_filetypeid" (change)="setCaseFiletypeId();">
+                          <option [value]="null">{{ i18n('common.select.pickOne') }}</option>
+                          <option *ngFor="let item of filetypes" [value]="item.id">{{ item.i18nname }}</option>
+                        </select>
+                    </div>
+                  </div>
+                  <div class="col-6 mb-3">
+                    <div class="form-group">
+                      <label for="file-case-filestatus" class="form-label">{{ i18n('file.classify.caseFilestatus') }}</label>
+                      <select class="form-select" id="file-case-filestatus" name="file-case-filestatus"
+                          [(ngModel)]="file.case_filestatus" (change)="setCaseFilestatus();">
+                          <option [value]="''">{{ i18n('common.select.pickOne') }}</option>
+                          <option *ngFor="let item of casefilestatus" [value]="item">{{ i18n('casefilestatus.' + item) }}</option>
+                        </select>
+                    </div>
+                  </div>
+                  <div class="col-12 mb-3">
+                    <div class="form-group">
+                      <label for="file-case-name" class="form-label">{{ i18n('file.classify.caseFilename') }}</label>
+                      <input type="text" class="form-control form-control" id="file-case-name" name="file-case-name"
+                        [(ngModel)]="file.case_filename" (change)="changes['casefilename'] = file.case_filename; submitFile();">
+                    </div>
+                  </div>
+                  <div class="col-12 mb-3">
+                    <div class="form-group">
+                      <label for="file-case-description" class="form-label">{{ i18n('file.classify.caseFiledesc') }}</label>
+                      <textarea type="text" class="form-control form-control" id="file-case-description" name="file-case-description"
+                        [(ngModel)]="file.case_filedescription" (change)="changes['casedescription'] = file.case_filedescription; submitFile();"></textarea>
+                    </div>
+                  </div>
+                </div><!-- file case -->
+    
+                <div class="row"><!-- file parties -->
+                  <div class="col-12 mb-3">
+                    <div class="form-group">
+                      <label for="file-client" class="form-label">{{ i18n('file.classify.client') }}</label>
+                      <select class="form-select" id="file-client" name="file-client"
+                          [(ngModel)]="file.clientid" (change)="setClientId();">
+                          <option [value]="null">{{ i18n('common.select.pickOne') }}</option>
+                          <option *ngFor="let item of clients" [value]="item.id">{{ item.name1 }}</option>
+                        </select>
+                    </div>
+                  </div>
+                  <div class="col-12 mb-3">
+                    <div class="form-group">
+                      <label for="file-party" class="form-label">{{ i18n('file.classify.party') }}</label>
+                      <select class="form-select" id="file-party" name="file-party"
+                          [(ngModel)]="file.partyaddressid" (change)="setPartyAddressId();">
+                          <option [value]="null">{{ i18n('common.select.pickOne') }}</option>
+                          <option *ngFor="let item of addresses" [value]="item.id">{{ item.name1 }}, {{ item.street }}, {{ item.zip }} {{ item.city }}</option>
+                        </select>
+                    </div>
+                  </div>
+                </div><!-- file parties -->
+              </div>
+              <div class="col-12 col-lg-6 mb-3">
+                <div class="ratio-2x3">
+                  <ng-container *ngIf="getViewer() == 'ng2-pdfjs-viewer'">
+                    <ng2-pdfjs-viewer #pdfViewer></ng2-pdfjs-viewer>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="card mt-4 mt-lg-2 border-danger">
+          <div class="card-header d-flex justify-content-between align-items-center border-danger">
+            <h3 class="text-nowrap text-truncate">{{ i18n('file.housekeeping.title') }}</h3>
+          </div>
+          <div class="card-body">
+
+            <div class="row border-bottom border-danger pb-2" *ngIf="file.directory">
+              <div class="col-12 d-flex justify-content-between">
+                <div>
+                  <div class="fw-bold">{{ i18n('file.housekeeping.move.title') }}</div>
+                  <div class="text-muted">{{ i18n('file.housekeeping.move.description') }}</div>
+                </div>
+                <div class="ms-3 ms-lg-4">
+                  <button type="button" class="form-control btn-sm btn-outline-danger text-nowrap"
+                    (click)="showMoveToFolderBrowser = true;" [disabled]="busy">
+                    <i [class]="config.icons[updating ? 'busy' : 'copy']"></i>
+                    <span class="ms-1">{{ i18n('file.housekeeping.move.btn') }}</span>
+                  </button>
+                </div>
+              </div>
+              <folder-browser-dialog *ngIf="showMoveToFolderBrowser" 
+                [initialFolder]="file.directory"
+                (select)="moveTo($event); showMoveToFolderBrowser = false;"></folder-browser-dialog>
+            </div>
+            <div class="row py-2">
+              <div class="col-12 d-flex justify-content-between">
+                <div>
+                  <div class="fw-bold">{{ i18n('file.housekeeping.delete.title') }}</div>
+                  <div class="text-muted">{{ i18n('file.housekeeping.delete.description') }}</div>
+                </div>
+                <div class="ms-3 ms-lg-4">
+                  <button type="button" class="form-control btn-sm btn-outline-danger text-nowrap"
+                    (click)="true" [disabled]="busy">
+                    <i [class]="config.icons[updating ? 'busy' : 'delete']"></i>
+                    <span class="ms-1">{{ i18n('file.housekeeping.delete.btn') }}</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+  </ng-template>
+
+</ng-container>

@@ -5,4 +5,5 @@ export interface Note {
     variant: string;
     updated: string;
     deldate: string|null;
+    show: boolean;
 }

@@ -1,13 +1,46 @@
-import { BankAccount, StandingOrder } from "../account/account";
+import { BankAccount } from "../account/account";
 import { Case } from "../cases/case";
-import { Directory, File } from "../files/file";
+import { Directory, File, Page, Version } from "../files/file";
 import { Note } from "../notepad/note";
 
 export interface SearchResults {
-    bankaccount?: {[key: number]: BankAccount};
-    bankstandingorder?: {[key: number]: StandingOrder};
-    casesitem?: {[key: number]: Case};
-    directoriesitem?: {[key: number]: Directory};
-    filesitem?: {[key: number]: File};
-    noteitem?: {[key: number]: Note};
+    accounts?: SearchResultAccountItem[];
+    cases?: SearchResultCaseItem[];
+    directories?: SearchResultDirectoryItem[];
+    files?: SearchResultFileItem[];
+    notes?: SearchResultNoteItem[];
+    pages?: SearchResultPageItem[];
+}
+
+export interface SearchResultAccountItem {
+    account: BankAccount;
+    relevance: number;
+}
+
+export interface SearchResultCaseItem {
+    case: Case;
+    relevance: number;
+}
+
+export interface SearchResultDirectoryItem {
+    directory: Directory;
+    relevance: number;
+}
+
+export interface SearchResultFileItem {
+    file: File;
+    version: Version;
+    relevance: number;
+}
+
+export interface SearchResultNoteItem {
+    note: Note;
+    relevance: number;
+}
+
+export interface SearchResultPageItem {
+    file: File;
+    page: Page;
+    version: Version;
+    relevance: number;
 }

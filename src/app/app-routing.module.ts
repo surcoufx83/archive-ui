@@ -25,12 +25,21 @@ import { WorkProjectsComponent } from './work/settings/customers/projects/projec
 import { WorkTimeCategoriesComponent } from './work/settings/time-categories/time-categories.component';
 import { WorkYearComponent } from './work/work-year/work-year.component';
 import { SearchComponent } from './search/search.component';
+import { FileComponent } from './files/file/file.component';
+import { FilesComponent } from './files/files/files.component';
+import { CaseComponent } from './cases/case/case.component';
+import { ReceiptsComponent } from './finance/receipts/receipts.component';
 
 const routes: Routes = [
   { path: 'account', component: AccountComponent, canActivate: [ SessionGuard ] },
+  { path: 'case/:id', component: CaseComponent, canActivate: [ SessionGuard ] },
   { path: 'cases', component: CasesComponent, canActivate: [ SessionGuard ] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [ SessionGuard ] },
   { path: 'home', component: HomeComponent, canActivate: [ SessionGuard ] },
+  { path: 'file/:id/:view', component: FileComponent, canActivate: [ SessionGuard ] },
+  { path: 'file/:id', component: FileComponent, canActivate: [ SessionGuard ] },
+  { path: 'files/:id', component: FilesComponent, canActivate: [ SessionGuard ] },
+  { path: 'files', component: FilesComponent, canActivate: [ SessionGuard ], pathMatch: 'full' },
   { path: 'finance', component: FinanceComponent, canActivate: [ SessionGuard ] },
   { path: 'login', children: [
     { path: 'oauth2', component: Oauth2CallbackComponent, canActivate: [ SessionGuard ] },
@@ -38,6 +47,7 @@ const routes: Routes = [
   ]},
   { path: 'logout', component: LogoutComponent, canActivate: [ SessionGuard ] },
   { path: 'notepad', component: NotepadComponent, canActivate: [ SessionGuard ] },
+  { path: 'receipts', component: ReceiptsComponent, canActivate: [ SessionGuard ] },
   { path: 'search/:phrase/:token/:tab', component: SearchComponent, canActivate: [ SessionGuard ] },
   { path: 'search/:phrase/:token', component: SearchComponent, canActivate: [ SessionGuard ], pathMatch: 'full' },
   { path: 'search/:phrase', component: SearchComponent, canActivate: [ SessionGuard ], pathMatch: 'full' },

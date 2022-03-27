@@ -1,0 +1,20 @@
+<li class="list-group-item pointer" (click)="click(); $event.stopPropagation();">
+    <div class="d-flex">
+        <div class="pointer d-none d-lg-block" *ngIf="relevance">
+            <span class="badge bg-light text-dark fw-lighter">{{ i18n('search.result.points', ['' + formatService.fnumber(relevance)])
+                }}</span>
+        </div>
+        <div class="flex-grow-1 pointer">
+            <div>{{ case.title }}</div>
+        </div>
+    </div>
+    <div class="fs-8 text-wrap text-break">
+        <i [class]="case.status.icon + ' fs-8'"></i>
+        {{ i18n('casestatus.' + case.status.name ) }}
+         • <i [class]="case.type.icon + ' fs-8'"></i>
+        {{ i18n('casetype.' + case.type.name ) }}
+        <ng-container *ngIf="case.extid != ''">
+             • {{ i18n('cases.reference', [case.extid]) }}
+        </ng-container>
+    </div>
+</li>

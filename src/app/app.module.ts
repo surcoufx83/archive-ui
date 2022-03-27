@@ -7,6 +7,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { NgxFilesizeModule } from 'ngx-filesize';
+import { PdfJsViewerModule } from 'ng2-pdfjs-viewer';
 
 import { AccountComponent } from './account/account.component';
 import { AppComponent } from './app.component';
@@ -38,6 +40,14 @@ import { WorkTimeCategoriesComponent } from './work/settings/time-categories/tim
 import { WorkYearComponent } from './work/work-year/work-year.component';
 import { Oauth2CallbackComponent } from './login/oauth2-callback/oauth2-callback.component';
 import { SearchComponent } from './search/search.component';
+import { FileComponent } from './files/file/file.component';
+import { FilesComponent } from './files/files/files.component';
+import { FileListItemComponent } from './files/file-list-item/file-list-item.component';
+import { CaseListItemComponent } from './cases/case-list-item/case-list-item.component';
+import { CaseComponent } from './cases/case/case.component';
+import { FolderBrowserDialogComponent } from './files/folder-browser-dialog/folder-browser-dialog.component';
+import { ReceiptsComponent } from './finance/receipts/receipts.component';
+import { ReceiptComponent } from './finance/receipt/receipt.component';
 
 registerLocaleData(localeDe);
 
@@ -69,6 +79,14 @@ registerLocaleData(localeDe);
     WorkYearComponent,
     Oauth2CallbackComponent,
     SearchComponent,
+    FileComponent,
+    FilesComponent,
+    FileListItemComponent,
+    CaseListItemComponent,
+    CaseComponent,
+    FolderBrowserDialogComponent,
+    ReceiptsComponent,
+    ReceiptComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -80,6 +98,8 @@ registerLocaleData(localeDe);
       provide: DateAdapter,
       useFactory: adapterFactory,
     }),
+    NgxFilesizeModule,
+    PdfJsViewerModule,
   ],
   providers: [
     {

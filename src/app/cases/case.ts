@@ -1,10 +1,10 @@
-import { Client } from "../common";
+import { Party } from "../common";
 import { Directory } from "../files/file";
 
 export interface Case {
     id: number;
     casepath: string;
-    client: Client|null;
+    client: Party|null;
     clientid: number|null;
     comment: string;
     directory: Directory|null;
@@ -14,15 +14,15 @@ export interface Case {
     followupcase: Case|null;
     followupcaseid: number|null;
     issub: boolean;
-    search1: string;
-    search2: string;
-    search3: string;
     notification: CaseNotification;
     parent: Case|null;
     parentid: number|null;
-    party: Client|null;
+    party: Party|null;
     partyid: number|null;
-    period: any;
+    period: CasePeriod;
+    search1: string;
+    search2: string;
+    search3: string;
     status: CaseStatus;
     statusid: number;
     title: string;
@@ -31,7 +31,11 @@ export interface Case {
 }
 
 export interface CaseFiletype {
-    
+    icon: string;
+    iconcolor: string;
+    id: number;
+    name: string;
+    i18nname: string;
 }
 
 export interface CaseNotification {
@@ -39,8 +43,45 @@ export interface CaseNotification {
     upcoming: boolean;
 }
 
+export interface CasePeriod {
+    end: string;
+    minperiod: Duration;
+    minperiodFullfilled: boolean;
+    period: Duration;
+    renewal: CasePeriodRenewal;
+    start: string;
+    terminationperiod: Duration;
+}
+
+export interface CasePeriodRenewal {
+    after: Duration;
+    enabled: boolean;
+    nextdate: string|null;
+    period: Duration;
+}
+
 export interface CaseStatus {
+    flag: string;
+    flags: CaseStatusFlags;
+    icon: string;
+    iconcolor: string;
+    id: number;
+    name: string;
+    nextstatus?: CaseStatus;
+}
+
+export interface CaseStatusFlags {
+    active: boolean;
+    cancelled: boolean;
+    created: boolean;
+    deleted: boolean;
+    deletion: boolean;
+    expired: boolean;
+    hidden: boolean;
 }
 
 export interface CaseType {
+    icon: string;
+    id: number;
+    name: string;
 }

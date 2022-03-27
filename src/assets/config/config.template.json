@@ -5,6 +5,11 @@
   "auth": {
     "authUrl": "/api/auth/login",
     "authCheck": "/api/auth/check",
+    "basic": {
+      "enabled": false,
+      "user": "",
+      "password": ""
+    },
     "oauth2": {
       "enabled": true,
       "endpoint": "https://<your nextcloud server>/apps/oauth2/authorize",
@@ -17,6 +22,7 @@
   },
   "icons": {
     "account": "fa-solid fa-user",
+    "add": "fa-solid fa-plus",
     "busy": "fa-solid fa-fan fa-spin",
     "calendar": "fa-solid fa-calendar-days",
     "cases": "fa-solid fa-file-signature",
@@ -33,8 +39,9 @@
     "leads": "fa-solid fa-funnel-dollar",
     "list": "fa-solid fa-grip-lines",
     "login": "fa-solid fa-user-lock",
-    "month": "fa-solid fa-calendar-range",
     "notepad": "fa-regular fa-lightbulb",
+    "preview": "fa-solid fa-image",
+    "save": "fa-solid fa-cloud-arrow-up",
     "search": "fa-brands fa-searchengin",
     "settings": "fa-solid fa-cog",
     "stopwatch": "fa-solid fa-stopwatch",

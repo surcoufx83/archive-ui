@@ -14,18 +14,29 @@ export interface Directory {
     deldate: string|null;
 }
 
+export interface Extension {
+    id: number;
+    displayable: boolean;
+    downloadable: boolean;
+    ext: string;
+    indexable: boolean;
+    mimetype: string;
+}
+
 export interface File {
     id: number;
     directory: Directory|null;
     directoryid: number|null;
     class: Class|null;
     classid: number|null;
+    classifyDisabled: boolean;
     case: Case|null;
     caseid: number|null;
     case_filetype: CaseFiletype|null;
     case_filetypeid: number|null;
     client: Party|null;
     clientid: number|null;
+    fileexists: boolean;
     partyaddress: Address|null;
     partyaddressid: number|null;
     contact: PartyContact|null;
@@ -43,5 +54,32 @@ export interface File {
     fileclass_meta: any;
     relpath: string;
     attributes: any;
-    versions: any;
+    versions: { [key: number]: Version };
+}
+
+export interface Page {
+    id: number;
+    versionid: number;
+    pageno: number;
+    pagetype: number;
+    pagedata: string;
+}
+
+export interface Version {
+    id: number;
+    fileid: number;
+    num: number;
+    created: string;
+    indexed: string|null;
+    hasocr: boolean;
+    ext: Extension|null;
+    extid: number|null;
+    pages: {[key: number]: Page}|null;
+    words: {[key: string]: number}|null;
+    stats: VersionStats|null;
+}
+
+export interface VersionStats {
+    wordcount: number;
+    votedWordcount: number;
 }

@@ -3,20 +3,23 @@
     <nav class="navbar navbar-expand navbar-dark bg-dark">
       <div class="container-fluid d-flex justify-content-between">
         <div>
-          <a [routerLink]="'/home'" class="navbar-brand d-none d-md-inline">
-            <i [class]="config.icons['home'] + ' me-2'"></i>
-            {{ i18n('navbar.brand.title') }}
-          </a>
-        </div>
-        <div>
           <ul class="navbar-nav">
-            <li class="nav-item mx-2"
+            <li class="nav-item mx-1"
                 *ngFor="let item of config.navbar.items; let i = index">
               <a [class]="'nav-link d-flex flex-column align-items-center ' + (routeUrl != item.link ? 'active' : '')"
                  [routerLink]="item.link">
                 <i [class]="config.icons[item.icon]"></i>
                 <span class="d-none d-md-inline">
                   {{ i18n(item.title) }}
+                </span>
+              </a>
+            </li>
+            <li class="nav-item mx-1 d-list-item d-lg-none">
+              <a [class]="'nav-link d-flex flex-column align-items-center ' + (routeUrl != '/search' ? 'active' : '')"
+                 [routerLink]="'/search'">
+                <i [class]="config.icons['search']"></i>
+                <span class="d-none d-md-inline">
+                  {{ i18n('navbar.search.submit') }}
                 </span>
               </a>
             </li>

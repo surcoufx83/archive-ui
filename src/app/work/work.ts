@@ -1,6 +1,15 @@
 import { ParsedEventType } from "@angular/compiler";
 import { Party } from "../common";
 
+export interface RecentBooking {
+  count: number;
+  customerid: number;
+  description: string;
+  projectid: number|null;
+  projectstage: string;
+  timecategoryid: number;
+}
+
 export interface WorkCalendarColor {
   primary: string;
   secondary: string;
@@ -16,7 +25,7 @@ export interface WorkCustomer {
 }
 
 export interface WorkDay {
-  bookings: WorkDayBooking[];
+  bookings: {[key: number]: WorkDayBooking};
   date: string;
   day: number;
   holiday: WorkHoliday|null;
