@@ -96,6 +96,7 @@
       "In_ContractRenewal": "Vertragsverlängerung",
       "In_ContractTermination": "Kündigungsbestätigung, Auflösung",
       "In_ContractTermsAndConditions": "AGBs",
+      "In_CreditVoucher": "Gutschrift",
       "In_DeliveryNote": "Lieferschein",
       "In_DepositStatement": "Depotauszug",
       "In_DeviceManuals": "Handbuch",
@@ -119,6 +120,7 @@
       "In_PerformanceReport": "Information Wertentwicklung",
       "In_PostReceipt": "Einlieferungsbeleg Post/Paket",
       "In_QuarterReport": "Quartalsabschluss",
+      "In_Receipt": "Kassenbeleg",
       "In_Rejection": "Ablehnung, Ablehnungsbescheid",
       "In_RepairOrder": "Reparaturauftrag",
       "In_RepairReport": "Reparaturbericht",
@@ -154,6 +156,9 @@
     "select": {
       "pickOne": " Bitte wählen "
     }
+  },
+  "country": {
+    "germany": "Deutschland"
   },
   "file": {
     "title": "Datei {0}",
@@ -289,6 +294,10 @@
       "today": "Tagesbuchung"
     }
   },
+  "notepad": {
+    "title": "Notizen",
+    "filterPlaceholder": "Filtern"
+  },
   "partyroles": {
     "bank": "Bank",
     "borrower": "Kreditnehmer",
@@ -305,6 +314,21 @@
     "renter": "Mieter",
     "vendor": "Verkäufer",
     "authority": "Behörde"
+  },
+  "receipts": {
+    "title": "Belegerfassung",
+    "date": "Datum",
+    "party": "Händler",
+    "amount": "Betrag",
+    "items": {
+      "title": "Positionen",
+      "article": "Artikel",
+      "quantity": "Menge",
+      "singleprice": "E-Preis",
+      "discount": "Rabatt",
+      "deposit": "Pfand",
+      "totalnet": "G-Preis"
+    }
   },
   "search": {
     "title": "Suchen",

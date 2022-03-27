@@ -96,6 +96,7 @@
       "In_ContractRenewal": "Contract Renewal",
       "In_ContractTermination": "Confirmation of termination, dissolution",
       "In_ContractTermsAndConditions": "Terms of Service",
+      "In_CreditVoucher": "Credit note",
       "In_DeliveryNote": "Delivery Note",
       "In_DepositStatement": "Deposit statement",
       "In_DeviceManuals": "User manual",
@@ -119,6 +120,7 @@
       "In_PerformanceReport": "Performance Report",
       "In_PostReceipt": "Proof of posting Post/Parcel",
       "In_QuarterReport": "Quarterly financial statements",
+      "In_Receipt": "Receipt",
       "In_Rejection": "Rejection, rejection notice",
       "In_RepairOrder": "Repair Order",
       "In_RepairReport": "Repair report",
@@ -154,6 +156,9 @@
     "select": {
       "pickOne": " Please choose"
     }
+  },
+  "country": {
+    "germany": "Germany"
   },
   "file": {
     "title": "File {0}",
@@ -289,6 +294,10 @@
       "today": "Today"
     }
   },
+  "notepad": {
+    "title": "Notes",
+    "filterPlaceholder": "Filter"
+  },
   "partyroles": {
     "bank": "Bank",
     "borrower": "Borrower",
@@ -305,6 +314,21 @@
     "renter": "Renter",
     "vendor": "Vendor",
     "authority": "Authority"
+  },
+  "receipts": {
+    "title": "Voucher registration",
+    "date": "Date",
+    "party": "Trader",
+    "amount": "Amount",
+    "items": {
+      "title": "Items",
+      "article": "Product",
+      "quantity": "Quantity",
+      "singleprice": "Price",
+      "discount": "Discount",
+      "deposit": "Deposit",
+      "totalnet": "Total"
+    }
   },
   "search": {
     "title": "Search",
