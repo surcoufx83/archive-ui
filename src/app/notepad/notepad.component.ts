@@ -18,11 +18,15 @@ export class NotepadComponent implements OnInit {
 
   busy: boolean = false;
   debounceFilter: any;
+  debounceSave: any;
+  editId: number = 0;
+  editNote?: Note;
   filterphrase: string = '';
   notes: Note[] = [];
-  usersettingsObj?: Settings;
+  saving: boolean = false;
   sortasc: boolean = true;
   sortby: string = 'name';
+  usersettingsObj?: Settings;
 
   constructor(private authService: AuthService,
     private configService: ConfigService,
@@ -35,8 +39,43 @@ export class NotepadComponent implements OnInit {
     });
   }
 
+  close() : void {
+    this.editNote = undefined;
+    this.editId = 0;
+  }
+
   get config(): AppConfig {
     return this.configService.config;
+  }
+
+  delete(n: Note) : void {
+    this.saving = true;
+      let url = this.config.api.baseUrl + '/note/' + n.id + '/delete';
+      this.authService.updateApi(url, { }).subscribe((reply) => {
+        if (reply.success) {
+          for(let i = 0; i < this.notes.length; i++) {
+            if (this.notes[i].id == n.id) {
+              this.notes.splice(i, 1);
+              break;
+            }
+          }
+        }
+        this.saving = false;
+      });
+  }
+
+  edit(n: Note) : void {
+    if (this.editNote) {
+      for(let i = 0; i < this.notes.length; i++) {
+        if (this.notes[i].id == this.editNote.id) {
+          this.notes[i] = this.editNote;
+          this.save(this.notes[i]);
+        }
+      }
+      this.close();
+    }
+    this.editNote = n;
+    this.editId = n.id;
   }
 
   f(date: Date|string, form: string): string {
@@ -67,6 +106,20 @@ export class NotepadComponent implements OnInit {
 
   ngOnInit(): void {
     this.update();
+  }
+
+  save(n: Note) : void {
+    if (this.debounceSave)
+      clearTimeout(this.debounceSave);
+    this.debounceSave = setTimeout(() => {
+      this.saving = true;
+      let url = this.config.api.baseUrl + '/note/' + n.id;
+      this.authService.updateApi(url, {
+        'note': n
+      }).subscribe((reply) => {
+        this.saving = false;
+      });
+    }, 500);
   }
 
   sort(key: string, asc: boolean|null = null) : void {
