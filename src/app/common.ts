@@ -1,3 +1,4 @@
+import { Currency } from "./account/account";
 
 export interface Address {
   id: number;
@@ -25,6 +26,16 @@ export interface ContactType {
   id: number;
   icon: string;
   name: string;
+}
+
+export interface Country {
+  id: number;
+  currency: Currency;
+  currencyid: number;
+  name: string;
+  key2: string;
+  key3: string;
+  isdefault: boolean;
 }
 
 export interface Party {

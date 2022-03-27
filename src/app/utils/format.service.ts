@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { format } from 'date-fns';
 import * as _filesize from 'filesize';
+import { Currency } from '../account/account';
 import { I18nService } from '../i18n.service';
 
 @Injectable({
@@ -12,6 +13,10 @@ export class FormatService {
 
   filesize(size: number) : string {
     return _filesize(size);
+  }
+
+  fcur(n: number, c: Currency) : string {
+    return new Intl.NumberFormat(this.i18nService.Locale, { style: 'currency', currency: c.shortname }).format(n);
   }
 
   fdate(date: Date|string|null, form: string): string {

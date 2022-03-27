@@ -46,6 +46,8 @@ import { FileListItemComponent } from './files/file-list-item/file-list-item.com
 import { CaseListItemComponent } from './cases/case-list-item/case-list-item.component';
 import { CaseComponent } from './cases/case/case.component';
 import { FolderBrowserDialogComponent } from './files/folder-browser-dialog/folder-browser-dialog.component';
+import { ReceiptsComponent } from './finance/receipts/receipts.component';
+import { ReceiptComponent } from './finance/receipt/receipt.component';
 
 registerLocaleData(localeDe);
 
@@ -83,6 +85,8 @@ registerLocaleData(localeDe);
     CaseListItemComponent,
     CaseComponent,
     FolderBrowserDialogComponent,
+    ReceiptsComponent,
+    ReceiptComponent,
   ],
   imports: [
     AppRoutingModule,
