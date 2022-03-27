@@ -158,7 +158,7 @@
     }
   },
   "country": {
-    "germany": "Deutschland"
+    "germany": "Germany"
   },
   "file": {
     "title": "File {0}",
@@ -296,7 +296,7 @@
   },
   "notepad": {
     "title": "Notes",
-    "filterPlaceholder": "Filtern"
+    "filterPlaceholder": "Filter"
   },
   "partyroles": {
     "bank": "Bank",
@@ -316,18 +316,18 @@
     "authority": "Authority"
   },
   "receipts": {
-    "title": "Belegerfassung",
-    "date": "Datum",
-    "party": "Händler",
-    "amount": "Betrag",
+    "title": "Voucher registration",
+    "date": "Date",
+    "party": "Trader",
+    "amount": "Amount",
     "items": {
-      "title": "Positionen",
-      "article": "Artikel",
-      "quantity": "Menge",
-      "singleprice": "E-Preis",
-      "discount": "Rabatt",
-      "deposit": "Pfand",
-      "totalnet": "G-Preis"
+      "title": "Items",
+      "article": "Product",
+      "quantity": "Quantity",
+      "singleprice": "Price",
+      "discount": "Discount",
+      "deposit": "Deposit",
+      "totalnet": "Total"
     }
   },
   "search": {
