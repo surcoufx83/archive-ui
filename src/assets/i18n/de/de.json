@@ -97,6 +97,7 @@
       "In_ContractRenewal": "Vertragsverlängerung",
       "In_ContractTermination": "Kündigungsbestätigung, Auflösung",
       "In_ContractTermsAndConditions": "AGBs",
+      "In_CoverLetter": "Allgemeines Anschreiben",
       "In_CreditVoucher": "Gutschrift",
       "In_DeliveryNote": "Lieferschein",
       "In_DepositStatement": "Depotauszug",
@@ -151,12 +152,14 @@
     "add": "Neu",
     "back": "Zurück",
     "cancel": "Abbruch",
+    "no": "Nein",
     "none": "Keine",
     "novalue": "---",
     "save": "Speichern",
     "select": {
       "pickOne": " Bitte wählen "
-    }
+    },
+    "yes": "Ja"
   },
   "country": {
     "germany": "Deutschland"
@@ -186,7 +189,9 @@
       "caseFilename": "Anzeigename",
       "caseFiledesc": "Beschreibung",
       "client": "Mandant",
-      "party": "Korrespondent"
+      "party": "Korrespondent",
+      "taxreceipt": "Steuerbeleg",
+      "taxyear": "Steuerjahr"
     },
     "housekeeping": {
       "title": "Organisation",
@@ -198,7 +203,8 @@
       "delete": {
         "title": "Datei Löschen",
         "description": "Löscht die Datei unwiderruflich aus dem Archiv.",
-        "btn": "Löschen"
+        "btn": "Löschen",
+        "confirm": "Datei wirklich löschen?"
       }
     }
   },
@@ -328,7 +334,11 @@
       "singleprice": "E-Preis",
       "discount": "Rabatt",
       "deposit": "Pfand",
-      "totalnet": "G-Preis"
+      "totalnet": "G-Preis",
+      "summary": "Summen"
+    },
+    "edit": {
+      "title": "Erfassung eines Belegs"
     }
   },
   "search": {

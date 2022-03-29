@@ -49,7 +49,9 @@
     &.warning {
       background-color: #fff3cd;
     }
-    border-bottom: 1px solid #dee2e6;
+    &:not(:last-child) {
+      border-bottom: 1px solid #dee2e6;
+    }
   }
   &.flex-table-sm .row {
     >div {

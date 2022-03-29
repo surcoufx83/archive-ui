@@ -54,6 +54,8 @@ export interface File {
     fileclass_meta: any;
     relpath: string;
     attributes: any;
+    istaxreceipt: boolean|null;
+    taxyear: number|null;
     versions: { [key: number]: Version };
 }
 
