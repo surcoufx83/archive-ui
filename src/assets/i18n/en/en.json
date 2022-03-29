@@ -96,6 +96,7 @@
       "In_ContractRenewal": "Contract Renewal",
       "In_ContractTermination": "Confirmation of termination, dissolution",
       "In_ContractTermsAndConditions": "Terms of Service",
+      "In_CoverLetter": "Allgemeines Anschreiben",
       "In_CreditVoucher": "Credit note",
       "In_DeliveryNote": "Delivery Note",
       "In_DepositStatement": "Deposit statement",
@@ -150,12 +151,14 @@
     "add": "New",
     "back": "Back",
     "cancel": "Cancel",
+    "no": "Nein",
     "none": "None",
     "novalue": "---",
     "save": "Save",
     "select": {
       "pickOne": " Please choose"
-    }
+    },
+    "yes": "Ja"
   },
   "country": {
     "germany": "Germany"
@@ -185,7 +188,9 @@
       "caseFilename": "Display name",
       "caseFiledesc": "Description",
       "client": "Client",
-      "party": "Correspondent"
+      "party": "Correspondent",
+      "taxreceipt": "Steuerbeleg",
+      "taxyear": "Steuerjahr"
     },
     "housekeeping": {
       "title": "Organization",
@@ -197,7 +202,8 @@
       "delete": {
         "title": "Delete File",
         "description": "Deletes the file irrevocably from the archive.",
-        "btn": "Delete"
+        "btn": "Delete",
+        "confirm": "Datei wirklich löschen?"
       }
     }
   },
@@ -327,7 +333,11 @@
       "singleprice": "Price",
       "discount": "Discount",
       "deposit": "Deposit",
-      "totalnet": "Total"
+      "totalnet": "Total",
+      "summary": "Summen"
+    },
+    "edit": {
+      "title": "Erfassung eines Belegs"
     }
   },
   "search": {
