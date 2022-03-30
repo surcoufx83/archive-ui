@@ -180,6 +180,7 @@
     "classify": {
       "title": "Classification",
       "nextFile": "Next",
+      "date": "Date",
       "class": "Document type",
       "suggestion": "Suggestion: {0} {1}%",
       "case": "Case",
