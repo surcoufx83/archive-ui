@@ -142,20 +142,28 @@
               <div class="col-12 col-lg-6 mb-3">
                 <div class="row">
                   <!-- file class -->
-                  <div class="col-12 mb-3">
+                  <div class="col-4 mb-3">
+                    <div class="form-group">
+                      <label for="file-date" class="form-label">{{ i18n('file.classify.date') }}</label>
+                      <input type="date" class="form-control form-control" id="file-date" name="file-date"
+                        [(ngModel)]="file.date"
+                        (change)="changes['date'] = (file.date != '' ? file.date : null); submitFile();">
+                    </div>
+                  </div>
+                  <div class="col-8 mb-3">
                     <div class="form-group">
                       <label for="file-class" class="form-label">{{ i18n('file.classify.class') }}</label>
-                      <label class="form-label text-primary pointer" *ngIf="ai_classifiedAs"
-                        (click)="file.classid = ai_classifiedAs.id; setClassId();">
-                        , {{ i18n('file.classify.suggestion', [i18n('classify.classes.' + ai_classifiedAs.techname),
-                        formatService.fnumber(ai_classifiedConfidence * 100, 1)]) }}
-                      </label>
                       <select class="form-select" id="file-class" name="file-class" [(ngModel)]="file.classid"
                         (change)="setClassId();">
                         <option [value]="null">{{ i18n('common.select.pickOne') }}</option>
                         <option *ngFor="let item of classes" [value]="item.id">{{ i18n('classify.classes.' +
                           item.techname) }}</option>
                       </select>
+                      <label class="form-label text-primary pointer mt-2 text-truncate" *ngIf="ai_classifiedAs"
+                        (click)="file.classid = ai_classifiedAs.id; setClassId();">
+                        {{ i18n('file.classify.suggestion', [i18n('classify.classes.' + ai_classifiedAs.techname),
+                        formatService.fnumber(ai_classifiedConfidence * 100, 1)]) }}
+                      </label>
                     </div>
                   </div>
                 </div><!-- file class -->
@@ -232,7 +240,7 @@
                       <select class="form-select" id="file-party" name="file-party" [(ngModel)]="file.partyaddressid"
                         (change)="setPartyAddressId();">
                         <option [value]="null">{{ i18n('common.select.pickOne') }}</option>
-                        <option *ngFor="let item of addresses" [value]="item.id">{{ item.name1 }}, {{ item.street }}, {{
+                        <option *ngFor="let item of addresses" [value]="item.id">{{ item.name1 }}{{ item.department != '' ? ', ' + item.department : '' }}{{ item.street != '' ? ', ' + item.street : '' }}, {{
                           item.zip }} {{ item.city }}</option>
                       </select>
                     </div>
@@ -241,7 +249,7 @@
 
                 <div class="row">
                   <!-- tax review -->
-                  <div class="col-3 mb-3">
+                  <div class="col-6 col-lg-3 mb-3">
                     <div class="form-group">
                       <label for="file-is-tax" class="form-label d-block mb-1">{{ i18n('file.classify.taxreceipt') }}</label>
                       <input class="form-check-input" type="checkbox" [value]="true" id="file-is-tax" name="file-is-tax"
@@ -253,7 +261,7 @@
                       </label>
                     </div>
                   </div>
-                  <div class="col-3 mb-3">
+                  <div class="col-6 col-lg-3 mb-3">
                     <div class="form-group">
                       <label for="file-tax-year" class="form-label">{{ i18n('file.classify.taxyear') }}</label>
                       <input type="number" class="form-control form-control" id="file-tax-year" name="file-tax-year"

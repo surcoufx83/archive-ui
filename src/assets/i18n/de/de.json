@@ -181,6 +181,7 @@
     "classify": {
       "title": "Klassifizierung und Zuordnung",
       "nextFile": "Nächste",
+      "date": "Datum",
       "class": "Dokumentenart",
       "suggestion": "Vorschlag: {0} {1}%",
       "case": "Akte",

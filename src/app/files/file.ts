@@ -42,6 +42,7 @@ export interface File {
     contact: PartyContact|null;
     contactid: number|null;
     name: string;
+    date: string;
     islink: boolean;
     mtime: string;
     size: number;
