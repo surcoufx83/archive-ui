@@ -48,6 +48,8 @@ import { CaseComponent } from './cases/case/case.component';
 import { FolderBrowserDialogComponent } from './files/folder-browser-dialog/folder-browser-dialog.component';
 import { ReceiptsComponent } from './finance/receipts/receipts.component';
 import { ReceiptComponent } from './finance/receipt/receipt.component';
+import { DbClassesComponent } from './db/classes/classes.component';
+import { DbManagerComponent } from './db/manager/manager.component';
 
 registerLocaleData(localeDe);
 
@@ -87,6 +89,8 @@ registerLocaleData(localeDe);
     FolderBrowserDialogComponent,
     ReceiptsComponent,
     ReceiptComponent,
+    DbClassesComponent,
+    DbManagerComponent,
   ],
   imports: [
     AppRoutingModule,
