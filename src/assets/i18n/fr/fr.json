@@ -165,6 +165,21 @@
   "country": {
     "germany": "Deutschland"
   },
+  "db": {
+    "classes": {
+      "title": "Dokumentarten",
+      "techname": "Technischer Name",
+      "localized": "Lokalisierter Name",
+      "pattern": "Namensvorgabe",
+      "editor": {
+        "title": "Dokumentenart bearbeiten",
+        "localized": "Lokalisierung über json-Dateien"
+      }
+    },
+    "manager": {
+      "title": "Stammdatenverwaltung"
+    }
+  },
   "file": {
     "title": "Datei {0}",
     "downloadButton": "Download",
