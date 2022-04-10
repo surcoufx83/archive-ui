@@ -96,7 +96,7 @@
       "In_ContractRenewal": "Contract Renewal",
       "In_ContractTermination": "Confirmation of termination, dissolution",
       "In_ContractTermsAndConditions": "Terms of Service",
-      "In_CoverLetter": "Allgemeines Anschreiben",
+      "In_CoverLetter": "Cover letter",
       "In_CreditVoucher": "Credit note",
       "In_DeliveryNote": "Delivery Note",
       "In_DepositStatement": "Deposit statement",
@@ -110,7 +110,7 @@
       "In_Information": "General information",
       "In_InsuranceStatement": "Registration confirmation social security",
       "In_Invoice": "Invoice",
-      "In_InvoiceReminder": "Mahnung",
+      "In_InvoiceReminder": "Reminder",
       "In_LeadStatus": "Lead/Incentive Status",
       "In_LegalNotice": "Notice of Proceedings",
       "In_Mandate": "Power of attorney, mandate",
@@ -127,7 +127,7 @@
       "In_RepairOrder": "Repair Order",
       "In_RepairReport": "Repair report",
       "In_Request": "Application",
-      "In_Stock_Info": "Wertpapier Information",
+      "In_Stock_Info": "Stock information",
       "In_TaxAssessment": "Tax assessment",
       "In_TaxReceipt": "Tax Receipt",
       "In_TaxReport": "Tax Report",
@@ -153,31 +153,31 @@
     "add": "New",
     "back": "Back",
     "cancel": "Cancel",
-    "no": "Nein",
+    "no": "No",
     "none": "None",
     "novalue": "---",
     "save": "Save",
     "select": {
       "pickOne": " Please choose"
     },
-    "yes": "Ja"
+    "yes": "Yes"
   },
   "country": {
     "germany": "Germany"
   },
   "db": {
     "classes": {
-      "title": "Dokumentarten",
-      "techname": "Technischer Name",
-      "localized": "Lokalisierter Name",
-      "pattern": "Namensvorgabe",
+      "title": "Document types",
+      "techname": "Technical name",
+      "localized": "Localized name",
+      "pattern": "Name pattern",
       "editor": {
-        "title": "Dokumentenart bearbeiten",
-        "localized": "Lokalisierung über json-Dateien"
+        "title": "Edit Document type",
+        "localized": "Localisation via json files"
       }
     },
     "manager": {
-      "title": "Stammdatenverwaltung"
+      "title": "Data management"
     }
   },
   "file": {
@@ -207,8 +207,8 @@
       "caseFiledesc": "Description",
       "client": "Client",
       "party": "Correspondent",
-      "taxreceipt": "Steuerbeleg",
-      "taxyear": "Steuerjahr"
+      "taxreceipt": "Tax document",
+      "taxyear": "Tax year"
     },
     "housekeeping": {
       "title": "Organization",
@@ -221,7 +221,7 @@
         "title": "Delete File",
         "description": "Deletes the file irrevocably from the archive.",
         "btn": "Delete",
-        "confirm": "Datei wirklich löschen?"
+        "confirm": "Confirm file deletion?"
       }
     }
   },
@@ -352,10 +352,10 @@
       "discount": "Discount",
       "deposit": "Deposit",
       "totalnet": "Total",
-      "summary": "Summen"
+      "summary": "Totals"
     },
     "edit": {
-      "title": "Erfassung eines Belegs"
+      "title": "Record a new receipt"
     }
   },
   "search": {
