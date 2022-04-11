@@ -212,6 +212,13 @@ export class FileComponent implements OnInit {
     }
   }
 
+  guess() : void {
+    let url = this.config.api.baseUrl + '/file/' + this.file!.id + '/guess';
+      this.authService.updateApi(url, { classid: this.file!.classid }).subscribe((reply) => {
+        console.log(reply);
+      });
+  }
+
   i18n(key: string, params: string[] = []): string {
     return this.i18nService.i18n(key, params);
   }
@@ -350,6 +357,13 @@ export class FileComponent implements OnInit {
         this.updating = false;
       });
     }, 1000);
+  }
+
+  train() : void {
+    let url = this.config.api.baseUrl + '/file/' + this.file!.id + '/train';
+      this.authService.updateApi(url, { classid: this.file!.classid }).subscribe((reply) => {
+        console.log(reply);
+      });
   }
 
   get version() : Version|null {
