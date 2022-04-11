@@ -166,6 +166,36 @@
     "germany": "Germany"
   },
   "db": {
+    "accounts": {
+      "title": "Bankkonten",
+      "mandates": {
+        "title": "Lastschriftmandate"
+      },
+      "orders": {
+        "title": "Daueraufträge"
+      }
+    },
+    "articles": {
+      "title": "Artikel (für Rechnungen)",
+      "categories": {
+        "title": "Artikel-Kategorien"
+      }
+    },
+    "cases": {
+      "title": "Aktenstruktur",
+      "actions": {
+        "title": "Akten-Workflows"
+      },
+      "filetypes": {
+        "title": "Dateitypen"
+      },
+      "status": {
+        "title": "Akten-Status"
+      },
+      "types": {
+        "title": "Aktenarten"
+      }
+    },
     "classes": {
       "title": "Document types",
       "techname": "Technical name",
@@ -176,8 +206,54 @@
         "localized": "Localisation via json files"
       }
     },
+    "contacts": {
+      "types": {
+        "title": "Kontaktarten"
+      }
+    },
+    "countries": {
+      "title": "Länder",
+      "taxrates": {
+        "title": "Steuersätze"
+      }
+    },
+    "cronjobs": {
+      "title": "Cronjobs"
+    },
+    "currencies": {
+      "title": "Währungen"
+    },
+    "extension": {
+      "title": "Dateitypen"
+    },
     "manager": {
       "title": "Data management"
+    },
+    "meters": {
+      "title": "Zähler"
+    },
+    "oauth": {
+      "services": {
+        "title": "OAuth-Services"
+      }
+    },
+    "parties": {
+      "title": "Korrespondenten",
+      "addresses": {
+        "title": "Addressdatensätze"
+      },
+      "contacts": {
+        "title": "Kontaktdaten"
+      },
+      "roles": {
+        "title": "Rollen"
+      }
+    },
+    "stocks": {
+      "title": "Wertpapiere und CC",
+      "apis": {
+        "title": "APIs"
+      }
     }
   },
   "file": {
