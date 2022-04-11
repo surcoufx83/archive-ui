@@ -148,7 +148,7 @@ export class FileComponent implements OnInit {
   private downloadFile(id: number): void {
     if (this.file == undefined)
       return;
-    this.classifyFile(id);
+    // this.classifyFile(id);
     if (Object.keys(this.file.versions).length > 0) {
       this.recentVersion = this.version;
       if (this.recentVersion && !this.recentVersion.ext?.displayable) {
@@ -216,6 +216,10 @@ export class FileComponent implements OnInit {
     let url = this.config.api.baseUrl + '/file/' + this.file!.id + '/guess';
       this.authService.updateApi(url, { classid: this.file!.classid }).subscribe((reply) => {
         console.log(reply);
+        if (reply && reply.payload && reply.payload['class'] && reply.payload['class']['class']) {
+          this.ai_classifiedAs = <Class>reply.payload['class']['class'];
+          this.ai_classifiedConfidence = +reply.payload['class']['confidence'];
+        }
       });
   }
 
