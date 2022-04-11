@@ -34,6 +34,7 @@ export class FileComponent implements OnInit {
   file?: File;
   filecontent?: Blob;
   fileid: number = -1;
+  maxyear: number = new Date().getFullYear();
   recentVersion: Version|null|undefined;
   textcontent: string[] = [];
   updating: boolean = false;
@@ -96,8 +97,37 @@ export class FileComponent implements OnInit {
      });
   }
 
+  private classifyFile(id: number) : void {
+    let url = this.config.api.baseUrl + '/file/' + id + '/classify';
+    this.authService.queryApi(url).subscribe((reply) => {
+      if (reply.success && reply.payload != undefined && reply.payload['result'] != undefined) {
+        let payload = <ClassifyReply>reply.payload['result'];
+        if (payload.class.confidence > 0.0) {
+          this.ai_classifiedAs = this.classes.filter((c) => c.techname === payload.class.determinedClass)[0];
+          this.ai_classifiedConfidence = payload.class.confidence;
+        }
+      }
+    });
+  }
+
   get config(): AppConfig {
     return this.configService.config;
+  }
+
+  delete(file: File) : void {
+    if (window.confirm(this.i18n('file.housekeeping.delete.confirm'))) {
+      this.busy = true;
+      let url = this.config.api.baseUrl + '/file/' + file.id + '/delete';
+      this.authService.updateApi(url, {}).subscribe((reply) => {
+        if (reply.success) {
+          this.file = undefined;
+          this.nextFile();
+        }
+        else
+          this.busy = false;
+      });
+    }
+
   }
 
   get displayable() : boolean {
@@ -118,17 +148,7 @@ export class FileComponent implements OnInit {
   private downloadFile(id: number): void {
     if (this.file == undefined)
       return;
-    if (this.file.class == null) {
-      let url = this.config.api.baseUrl + '/file/' + id + '/classify';
-      this.authService.queryApi(url).subscribe((reply) => {
-        if (reply.success && reply.payload != undefined) {
-          if (reply.payload['result'] && +reply.payload['result']['confidence'] > 0.0) {
-            this.ai_classifiedAs = this.classes.filter((c) => c.techname === reply.payload!['result']['determinedClass'])[0];
-            this.ai_classifiedConfidence = +reply.payload['result']['confidence'];
-          }
-        }
-      });
-    }
+    this.classifyFile(id);
     if (Object.keys(this.file.versions).length > 0) {
       this.recentVersion = this.version;
       if (this.recentVersion && !this.recentVersion.ext?.displayable) {
@@ -323,8 +343,8 @@ export class FileComponent implements OnInit {
       clearTimeout(this.debounce);
     if (Object.keys(this.changes).length == 0)
       return;
-    this.updating = true;
     this.debounce = setTimeout(() => {
+      this.updating = true;
       let url = this.config.api.baseUrl + '/file/' + this.file!.id;
       this.authService.updateApi(url, this.changes).subscribe((reply) => {
         this.updating = false;
@@ -336,4 +356,13 @@ export class FileComponent implements OnInit {
     return this.fileService.version(this.file);
   }
 
+}
+
+export interface ClassifyReply {
+  class: ClassifyClassReply;
+}
+
+export interface ClassifyClassReply {
+  determinedClass: string|null;
+  confidence: number;
 }

@@ -96,6 +96,7 @@
       "In_ContractRenewal": "Contract Renewal",
       "In_ContractTermination": "Confirmation of termination, dissolution",
       "In_ContractTermsAndConditions": "Terms of Service",
+      "In_CoverLetter": "Allgemeines Anschreiben",
       "In_CreditVoucher": "Credit note",
       "In_DeliveryNote": "Delivery Note",
       "In_DepositStatement": "Deposit statement",
@@ -109,6 +110,7 @@
       "In_Information": "General information",
       "In_InsuranceStatement": "Registration confirmation social security",
       "In_Invoice": "Invoice",
+      "In_InvoiceReminder": "Mahnung",
       "In_LeadStatus": "Lead/Incentive Status",
       "In_LegalNotice": "Notice of Proceedings",
       "In_Mandate": "Power of attorney, mandate",
@@ -125,6 +127,7 @@
       "In_RepairOrder": "Repair Order",
       "In_RepairReport": "Repair report",
       "In_Request": "Application",
+      "In_Stock_Info": "Wertpapier Information",
       "In_TaxAssessment": "Tax assessment",
       "In_TaxReceipt": "Tax Receipt",
       "In_TaxReport": "Tax Report",
@@ -150,15 +153,32 @@
     "add": "New",
     "back": "Back",
     "cancel": "Cancel",
+    "no": "Nein",
     "none": "None",
     "novalue": "---",
     "save": "Save",
     "select": {
       "pickOne": " Please choose"
-    }
+    },
+    "yes": "Ja"
   },
   "country": {
     "germany": "Germany"
+  },
+  "db": {
+    "classes": {
+      "title": "Dokumentarten",
+      "techname": "Technischer Name",
+      "localized": "Lokalisierter Name",
+      "pattern": "Namensvorgabe",
+      "editor": {
+        "title": "Dokumentenart bearbeiten",
+        "localized": "Lokalisierung über json-Dateien"
+      }
+    },
+    "manager": {
+      "title": "Stammdatenverwaltung"
+    }
   },
   "file": {
     "title": "File {0}",
@@ -177,6 +197,7 @@
     "classify": {
       "title": "Classification",
       "nextFile": "Next",
+      "date": "Date",
       "class": "Document type",
       "suggestion": "Suggestion: {0} {1}%",
       "case": "Case",
@@ -185,7 +206,9 @@
       "caseFilename": "Display name",
       "caseFiledesc": "Description",
       "client": "Client",
-      "party": "Correspondent"
+      "party": "Correspondent",
+      "taxreceipt": "Steuerbeleg",
+      "taxyear": "Steuerjahr"
     },
     "housekeeping": {
       "title": "Organization",
@@ -197,7 +220,8 @@
       "delete": {
         "title": "Delete File",
         "description": "Deletes the file irrevocably from the archive.",
-        "btn": "Delete"
+        "btn": "Delete",
+        "confirm": "Datei wirklich löschen?"
       }
     }
   },
@@ -327,7 +351,11 @@
       "singleprice": "Price",
       "discount": "Discount",
       "deposit": "Deposit",
-      "totalnet": "Total"
+      "totalnet": "Total",
+      "summary": "Summen"
+    },
+    "edit": {
+      "title": "Erfassung eines Belegs"
     }
   },
   "search": {

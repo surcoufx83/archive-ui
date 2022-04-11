@@ -68,36 +68,38 @@
           </div>
           <div class="card-body">
 
-            <div class="row"><!-- file header data directory + filename -->
+            <div class="row">
+              <!-- file header data directory + filename -->
               <div class="col-12 col-lg-6 mb-3">
                 <div class="form-group">
                   <label for="file-name" class="form-label required">{{ i18n('file.main.name') }}</label>
-                  <input type="text" class="form-control" id="file-name" name="file-name"
-                    [(ngModel)]="file.name" (change)="changes['name'] = file.name; submitFile();" required>
+                  <input type="text" class="form-control" id="file-name" name="file-name" [(ngModel)]="file.name"
+                    (change)="changes['name'] = file.name; submitFile();" required>
                 </div>
               </div>
               <div class="col-12 col-lg-6 mb-3" *ngIf="file.directory">
                 <div class="form-group">
                   <label for="file-directory" class="form-label required">{{ i18n('file.main.dir') }}</label>
-                  <input type="text" class="form-control-plaintext form-control-px" id="file-directory" name="file-directory"
-                    [(ngModel)]="file.directory.relpath" readonly>
+                  <input type="text" class="form-control-plaintext form-control-px" id="file-directory"
+                    name="file-directory" [(ngModel)]="file.directory.relpath" readonly>
                 </div>
               </div>
             </div><!-- file header data directory + filename -->
 
-            <div class="row"><!-- file meta information -->
+            <div class="row">
+              <!-- file meta information -->
               <div class="col-6 col-lg-3 mb-3">
                 <div class="form-group">
                   <label for="file-created" class="form-label">{{ i18n('file.main.created') }}</label>
-                  <input type="text" class="form-control-plaintext form-control-px" id="file-created" name="file-created"
-                    [value]="formatService.fdate(file.mtime, 'Pp')" readonly>
+                  <input type="text" class="form-control-plaintext form-control-px" id="file-created"
+                    name="file-created" [value]="formatService.fdate(file.mtime, 'Pp')" readonly>
                 </div>
               </div>
               <div class="col-6 col-lg-3 mb-3" *ngIf="file.deldate">
                 <div class="form-group">
                   <label for="file-deleted" class="form-label">{{ i18n('file.main.deleted') }}</label>
-                  <input type="text" class="form-control-plaintext form-control-px" id="file-deleted" name="file-deleted"
-                    [value]="formatService.fdate(file.deldate, 'Pp')" readonly>
+                  <input type="text" class="form-control-plaintext form-control-px" id="file-deleted"
+                    name="file-deleted" [value]="formatService.fdate(file.deldate, 'Pp')" readonly>
                 </div>
               </div>
               <div class="col-6 col-lg-3 mb-3">
@@ -138,91 +140,136 @@
 
             <div class="row">
               <div class="col-12 col-lg-6 mb-3">
-                <div class="row"><!-- file class -->
-                  <div class="col-12 mb-3">
+                <div class="row">
+                  <!-- file class -->
+                  <div class="col-4 mb-3">
+                    <div class="form-group">
+                      <label for="file-date" class="form-label">{{ i18n('file.classify.date') }}</label>
+                      <input type="date" class="form-control form-control" id="file-date" name="file-date"
+                        [(ngModel)]="file.date"
+                        (change)="changes['date'] = (file.date != '' ? file.date : null); submitFile();">
+                    </div>
+                  </div>
+                  <div class="col-8 mb-3">
                     <div class="form-group">
                       <label for="file-class" class="form-label">{{ i18n('file.classify.class') }}</label>
-                      <label class="form-label text-primary pointer" *ngIf="ai_classifiedAs" (click)="file.classid = ai_classifiedAs.id; setClassId();">
-                        , {{ i18n('file.classify.suggestion', [i18n('classify.classes.' + ai_classifiedAs.techname), formatService.fnumber(ai_classifiedConfidence * 100, 1)]) }}
+                      <select class="form-select" id="file-class" name="file-class" [(ngModel)]="file.classid"
+                        (change)="setClassId();">
+                        <option [value]="null">{{ i18n('common.select.pickOne') }}</option>
+                        <option *ngFor="let item of classes" [value]="item.id">{{ i18n('classify.classes.' +
+                          item.techname) }}</option>
+                      </select>
+                      <label class="form-label text-primary pointer mt-2 text-truncate" *ngIf="ai_classifiedAs"
+                        (click)="file.classid = ai_classifiedAs.id; setClassId();">
+                        {{ i18n('file.classify.suggestion', [i18n('classify.classes.' + ai_classifiedAs.techname),
+                        formatService.fnumber(ai_classifiedConfidence * 100, 1)]) }}
                       </label>
-                      <select class="form-select" id="file-class" name="file-class"
-                          [(ngModel)]="file.classid" (change)="setClassId();">
-                          <option [value]="null">{{ i18n('common.select.pickOne') }}</option>
-                          <option *ngFor="let item of classes" [value]="item.id">{{ i18n('classify.classes.' + item.techname) }}</option>
-                        </select>
                     </div>
                   </div>
                 </div><!-- file class -->
-    
-                <div class="row"><!-- file case -->
+
+                <div class="row">
+                  <!-- file case -->
                   <div class="col-12 mb-3">
                     <div class="form-group">
                       <label for="file-case" class="form-label">{{ i18n('file.classify.case') }}</label>
-                      <select class="form-select" id="file-case" name="file-case"
-                          [(ngModel)]="file.caseid" (change)="setCaseId();">
-                          <option [value]="null">{{ i18n('common.select.pickOne') }}</option>
-                          <option *ngFor="let item of cases" [value]="item.id">{{ item.casepath }}</option>
-                        </select>
+                      <select class="form-select" id="file-case" name="file-case" [(ngModel)]="file.caseid"
+                        (change)="setCaseId();">
+                        <option [value]="null">{{ i18n('common.select.pickOne') }}</option>
+                        <option *ngFor="let item of cases" [value]="item.id">{{ item.casepath }}</option>
+                      </select>
                     </div>
                   </div>
                   <div class="col-6 mb-3">
                     <div class="form-group">
-                      <label for="file-case-filetype" class="form-label">{{ i18n('file.classify.caseFiletype') }}</label>
+                      <label for="file-case-filetype" class="form-label">{{ i18n('file.classify.caseFiletype')
+                        }}</label>
                       <select class="form-select" id="file-case-filetype" name="file-case-filetype"
-                          [(ngModel)]="file.case_filetypeid" (change)="setCaseFiletypeId();">
-                          <option [value]="null">{{ i18n('common.select.pickOne') }}</option>
-                          <option *ngFor="let item of filetypes" [value]="item.id">{{ item.i18nname }}</option>
-                        </select>
+                        [(ngModel)]="file.case_filetypeid" (change)="setCaseFiletypeId();">
+                        <option [value]="null">{{ i18n('common.select.pickOne') }}</option>
+                        <option *ngFor="let item of filetypes" [value]="item.id">{{ item.i18nname }}</option>
+                      </select>
                     </div>
                   </div>
                   <div class="col-6 mb-3">
                     <div class="form-group">
-                      <label for="file-case-filestatus" class="form-label">{{ i18n('file.classify.caseFilestatus') }}</label>
+                      <label for="file-case-filestatus" class="form-label">{{ i18n('file.classify.caseFilestatus')
+                        }}</label>
                       <select class="form-select" id="file-case-filestatus" name="file-case-filestatus"
-                          [(ngModel)]="file.case_filestatus" (change)="setCaseFilestatus();">
-                          <option [value]="''">{{ i18n('common.select.pickOne') }}</option>
-                          <option *ngFor="let item of casefilestatus" [value]="item">{{ i18n('casefilestatus.' + item) }}</option>
-                        </select>
+                        [(ngModel)]="file.case_filestatus" (change)="setCaseFilestatus();">
+                        <option [value]="''">{{ i18n('common.select.pickOne') }}</option>
+                        <option *ngFor="let item of casefilestatus" [value]="item">{{ i18n('casefilestatus.' + item) }}
+                        </option>
+                      </select>
                     </div>
                   </div>
                   <div class="col-12 mb-3">
                     <div class="form-group">
                       <label for="file-case-name" class="form-label">{{ i18n('file.classify.caseFilename') }}</label>
                       <input type="text" class="form-control form-control" id="file-case-name" name="file-case-name"
-                        [(ngModel)]="file.case_filename" (change)="changes['casefilename'] = file.case_filename; submitFile();">
+                        [(ngModel)]="file.case_filename"
+                        (change)="changes['casefilename'] = file.case_filename; submitFile();">
                     </div>
                   </div>
                   <div class="col-12 mb-3">
                     <div class="form-group">
-                      <label for="file-case-description" class="form-label">{{ i18n('file.classify.caseFiledesc') }}</label>
-                      <textarea type="text" class="form-control form-control" id="file-case-description" name="file-case-description"
-                        [(ngModel)]="file.case_filedescription" (change)="changes['casedescription'] = file.case_filedescription; submitFile();"></textarea>
+                      <label for="file-case-description" class="form-label">{{ i18n('file.classify.caseFiledesc')
+                        }}</label>
+                      <textarea type="text" class="form-control form-control" id="file-case-description"
+                        name="file-case-description" [(ngModel)]="file.case_filedescription"
+                        (change)="changes['casedescription'] = file.case_filedescription; submitFile();"></textarea>
                     </div>
                   </div>
                 </div><!-- file case -->
-    
-                <div class="row"><!-- file parties -->
+
+                <div class="row">
+                  <!-- file parties -->
                   <div class="col-12 mb-3">
                     <div class="form-group">
                       <label for="file-client" class="form-label">{{ i18n('file.classify.client') }}</label>
-                      <select class="form-select" id="file-client" name="file-client"
-                          [(ngModel)]="file.clientid" (change)="setClientId();">
-                          <option [value]="null">{{ i18n('common.select.pickOne') }}</option>
-                          <option *ngFor="let item of clients" [value]="item.id">{{ item.name1 }}</option>
-                        </select>
+                      <select class="form-select" id="file-client" name="file-client" [(ngModel)]="file.clientid"
+                        (change)="setClientId();">
+                        <option [value]="null">{{ i18n('common.select.pickOne') }}</option>
+                        <option *ngFor="let item of clients" [value]="item.id">{{ item.name1 }}</option>
+                      </select>
                     </div>
                   </div>
                   <div class="col-12 mb-3">
                     <div class="form-group">
                       <label for="file-party" class="form-label">{{ i18n('file.classify.party') }}</label>
-                      <select class="form-select" id="file-party" name="file-party"
-                          [(ngModel)]="file.partyaddressid" (change)="setPartyAddressId();">
-                          <option [value]="null">{{ i18n('common.select.pickOne') }}</option>
-                          <option *ngFor="let item of addresses" [value]="item.id">{{ item.name1 }}, {{ item.street }}, {{ item.zip }} {{ item.city }}</option>
-                        </select>
+                      <select class="form-select" id="file-party" name="file-party" [(ngModel)]="file.partyaddressid"
+                        (change)="setPartyAddressId();">
+                        <option [value]="null">{{ i18n('common.select.pickOne') }}</option>
+                        <option *ngFor="let item of addresses" [value]="item.id">{{ item.name1 }}{{ item.department != '' ? ', ' + item.department : '' }}{{ item.street != '' ? ', ' + item.street : '' }}, {{
+                          item.zip }} {{ item.city }}</option>
+                      </select>
                     </div>
                   </div>
                 </div><!-- file parties -->
+
+                <div class="row">
+                  <!-- tax review -->
+                  <div class="col-6 col-lg-3 mb-3">
+                    <div class="form-group">
+                      <label for="file-is-tax" class="form-label d-block mb-1">{{ i18n('file.classify.taxreceipt') }}</label>
+                      <input class="form-check-input" type="checkbox" [value]="true" id="file-is-tax" name="file-is-tax"
+                        [(ngModel)]="file.istaxreceipt"
+                        (change)="file.taxyear = file.taxyear ?? maxyear; changes['taxreceipt'] = file.istaxreceipt; changes['taxyear'] = file.taxyear; submitFile();">
+                      <label class="form-check-label ms-1" for="file-is-tax">
+                        <span *ngIf="file.istaxreceipt">{{ i18n('common.yes') }}</span>
+                        <span *ngIf="!file.istaxreceipt">{{ i18n('common.no') }}</span>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="col-6 col-lg-3 mb-3">
+                    <div class="form-group">
+                      <label for="file-tax-year" class="form-label">{{ i18n('file.classify.taxyear') }}</label>
+                      <input type="number" class="form-control form-control" id="file-tax-year" name="file-tax-year"
+                        [(ngModel)]="file.taxyear" min="2000" [max]="maxyear" [readonly]="!file.istaxreceipt"
+                        (change)="changes['taxyear'] = file.taxyear; submitFile();">
+                    </div>
+                  </div>
+                </div><!-- tax review -->
               </div>
               <div class="col-12 col-lg-6 mb-3">
                 <div class="ratio-2x3">
@@ -256,8 +303,7 @@
                   </button>
                 </div>
               </div>
-              <folder-browser-dialog *ngIf="showMoveToFolderBrowser" 
-                [initialFolder]="file.directory"
+              <folder-browser-dialog *ngIf="showMoveToFolderBrowser" [initialFolder]="file.directory"
                 (select)="moveTo($event); showMoveToFolderBrowser = false;"></folder-browser-dialog>
             </div>
             <div class="row py-2">
@@ -267,8 +313,8 @@
                   <div class="text-muted">{{ i18n('file.housekeeping.delete.description') }}</div>
                 </div>
                 <div class="ms-3 ms-lg-4">
-                  <button type="button" class="form-control btn-sm btn-outline-danger text-nowrap"
-                    (click)="true" [disabled]="busy">
+                  <button type="button" class="form-control btn-sm btn-outline-danger text-nowrap" (click)="delete(file)"
+                    [disabled]="busy">
                     <i [class]="config.icons[updating ? 'busy' : 'delete']"></i>
                     <span class="ms-1">{{ i18n('file.housekeeping.delete.btn') }}</span>
                   </button>

@@ -1,0 +1,105 @@
+<div class="container pt-4 pt-md-2 mb-2">
+    <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between">
+        <h2>{{ i18n('db.classes.title') }}</h2>
+        <div>
+            <nav class="h-100" style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
+                <ol class="breadcrumb d-flex align-items-center h-100 mb-0">
+                    <li class="breadcrumb-item" *ngIf="busy">
+                        <ui-busy-indicator></ui-busy-indicator>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <button type="button" class="btn btn-sm btn-outline-primary" (click)="edit()">
+                            <i [class]="config.icons['add'] + ' me-1'"></i>
+                            {{ i18n('common.add') }}
+                        </button>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<div #editor>
+    <div class="container pt-4 pt-md-2 mb-2" *ngIf="editclass">
+        <div class="card">
+            <div class="card-header">
+                <h5>{{ i18n('db.classes.editor.title') }}</h5>
+            </div>
+            <div class="card-body">
+                <form #f (submit)="submit()" ngNativeValidate>
+
+                    <div class="row">
+                        <div class="col-12 col-lg-6 mb-3">
+                            <div class="form-group">
+                                <label for="class-techname" class="form-label required">{{
+                                    i18n('db.classes.techname') }}</label>
+                                <input type="text" class="form-control" id="class-techname" name="class-techname"
+                                    [(ngModel)]="editclass.techname" [placeholder]="i18n('db.classes.techname')"
+                                    (change)="true" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 col-lg-6 mb-3">
+                            <div class="form-group">
+                                <label for="class-localized" class="form-label">{{
+                                    i18n('db.classes.editor.localized') }}</label>
+                                <input type="text" class="form-control" id="class-localized" name="class-localized"
+                                    [(ngModel)]="editclass.name" [placeholder]="i18n('db.classes.localized')"
+                                    (change)="true" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container pt-4 pt-md-2 mb-2">
+    <div class="card px-0">
+        <div class="flex-table flex-table-sm mb-3">
+            <div class="flex-table-head row">
+                <div class="col-6 col-lg-3 d-flex justify-content-between align-items-center">
+                    {{ i18n('db.classes.techname') }}
+                    <ng-container [ngTemplateOutlet]="sorter" [ngTemplateOutletContext]="{ field: 'techname' }">
+                    </ng-container>
+                </div>
+                <div class="col-6 col-lg-3 d-flex justify-content-between align-items-center">
+                    {{ i18n('db.classes.localized') }}
+                    <ng-container [ngTemplateOutlet]="sorter" [ngTemplateOutletContext]="{ field: 'name' }">
+                    </ng-container>
+                </div>
+                <div class="col-lg-6 d-none d-lg-block">
+                    {{ i18n('db.classes.pattern') }}
+                </div>
+            </div>
+            <ng-container *ngFor="let item of classes; let i = index;">
+                <div (click)="edit(item);" class="flex-table-body row pointer">
+                    <div class="col-6 col-lg-3 text-truncate">
+                        {{ item.techname }}
+                    </div>
+                    <div class="col-6 col-lg-3 text-truncate">
+                        {{ i18n('classify.classes.' + item.techname) }}
+                    </div>
+                    <div class="col-lg-6 d-none d-lg-block fs-7 font-monospace text-truncate">
+                        {{ item.namepattern }}
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</div>
+
+<ng-template #sorter let-field="field">
+    <span *ngIf="sortBy === field" (click)="sortAsc = !sortAsc; sort();">
+        <i [class]="config.icons['sortasc'] + ' me-1 fs-7 pointer'" *ngIf="sortAsc"></i>
+        <i [class]="config.icons['sortdesc'] + ' me-1 fs-7 pointer'" *ngIf="!sortAsc"></i>
+    </span>
+    <span *ngIf="sortBy !== field" (click)="sortBy = field; sort();">
+        <i [class]="config.icons['sortasc'] + ' text-muted me-1 fs-7 pointer'" *ngIf="sortAsc"></i>
+        <i [class]="config.icons['sortdesc'] + ' text-muted me-1 fs-7 pointer'" *ngIf="!sortAsc"></i>
+    </span>
+</ng-template>

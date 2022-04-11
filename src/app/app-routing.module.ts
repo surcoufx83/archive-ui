@@ -16,25 +16,26 @@ import { WorkCustomerComponent } from './work/settings/customers/customer/custom
 import { WorkCustomersComponent } from './work/settings/customers/customers.component';
 import { WorkComponent } from './work/work.component';
 import { WorkDayComponent } from './work/work-day/work-day.component';
-import { WorkHolidaysComponent } from './work/settings/calendar/holidays/holidays.component';
 import { WorkLeadComponent } from './work/leads/lead/lead.component';
 import { WorkLeadsComponent } from './work/leads/leads.component';
 import { WorkMonthComponent } from './work/work-month/work-month.component';
-import { WorkOffCategoriesComponent } from './work/settings/off-categories/off-categories.component';
-import { WorkProjectsComponent } from './work/settings/customers/projects/projects.component';
-import { WorkTimeCategoriesComponent } from './work/settings/time-categories/time-categories.component';
-import { WorkYearComponent } from './work/work-year/work-year.component';
 import { SearchComponent } from './search/search.component';
 import { FileComponent } from './files/file/file.component';
 import { FilesComponent } from './files/files/files.component';
 import { CaseComponent } from './cases/case/case.component';
 import { ReceiptsComponent } from './finance/receipts/receipts.component';
+import { DbClassesComponent } from './db/classes/classes.component';
+import { DbManagerComponent } from './db/manager/manager.component';
 
 const routes: Routes = [
   { path: 'account', component: AccountComponent, canActivate: [ SessionGuard ] },
   { path: 'case/:id', component: CaseComponent, canActivate: [ SessionGuard ] },
   { path: 'cases', component: CasesComponent, canActivate: [ SessionGuard ] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [ SessionGuard ] },
+  { path: 'db', children: [
+    { path: 'classes', component: DbClassesComponent, canActivate: [ SessionGuard ] },
+    { path: '', component: DbManagerComponent, canActivate: [ SessionGuard ], pathMatch: 'full' },
+  ]},
   { path: 'home', component: HomeComponent, canActivate: [ SessionGuard ] },
   { path: 'file/:id/:view', component: FileComponent, canActivate: [ SessionGuard ] },
   { path: 'file/:id', component: FileComponent, canActivate: [ SessionGuard ] },

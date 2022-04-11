@@ -12,7 +12,7 @@
                             <ui-busy-indicator></ui-busy-indicator>
                         </li>
                         <li class="breadcrumb-item">
-                            <button type="button" class="btn btn-sm btn-outline-primary">
+                            <button type="button" class="btn btn-sm btn-outline-primary" (click)="new()">
                                 <i [class]="config.icons['add'] + ' me-1'"></i>
                                 {{ i18n('common.add') }}
                             </button>
@@ -30,6 +30,9 @@
                 <div class="col-6 col-lg-7">{{ i18n('receipts.party') }}</div>
                 <div class="col-3 col-lg-2 text-end">{{ i18n('leads.table.head.created') }}</div>
             </div>
+            <ng-container *ngIf="selectedReceipt && selectedReceipt.id == 0">
+                <ng-container *ngTemplateOutlet="receiptEditor"></ng-container>
+            </ng-container>
             <ng-container *ngFor="let receipt of receipts; let i = index;">
                 <div class="flex-table-body row">
                     <div class="col-3 pointer" (click)="select(receipt)">
@@ -44,49 +47,26 @@
                     <div class="col-12 container card p-1" *ngIf="selectedReceipt && selectedReceipt.id == receipt.id">
                         <div class="card-header p-1 d-flex justify-content-between align-items-center">
                             <h4>{{ i18n('receipts.items.title') }}</h4>
-                            <button type="button" class="btn-close"
-                                (click)="selectedReceipt = null;"></button>
+                            <button type="button" class="btn-close" (click)="selectedReceipt = null;"></button>
                         </div>
                         <div class="card-body p-1 fs-7">
-                            <div class="flex-table flex-table-sm mb-3">
+                            <div class="flex-table flex-table-sm">
                                 <div class="flex-table-head row">
                                     <div class="col-12 col-lg-3">{{ i18n('receipts.items.article') }}</div>
-                                    <div class="d-none d-lg-block col-lg-1 text-end">{{ i18n('receipts.items.quantity') }}</div>
-                                    <div class="d-none d-lg-block col-lg-2 text-end">{{ i18n('receipts.items.singleprice') }}</div>
-                                    <div class="d-none d-lg-block col-lg-2 text-end">{{ i18n('receipts.items.discount') }}</div>
-                                    <div class="d-none d-lg-block col-lg-2 text-end">{{ i18n('receipts.items.deposit') }}</div>
-                                    <div class="d-none d-lg-block col-lg-2 text-end">{{ i18n('receipts.items.totalnet') }}</div>
+                                    <div class="d-none d-lg-block col-lg-1 text-end">{{ i18n('receipts.items.quantity')
+                                        }}</div>
+                                    <div class="d-none d-lg-block col-lg-2 text-end">{{
+                                        i18n('receipts.items.singleprice') }}</div>
+                                    <div class="d-none d-lg-block col-lg-2 text-end">{{ i18n('receipts.items.discount')
+                                        }}</div>
+                                    <div class="d-none d-lg-block col-lg-2 text-end">{{ i18n('receipts.items.deposit')
+                                        }}</div>
+                                    <div class="d-none d-lg-block col-lg-2 text-end">{{ i18n('receipts.items.totalnet')
+                                        }}</div>
                                 </div>
-                                <ng-container *ngFor="let item of selectedReceipt.items; let i = index;">
-                                    <div class="flex-table-body row">
-                                        <div class="col-12 col-lg-3">
-                                            <ng-container *ngIf="article(item.articleid)">
-                                                {{ article(item.articleid)!.name }}
-                                                <span class="fs-8">({{ article(item.articleid)!.search }})</span>
-                                            </ng-container>
-                                        </div>
-                                        <div class="col-4 col-lg-1 text-end d-flex d-lg-block">
-                                            <span class="d-inline-block d-lg-none me-2">{{ i18n('receipts.items.quantity') }}:</span>
-                                            <span>{{ formatService.fnumber(item.quantity) }}</span>
-                                        </div>
-                                        <div class="col-4 col-lg-2 text-end d-flex d-lg-block">
-                                            <span class="d-inline-block d-lg-none me-2">{{ i18n('receipts.items.singleprice') }}:</span>
-                                            <span>{{ formatService.fcur(item.singleprice, selectedReceipt.currency) }}</span>
-                                        </div>
-                                        <div class="col-4 col-lg-2 text-end d-flex d-lg-block">
-                                            <span class="d-inline-block d-lg-none me-2">{{ i18n('receipts.items.discount') }}:</span>
-                                            <span>{{ formatService.fcur(item.discount * -1, selectedReceipt.currency) }}</span>
-                                        </div>
-                                        <div class="col-4 col-lg-2 text-end d-flex d-lg-block">
-                                            <span class="d-inline-block d-lg-none me-2">{{ i18n('receipts.items.deposit') }}:</span>
-                                            <span>{{ formatService.fcur(item.deposit, selectedReceipt.currency) }}</span>
-                                        </div>
-                                        <div class="col-4 col-lg-2 text-end d-flex d-lg-block">
-                                            <span class="d-inline-block d-lg-none me-2">{{ i18n('receipts.items.totalnet') }}:</span>
-                                            <span>{{ formatService.fcur(item.totalnet, selectedReceipt.currency) }}</span>
-                                        </div>
-                                    </div>
-                                </ng-container>
+                                <ng-container *ngTemplateOutlet="receiptItems"></ng-container>
+                                <ng-container *ngTemplateOutlet="receiptItemsSummary"></ng-container>
+                                
                             </div>
                         </div>
                     </div>
@@ -95,3 +75,136 @@
         </div>
     </div>
 </div>
+
+<ng-template #receiptEditor>
+    <ng-container *ngIf="selectedReceipt">
+        <div class="flex-table-body row">
+            <div class="col-3">
+                {{ f(selectedReceipt.date, 'PP') }}
+            </div>
+            <div class="col-6 col-lg-7">
+                <span class="me-1" *ngIf="selectedReceipt.party">{{ selectedReceipt.party.name1 }}</span>
+            </div>
+            <div class="col-3 col-lg-2 text-end">
+                {{ formatService.fcur(selectedReceipt.gross_total, selectedReceipt.currency) }}
+            </div>
+            <div class="col-12 container card p-1">
+                <div class="card-header p-1 d-flex justify-content-between align-items-center">
+                    <h4>{{ i18n('receipts.edit.title') }}</h4>
+                </div>
+                <div class="card-body p-1 px-3 fs-7 mb-3">
+                    <div class="row">
+                        <div class="col-6 col-lg-3 mb-3">
+                            <div class="form-group">
+                              <label for="receipt-date" class="form-label required">{{ i18n('receipts.date') }}</label>
+                              <input type="date" class="form-control" id="receipt-date" name="receipt-date"
+                                [(ngModel)]="selectedReceipt.date" required>
+                            </div>
+                          </div>
+                    </div>
+                </div>
+                <div class="card-header p-1 d-flex justify-content-between align-items-center">
+                    <h4>{{ i18n('receipts.items.title') }}</h4>
+                </div>
+                <div class="card-body p-1 fs-7">
+                    <div class="flex-table flex-table-sm">
+                        <div class="flex-table-head row">
+                            <div class="col-12 col-lg-3">{{ i18n('receipts.items.article') }}</div>
+                            <div class="d-none d-lg-block col-lg-1 text-end">{{ i18n('receipts.items.quantity')
+                                }}</div>
+                            <div class="d-none d-lg-block col-lg-2 text-end">{{
+                                i18n('receipts.items.singleprice') }}</div>
+                            <div class="d-none d-lg-block col-lg-2 text-end">{{ i18n('receipts.items.discount')
+                                }}</div>
+                            <div class="d-none d-lg-block col-lg-2 text-end">{{ i18n('receipts.items.deposit')
+                                }}</div>
+                            <div class="d-none d-lg-block col-lg-2 text-end">{{ i18n('receipts.items.totalnet')
+                                }}</div>
+                        </div>
+                        <ng-container *ngTemplateOutlet="receiptItems"></ng-container>
+                        <ng-container *ngTemplateOutlet="receiptItemsSummary"></ng-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+</ng-template>
+
+<ng-template #receiptItems>
+    <ng-container *ngIf="selectedReceipt">
+        <ng-container *ngFor="let item of selectedReceipt.items; let i = index;">
+            <div class="flex-table-body row">
+                <div class="col-12 col-lg-3">
+                    <ng-container *ngIf="article(item.articleid)">
+                        {{ article(item.articleid)!.name }}
+                        <span class="fs-8">({{ article(item.articleid)!.search }})</span>
+                    </ng-container>
+                </div>
+                <div class="col-4 col-lg-1 text-end d-flex d-lg-block">
+                    <span class="d-inline-block d-lg-none me-2">{{
+                        i18n('receipts.items.quantity') }}:</span>
+                    <span>{{ formatService.fnumber(item.quantity) }}</span>
+                </div>
+                <div class="col-4 col-lg-2 text-end d-flex d-lg-block">
+                    <span class="d-inline-block d-lg-none me-2">{{
+                        i18n('receipts.items.singleprice') }}:</span>
+                    <span>{{ formatService.fcur(item.singleprice, selectedReceipt.currency)
+                        }}</span>
+                </div>
+                <div class="col-4 col-lg-2 text-end d-flex d-lg-block">
+                    <span class="d-inline-block d-lg-none me-2">{{
+                        i18n('receipts.items.discount') }}:</span>
+                    <span>{{ formatService.fcur(item.discount * -1, selectedReceipt.currency)
+                        }}</span>
+                </div>
+                <div class="col-4 col-lg-2 text-end d-flex d-lg-block">
+                    <span class="d-inline-block d-lg-none me-2">{{
+                        i18n('receipts.items.deposit') }}:</span>
+                    <span>{{ formatService.fcur(item.deposit, selectedReceipt.currency)
+                        }}</span>
+                </div>
+                <div class="col-4 col-lg-2 text-end d-flex d-lg-block">
+                    <span class="d-inline-block d-lg-none me-2">{{
+                        i18n('receipts.items.totalnet') }}:</span>
+                    <span>{{ formatService.fcur(item.totalnet, selectedReceipt.currency)
+                        }}</span>
+                </div>
+            </div>
+        </ng-container>
+    </ng-container>
+</ng-template>
+
+<ng-template #receiptItemsSummary>
+    <ng-container *ngIf="selectedReceipt">
+        <div class="flex-table-body row">
+            <div class="col-12 col-lg-3">
+                <strong>{{ i18n('receipts.items.summary') }}</strong>
+            </div>
+            <div class="col-4 col-lg-1 text-end d-flex d-lg-block"></div>
+            <div class="col-4 col-lg-2 text-end d-flex d-lg-block">
+                <span class="d-inline-block d-lg-none me-2">{{
+                    i18n('receipts.items.singleprice') }}:</span>
+                <strong>{{ formatService.fcur(selectedTotals.singleprice,
+                    selectedReceipt.currency) }}</strong>
+            </div>
+            <div class="col-4 col-lg-2 text-end d-flex d-lg-block">
+                <span class="d-inline-block d-lg-none me-2">{{ i18n('receipts.items.discount')
+                    }}:</span>
+                <strong>{{ formatService.fcur(selectedTotals.discount * -1,
+                    selectedReceipt.currency) }}</strong>
+            </div>
+            <div class="col-4 col-lg-2 text-end d-flex d-lg-block">
+                <span class="d-inline-block d-lg-none me-2">{{ i18n('receipts.items.deposit')
+                    }}:</span>
+                <strong>{{ formatService.fcur(selectedTotals.deposit, selectedReceipt.currency)
+                    }}</strong>
+            </div>
+            <div class="col-4 col-lg-2 text-end d-flex d-lg-block">
+                <span class="d-inline-block d-lg-none me-2">{{ i18n('receipts.items.totalnet')
+                    }}:</span>
+                <strong>{{ formatService.fcur(selectedTotals.gross, selectedReceipt.currency)
+                    }}</strong>
+            </div>
+        </div>
+    </ng-container>
+</ng-template>

@@ -1,0 +1,25 @@
+<div class="container pt-4 pt-md-2 mb-2">
+    <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between">
+        <h2>{{ i18n('db.manager.title') }}</h2>
+        <div>
+            <nav class="h-100" style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
+                <ol class="breadcrumb d-flex align-items-center h-100 mb-0">
+                    <li class="breadcrumb-item" *ngIf="busy">
+                        <ui-busy-indicator></ui-busy-indicator>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<div class="container pt-4 pt-md-2 mb-2">
+    <div class="card px-0">
+        <ul class="list-group list-group-flush">
+            <a class="list-group-item" *ngFor="let item of items" [routerLink]="item.link">
+                <i [ngClass]="[ item.icon, 'me-1' ]"></i>
+                {{ i18n(item.title) }}
+            </a>
+        </ul>
+    </div>
+</div>
