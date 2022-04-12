@@ -167,33 +167,33 @@
   },
   "db": {
     "accounts": {
-      "title": "Bankkonten",
+      "title": "Bank accounts",
       "mandates": {
-        "title": "Lastschriftmandate"
+        "title": "SEPA direct debit mandates"
       },
       "orders": {
-        "title": "Daueraufträge"
+        "title": "Standing orders"
       }
     },
     "articles": {
-      "title": "Artikel (für Rechnungen)",
+      "title": "Receipt articles",
       "categories": {
-        "title": "Artikel-Kategorien"
+        "title": "Article categories"
       }
     },
     "cases": {
-      "title": "Aktenstruktur",
+      "title": "Cases",
       "actions": {
-        "title": "Akten-Workflows"
+        "title": "Case actions"
       },
       "filetypes": {
-        "title": "Dateitypen"
+        "title": "File types"
       },
       "status": {
-        "title": "Akten-Status"
+        "title": "Case status"
       },
       "types": {
-        "title": "Aktenarten"
+        "title": "Case types"
       }
     },
     "classes": {
@@ -208,29 +208,29 @@
     },
     "contacts": {
       "types": {
-        "title": "Kontaktarten"
+        "title": "Contact Types"
       }
     },
     "countries": {
-      "title": "Länder",
+      "title": "Countries",
       "taxrates": {
-        "title": "Steuersätze"
+        "title": "Tax rates"
       }
     },
     "cronjobs": {
       "title": "Cronjobs"
     },
     "currencies": {
-      "title": "Währungen"
+      "title": "Currencies"
     },
     "extension": {
-      "title": "Dateitypen"
+      "title": "File types"
     },
     "manager": {
       "title": "Data management"
     },
     "meters": {
-      "title": "Zähler"
+      "title": "Counters"
     },
     "oauth": {
       "services": {
@@ -238,19 +238,19 @@
       }
     },
     "parties": {
-      "title": "Korrespondenten",
+      "title": "Correspondents",
       "addresses": {
-        "title": "Addressdatensätze"
+        "title": "Addresses"
       },
       "contacts": {
-        "title": "Kontaktdaten"
+        "title": "Contact Information"
       },
       "roles": {
-        "title": "Rollen"
+        "title": "Roles"
       }
     },
     "stocks": {
-      "title": "Wertpapiere und CC",
+      "title": "Stocks",
       "apis": {
         "title": "APIs"
       }
