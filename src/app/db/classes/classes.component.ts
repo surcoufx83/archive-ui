@@ -18,11 +18,13 @@ export class DbClassesComponent implements OnInit {
   @ViewChild('editor') editor?: ElementRef;
 
   busy: boolean = false;
+  saving: boolean = false;
   classes: Class[] = [];
   editclass?: Class;
-  usersettingsObj?: Settings;
+  usersettingsObj: Settings|null = null;
   sortAsc: boolean = true;
   sortBy: string = 'name';
+  timeout: any;
 
   constructor(private authService: AuthService,
     private configService: ConfigService,
@@ -45,7 +47,7 @@ export class DbClassesComponent implements OnInit {
     return this.configService.config;
   }
 
-  edit(item?: Class) : void {
+  edit(item?: Class): void {
     if (item)
       this.editclass = item;
     else
@@ -65,12 +67,12 @@ export class DbClassesComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  sort() : void {
+  sort(): void {
     switch (this.sortBy) {
 
       case 'techname':
         this.classes.sort((a, b) => { return (a.techname > b.techname ? 1 : a.techname < b.techname ? -1 : 0) * (this.sortAsc ? 1 : -1) });
-      break;
+        break;
 
       default:
         this.sortBy = 'name';
@@ -78,8 +80,21 @@ export class DbClassesComponent implements OnInit {
     }
   }
 
-  submit() : void {
-    
+  submit(): void {
+    if (!this.timeout)
+      window.clearTimeout(this.timeout);
+    this.timeout = window.setTimeout(() => this.sendUpdate(), 500);
+  }
+
+  private sendUpdate(): void {
+    if (!this.editclass)
+      return;
+    console.log('sendupdate', this.editclass);
+    this.saving = true;
+    this.userSettings.updateClass(this.editclass).subscribe((reply) => {
+      if (reply != null)
+        this.saving = false;
+    });
   }
 
 }

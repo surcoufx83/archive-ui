@@ -15,7 +15,7 @@ import { WorkLead } from 'src/app/work/work';
 export class DbManagerComponent implements OnInit {
 
   busy: boolean = false;
-  usersettingsObj?: Settings;
+  usersettingsObj: Settings|null = null;
   
   items: any = [
     { link: '/db/classes', title: 'db.classes.title', icon: 'fa-solid fa-shapes' },

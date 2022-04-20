@@ -26,7 +26,7 @@ export class NotepadComponent implements OnInit {
   saving: boolean = false;
   sortasc: boolean = true;
   sortby: string = 'name';
-  usersettingsObj?: Settings;
+  usersettingsObj: Settings|null = null;
 
   constructor(private authService: AuthService,
     private configService: ConfigService,

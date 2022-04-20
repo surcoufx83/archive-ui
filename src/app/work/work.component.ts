@@ -15,7 +15,7 @@ import { Settings } from '../user/settings/settings';
 export class WorkComponent implements OnInit {
 
   routeUrl: string = '';
-  settingsObj?: Settings;
+  settingsObj: Settings|null = null;
 
   constructor(private authService: AuthService,
               private configService: ConfigService,

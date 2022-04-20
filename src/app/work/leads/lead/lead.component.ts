@@ -18,8 +18,8 @@ export class WorkLeadComponent implements OnInit {
   busy: boolean = false;
   lead?: WorkLead;
   leadLoading: boolean = false;
-  usersettingsObj?: Settings;
-  workpropsObj?: WorkProperties;
+  usersettingsObj: Settings|null = null;
+  workpropsObj: WorkProperties|null = null;
 
   constructor(private authService: AuthService,
     private configService: ConfigService,

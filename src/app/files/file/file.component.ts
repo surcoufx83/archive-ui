@@ -39,7 +39,7 @@ export class FileComponent implements OnInit {
   recentVersion: Version | null | undefined;
   textcontent: string[] = [];
   updating: boolean = false;
-  usersettingsObj?: Settings;
+  usersettingsObj: Settings|null = null;
   view: string = '';
 
   addresses: Address[] = [];

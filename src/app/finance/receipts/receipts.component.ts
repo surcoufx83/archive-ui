@@ -25,7 +25,7 @@ export class ReceiptsComponent implements OnInit {
   currencies: Currency[] = [];
   receipts: Receipt[] = [];
   taxrates: TaxRate[] = [];
-  usersettingsObj?: Settings;
+  usersettingsObj: Settings|null = null;
 
   defaultCurrency!: Currency;
   selectedReceipt: Receipt|null = null;

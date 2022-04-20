@@ -34,8 +34,8 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
   monthLoading: boolean = false;
   dayObjs: WorkDay[] = [];
   monthObj?: WorkMonth;
-  usersettingsObj?: Settings;
-  workprops?: WorkProperties;
+  usersettingsObj: Settings|null = null;
+  workprops: WorkProperties|null = null;
 
   offdayDroppableEvents: CalendarEvent[] = [];
 
@@ -49,6 +49,8 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
       this.usersettingsObj = settings;
     });
     this.userSettings.workprops$.subscribe((props) => {
+      if (props == null)
+        return;
       this.workprops = props;
       this.offdayDroppableEvents = [];
       for (const offcat of props.offCategories) {

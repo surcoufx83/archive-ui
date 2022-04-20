@@ -203,9 +203,14 @@
       "techname": "Technischer Name",
       "localized": "Lokalisierter Name",
       "pattern": "Namensvorgabe",
+      "default": "Standardklasse",
       "editor": {
         "title": "Dokumentenart bearbeiten",
-        "localized": "Lokalisierung über json-Dateien"
+        "localized": "Lokalisierung über json-Dateien",
+        "description": "Beschreibung",
+        "descriptionPlaceholder": "Ausführlicher Beschreibungstext",
+        "namepattern": "Vorgabe für Dateinamen",
+        "namepatternPlaceholder": "Platzhalter mit {...} um Dateinamen automatisch zu erzeugen"
       }
     },
     "contacts": {

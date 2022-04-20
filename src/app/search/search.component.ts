@@ -41,7 +41,7 @@ export class SearchComponent implements OnInit {
   showgroup: string = 'notes';
   showHistoric: boolean = false;
   urltoken: string = '';
-  usersettingsObj?: Settings;
+  usersettingsObj: Settings|null = null;
 
   constructor(private authService: AuthService,
     private configService: ConfigService,

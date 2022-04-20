@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit {
   busy: boolean = false;
   inactivecases: Case[] = [];
   newfiles: File[] = [];
-  usersettingsObj?: Settings;
+  usersettingsObj: Settings|null = null;
   stats?: HomeStats;
 
   constructor(private authService: AuthService,

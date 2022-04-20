@@ -19,8 +19,8 @@ export class WorkLeadsComponent implements OnInit {
   busy: boolean = false;
   leads: WorkLead[] = [];
   leadsLoading: boolean = false;
-  usersettingsObj?: Settings;
-  workpropsObj?: WorkProperties;
+  usersettingsObj: Settings|null = null;
+  workpropsObj: WorkProperties|null = null;
 
   constructor(private authService: AuthService,
     private configService: ConfigService,
@@ -31,8 +31,10 @@ export class WorkLeadsComponent implements OnInit {
       this.usersettingsObj = settings;
     });
     this.userSettings.workprops$.subscribe((workprops) => {
-      this.workpropsObj = workprops;
-      this.leads = workprops.leads.sort((a,b) => (b.date_reported > a.date_reported ? 1 : -1));
+      if (workprops != null) {
+        this.workpropsObj = workprops;
+        this.leads = workprops.leads.sort((a,b) => (b.date_reported > a.date_reported ? 1 : -1));
+      }
     });
   }
 

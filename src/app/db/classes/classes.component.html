@@ -22,8 +22,13 @@
 <div #editor>
     <div class="container pt-4 pt-md-2 mb-2" *ngIf="editclass">
         <div class="card">
-            <div class="card-header">
+            <div class="card-header d-flex justify-content-between">
                 <h5>{{ i18n('db.classes.editor.title') }}</h5>
+                <button type="button" class="btn btn-sm btn-success" (click)="submit()">
+                    <i [class]="config.icons['save']" *ngIf="!saving"></i>
+                    <i [class]="config.icons['busy']" *ngIf="saving"></i>
+                    <span class="d-none d-lg-inline ms-1">{{ i18n('common.save') }}</span>
+                </button>
             </div>
             <div class="card-body">
                 <form #f (submit)="submit()" ngNativeValidate>
@@ -36,6 +41,18 @@
                                 <input type="text" class="form-control" id="class-techname" name="class-techname"
                                     [(ngModel)]="editclass.techname" [placeholder]="i18n('db.classes.techname')"
                                     (change)="true" required>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 mb-3">
+                            <div class="form-group">
+                                <label for="class-default" class="form-label">{{
+                                    i18n('db.classes.default') }}</label>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="class-default" name="class-default"
+                                        [(ngModel)]="editclass.isdefault" (change)="true">
+                                    <label for="class-default" class="form-check-label" *ngIf="editclass.isdefault">{{ i18n('common.yes') }}</label>
+                                    <label for="class-default" class="form-check-label" *ngIf="!editclass.isdefault">{{ i18n('common.no') }}</label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -52,6 +69,30 @@
                         </div>
                     </div>
 
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <div class="form-group">
+                                <label for="class-description" class="form-label">{{
+                                    i18n('db.classes.editor.description') }}</label>
+                                <input type="text" class="form-control" id="class-description" name="class-description"
+                                    [(ngModel)]="editclass.description"
+                                    [placeholder]="i18n('db.classes.editor.descriptionPlaceholder')" (change)="true">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <div class="form-group">
+                                <label for="class-namepattern" class="form-label">{{
+                                    i18n('db.classes.editor.namepattern') }}</label>
+                                <input type="text" class="form-control" id="class-namepattern" name="class-namepattern"
+                                    [(ngModel)]="editclass.namepattern"
+                                    [placeholder]="i18n('db.classes.editor.namepatternPlaceholder')" (change)="true">
+                            </div>
+                        </div>
+                    </div>
+
                 </form>
             </div>
         </div>
@@ -59,37 +100,36 @@
 </div>
 
 <div class="container pt-4 pt-md-2 mb-2">
-    <div class="card px-0">
-        <div class="flex-table flex-table-sm mb-3">
-            <div class="flex-table-head row">
-                <div class="col-6 col-lg-3 d-flex justify-content-between align-items-center">
-                    {{ i18n('db.classes.techname') }}
-                    <ng-container [ngTemplateOutlet]="sorter" [ngTemplateOutletContext]="{ field: 'techname' }">
-                    </ng-container>
+    <div class="flex-table flex-table-sm mb-3">
+        <div class="flex-table-head row">
+            <div class="col-6 col-lg-3">
+                {{ i18n('db.classes.techname') }}
+                <ng-container [ngTemplateOutlet]="sorter" [ngTemplateOutletContext]="{ field: 'techname' }">
+                </ng-container>
+            </div>
+            <div class="col-6 col-lg-3">
+                {{ i18n('db.classes.localized') }}
+                <ng-container [ngTemplateOutlet]="sorter" [ngTemplateOutletContext]="{ field: 'name' }">
+                </ng-container>
+            </div>
+            <div class="col-lg-6 d-none d-lg-block">
+                {{ i18n('db.classes.pattern') }}
+            </div>
+        </div>
+        <ng-container *ngFor="let item of classes; let i = index;">
+            <div (click)="edit(item);" class="flex-table-body row pointer">
+                <div class="col-6 col-lg-3 text-truncate">
+                    {{ item.techname }}
+                    <span class="badge bg-primary" *ngIf="item.isdefault">{{ i18n('db.classes.default') }}</span>
                 </div>
-                <div class="col-6 col-lg-3 d-flex justify-content-between align-items-center">
-                    {{ i18n('db.classes.localized') }}
-                    <ng-container [ngTemplateOutlet]="sorter" [ngTemplateOutletContext]="{ field: 'name' }">
-                    </ng-container>
+                <div class="col-6 col-lg-3 text-truncate">
+                    {{ i18n('classify.classes.' + item.techname) }}
                 </div>
-                <div class="col-lg-6 d-none d-lg-block">
-                    {{ i18n('db.classes.pattern') }}
+                <div class="col-lg-6 d-none d-lg-block fs-7 font-monospace text-truncate">
+                    {{ item.namepattern }}
                 </div>
             </div>
-            <ng-container *ngFor="let item of classes; let i = index;">
-                <div (click)="edit(item);" class="flex-table-body row pointer">
-                    <div class="col-6 col-lg-3 text-truncate">
-                        {{ item.techname }}
-                    </div>
-                    <div class="col-6 col-lg-3 text-truncate">
-                        {{ i18n('classify.classes.' + item.techname) }}
-                    </div>
-                    <div class="col-lg-6 d-none d-lg-block fs-7 font-monospace text-truncate">
-                        {{ item.namepattern }}
-                    </div>
-                </div>
-            </ng-container>
-        </div>
+        </ng-container>
     </div>
 </div>
 
