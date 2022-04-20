@@ -127,6 +127,7 @@
       "In_RepairOrder": "Repair Order",
       "In_RepairReport": "Repair report",
       "In_Request": "Application",
+      "In_Statement": "Bescheinigung allgemein",
       "In_Stock_Info": "Stock information",
       "In_TaxAssessment": "Tax assessment",
       "In_TaxReceipt": "Tax Receipt",
@@ -166,6 +167,36 @@
     "germany": "Germany"
   },
   "db": {
+    "accounts": {
+      "title": "Bank accounts",
+      "mandates": {
+        "title": "SEPA direct debit mandates"
+      },
+      "orders": {
+        "title": "Standing orders"
+      }
+    },
+    "articles": {
+      "title": "Receipt articles",
+      "categories": {
+        "title": "Article categories"
+      }
+    },
+    "cases": {
+      "title": "Cases",
+      "actions": {
+        "title": "Case actions"
+      },
+      "filetypes": {
+        "title": "File types"
+      },
+      "status": {
+        "title": "Case status"
+      },
+      "types": {
+        "title": "Case types"
+      }
+    },
     "classes": {
       "title": "Document types",
       "techname": "Technical name",
@@ -176,8 +207,54 @@
         "localized": "Localisation via json files"
       }
     },
+    "contacts": {
+      "types": {
+        "title": "Contact Types"
+      }
+    },
+    "countries": {
+      "title": "Countries",
+      "taxrates": {
+        "title": "Tax rates"
+      }
+    },
+    "cronjobs": {
+      "title": "Cronjobs"
+    },
+    "currencies": {
+      "title": "Currencies"
+    },
+    "extension": {
+      "title": "File types"
+    },
     "manager": {
       "title": "Data management"
+    },
+    "meters": {
+      "title": "Counters"
+    },
+    "oauth": {
+      "services": {
+        "title": "OAuth-Services"
+      }
+    },
+    "parties": {
+      "title": "Correspondents",
+      "addresses": {
+        "title": "Addresses"
+      },
+      "contacts": {
+        "title": "Contact Information"
+      },
+      "roles": {
+        "title": "Roles"
+      }
+    },
+    "stocks": {
+      "title": "Stocks",
+      "apis": {
+        "title": "APIs"
+      }
     }
   },
   "file": {
