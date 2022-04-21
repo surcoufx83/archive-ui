@@ -1,0 +1,10 @@
+<div [ngClass]="{'toast': true, 'show': show, 'border-danger': toast.type && toast.type == 'error'}" role="alert" aria-live="assertive" aria-atomic="true">
+    <div [ngClass]="{'toast-header': true, 'bg-danger text-white': toast.type && toast.type == 'error'}">
+        <strong class="me-auto">{{ toast.title }}</strong>
+        <small [ngClass]="(toast.type && toast.type == 'error' ? 'text-white' : 'text-muted')">{{ fdist(toast.when) }}</small>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close" *ngIf="toast.closable"></button>
+    </div>
+    <div class="toast-body">
+        {{ toast.message }}
+    </div>
+</div>

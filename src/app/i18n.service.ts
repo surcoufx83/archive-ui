@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { de } from 'date-fns/locale';
 import { Locale } from 'date-fns';
 import { environment } from 'src/environments/environment';
+import { ToastsService } from './utils/toasts.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,8 @@ export class I18nService {
   private locale: string = navigator.language.substr(0, 2);
   private entries: {[key: string]: string} = {};
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+    private toastService: ToastsService) {
     this.loadStrings(this.locale);
   }
 
@@ -28,10 +30,15 @@ export class I18nService {
       error: () => {
         if (locale != environment.i18nFallback)
           this.loadStrings(environment.i18nFallback);
-        //else {
-         // this.snackbar.open('Error retrieving localization files.', undefined, 
-          //  { duration: 9999999, panelClass: ['bg-primary'] })
-        //}
+        else {
+          this.toastService.add({
+            disposable: false, closable: false,
+            title: 'Application error',
+            message: 'Error retrieving localization files!',
+            when: new Date(),
+            type: 'error'
+          });
+        }
       }
     });
   }

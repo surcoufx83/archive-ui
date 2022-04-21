@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { format } from 'date-fns';
+import { format, formatDistanceToNow } from 'date-fns';
 import * as _filesize from 'filesize';
 import { Currency } from '../account/account';
 import { I18nService } from '../i18n.service';
@@ -25,6 +25,14 @@ export class FormatService {
     if (typeof(date) === 'string')
       date = new Date(date);
     return format(date, form, { locale: this.i18nService.DateLocale });
+  }
+
+  fdist(date: Date|string|null): string {
+    if (date == null)
+      return this.i18nService.i18n('common.novalue');
+    if (typeof(date) === 'string')
+      date = new Date(date);
+    return formatDistanceToNow(date, { locale: this.i18nService.DateLocale });
   }
 
   fnumber(n: number, fd: number = 0) : string {

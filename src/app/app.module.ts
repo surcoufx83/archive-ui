@@ -50,6 +50,9 @@ import { ReceiptsComponent } from './finance/receipts/receipts.component';
 import { ReceiptComponent } from './finance/receipt/receipt.component';
 import { DbClassesComponent } from './db/classes/classes.component';
 import { DbManagerComponent } from './db/manager/manager.component';
+import { ToastContainerComponent } from './utils/toast-container/toast-container.component';
+import { ToastsService } from './utils/toasts.service';
+import { ToastComponent } from './utils/toast/toast.component';
 
 registerLocaleData(localeDe);
 
@@ -91,6 +94,8 @@ registerLocaleData(localeDe);
     ReceiptComponent,
     DbClassesComponent,
     DbManagerComponent,
+    ToastContainerComponent,
+    ToastComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -113,6 +118,7 @@ registerLocaleData(localeDe);
       useFactory: (configService: ConfigService) => () => configService.loadAppConfig()
     },
     { provide: I18nService, multi: false, },
+    { provide: ToastsService, multi: false, },
     {
       provide: APP_INITIALIZER,
       deps: [AuthService],
