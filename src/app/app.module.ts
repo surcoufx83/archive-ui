@@ -112,12 +112,7 @@ registerLocaleData(localeDe);
       multi: true,
       useFactory: (configService: ConfigService) => () => configService.loadAppConfig()
     },
-    {
-      provide: APP_INITIALIZER,
-      deps: [I18nService],
-      multi: true,
-      useFactory: (i18nService: I18nService) => () => i18nService.loadLocalStrings(navigator.language.substr(0, 2))
-    },
+    { provide: I18nService, multi: false, },
     {
       provide: APP_INITIALIZER,
       deps: [AuthService],
