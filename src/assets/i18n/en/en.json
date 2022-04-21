@@ -127,7 +127,7 @@
       "In_RepairOrder": "Repair Order",
       "In_RepairReport": "Repair report",
       "In_Request": "Application",
-      "In_Statement": "Bescheinigung allgemein",
+      "In_Statement": "General statement",
       "In_Stock_Info": "Stock information",
       "In_TaxAssessment": "Tax assessment",
       "In_TaxReceipt": "Tax Receipt",
@@ -202,9 +202,14 @@
       "techname": "Technical name",
       "localized": "Localized name",
       "pattern": "Name pattern",
+      "default": "Standardklasse",
       "editor": {
         "title": "Edit Document type",
-        "localized": "Localisation via json files"
+        "localized": "Localisation via json files",
+        "description": "Description",
+        "descriptionPlaceholder": "Ausführlicher Beschreibungstext",
+        "namepattern": "Vorgabe für Dateinamen",
+        "namepatternPlaceholder": "Platzhalter mit {...} um Dateinamen automatisch zu erzeugen"
       }
     },
     "contacts": {
