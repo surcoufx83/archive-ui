@@ -11,7 +11,7 @@ import { ToastsService } from './utils/toasts.service';
 export class I18nService {
 
   private locale: string = navigator.language.substr(0, 2);
-  private entries: {[key: string]: string} = {};
+  private entries: { [key: string]: string } = {};
 
   constructor(private http: HttpClient,
     private toastService: ToastsService) {
@@ -31,19 +31,13 @@ export class I18nService {
         if (locale != environment.i18nFallback)
           this.loadStrings(environment.i18nFallback);
         else {
-          this.toastService.add({
-            disposable: false, closable: false,
-            title: 'Application error',
-            message: 'Error retrieving localization files!',
-            icon: 'fa-solid fa-triangle-exclamation',
-            type: 'error'
-          });
+          this.toastService.fatal('Application error', 'Error retrieving localization files!');
         }
       }
     });
   }
 
-  private iterateStrings(parentkey: string, key: string, content: I18nEntry) : void {
+  private iterateStrings(parentkey: string, key: string, content: I18nEntry): void {
     let mykey = (parentkey !== '' ? parentkey + '.' : '') + key;
     if (typeof content === 'object') {
       Object.entries(content).forEach((e) => {
@@ -54,7 +48,7 @@ export class I18nService {
       this.entries[mykey] = content;
   }
 
-  public i18n(key: string, params: string[] = []) : string {
+  public i18n(key: string, params: string[] = []): string {
     if (this.entries[key] != undefined) {
       let str: string = this.entries[key];
       for (let i = 0; i < params.length; i++) {
@@ -65,7 +59,7 @@ export class I18nService {
     return `<I18n/${this.locale}: string '${key}' missing!>`;
   }
 
-  get DateLocale() : undefined|Locale {
+  get DateLocale(): undefined | Locale {
     switch (this.locale) {
       case 'de':
         return de;
@@ -73,12 +67,12 @@ export class I18nService {
     return undefined;
   }
 
-  get Locale() : string {
+  get Locale(): string {
     return this.locale;
   }
 
 }
 
 export interface I18nEntry {
-  [key: string]: I18nEntry|string;
+  [key: string]: I18nEntry | string;
 }
