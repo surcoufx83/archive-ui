@@ -162,8 +162,8 @@
     "cancel": "Cancel",
     "confirm": {
       "save": {
-        "title": "Gespeichert",
-        "message": "Die Änderungen wurden erfolgreich gespeichert"
+        "title": "Saved",
+        "message": "Die Änderungen wurden erfolgreich gespeichert."
       }
     },
     "no": "No",
@@ -172,6 +172,12 @@
     "save": "Save",
     "select": {
       "pickOne": " Please choose"
+    },
+    "warn": {
+      "formInvalid": {
+        "title": "Warnung",
+        "message": "Das Formular enthält noch Fehler."
+      }
     },
     "yes": "Yes"
   },
@@ -214,10 +220,10 @@
       "techname": "Technical name",
       "localized": "Localized name",
       "pattern": "Name pattern",
-      "default": "Standard",
+      "default": "System Default",
       "editor": {
         "title": "Edit Document type",
-        "localized": "Lokalisierung per json-Dateien",
+        "localized": "Localisation via json files",
         "description": "Description",
         "descriptionPlaceholder": "Full description",
         "namepattern": "Filename pattern",
@@ -231,20 +237,20 @@
     },
     "countries": {
       "title": "Countries",
-      "default": "Standard",
+      "default": "System Default",
       "name": "Technical name",
       "i18nname": "Localized name",
-      "currency": "Währung",
+      "currency": "Currency",
       "key2": "Code-2",
       "key3": "Code-3",
       "taxrates": {
         "title": "Tax rates"
       },
       "editor": {
-        "key2": "2-stelliger Code",
-        "key3": "3-stelliger Code",
-        "title": "Länder bearbeiten",
-        "localized": "Lokalisierung per json-Dateien"
+        "key2": "2-digits code",
+        "key3": "3-digits code",
+        "title": "Edit countries",
+        "localized": "Localisation via json files"
       }
     },
     "cronjobs": {
