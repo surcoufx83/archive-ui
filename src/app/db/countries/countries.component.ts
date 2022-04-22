@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Currency } from 'src/app/account/account';
 import { Country } from 'src/app/common';
 import { AppConfig, ConfigService } from 'src/app/config.service';
@@ -91,7 +92,12 @@ export class DbCountriesComponent implements OnInit {
     }
   }
 
-  submit(): void {
+  submit(form: NgForm): void {
+    if (!form.valid) {
+      this.toastService.warn(this.i18nService.i18n('common.warn.formInvalid.title'),
+          this.i18nService.i18n('common.warn.formInvalid.message'));
+          return;
+    }
     if (!this.timeout)
       window.clearTimeout(this.timeout);
     this.timeout = window.setTimeout(() => this.sendUpdate(), 500);

@@ -22,6 +22,7 @@ export class ToastComponent implements OnInit {
     this.toast.closable = this.toast.closable ?? true;
     this.toast.disposable = this.toast.disposable ?? true;
     this.toast.disposeTime = this.toast.disposeTime ?? 10000;
+    this.toast.type = this.toast.type ?? 'common';
       
     this.show = true;
     if (this.toast.disposable) {

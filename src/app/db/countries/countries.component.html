@@ -32,14 +32,14 @@
         <div class="card">
             <div class="card-header d-flex justify-content-between">
                 <h5>{{ i18n('db.countries.editor.title') }}</h5>
-                <button type="button" class="btn btn-sm btn-success" (click)="submit()">
+                <button type="button" class="btn btn-sm btn-success" (click)="submit(f)">
                     <i [class]="config.icons['save']" *ngIf="!saving"></i>
                     <i [class]="config.icons['busy']" *ngIf="saving"></i>
                     <span class="d-none d-lg-inline ms-1">{{ i18n('common.save') }}</span>
                 </button>
             </div>
             <div class="card-body">
-                <form #f (submit)="submit()" ngNativeValidate>
+                <form #f="ngForm" (submit)="submit(f)" ngNativeValidate>
 
                     <div class="row">
                         <div class="col-12 col-lg-6 mb-3">
