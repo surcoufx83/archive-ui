@@ -220,8 +220,8 @@
         "localized": "Lokalisierung per json-Dateien",
         "description": "Description",
         "descriptionPlaceholder": "Full description",
-        "namepattern": "Vorgabe für Dateinamen",
-        "namepatternPlaceholder": "Platzhalter mit {...} um Dateinamen automatisch zu erzeugen"
+        "namepattern": "Filename pattern",
+        "namepatternPlaceholder": "Use placeholder {...} to create filenames automatically"
       }
     },
     "contacts": {
