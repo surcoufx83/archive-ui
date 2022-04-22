@@ -1,11 +1,13 @@
 import { Injectable, OnInit } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { map, Subject } from 'rxjs';
 import { ApiReply } from './api-reply';
 import { ConfigService, AppConfig } from './config.service';
 import { Session } from './session';
 import { User } from './user';
 import { Router } from '@angular/router';
+import { ToastsService } from './utils/toasts.service';
+import { I18nService } from './i18n.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +18,11 @@ export class AuthService implements OnInit {
   private session?: Session;
   private storeName: string = 'ArcApiv2__Session';
 
-  constructor(private configService: ConfigService, private http: HttpClient, private router: Router) {
+  constructor(private configService: ConfigService,
+    private http: HttpClient,
+    private router: Router,
+    private toastService: ToastsService,
+    private i18nService: I18nService) {
     let localSession: Session|string|null = localStorage.getItem(this.storeName);
     if (localSession != null) {
       localSession = <Session>JSON.parse(localSession);
@@ -135,14 +141,22 @@ export class AuthService implements OnInit {
           location.replace('/home');
           return;
         } else {
-          reply.next({
-            success: false,
+          reply.next({ success: false });
+          this.toastService.add({
+            title: this.i18nService.i18n('authService.apiError.title'),
+            message: this.i18nService.i18n('authService.apiError.message', [ response.error ?? '' ]),
+            icon: 'fa-solid fa-triangle-exclamation',
+            type: 'error'
           });
         }
       },
-      (error) => {
-        reply.next({
-          success: false,
+      (e: HttpErrorResponse) => {
+        reply.next({ success: false });
+        this.toastService.add({
+          title: this.i18nService.i18n('authService.apiError.title'),
+          message: this.i18nService.i18n('authService.apiError.message', [ e.statusText ]),
+          icon: 'fa-solid fa-triangle-exclamation',
+          type: 'error'
         });
       }
     );
@@ -151,8 +165,8 @@ export class AuthService implements OnInit {
 
   private ping() : void {
     if (this.isLoggedin) {
-      this.queryApi(this.config.api.baseUrl + '/ping').subscribe((reply) => {
-        setTimeout(() => { this.ping(); }, 60000);
+      this.queryApi(this.config.api.baseUrl + '/ping').subscribe(() => {
+        setTimeout(() => { this.ping(); }, 600000);
       });
     }
     else
@@ -165,18 +179,22 @@ export class AuthService implements OnInit {
       reply.next({ success: false });
       return reply;
     }
-    this.http.get<ApiReply>(url, { headers: this.header}).subscribe(
-      (response) => {
-        reply.next(response);
-      },
-      (error) => {
-        console.log(error);
+    this.http.get<ApiReply>(url, { headers: this.header}).subscribe({
+      next: (response) => reply.next(response),
+      error: (e: HttpErrorResponse) => {
+        console.log(e);
         reply.next({ success: false });
-        if (error.status === 401) {
+        this.toastService.add({
+          title: this.i18nService.i18n('authService.apiError.title'),
+          message: this.i18nService.i18n('authService.apiError.message', [ e.statusText ]),
+          icon: 'fa-solid fa-triangle-exclamation',
+          type: 'error'
+        });
+        if (e.status === 401) {
           this.logout();
         }
       }
-    );
+    });
     return reply;
   }
 
@@ -186,18 +204,22 @@ export class AuthService implements OnInit {
       reply.next({ success: false });
       return reply;
     }
-    this.http.post<ApiReply>(url, payload, { headers: this.header}).subscribe(
-      (response) => {
-        reply.next(response);
-      },
-      (error) => {
-        console.log(error);
+    this.http.post<ApiReply>(url, payload, { headers: this.header}).subscribe({
+      next: (response) => reply.next(response),
+      error: (e: HttpErrorResponse) => {
+        console.log(e);
         reply.next({ success: false });
-        if (error.status === 401) {
+        this.toastService.add({
+          title: this.i18nService.i18n('authService.apiError.title'),
+          message: this.i18nService.i18n('authService.apiError.message', [ e.statusText ]),
+          icon: 'fa-solid fa-triangle-exclamation',
+          type: 'error'
+        });
+        if (e.status === 401) {
           this.logout();
         }
       }
-    );
+    });
     return reply;
   }
 

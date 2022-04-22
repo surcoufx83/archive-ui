@@ -15,11 +15,12 @@ export class ToastsService {
 }
 
 export interface Toast {
-  closable: boolean;
-  disposable: boolean;
+  closable?: boolean;
+  disposable?: boolean;
   disposeTime?: number;
+  icon?: string;
   message: string;
   title: string;
   type?: string;
-  when: Date;
+  when?: Date;
 }

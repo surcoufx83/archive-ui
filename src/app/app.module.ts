@@ -123,7 +123,7 @@ registerLocaleData(localeDe);
       provide: APP_INITIALIZER,
       deps: [AuthService],
       multi: true,
-      useFactory: (authService: AuthService) => () => {}
+      useFactory: (authService: AuthService) => () => { }
     }
   ],
   bootstrap: [

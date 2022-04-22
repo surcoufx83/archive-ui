@@ -35,7 +35,7 @@ export class I18nService {
             disposable: false, closable: false,
             title: 'Application error',
             message: 'Error retrieving localization files!',
-            when: new Date(),
+            icon: 'fa-solid fa-triangle-exclamation',
             type: 'error'
           });
         }

@@ -14,14 +14,15 @@ export class ToastComponent implements OnInit {
 
   constructor(private formatService: FormatService) { }
 
-  fdist(date: Date|string|null): string {
+  fdist(date: Date | string | null): string {
     return this.formatService.fdist(date);
   }
 
   ngOnInit(): void {
-    console.log(this.toast);
-    if (this.toast.disposeTime == undefined)
-      this.toast.disposeTime = 10000;
+    this.toast.closable = this.toast.closable ?? true;
+    this.toast.disposable = this.toast.disposable ?? true;
+    this.toast.disposeTime = this.toast.disposeTime ?? 10000;
+      
     this.show = true;
     if (this.toast.disposable) {
       setTimeout(() => {
