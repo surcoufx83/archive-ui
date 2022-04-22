@@ -160,6 +160,12 @@
     "add": "Neu",
     "back": "Zurück",
     "cancel": "Abbruch",
+    "confirm": {
+      "save": {
+        "title": "Gespeichert",
+        "message": "Die Änderungen wurden erfolgreich gespeichert"
+      }
+    },
     "no": "Nein",
     "none": "Keine",
     "novalue": "---",
@@ -208,10 +214,10 @@
       "techname": "Technischer Name",
       "localized": "Lokalisierter Name",
       "pattern": "Namensvorgabe",
-      "default": "Standardklasse",
+      "default": "Standard",
       "editor": {
         "title": "Dokumentenart bearbeiten",
-        "localized": "Lokalisierung über json-Dateien",
+        "localized": "Lokalisierung per json-Dateien",
         "description": "Beschreibung",
         "descriptionPlaceholder": "Ausführlicher Beschreibungstext",
         "namepattern": "Vorgabe für Dateinamen",
@@ -225,8 +231,20 @@
     },
     "countries": {
       "title": "Länder",
+      "default": "Standard",
+      "name": "Technischer Name",
+      "i18nname": "Lokalisierter Name",
+      "currency": "Währung",
+      "key2": "Code-2",
+      "key3": "Code-3",
       "taxrates": {
         "title": "Steuersätze"
+      },
+      "editor": {
+        "key2": "2-stelliger Code",
+        "key3": "3-stelliger Code",
+        "title": "Länder bearbeiten",
+        "localized": "Lokalisierung per json-Dateien"
       }
     },
     "cronjobs": {
