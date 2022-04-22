@@ -1,4 +1,10 @@
 {
+  "authService": {
+    "apiError": {
+      "title": "Fehler",
+      "message": "Fehler beim Abrufen von Daten: {0}"
+    }
+  },
   "calendar": {
     "showAsGridTitle": "Als Kalender darstellen",
     "showAsListTitle": "Als Liste darstellen",
