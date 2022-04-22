@@ -11,6 +11,16 @@ export class ToastsService {
   public add(toast: Toast) : void {
     this.toast$.next(toast);
   }
+
+  public confirm(title: string, message: string) : void {
+    this.add({
+      disposeTime: 2500,
+      icon: 'fa-regular fa-circle-check',
+      message: message,
+      title: title,
+      when: new Date()
+    });
+  }
   
 }
 

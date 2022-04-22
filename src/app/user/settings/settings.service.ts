@@ -7,7 +7,8 @@ import { WorkProperties } from '../../work/work';
 import { User } from '../user';
 import { Case, CaseFiletype } from 'src/app/cases/case';
 import { Class } from 'src/app/files/class';
-import { Address, ContactType, Party, PartyContact, PartyRole } from 'src/app/common';
+import { Address, ContactType, Country, Party, PartyContact, PartyRole } from 'src/app/common';
+import { Currency } from 'src/app/account/account';
 
 @Injectable()
 export class SettingsService {
@@ -33,6 +34,8 @@ export class SettingsService {
         this.updateClients(reply.payload['clients']);
         this.updateContacts(reply.payload['contacts']);
         this.updateContactTypes(reply.payload['contacttypes']);
+        this.updateCountries(reply.payload['countries']);
+        this.updateCurrencies(reply.payload['currencies']);
         this.updateFiletypes(reply.payload['casefiletypes']);
         this.updateParties(reply.payload['parties']);
         this.updateRoles(reply.payload['roles']);
@@ -71,6 +74,12 @@ export class SettingsService {
 
   private contacttypes: BehaviorSubject<ContactType[]> = new BehaviorSubject<ContactType[]>([]);
   contacttypes$ = this.contacttypes.asObservable();
+
+  private countries: BehaviorSubject<Country[]> = new BehaviorSubject<Country[]>([]);
+  countries$ = this.countries.asObservable();
+
+  private currencies: BehaviorSubject<Currency[]> = new BehaviorSubject<Currency[]>([]);
+  currencies$ = this.currencies.asObservable();
 
   private filetypes: BehaviorSubject<CaseFiletype[]> = new BehaviorSubject<CaseFiletype[]>([]);
   filetypes$ = this.filetypes.asObservable();
@@ -112,6 +121,14 @@ export class SettingsService {
 
   private updateContactTypes(contacttypes: ContactType[]) {
     this.contacttypes.next(contacttypes);
+  }
+
+  private updateCountries(countries: Country[]) {
+    this.countries.next(countries);
+  }
+
+  private updateCurrencies(currencies: Currency[]) {
+    this.currencies.next(currencies);
   }
 
   private updateFiletypes(filetypes: CaseFiletype[]) {
@@ -156,6 +173,43 @@ export class SettingsService {
           });
         }
         this.updateClasses(classes);
+        subject.next(newitem);
+        subject.complete();
+      }
+    });
+    return subject;
+  }
+
+  updateCountry(countryitem: Country) : BehaviorSubject<Country|null> {
+    let subject = new BehaviorSubject<Country|null>(null);
+    let url = this.configService.config.api.baseUrl + '/country/';
+    if (countryitem.id == 0)
+      url += 'create';
+    else
+      url += countryitem.id;
+    this.authService.updateApi(url, {country: countryitem}).subscribe((reply) => {
+      if (reply.success && reply.payload && reply.payload['country']) {
+        let newitem = <Country>reply.payload['country'];
+        let countries = this.countries.value;
+        if (countryitem.id > 0) {
+          let removei = -1;
+          for (let i = 0; i < countries.length; i++) {
+            if (countries[i].id == countryitem.id) {
+              removei = i;
+              break;
+            }
+          }
+          countries.splice(removei, 1, newitem);
+        } else {
+          countries.push(newitem);
+        }
+        if (newitem.isdefault) {
+          countries.forEach((c) => {
+            if (c.id != newitem.id && c.isdefault)
+              c.isdefault = false;
+          });
+        }
+        this.updateCountries(countries);
         subject.next(newitem);
         subject.complete();
       }

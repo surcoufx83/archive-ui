@@ -30,8 +30,9 @@ export interface ContactType {
 
 export interface Country {
   id: number;
-  currency: Currency;
-  currencyid: number;
+  currency: Currency|null;
+  currencyid: number|null;
+  i18nname: string;
   name: string;
   key2: string;
   key3: string;

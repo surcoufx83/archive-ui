@@ -53,6 +53,7 @@ import { DbManagerComponent } from './db/manager/manager.component';
 import { ToastContainerComponent } from './utils/toast-container/toast-container.component';
 import { ToastsService } from './utils/toasts.service';
 import { ToastComponent } from './utils/toast/toast.component';
+import { DbCountriesComponent } from './db/countries/countries.component';
 
 registerLocaleData(localeDe);
 
@@ -96,6 +97,7 @@ registerLocaleData(localeDe);
     DbManagerComponent,
     ToastContainerComponent,
     ToastComponent,
+    DbCountriesComponent,
   ],
   imports: [
     AppRoutingModule,

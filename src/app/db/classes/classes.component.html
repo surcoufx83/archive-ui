@@ -8,6 +8,14 @@
                         <ui-busy-indicator></ui-busy-indicator>
                     </li>
                     <li class="breadcrumb-item">
+                        <a routerLink="/db">
+                            <button type="button" class="btn btn-sm btn-outline-primary">
+                                <i [class]="config.icons['go-left'] + ' me-1'"></i>
+                                {{ i18n('common.back') }}
+                            </button>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
                         <button type="button" class="btn btn-sm btn-outline-primary" (click)="edit()">
                             <i [class]="config.icons['add'] + ' me-1'"></i>
                             {{ i18n('common.add') }}
@@ -48,10 +56,12 @@
                                 <label for="class-default" class="form-label">{{
                                     i18n('db.classes.default') }}</label>
                                 <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="class-default" name="class-default"
-                                        [(ngModel)]="editclass.isdefault" (change)="true">
-                                    <label for="class-default" class="form-check-label" *ngIf="editclass.isdefault">{{ i18n('common.yes') }}</label>
-                                    <label for="class-default" class="form-check-label" *ngIf="!editclass.isdefault">{{ i18n('common.no') }}</label>
+                                    <input type="checkbox" class="form-check-input" id="class-default"
+                                        name="class-default" [(ngModel)]="editclass.isdefault" (change)="true">
+                                    <label for="class-default" class="form-check-label" *ngIf="editclass.isdefault">{{
+                                        i18n('common.yes') }}</label>
+                                    <label for="class-default" class="form-check-label" *ngIf="!editclass.isdefault">{{
+                                        i18n('common.no') }}</label>
                                 </div>
                             </div>
                         </div>

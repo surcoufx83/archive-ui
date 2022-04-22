@@ -1,12 +1,9 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from 'src/app/auth.service';
 import { AppConfig, ConfigService } from 'src/app/config.service';
 import { Class } from 'src/app/files/class';
 import { I18nService } from 'src/app/i18n.service';
 import { Settings } from 'src/app/user/settings/settings';
 import { SettingsService } from 'src/app/user/settings/settings.service';
-import { WorkLead } from 'src/app/work/work';
 
 @Component({
   selector: 'app-classes',
@@ -26,11 +23,9 @@ export class DbClassesComponent implements OnInit {
   sortBy: string = 'name';
   timeout: any;
 
-  constructor(private authService: AuthService,
-    private configService: ConfigService,
+  constructor(private configService: ConfigService,
     private i18nService: I18nService,
-    private userSettings: SettingsService,
-    private router: Router) {
+    private userSettings: SettingsService) {
     this.userSettings.loadArchiveSettings();
     this.userSettings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
@@ -40,7 +35,6 @@ export class DbClassesComponent implements OnInit {
       this.classes.forEach((item) => { item.name = this.i18n('classify.classes.' + item.techname) });
       this.sort();
     });
-    this.edit();
   }
 
   get config(): AppConfig {
@@ -89,7 +83,6 @@ export class DbClassesComponent implements OnInit {
   private sendUpdate(): void {
     if (!this.editclass)
       return;
-    console.log('sendupdate', this.editclass);
     this.saving = true;
     this.userSettings.updateClass(this.editclass).subscribe((reply) => {
       if (reply != null)

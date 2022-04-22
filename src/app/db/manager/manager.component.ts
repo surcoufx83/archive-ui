@@ -18,7 +18,7 @@ export class DbManagerComponent implements OnInit {
   usersettingsObj: Settings|null = null;
   
   items: any = [
-    { link: '/db/classes', title: 'db.classes.title', icon: 'fa-solid fa-shapes' },
+    { link: '/db/classes', title: 'db.classes.title', icon: 'fa-solid fa-caret-right' },
     { link: '/db/cases', title: 'db.cases.title', icon: 'fa-solid fa-shapes' },
     { link: '/db/cases/actions', title: 'db.cases.actions.title', icon: 'fa-solid fa-shapes' },
     { link: '/db/cases/status', title: 'db.cases.status.title', icon: 'fa-solid fa-shapes' },
