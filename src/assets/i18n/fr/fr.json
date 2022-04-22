@@ -163,7 +163,7 @@
     "confirm": {
       "save": {
         "title": "Gespeichert",
-        "message": "Die Änderungen wurden erfolgreich gespeichert"
+        "message": "Die Änderungen wurden erfolgreich gespeichert."
       }
     },
     "no": "Nein",
@@ -172,6 +172,12 @@
     "save": "Speichern",
     "select": {
       "pickOne": " Bitte wählen "
+    },
+    "warn": {
+      "formInvalid": {
+        "title": "Warnung",
+        "message": "Das Formular enthält noch Fehler."
+      }
     },
     "yes": "Ja"
   },
