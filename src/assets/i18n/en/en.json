@@ -1,8 +1,8 @@
 {
   "authService": {
     "apiError": {
-      "title": "Fehler",
-      "message": "Fehler beim Abrufen von Daten: {0}"
+      "title": "Error",
+      "message": "Error retrieving data: {0}"
     }
   },
   "calendar": {
@@ -160,6 +160,12 @@
     "add": "New",
     "back": "Back",
     "cancel": "Cancel",
+    "confirm": {
+      "save": {
+        "title": "Gespeichert",
+        "message": "Die Änderungen wurden erfolgreich gespeichert"
+      }
+    },
     "no": "No",
     "none": "None",
     "novalue": "---",
@@ -208,12 +214,12 @@
       "techname": "Technical name",
       "localized": "Localized name",
       "pattern": "Name pattern",
-      "default": "Standardklasse",
+      "default": "Standard",
       "editor": {
         "title": "Edit Document type",
-        "localized": "Localisation via json files",
+        "localized": "Lokalisierung per json-Dateien",
         "description": "Description",
-        "descriptionPlaceholder": "Ausführlicher Beschreibungstext",
+        "descriptionPlaceholder": "Full description",
         "namepattern": "Vorgabe für Dateinamen",
         "namepatternPlaceholder": "Platzhalter mit {...} um Dateinamen automatisch zu erzeugen"
       }
@@ -225,8 +231,20 @@
     },
     "countries": {
       "title": "Countries",
+      "default": "Standard",
+      "name": "Technical name",
+      "i18nname": "Localized name",
+      "currency": "Währung",
+      "key2": "Code-2",
+      "key3": "Code-3",
       "taxrates": {
         "title": "Tax rates"
+      },
+      "editor": {
+        "key2": "2-stelliger Code",
+        "key3": "3-stelliger Code",
+        "title": "Länder bearbeiten",
+        "localized": "Lokalisierung per json-Dateien"
       }
     },
     "cronjobs": {
