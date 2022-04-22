@@ -119,12 +119,7 @@ registerLocaleData(localeDe);
     },
     { provide: I18nService, multi: false, },
     { provide: ToastsService, multi: false, },
-    {
-      provide: APP_INITIALIZER,
-      deps: [AuthService],
-      multi: true,
-      useFactory: (authService: AuthService) => () => { }
-    }
+    { provide: AuthService, multi: false, },
   ],
   bootstrap: [
     AppComponent
