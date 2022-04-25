@@ -106,7 +106,6 @@ export class DbCountriesComponent implements OnInit {
   private sendUpdate(): void {
     if (!this.editcountry)
       return;
-    console.log('sendupdate', this.editcountry);
     this.saving = true;
     this.userSettings.updateCountry(this.editcountry).subscribe((e) => {
       if (e)
