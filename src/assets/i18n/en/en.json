@@ -182,7 +182,8 @@
     "yes": "Yes"
   },
   "country": {
-    "germany": "Germany"
+    "germany": "Germany",
+    "nederlands": "Niederlande"
   },
   "db": {
     "accounts": {
