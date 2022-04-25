@@ -163,7 +163,7 @@
     "confirm": {
       "save": {
         "title": "Saved",
-        "message": "Die Änderungen wurden erfolgreich gespeichert."
+        "message": "Changes have been saved successfully."
       }
     },
     "no": "No",
@@ -175,8 +175,8 @@
     },
     "warn": {
       "formInvalid": {
-        "title": "Warnung",
-        "message": "Das Formular enthält noch Fehler."
+        "title": "Warning",
+        "message": "This form contains errors."
       }
     },
     "yes": "Yes"
