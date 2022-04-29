@@ -350,6 +350,11 @@
     "inbox": {
       "title": "New Documents"
     },
+    "other": {
+      "title": "Weitere Funktionen",
+      "shoppingLink": "Einkaufsliste",
+      "receiptsLink": "Erfassung von Einkäufen"
+    },
     "stats": {
       "title": "Quick Stats...",
       "files1": "The archive currently manages {0} files in {1} directories with a total of {2}.",
