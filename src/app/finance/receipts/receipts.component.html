@@ -66,7 +66,7 @@
                                 </div>
                                 <ng-container *ngTemplateOutlet="receiptItems"></ng-container>
                                 <ng-container *ngTemplateOutlet="receiptItemsSummary"></ng-container>
-                                
+
                             </div>
                         </div>
                     </div>
@@ -96,11 +96,12 @@
                     <div class="row">
                         <div class="col-6 col-lg-3 mb-3">
                             <div class="form-group">
-                              <label for="receipt-date" class="form-label required">{{ i18n('receipts.date') }}</label>
-                              <input type="date" class="form-control" id="receipt-date" name="receipt-date"
-                                [(ngModel)]="selectedReceipt.date" required>
+                                <label for="receipt-date" class="form-label required">{{ i18n('receipts.date')
+                                    }}</label>
+                                <input type="date" class="form-control" id="receipt-date" name="receipt-date"
+                                    [(ngModel)]="selectedReceipt.date" required>
                             </div>
-                          </div>
+                        </div>
                     </div>
                 </div>
                 <div class="card-header p-1 d-flex justify-content-between align-items-center">

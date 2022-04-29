@@ -54,6 +54,7 @@ import { ToastContainerComponent } from './utils/toast-container/toast-container
 import { ToastsService } from './utils/toasts.service';
 import { ToastComponent } from './utils/toast/toast.component';
 import { DbCountriesComponent } from './db/countries/countries.component';
+import { ShoppingComponent } from './finance/shopping/shopping.component';
 
 registerLocaleData(localeDe);
 
@@ -98,6 +99,7 @@ registerLocaleData(localeDe);
     ToastContainerComponent,
     ToastComponent,
     DbCountriesComponent,
+    ShoppingComponent,
   ],
   imports: [
     AppRoutingModule,
