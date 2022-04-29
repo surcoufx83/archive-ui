@@ -105,7 +105,7 @@
 
   &.list-group-flush,
   &.flush {
-    >:not(ul) .list-group-item {
+    >:not(ul) .list-group-item:not(:last-child) {
       border-width: 0 0 1px;
     }
   }
