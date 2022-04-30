@@ -79,8 +79,6 @@ export class CasesComponent implements OnInit {
         this.casechilds = tempcasechilds;
         this.rootcases = temprootcases;
       }
-      // this.cases = c;
-      console.log(cases);
     });
   }
 
