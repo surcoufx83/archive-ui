@@ -11,52 +11,65 @@ import { ToastsService } from './utils/toasts.service';
 export class I18nService {
 
   private locale: string = navigator.language.substr(0, 2);
-  private entries: { [key: string]: string } = {};
+  private entries: { [key: string]: { [key: string]: string|string[] } } = {};
 
   constructor(private http: HttpClient,
     private toastService: ToastsService) {
     this.loadStrings(this.locale);
+    if (this.locale != environment.i18nFallback)
+      this.loadStrings(environment.i18nFallback);
   }
 
   private loadStrings(locale: string) {
     this.http.get('/assets/i18n/' + locale + '/' + locale + '.json').subscribe({
       next: (strings: any) => {
+        if (!this.entries[locale])
+          this.entries[locale] = {};
         if (strings) {
           Object.entries(strings).forEach((e) => {
-            this.iterateStrings('', e[0], <I18nEntry>e[1]);
+            this.iterateStrings(locale, '', e[0], <I18nEntry>e[1]);
           });
         }
       },
       error: () => {
-        if (locale != environment.i18nFallback)
-          this.loadStrings(environment.i18nFallback);
-        else {
-          this.toastService.fatal('Application error', 'Error retrieving localization files!');
-        }
+        this.toastService.fatal('Application error', 'Error retrieving localization files!');
       }
     });
   }
 
-  private iterateStrings(parentkey: string, key: string, content: I18nEntry): void {
+  private iterateStrings(locale: string, parentkey: string, key: string, content: I18nEntry): void {
     let mykey = (parentkey !== '' ? parentkey + '.' : '') + key;
-    if (typeof content === 'object') {
+    if (typeof content === 'object' && !Array.isArray(content)) {
       Object.entries(content).forEach((e) => {
-        this.iterateStrings(mykey, e[0], <I18nEntry>e[1]);
+        this.iterateStrings(locale, mykey, e[0], <I18nEntry>e[1]);
       });
     }
     else
-      this.entries[mykey] = content;
+      this.entries[locale][mykey] = content;
   }
 
-  public i18n(key: string, params: string[] = []): string {
-    if (this.entries[key] != undefined) {
-      let str: string = this.entries[key];
+  public i18n(key: string, params: any[] = [], i: number = 0): string {
+    return this.i18n_locale(this.locale, key, params, i);
+  }
+
+  private i18n_locale(locale: string, key: string, params: any[] = [], i: number = 0): string {
+    if (this.entries[locale] == undefined)
+      return '...';
+    if (this.entries[locale][key] != undefined) {
+      let str: string = '';
+      if (Array.isArray(this.entries[locale][key])) {
+        str = (<string[]>this.entries[locale][key])[i];
+      } else {
+        str = <string>this.entries[locale][key];
+      }
       for (let i = 0; i < params.length; i++) {
         str = str.replace('{' + i + '}', params[i]);
       }
       return str;
     }
-    return `<I18n/${this.locale}: string '${key}' missing!>`;
+    if (locale != environment.i18nFallback)
+      return this.i18n_locale(environment.i18nFallback, key, params, i);
+    return `<I18n/${locale}: string '${key}' missing!>`;
   }
 
   get DateLocale(): undefined | Locale {
