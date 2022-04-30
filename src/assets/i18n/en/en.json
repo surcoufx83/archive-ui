@@ -1,4 +1,10 @@
 {
+  "authService": {
+    "apiError": {
+      "title": "Error",
+      "message": "Error retrieving data: {0}"
+    }
+  },
   "calendar": {
     "showAsGridTitle": "Display as calendar",
     "showAsListTitle": "Show as list",
@@ -38,7 +44,15 @@
     "termination": "Termination"
   },
   "cases": {
-    "reference": "Reference {0}"
+    "title": "Cases",
+    "filescount": [
+      "1 Datei",
+      "{0} Dateien"
+    ],
+    "reference": "Reference {0}",
+    "card": {
+      "title": "Hierarchie"
+    }
   },
   "casestatus": {
     "created": "Created",
@@ -154,6 +168,12 @@
     "add": "New",
     "back": "Back",
     "cancel": "Cancel",
+    "confirm": {
+      "save": {
+        "title": "Saved",
+        "message": "Changes have been saved successfully."
+      }
+    },
     "no": "No",
     "none": "None",
     "novalue": "---",
@@ -161,10 +181,17 @@
     "select": {
       "pickOne": " Please choose"
     },
+    "warn": {
+      "formInvalid": {
+        "title": "Warning",
+        "message": "This form contains errors."
+      }
+    },
     "yes": "Yes"
   },
   "country": {
-    "germany": "Germany"
+    "germany": "Germany",
+    "nederlands": "The Netherlands"
   },
   "db": {
     "accounts": {
@@ -202,14 +229,14 @@
       "techname": "Technical name",
       "localized": "Localized name",
       "pattern": "Name pattern",
-      "default": "Standardklasse",
+      "default": "System Default",
       "editor": {
         "title": "Edit Document type",
         "localized": "Localisation via json files",
         "description": "Description",
-        "descriptionPlaceholder": "Ausführlicher Beschreibungstext",
-        "namepattern": "Vorgabe für Dateinamen",
-        "namepatternPlaceholder": "Platzhalter mit {...} um Dateinamen automatisch zu erzeugen"
+        "descriptionPlaceholder": "Full description",
+        "namepattern": "Filename pattern",
+        "namepatternPlaceholder": "Use placeholder {...} to create filenames automatically"
       }
     },
     "contacts": {
@@ -219,8 +246,20 @@
     },
     "countries": {
       "title": "Countries",
+      "default": "System Default",
+      "name": "Technical name",
+      "i18nname": "Localized name",
+      "currency": "Currency",
+      "key2": "Code-2",
+      "key3": "Code-3",
       "taxrates": {
         "title": "Tax rates"
+      },
+      "editor": {
+        "key2": "2-digits code",
+        "key3": "3-digits code",
+        "title": "Edit countries",
+        "localized": "Localisation via json files"
       }
     },
     "cronjobs": {
@@ -318,6 +357,11 @@
     },
     "inbox": {
       "title": "New Documents"
+    },
+    "other": {
+      "title": "Additional Features",
+      "shoppingLink": "Shopping list",
+      "receiptsLink": "Track your shopping receipts"
     },
     "stats": {
       "title": "Quick Stats...",
@@ -473,6 +517,11 @@
       "points": "{0} P.",
       "showHistoric": "hist.",
       "showHistoricTooltip": "Also show older entries from history?"
+    }
+  },
+  "shopping": {
+    "cart": {
+      "title": "Shopping list"
     }
   },
   "work": {
