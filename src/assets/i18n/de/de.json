@@ -44,8 +44,12 @@
     "termination": "Kündigung"
   },
   "cases": {
-
-    "reference": "Referenz {0}"
+    "title": "Aktenstruktur",
+    "filescount": ["1 Datei", "{0} Dateien"],
+    "reference": "Referenz {0}",
+    "card": {
+      "title": "Hierarchie"
+    }
   },
   "casestatus": {
     "created": "Erstellt",
@@ -510,6 +514,11 @@
       "points": "{0} P.",
       "showHistoric": "Hist.",
       "showHistoricTooltip": "Auch ältere Werte aus der Historie anzeigen?"
+    }
+  },
+  "shopping": {
+    "cart": {
+      "title": "Einkaufsliste"
     }
   },
   "work": {
