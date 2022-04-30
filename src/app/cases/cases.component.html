@@ -34,12 +34,12 @@
 </div>
 
 <ng-template #caseTemplate let-caseid="caseid">
-    <a class="list-group-item" [routerLink]="['/case', cases[caseid].id]">
-        <case-list-item [case]="cases[caseid]"></case-list-item>
+    <a class="list-group-item" [routerLink]="['/case', case(caseid).id]">
+        <case-list-item [case]="case(caseid)"></case-list-item>
     </a>
     <li class="list-group-item py-0 pe-0" *ngIf="casechilds[caseid] != undefined">
         <ul class="list-group list-group-flush">
-            <ng-container *ngFor="let id of casechilds[caseid]">
+            <ng-container *ngFor="let id of childs(caseid)">
                 <ng-container *ngTemplateOutlet="caseTemplate;context: { caseid: id }"></ng-container>
             </ng-container>
         </ul>

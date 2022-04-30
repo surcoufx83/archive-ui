@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 import { AuthService } from '../auth.service';
 import { AppConfig, ConfigService } from '../config.service';
 import { I18nService } from '../i18n.service';
+import { CacheService } from '../svcs/cache.service';
 import { Settings } from '../user/settings/settings';
 import { SettingsService } from '../user/settings/settings.service';
 import { FormatService } from '../utils/format.service';
@@ -17,7 +18,6 @@ import { Case } from './case';
 export class CasesComponent implements OnInit {
 
   busy: boolean = false;
-  cases: { [key: number]: Case } = {};
   rootcases: number[] = [];
   casechilds: { [key: number]: number[] } = {};
   usersettingsObj: Settings|null = null;
@@ -27,14 +27,22 @@ export class CasesComponent implements OnInit {
     private i18nService: I18nService,
     public router: Router,
     private userSettings: SettingsService,
-    public formatService: FormatService) {
+    public formatService: FormatService,
+    private cacheService: CacheService) {
     this.userSettings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
     });
+    this.loadCases();
   }
 
   case(id: number) : Case {
-    return this.cases[id];
+    return this.cacheService.cases$.value[id];
+  }
+
+  childs(id: number) : number[] {
+    let childs = this.casechilds[id];
+    childs.sort((a, b) => this.case(a).casepath > this.case(b).casepath ? 1 : this.case(a).casepath < this.case(b).casepath ? -1 : 0);
+    return childs;
   }
 
   get config(): AppConfig {
@@ -51,28 +59,32 @@ export class CasesComponent implements OnInit {
     return this.i18nService.i18n(key, params);
   }
 
-  ngOnInit(): void {
-    this.busy = true;
-    let url: string = `${this.config.api.baseUrl}/cases`;
-    this.authService.queryApi(url).subscribe((reply) => {
-      if (reply.success) {
-        let cases = <Case[]>reply.payload;
-        for (let i = 0; i < cases.length; i++) {
-          if (cases[i].parentid != null) {
-            let p: number = <number>cases[i].parentid;
-            if (!this.casechilds[p])
-              this.casechilds[p] = [];
-            this.casechilds[p].push(cases[i].id)
-          } else
-            this.rootcases.push(cases[i].id);
-          this.cases[cases[i].id] = cases[i];
+  loadCases() : void {
+    this.cacheService.cases$.subscribe((c) => {
+      let cases = Object.values(c);
+      let temprootcases: number[] = [];
+      let tempcasechilds: { [key: number]: number[] } = {};
+      for (let i = 0; i < cases.length; i++) {
+        if (cases[i].parentid != null) {
+          let p: number = <number>cases[i].parentid;
+          if (!tempcasechilds[p])
+            tempcasechilds[p] = [];
+          if (!tempcasechilds[p].includes(cases[i].id))
+            tempcasechilds[p].push(cases[i].id)
+        } else {
+          if (!temprootcases.includes(cases[i].id))
+          temprootcases.push(cases[i].id);
         }
-        console.log(this.cases);
-        console.log(this.casechilds);
-        console.log(this.rootcases);
+        temprootcases.sort((a, b) => this.case(a).casepath > this.case(b).casepath ? 1 : this.case(a).casepath < this.case(b).casepath ? -1 : 0);
+        this.casechilds = tempcasechilds;
+        this.rootcases = temprootcases;
       }
-      this.busy = false;
+      // this.cases = c;
+      console.log(cases);
     });
+  }
+
+  ngOnInit(): void {
   }
 
 }
