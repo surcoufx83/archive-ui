@@ -41,7 +41,7 @@ export class CacheService {
       }
       setTimeout(() => {
         this.loadCases();
-      }, 10000);
+      }, 60000);
     });
   }
 

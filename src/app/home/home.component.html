@@ -33,7 +33,7 @@
           </div>
           <div class="card-body">
             <ul class="list-group flush hover rounded">
-              <a class="list-group-item" *ngFor="let case of inactivecases;" [routerLink]="['/case', case.id]">
+              <a class="list-group-item" *ngFor="let case of inactivecases;" [routerLink]="['/case', case.id ]">
                 <case-list-item [case]="case"></case-list-item>
               </a>
             </ul>
