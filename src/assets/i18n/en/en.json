@@ -46,12 +46,12 @@
   "cases": {
     "title": "Cases",
     "filescount": [
-      "1 Datei",
-      "{0} Dateien"
+      "1 file",
+      "{0} files"
     ],
     "reference": "Reference {0}",
     "card": {
-      "title": "Hierarchie"
+      "title": "Hierarchy"
     }
   },
   "casestatus": {
