@@ -44,7 +44,15 @@
     "termination": "Termination"
   },
   "cases": {
-    "reference": "Reference {0}"
+    "title": "Cases",
+    "filescount": [
+      "1 Datei",
+      "{0} Dateien"
+    ],
+    "reference": "Reference {0}",
+    "card": {
+      "title": "Hierarchie"
+    }
   },
   "casestatus": {
     "created": "Created",
@@ -351,9 +359,9 @@
       "title": "New Documents"
     },
     "other": {
-      "title": "Weitere Funktionen",
-      "shoppingLink": "Einkaufsliste",
-      "receiptsLink": "Erfassung von Einkäufen"
+      "title": "Additional Features",
+      "shoppingLink": "Shopping list",
+      "receiptsLink": "Track your shopping receipts"
     },
     "stats": {
       "title": "Quick Stats...",
@@ -509,6 +517,11 @@
       "points": "{0} P.",
       "showHistoric": "hist.",
       "showHistoricTooltip": "Also show older entries from history?"
+    }
+  },
+  "shopping": {
+    "cart": {
+      "title": "Shopping list"
     }
   },
   "work": {
