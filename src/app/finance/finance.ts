@@ -52,7 +52,7 @@ export interface ReceiptArticleCategory {
 export interface ReceiptItem {
     id: number;
     receiptid: number;
-    articleid: number;
+    articleid: number|null;
     singleprice: number;
     quantity: number;
     discount: number;

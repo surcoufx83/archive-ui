@@ -464,6 +464,8 @@
   },
   "receipts": {
     "title": "Belegerfassung",
+    "client": "Käufer",
+    "currency": "Währung",
     "date": "Datum",
     "party": "Händler",
     "amount": "Betrag",
@@ -475,7 +477,8 @@
       "discount": "Rabatt",
       "deposit": "Pfand",
       "totalnet": "G-Preis",
-      "summary": "Summen"
+      "summary": "Summen",
+      "organic": "Bio"
     },
     "edit": {
       "title": "Erfassung eines Belegs"

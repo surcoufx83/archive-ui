@@ -41,5 +41,10 @@ export class FormatService {
     return n.toLocaleString(this.i18nService.Locale, {minimumFractionDigits: fd});
   }
 
+  fpercent(n: number, fd: number = 0) : string {
+    if (n == undefined)
+      return '';
+    return n.toLocaleString(this.i18nService.Locale, {minimumFractionDigits: fd}) + '%';
+  }
 
 }

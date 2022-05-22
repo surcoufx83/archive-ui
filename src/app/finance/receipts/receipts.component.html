@@ -12,7 +12,7 @@
                             <ui-busy-indicator></ui-busy-indicator>
                         </li>
                         <li class="breadcrumb-item">
-                            <button type="button" class="btn btn-sm btn-outline-primary" (click)="new()">
+                            <button type="button" class="btn btn-sm btn-outline-primary" (click)="new(); newItem();">
                                 <i [class]="config.icons['add'] + ' me-1'"></i>
                                 {{ i18n('common.add') }}
                             </button>
@@ -102,10 +102,59 @@
                                     [(ngModel)]="selectedReceipt.date" required>
                             </div>
                         </div>
+                        <div class="col-6 col-lg-3 mb-3">
+                            <div class="form-group">
+                                <label for="receipt-currency" class="form-label required">{{ i18n('receipts.currency')
+                                    }}</label>
+                                <select class="form-select" id="receipt-currency" name="receipt-currency"
+                                    [(ngModel)]="selectedReceipt.currencyid" required (change)="onChangeCurrency()">
+                                    <option *ngFor="let currency of currencies; let i = index" [value]="currency.id">
+                                        {{ currency.shortname }} - {{ currency.name }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-lg-6 mb-3">
+                            <div class="form-group">
+                                <label for="receipt-client" class="form-label required">{{ i18n('receipts.client')
+                                    }}</label>
+                                <select class="form-select" id="receipt-client" name="receipt-client"
+                                    [(ngModel)]="selectedReceipt.clientid" required>
+                                    <option *ngFor="let client of clients; let i = index" [value]="client.id">
+                                        {{ client.name1 }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 mb-3">
+                            <div class="form-group">
+                                <label for="receipt-party" class="form-label required">{{ i18n('receipts.party')
+                                    }}</label>
+                                <select class="form-select" id="receipt-party" name="receipt-party"
+                                    [(ngModel)]="selectedReceipt.partyid" required>
+                                    <option *ngFor="let party of parties; let i = index" [value]="party.id">
+                                        {{ party.name1 }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="card-header p-1 d-flex justify-content-between align-items-center">
                     <h4>{{ i18n('receipts.items.title') }}</h4>
+                    <div>
+                        <nav class="h-100" style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
+                            <ol class="breadcrumb d-flex align-items-center h-100 mb-0">
+                                <li class="breadcrumb-item">
+                                    <button type="button" class="btn btn-sm btn-outline-primary" (click)="newItem()">
+                                        <i [class]="config.icons['add'] + ' me-1'"></i>
+                                    </button>
+                                </li>
+                            </ol>
+                        </nav>
+                    </div>
                 </div>
                 <div class="card-body p-1 fs-7">
                     <div class="flex-table flex-table-sm">
@@ -136,9 +185,25 @@
         <ng-container *ngFor="let item of selectedReceipt.items; let i = index;">
             <div class="flex-table-body row">
                 <div class="col-12 col-lg-3">
-                    <ng-container *ngIf="article(item.articleid)">
-                        {{ article(item.articleid)!.name }}
-                        <span class="fs-8">({{ article(item.articleid)!.search }})</span>
+                    <ng-container *ngIf="selectedReceipt.id > 0">
+                        <ng-container *ngTemplateOutlet="receiptArticle; context: { 'item': item }"></ng-container>
+                    </ng-container>
+                    <ng-container *ngIf="selectedReceipt.id == 0">
+                        <ng-container *ngIf="item.articleid && article(item.articleid)">
+                            <ng-container  *ngTemplateOutlet="receiptArticle; context: { 'item': item }"></ng-container>
+                        </ng-container>
+                        <ng-container *ngIf="!item.articleid || !article(item.articleid)">
+                            <input type="text" class="form-control form-control-sm" [id]="'receipt-article-' + i"
+                                name="'receipt-article-' + i" required (keyup)="onChangeInput($event)"
+                                (focus)="activeArticleIndex = i">
+                            <ul [ngClass]="{'dropdown-menu mt-1 py-0': true, 'show': activeArticleIndex == i && activeArticleDropdownItems.length > 0}">
+                                <li class="dropdown-item pointer"
+                                    *ngFor="let ditem of activeArticleDropdownItems; let di = index"
+                                    (click)="onDropdownSelect(i, ditem); item.articleid = ditem.id; activeArticleIndex = -1; activeArticleDropdownItems = []; newItem();">
+                                    {{ ditem.search }} ({{ ditem.name }})
+                                </li>
+                            </ul>
+                        </ng-container>
                     </ng-container>
                 </div>
                 <div class="col-4 col-lg-1 text-end d-flex d-lg-block">
@@ -207,5 +272,16 @@
                     }}</strong>
             </div>
         </div>
+    </ng-container>
+</ng-template>
+
+<ng-template #receiptArticle let-receiptitem="item">
+    <ng-container *ngIf="receiptitem.articleid && article(receiptitem.articleid)">
+        {{ article(receiptitem.articleid)!.name }}
+        <span class="fs-8">({{ article(receiptitem.articleid)!.search }}<ng-container *ngIf="taxrate(receiptitem.articleid)">,
+            {{ formatService.fpercent(taxrate(receiptitem.articleid)!.rate) }}</ng-container><ng-container *ngIf="article(receiptitem.articleid)!.ean">,
+            {{ article(receiptitem.articleid)!.ean }}</ng-container><ng-container *ngIf="article(receiptitem.articleid)!.organic">,
+            <i [class]="config.icons['organic']"></i>
+            {{ i18n('receipts.items.organic') }}</ng-container>)</span>
     </ng-container>
 </ng-template>

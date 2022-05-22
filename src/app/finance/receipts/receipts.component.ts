@@ -1,9 +1,10 @@
- import { Component, OnInit } from '@angular/core';
+ import { DOCUMENT } from '@angular/common';
+import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { format } from 'date-fns';
 import { Currency } from 'src/app/account/account';
 import { AuthService } from 'src/app/auth.service';
-import { Country } from 'src/app/common';
+import { Country, Party } from 'src/app/common';
 import { AppConfig, ConfigService } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
 import { Settings } from 'src/app/user/settings/settings';
@@ -18,11 +19,15 @@ import { Receipt, ReceiptArticle, ReceiptArticleCategory, TaxRate } from '../fin
 })
 export class ReceiptsComponent implements OnInit {
   
-  busy: boolean = false;
+  activeArticleIndex: number = -1;
+  activeArticleDropdownItems: ReceiptArticle[] = [];
   articles: ReceiptArticle[] = [];
+  busy: boolean = false;
   categories: ReceiptArticleCategory[] = [];
+  clients: Party[] = [];
   countries: Country[] = [];
   currencies: Currency[] = [];
+  parties: Party[] = [];
   receipts: Receipt[] = [];
   taxrates: TaxRate[] = [];
   usersettingsObj: Settings|null = null;
@@ -36,7 +41,8 @@ export class ReceiptsComponent implements OnInit {
     private i18nService: I18nService,
     public router: Router,
     private userSettings: SettingsService,
-    public formatService: FormatService) {
+    public formatService: FormatService,
+    @Inject(DOCUMENT) private document: Document) {
     this.userSettings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
     });
@@ -96,8 +102,38 @@ export class ReceiptsComponent implements OnInit {
     console.log(this.selectedReceipt)
   }
 
+  newItem(): void {
+    if (this.selectedReceipt) {
+      this.selectedReceipt.items.push({
+        id: 0,
+        receiptid: this.selectedReceipt.id,
+        articleid: null,
+        singleprice: 0.0,
+        quantity: 1,
+        discount: 0.0,
+        deposit: 0.0,
+        totalnet: 0.0,
+      });
+    }
+  }
+
   ngOnInit(): void {
     this.update();
+  }
+
+  onChangeCurrency(): void {
+    if (this.selectedReceipt) {
+      this.selectedReceipt.currency = this.currencies.find((c) => c.id == +(this.selectedReceipt!.currencyid)) ?? this.defaultCurrency;
+    }
+  }
+
+  onChangeInput(e: KeyboardEvent): void {
+    let input: string = (<HTMLInputElement>e.target).value.toLowerCase();
+    this.activeArticleDropdownItems = this.articles.filter((a) => a.name.toLowerCase().indexOf(input) > -1 || a.search.toLowerCase().indexOf(input) > -1);
+  }
+
+  onDropdownSelect(i: number, a: ReceiptArticle): void {
+    (<HTMLInputElement>document.getElementById('receipt-article-' + i)).value = a.search;
   }
 
   select(receipt: Receipt) : void {
@@ -121,6 +157,16 @@ export class ReceiptsComponent implements OnInit {
     });
   }
 
+  taxrate(articleid: number): TaxRate|null {
+    let article = this.article(articleid);
+    if (article == null)
+      return null;
+    let filter = this.taxrates.filter(a => a.id == article?.taxrateid);
+    if (filter.length === 1)
+      return filter[0];
+    return null;
+  }
+
   update() : void {
     this.busy = true;
     let url: string = this.config.api.baseUrl + '/fin/receipts';
@@ -129,8 +175,10 @@ export class ReceiptsComponent implements OnInit {
         let response = <ReceiptsResponse>reply.payload;
         this.articles = response.articles.sort((a, b) => { return a.name > b.name ? 1 : a.name < b.name ? -1 : 0  });
         this.categories = response.categories.sort((a, b) => { return a.name > b.name ? 1 : a.name < b.name ? -1 : 0  });
+        this.clients = response.clients.sort((a, b) => { return a.name1 > b.name1 ? 1 : a.name1 < b.name1 ? -1 : 0  });
         this.countries = response.countries.sort((a, b) => { return this.i18n('country.'+a.name) > this.i18n('country.'+b.name) ? 1 : this.i18n('country.'+a.name) < this.i18n('country.'+b.name) ? -1 : 0  });
         this.currencies = response.currencies.sort((a, b) => { return a.shortname > b.shortname ? 1 : a.shortname < b.shortname ? -1 : 0  });
+        this.parties = response.parties.sort((a, b) => { return a.name1 > b.name1 ? 1 : a.name1 < b.name1 ? -1 : 0  });
         this.receipts = response.receipts.sort((a, b) => { return a.date < b.date ? 1 : a.date > b.date ? -1 : 0  });
         this.taxrates = response.taxrates.sort((a, b) => { return a.rate < b.rate ? 1 : a.rate > b.rate ? -1 : 0  });
         this.currencies.forEach(c => c.isdefault ? this.defaultCurrency = c : null);
@@ -145,8 +193,10 @@ export class ReceiptsComponent implements OnInit {
 export interface ReceiptsResponse {
   articles: ReceiptArticle[];
   categories: ReceiptArticleCategory[];
+  clients: Party[]; 
   countries: Country[]; 
   currencies: Currency[]; 
+  parties: Party[]; 
   receipts: Receipt[];
   taxrates: TaxRate[];
 }
