@@ -6,7 +6,8 @@
     "start": "ng serve --ssl",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "bom": "cyclonedx-node --include-dev --include-license-text --type application --output bom.json"
   },
   "private": true,
   "dependencies": {
