@@ -467,6 +467,8 @@
   },
   "receipts": {
     "title": "Voucher registration",
+    "client": "Buyer",
+    "currency": "Currency",
     "date": "Date",
     "party": "Trader",
     "amount": "Amount",
@@ -478,7 +480,8 @@
       "discount": "Discount",
       "deposit": "Deposit",
       "totalnet": "Total",
-      "summary": "Totals"
+      "summary": "Totals",
+      "organic": "Bio"
     },
     "edit": {
       "title": "Record a new receipt"
