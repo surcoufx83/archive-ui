@@ -9,7 +9,7 @@
 
       <div class="flex-grow-1">
 
-        <div class="card mb-3" *ngIf="newfiles.length > 0">
+        <div class="card mb-3">
           <div class="card-header">
             <h5 class="mb-0">
               <i [class]="config.icons['star']"></i>
@@ -17,14 +17,15 @@
             </h5>
           </div>
           <div class="card-body">
-            <ul class="list-group flush hover rounded">
+            <ul class="list-group flush hover rounded" *ngIf="newfiles.length > 0">
               <file-list-item *ngFor="let file of newfiles;" [file]="file" [showButtons]="false"
                 (clicked)="router.navigate(['/file', file.id])"></file-list-item>
             </ul>
+            <ui-busy-indicator *ngIf="newfiles.length == 0"></ui-busy-indicator>
           </div>
         </div>
 
-        <div class="card mb-3" *ngIf="inactivecases.length > 0">
+        <div class="card mb-3">
           <div class="card-header">
             <h5 class="mb-0">
               <i [class]="config.icons['cases']"></i>
@@ -32,11 +33,12 @@
             </h5>
           </div>
           <div class="card-body">
-            <ul class="list-group flush hover rounded">
+            <ul class="list-group flush hover rounded" *ngIf="inactivecases.length > 0">
               <a class="list-group-item" *ngFor="let case of inactivecases;" [routerLink]="['/case', case.id ]">
                 <case-list-item [case]="case"></case-list-item>
               </a>
             </ul>
+            <ui-busy-indicator *ngIf="inactivecases.length == 0"></ui-busy-indicator>
           </div>
         </div>
 

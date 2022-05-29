@@ -78,7 +78,7 @@
 
 <ng-template #receiptEditor>
     <ng-container *ngIf="selectedReceipt">
-        <div class="flex-table-body row">
+        <div class="flex-table-body row pb-3">
             <div class="col-3">
                 {{ f(selectedReceipt.date, 'PP') }}
             </div>
@@ -190,16 +190,17 @@
                     </ng-container>
                     <ng-container *ngIf="selectedReceipt.id == 0">
                         <ng-container *ngIf="item.articleid && article(item.articleid)">
-                            <ng-container  *ngTemplateOutlet="receiptArticle; context: { 'item': item }"></ng-container>
+                            <ng-container *ngTemplateOutlet="receiptArticle; context: { 'item': item }"></ng-container>
                         </ng-container>
                         <ng-container *ngIf="!item.articleid || !article(item.articleid)">
                             <input type="text" class="form-control form-control-sm" [id]="'receipt-article-' + i"
                                 name="'receipt-article-' + i" required (keyup)="onChangeInput($event)"
                                 (focus)="activeArticleIndex = i">
-                            <ul [ngClass]="{'dropdown-menu mt-1 py-0': true, 'show': activeArticleIndex == i && activeArticleDropdownItems.length > 0}">
+                            <ul
+                                [ngClass]="{'dropdown-menu mt-1 py-0': true, 'show': activeArticleIndex == i && activeArticleDropdownItems.length > 0}">
                                 <li class="dropdown-item pointer"
                                     *ngFor="let ditem of activeArticleDropdownItems; let di = index"
-                                    (click)="onDropdownSelect(i, ditem); item.articleid = ditem.id; activeArticleIndex = -1; activeArticleDropdownItems = []; newItem();">
+                                    (click)="onDropdownSelect(i, ditem); item.articleid = ditem.id; activeArticleIndex = -1; activeArticleDropdownItems = []; onChangeValues(i); newItem();">
                                     {{ ditem.search }} ({{ ditem.name }})
                                 </li>
                             </ul>
@@ -207,33 +208,68 @@
                     </ng-container>
                 </div>
                 <div class="col-4 col-lg-1 text-end d-flex d-lg-block">
-                    <span class="d-inline-block d-lg-none me-2">{{
-                        i18n('receipts.items.quantity') }}:</span>
-                    <span>{{ formatService.fnumber(item.quantity) }}</span>
+                    <ng-container *ngIf="selectedReceipt.id > 0">
+                        <span class="d-inline-block d-lg-none me-2">{{
+                            i18n('receipts.items.quantity') }}:</span>
+                        <span>{{ formatService.fnumber(item.quantity) }}</span>
+                    </ng-container>
+                    <ng-container *ngIf="selectedReceipt.id == 0">
+                        <input type="number" min="0.000" step="0.001" class="form-control form-control-sm text-end"
+                            [id]="'receipt-quantity-' + i" name="'receipt-quantity-' + i" required
+                            [(ngModel)]="item.quantity" (change)="onChangeValues(i)">
+                    </ng-container>
                 </div>
                 <div class="col-4 col-lg-2 text-end d-flex d-lg-block">
-                    <span class="d-inline-block d-lg-none me-2">{{
-                        i18n('receipts.items.singleprice') }}:</span>
-                    <span>{{ formatService.fcur(item.singleprice, selectedReceipt.currency)
-                        }}</span>
+                    <ng-container *ngIf="selectedReceipt.id > 0">
+                        <span class="d-inline-block d-lg-none me-2">{{
+                            i18n('receipts.items.singleprice') }}:</span>
+                        <span>{{ formatService.fcur(item.singleprice, selectedReceipt.currency)
+                            }}</span>
+                    </ng-container>
+                    <ng-container *ngIf="selectedReceipt.id == 0">
+                        <input type="number" step="0.01" class="form-control form-control-sm text-end"
+                            [id]="'receipt-singleprice-' + i" name="'receipt-singleprice-' + i" required
+                            [(ngModel)]="item.singleprice" (change)="onChangeValues(i)">
+                    </ng-container>
                 </div>
                 <div class="col-4 col-lg-2 text-end d-flex d-lg-block">
-                    <span class="d-inline-block d-lg-none me-2">{{
-                        i18n('receipts.items.discount') }}:</span>
-                    <span>{{ formatService.fcur(item.discount * -1, selectedReceipt.currency)
-                        }}</span>
+                    <ng-container *ngIf="selectedReceipt.id > 0">
+                        <span class="d-inline-block d-lg-none me-2">{{
+                            i18n('receipts.items.discount') }}:</span>
+                        <span>{{ formatService.fcur(item.discount * -1, selectedReceipt.currency)
+                            }}</span>
+                    </ng-container>
+                    <ng-container *ngIf="selectedReceipt.id == 0">
+                        <input type="number" step="0.01" class="form-control form-control-sm text-end"
+                            [id]="'receipt-discount-' + i" name="'receipt-discount-' + i" required
+                            [(ngModel)]="item.discount" (change)="onChangeValues(i)">
+                    </ng-container>
                 </div>
                 <div class="col-4 col-lg-2 text-end d-flex d-lg-block">
-                    <span class="d-inline-block d-lg-none me-2">{{
-                        i18n('receipts.items.deposit') }}:</span>
-                    <span>{{ formatService.fcur(item.deposit, selectedReceipt.currency)
-                        }}</span>
+                    <ng-container *ngIf="selectedReceipt.id > 0">
+                        <span class="d-inline-block d-lg-none me-2">{{
+                            i18n('receipts.items.deposit') }}:</span>
+                        <span>{{ formatService.fcur(item.deposit, selectedReceipt.currency)
+                            }}</span>
+                    </ng-container>
+                    <ng-container *ngIf="selectedReceipt.id == 0">
+                        <input type="number" step="0.01" class="form-control form-control-sm text-end"
+                            [id]="'receipt-deposit-' + i" name="'receipt-deposit-' + i" required
+                            [(ngModel)]="item.deposit" (change)="onChangeValues(i)">
+                    </ng-container>
                 </div>
                 <div class="col-4 col-lg-2 text-end d-flex d-lg-block">
-                    <span class="d-inline-block d-lg-none me-2">{{
-                        i18n('receipts.items.totalnet') }}:</span>
-                    <span>{{ formatService.fcur(item.totalnet, selectedReceipt.currency)
-                        }}</span>
+                    <ng-container *ngIf="selectedReceipt.id > 0">
+                        <span class="d-inline-block d-lg-none me-2">{{
+                            i18n('receipts.items.totalnet') }}:</span>
+                        <span>{{ formatService.fcur(item.totalnet, selectedReceipt.currency)
+                            }}</span>
+                    </ng-container>
+                    <ng-container *ngIf="selectedReceipt.id == 0">
+                        <input type="number" step="0.01" class="form-control form-control-sm text-end"
+                            [id]="'receipt-totalnet-' + i" name="'receipt-totalnet-' + i" readonly
+                            [ngModel]="item.totalnet">
+                    </ng-container>
                 </div>
             </div>
         </ng-container>
@@ -278,10 +314,15 @@
 <ng-template #receiptArticle let-receiptitem="item">
     <ng-container *ngIf="receiptitem.articleid && article(receiptitem.articleid)">
         {{ article(receiptitem.articleid)!.name }}
-        <span class="fs-8">({{ article(receiptitem.articleid)!.search }}<ng-container *ngIf="taxrate(receiptitem.articleid)">,
-            {{ formatService.fpercent(taxrate(receiptitem.articleid)!.rate) }}</ng-container><ng-container *ngIf="article(receiptitem.articleid)!.ean">,
-            {{ article(receiptitem.articleid)!.ean }}</ng-container><ng-container *ngIf="article(receiptitem.articleid)!.organic">,
-            <i [class]="config.icons['organic']"></i>
-            {{ i18n('receipts.items.organic') }}</ng-container>)</span>
+        <span class="fs-8">({{ article(receiptitem.articleid)!.search }}<ng-container
+                *ngIf="taxrate(receiptitem.articleid)">,
+                {{ formatService.fpercent(taxrate(receiptitem.articleid)!.rate) }}</ng-container>
+            <ng-container *ngIf="article(receiptitem.articleid)!.ean">,
+                {{ article(receiptitem.articleid)!.ean }}</ng-container>
+            <ng-container *ngIf="article(receiptitem.articleid)!.organic">,
+                <i [class]="config.icons['organic']"></i>
+                {{ i18n('receipts.items.organic') }}
+            </ng-container>)
+        </span>
     </ng-container>
 </ng-template>

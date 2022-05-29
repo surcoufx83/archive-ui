@@ -16,12 +16,13 @@ import { FormatService } from '../utils/format.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  
+
   busy: boolean = false;
   inactivecases: Case[] = [];
   newfiles: File[] = [];
-  usersettingsObj: Settings|null = null;
+  usersettingsObj: Settings | null = null;
   stats?: HomeStats;
+  when: number = 0;
 
   constructor(private authService: AuthService,
     private configService: ConfigService,
@@ -47,19 +48,58 @@ export class HomeComponent implements OnInit {
     this.update();
   }
 
-  update() : void {
+  update(): void {
     this.busy = true;
-    let url: string = this.config.api.baseUrl + '/home';
+    let url: string = this.config.api.baseUrl + '/home' + (this.when > 0 ? '/' + this.when : '');
+    let clean = this.when == 0;
+    this.when = Math.floor(Date.now() / 1000);
     this.authService.queryApi(url).subscribe((reply) => {
       if (reply.success && reply.payload != undefined) {
         let response = <HomeResponse>reply.payload;
-        this.inactivecases = response.inactivecases;
-        this.newfiles = response.inboxfiles;
+        if (clean) {
+          this.inactivecases = response.inactivecases;
+          this.newfiles = response.inboxfiles;
+        } else {
+          response.inactivecases.forEach((a) => { this.update_addInactiveCase(a); });
+
+          response.inboxfiles.forEach((a) => { this.update_addFile(a); });
+          if (response.inboxfiles.length > 0)
+            this.newfiles = this.newfiles.sort((a, b) => { return a.mtime < b.mtime ? 1 : a.mtime > b.mtime ? -1 : 0 });
+
+        }
         this.stats = response.stats;
       }
       this.busy = false;
-      setTimeout(() => { this.update(); }, 60000);
+      this.userSettings.setTimeout(setTimeout(() => { this.update(); }, 10000));
     });
+  }
+
+  update_addInactiveCase(c: Case): void {
+    let changeindex;
+    for (let i = 0; i < this.inactivecases.length - 1; i++) {
+      if (this.inactivecases[i].id == c.id) {
+        changeindex = i;
+        break;
+      }
+    }
+    if (changeindex)
+      this.inactivecases[changeindex] = c;
+    else
+      this.inactivecases.push(c);
+  }
+
+  update_addFile(f: File): void {
+    let changeindex;
+    for (let i = 0; i < this.newfiles.length - 1; i++) {
+      if (this.newfiles[i].id == f.id) {
+        changeindex = i;
+        break;
+      }
+    }
+    if (changeindex)
+      this.newfiles[changeindex] = f;
+    else
+      this.newfiles.push(f);
   }
 
 }

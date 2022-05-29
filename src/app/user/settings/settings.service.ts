@@ -14,6 +14,7 @@ import { Currency } from 'src/app/account/account';
 export class SettingsService {
 
   private archiveLoaded : boolean = false;
+  private componentRefresher : any;
 
   constructor(private authService: AuthService,
               private configService: ConfigService)
@@ -52,6 +53,12 @@ export class SettingsService {
         this.updateWorkProps(<WorkProperties>reply.payload['work']);
       }
     });
+  }
+
+  public setTimeout(timeout: any) : void {
+    if (this.componentRefresher)
+      clearTimeout(this.componentRefresher);
+    this.componentRefresher = timeout;
   }
 
   private addresses: BehaviorSubject<Address[]> = new BehaviorSubject<Address[]>([]);
