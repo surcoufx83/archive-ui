@@ -487,6 +487,12 @@
       "title": "Erfassung eines Belegs",
       "noitems1": "Noch keine Position erfasst.",
       "noitems2": "Noch keine Position vollständig erfasst."
+    },
+    "select": {
+      "stillediting": {
+        "title": "Belegauswahl abgebrochen",
+        "message": "Der Wechsel des Belegs wurde abgebrochen, da aktuell noch ein Beleg erfasst wird. Der zu erfassende Beleg muss gespeichert oder abgebrochen werden."
+      }
     }
   },
   "search": {
