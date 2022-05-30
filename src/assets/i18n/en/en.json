@@ -481,10 +481,12 @@
       "deposit": "Deposit",
       "totalnet": "Total",
       "summary": "Totals",
-      "organic": "Bio"
+      "organic": "Organic"
     },
     "edit": {
-      "title": "Record a new receipt"
+      "title": "Record a new receipt",
+      "noitems1": "Noch keine Position erfasst.",
+      "noitems2": "Noch keine Position vollständig erfasst."
     }
   },
   "search": {
