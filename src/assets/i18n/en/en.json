@@ -485,13 +485,13 @@
     },
     "edit": {
       "title": "Record a new receipt",
-      "noitems1": "Noch keine Position erfasst.",
-      "noitems2": "Noch keine Position vollständig erfasst."
+      "noitems1": "No items added yet.",
+      "noitems2": "No item fully entered yet."
     },
     "select": {
       "stillediting": {
-        "title": "Belegauswahl abgebrochen",
-        "message": "Der Wechsel des Belegs wurde abgebrochen, da aktuell noch ein Beleg erfasst wird. Der zu erfassende Beleg muss gespeichert oder abgebrochen werden."
+        "title": "Receipt selection canceled",
+        "message": "The receipt change was canceled because a new receipt is currently being entered. The receipt to be entered must be saved or canceled."
       }
     }
   },
