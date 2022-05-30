@@ -56,6 +56,9 @@ import { ToastComponent } from './utils/toast/toast.component';
 import { DbCountriesComponent } from './db/countries/countries.component';
 import { ShoppingComponent } from './finance/shopping/shopping.component';
 import { CacheService } from './svcs/cache.service';
+import { H4Component } from './utils/h4/h4.component';
+import { H2Component } from './utils/h2/h2.component';
+import { H3Component } from './utils/h3/h3.component';
 
 registerLocaleData(localeDe);
 
@@ -101,6 +104,9 @@ registerLocaleData(localeDe);
     ToastComponent,
     DbCountriesComponent,
     ShoppingComponent,
+    H4Component,
+    H2Component,
+    H3Component,
   ],
   imports: [
     AppRoutingModule,

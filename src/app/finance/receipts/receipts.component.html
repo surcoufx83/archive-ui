@@ -1,26 +1,8 @@
-<ui-centered-busy-indicator *ngIf="usersettingsObj == undefined"></ui-centered-busy-indicator>
-
 <div>
 
     <div class="container pt-4 pt-md-2 mb-2">
-        <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between">
-            <h2>{{ i18n('receipts.title') }}</h2>
-            <div>
-                <nav class="h-100" style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
-                    <ol class="breadcrumb d-flex align-items-center h-100 mb-0">
-                        <li [ngClass]="{'breadcrumb-item fade': true, 'show': busy}">
-                            <ui-busy-indicator></ui-busy-indicator>
-                        </li>
-                        <li class="breadcrumb-item">
-                            <button type="button" class="btn btn-sm btn-outline-primary" (click)="new(); newItem();">
-                                <i [class]="config.icons['add'] + ' me-1'"></i>
-                                {{ i18n('common.add') }}
-                            </button>
-                        </li>
-                    </ol>
-                </nav>
-            </div>
-        </div>
+        <app-h2 [title]="i18n('receipts.title')" [busy]="busy" [btn1]="i18n('common.add')"
+        [btn1css]="'btn btn-sm btn-outline-primary'" [btn1icon]="config.icons['add']" (btn1Clicked)="new(); newItem();"></app-h2>
     </div>
 
     <div class="container">
@@ -78,105 +60,94 @@
 
 <ng-template #receiptEditor>
     <ng-container *ngIf="selectedReceipt">
-        <div class="flex-table-body row pb-3">
-            <div class="col-3">
-                {{ f(selectedReceipt.date, 'PP') }}
-            </div>
-            <div class="col-6 col-lg-7">
-                <span class="me-1" *ngIf="selectedReceipt.party">{{ selectedReceipt.party.name1 }}</span>
-            </div>
-            <div class="col-3 col-lg-2 text-end">
-                {{ formatService.fcur(selectedReceipt.gross_total, selectedReceipt.currency) }}
-            </div>
-            <div class="col-12 container card p-1">
-                <div class="card-header p-1 d-flex justify-content-between align-items-center">
-                    <h4>{{ i18n('receipts.edit.title') }}</h4>
+        <form #form="ngForm" (ngSubmit)="saveSelected(form, $event)">
+            <div class="flex-table-body row pb-3">
+                <div class="col-3">
+                    {{ f(selectedReceipt.date, 'PP') }}
                 </div>
-                <div class="card-body p-1 px-3 fs-7 mb-3">
-                    <div class="row">
-                        <div class="col-6 col-lg-3 mb-3">
-                            <div class="form-group">
-                                <label for="receipt-date" class="form-label required">{{ i18n('receipts.date')
-                                    }}</label>
-                                <input type="date" class="form-control" id="receipt-date" name="receipt-date"
-                                    [(ngModel)]="selectedReceipt.date" required>
+                <div class="col-6 col-lg-7">
+                    <span class="me-1" *ngIf="selectedReceipt.party">{{ selectedReceipt.party.name1 }}</span>
+                </div>
+                <div class="col-3 col-lg-2 text-end">
+                    {{ formatService.fcur(selectedReceipt.gross_total, selectedReceipt.currency) }}
+                </div>
+                <div class="col-12 container card p-1">
+                    <app-h4 [title]="i18n('receipts.edit.title')" [containercss]="'card-header'" [btn1]="i18n('common.save')"
+                        [btn1css]="'btn btn-sm btn-success'" [btn1icon]="config.icons['save']" (btn1Clicked)="saveSelected(form, $event)"></app-h4>
+                    <div class="card-body p-1 px-3 fs-7 mb-3">
+                        <div class="row">
+                            <div class="col-6 col-lg-3 mb-3">
+                                <div class="form-group">
+                                    <label for="receipt-date" class="form-label required">{{ i18n('receipts.date')
+                                        }}</label>
+                                    <input type="date" class="form-control" id="receipt-date" name="receipt-date"
+                                        [(ngModel)]="selectedReceipt.date" required>
+                                </div>
+                            </div>
+                            <div class="col-6 col-lg-3 mb-3">
+                                <div class="form-group">
+                                    <label for="receipt-currency" class="form-label required">{{ i18n('receipts.currency')
+                                        }}</label>
+                                    <select class="form-select" id="receipt-currency" name="receipt-currency"
+                                        [(ngModel)]="selectedReceipt.currencyid" required (change)="onChangeCurrency()">
+                                        <option *ngFor="let currency of currencies; let i = index" [value]="currency.id">
+                                            {{ currency.shortname }} - {{ currency.name }}
+                                        </option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-6 col-lg-3 mb-3">
-                            <div class="form-group">
-                                <label for="receipt-currency" class="form-label required">{{ i18n('receipts.currency')
-                                    }}</label>
-                                <select class="form-select" id="receipt-currency" name="receipt-currency"
-                                    [(ngModel)]="selectedReceipt.currencyid" required (change)="onChangeCurrency()">
-                                    <option *ngFor="let currency of currencies; let i = index" [value]="currency.id">
-                                        {{ currency.shortname }} - {{ currency.name }}
-                                    </option>
-                                </select>
+                        <div class="row">
+                            <div class="col-12 col-lg-6 mb-3">
+                                <div class="form-group">
+                                    <label for="receipt-client" class="form-label required">{{ i18n('receipts.client')
+                                        }}</label>
+                                    <select class="form-select" id="receipt-client" name="receipt-client"
+                                        [(ngModel)]="selectedReceipt.clientid" required>
+                                        <option *ngFor="let client of clients; let i = index" [value]="client.id">
+                                            {{ client.name1 }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-6 mb-3">
+                                <div class="form-group">
+                                    <label for="receipt-party" class="form-label required">{{ i18n('receipts.party')
+                                        }}</label>
+                                    <select class="form-select" id="receipt-party" name="receipt-party"
+                                        [(ngModel)]="selectedReceipt.partyid" required>
+                                        <option *ngFor="let party of parties; let i = index" [value]="party.id">
+                                            {{ party.name1 }}
+                                        </option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-12 col-lg-6 mb-3">
-                            <div class="form-group">
-                                <label for="receipt-client" class="form-label required">{{ i18n('receipts.client')
-                                    }}</label>
-                                <select class="form-select" id="receipt-client" name="receipt-client"
-                                    [(ngModel)]="selectedReceipt.clientid" required>
-                                    <option *ngFor="let client of clients; let i = index" [value]="client.id">
-                                        {{ client.name1 }}
-                                    </option>
-                                </select>
+                    <app-h4 [title]="i18n('receipts.items.title')" [containercss]="'card-header'"
+                        [btn1css]="'btn btn-sm btn-outline-primary'" [btn1icon]="config.icons['add']" (btn1Clicked)="newItem()"></app-h4>
+                    <div class="card-body p-1 fs-7">
+                        <div class="flex-table flex-table-sm">
+                            <div class="flex-table-head row">
+                                <div class="col-12 col-lg-3">{{ i18n('receipts.items.article') }}</div>
+                                <div class="d-none d-lg-block col-lg-1 text-end">{{ i18n('receipts.items.quantity')
+                                    }}</div>
+                                <div class="d-none d-lg-block col-lg-2 text-end">{{
+                                    i18n('receipts.items.singleprice') }}</div>
+                                <div class="d-none d-lg-block col-lg-2 text-end">{{ i18n('receipts.items.discount')
+                                    }}</div>
+                                <div class="d-none d-lg-block col-lg-2 text-end">{{ i18n('receipts.items.deposit')
+                                    }}</div>
+                                <div class="d-none d-lg-block col-lg-2 text-end">{{ i18n('receipts.items.totalnet')
+                                    }}</div>
                             </div>
+                            <ng-container *ngTemplateOutlet="receiptItems"></ng-container>
+                            <ng-container *ngTemplateOutlet="receiptItemsSummary"></ng-container>
                         </div>
-                        <div class="col-12 col-lg-6 mb-3">
-                            <div class="form-group">
-                                <label for="receipt-party" class="form-label required">{{ i18n('receipts.party')
-                                    }}</label>
-                                <select class="form-select" id="receipt-party" name="receipt-party"
-                                    [(ngModel)]="selectedReceipt.partyid" required>
-                                    <option *ngFor="let party of parties; let i = index" [value]="party.id">
-                                        {{ party.name1 }}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-header p-1 d-flex justify-content-between align-items-center">
-                    <h4>{{ i18n('receipts.items.title') }}</h4>
-                    <div>
-                        <nav class="h-100" style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
-                            <ol class="breadcrumb d-flex align-items-center h-100 mb-0">
-                                <li class="breadcrumb-item">
-                                    <button type="button" class="btn btn-sm btn-outline-primary" (click)="newItem()">
-                                        <i [class]="config.icons['add'] + ' me-1'"></i>
-                                    </button>
-                                </li>
-                            </ol>
-                        </nav>
-                    </div>
-                </div>
-                <div class="card-body p-1 fs-7">
-                    <div class="flex-table flex-table-sm">
-                        <div class="flex-table-head row">
-                            <div class="col-12 col-lg-3">{{ i18n('receipts.items.article') }}</div>
-                            <div class="d-none d-lg-block col-lg-1 text-end">{{ i18n('receipts.items.quantity')
-                                }}</div>
-                            <div class="d-none d-lg-block col-lg-2 text-end">{{
-                                i18n('receipts.items.singleprice') }}</div>
-                            <div class="d-none d-lg-block col-lg-2 text-end">{{ i18n('receipts.items.discount')
-                                }}</div>
-                            <div class="d-none d-lg-block col-lg-2 text-end">{{ i18n('receipts.items.deposit')
-                                }}</div>
-                            <div class="d-none d-lg-block col-lg-2 text-end">{{ i18n('receipts.items.totalnet')
-                                }}</div>
-                        </div>
-                        <ng-container *ngTemplateOutlet="receiptItems"></ng-container>
-                        <ng-container *ngTemplateOutlet="receiptItemsSummary"></ng-container>
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
     </ng-container>
 </ng-template>
 
@@ -184,13 +155,18 @@
     <ng-container *ngIf="selectedReceipt">
         <ng-container *ngFor="let item of selectedReceipt.items; let i = index;">
             <div class="flex-table-body row">
-                <div class="col-12 col-lg-3">
+                <div class="col-12 col-lg-3 d-flex align-items-center">
                     <ng-container *ngIf="selectedReceipt.id > 0">
                         <ng-container *ngTemplateOutlet="receiptArticle; context: { 'item': item }"></ng-container>
                     </ng-container>
                     <ng-container *ngIf="selectedReceipt.id == 0">
                         <ng-container *ngIf="item.articleid && article(item.articleid)">
-                            <ng-container *ngTemplateOutlet="receiptArticle; context: { 'item': item }"></ng-container>
+                            <button type="button" class="btn btn-sm btn-outline-secondary border-0 me-2" (click)="selectedReceipt.items.splice(i, 1);">
+                                <i [class]="config.icons['delete']"></i>
+                            </button>
+                            <div>
+                                <ng-container *ngTemplateOutlet="receiptArticle; context: { 'item': item }"></ng-container>
+                            </div>
                         </ng-container>
                         <ng-container *ngIf="!item.articleid || !article(item.articleid)">
                             <input type="text" class="form-control form-control-sm" [id]="'receipt-article-' + i"

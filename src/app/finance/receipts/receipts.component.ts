@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { format } from 'date-fns';
 import { Currency } from 'src/app/account/account';
@@ -9,6 +10,7 @@ import { I18nService } from 'src/app/i18n.service';
 import { Settings } from 'src/app/user/settings/settings';
 import { SettingsService } from 'src/app/user/settings/settings.service';
 import { FormatService } from 'src/app/utils/format.service';
+import { ToastsService } from 'src/app/utils/toasts.service';
 import { Receipt, ReceiptArticle, ReceiptArticleCategory, TaxRate } from '../finance';
 
 @Component({
@@ -41,7 +43,8 @@ export class ReceiptsComponent implements OnInit {
     private i18nService: I18nService,
     public router: Router,
     private userSettings: SettingsService,
-    public formatService: FormatService) {
+    public formatService: FormatService,
+    private toastService: ToastsService) {
     this.userSettings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
     });
@@ -100,7 +103,6 @@ export class ReceiptsComponent implements OnInit {
       items: []
     };
     this.busy = false;
-    console.log(this.selectedReceipt)
   }
 
   newItem(): void {
@@ -147,6 +149,49 @@ export class ReceiptsComponent implements OnInit {
 
   onDropdownSelect(i: number, a: ReceiptArticle): void {
     (<HTMLInputElement>document.getElementById('receipt-article-' + i)).value = a.search;
+  }
+
+  saveSelected(form: any, e: any): void {
+    if (!this.selectedReceipt)
+      return;
+    if (form.form.status !== 'VALID') {
+      this.toastService.warn(this.i18nService.i18n('common.warn.formInvalid.title'),
+        this.i18nService.i18n('common.warn.formInvalid.message'));
+      return;
+    }
+
+    if (this.selectedReceipt.items.length == 0) {
+      this.toastService.warn(this.i18nService.i18n('common.warn.formInvalid.title'),
+        this.i18nService.i18n('receipts.edit.noitems1'));
+      return;
+    }
+
+    if (this.selectedReceipt.items[0].articleid == null || this.selectedReceipt.items[0].totalnet == 0) {
+      this.toastService.warn(this.i18nService.i18n('common.warn.formInvalid.title'),
+        this.i18nService.i18n('receipts.edit.noitems2'));
+      return;
+    }
+
+    let payload = {
+      date: this.selectedReceipt.date,
+      clientid: this.selectedReceipt.clientid,
+      currencyid: this.selectedReceipt.currencyid,
+      partyid: this.selectedReceipt.partyid,
+      items: this.selectedReceipt.items
+    };
+
+    let url: string = this.config.api.baseUrl + '/fin/receipt/create';
+    this.authService.updateApi(url, payload).subscribe((reply) => {
+      console.log(reply);
+      if (reply.success && reply.payload) {
+        let newreceipt: Receipt = <Receipt>reply.payload['receipt'];
+        this.update_addReceipt(newreceipt);
+        this.receipts.sort((a, b) => { return a.date < b.date ? 1 : a.date > b.date ? -1 : 0 });
+        this.new();
+        this.newItem();
+      }
+    });
+
   }
 
   select(receipt: Receipt): void {
@@ -201,35 +246,35 @@ export class ReceiptsComponent implements OnInit {
 
           response.articles.forEach((a) => { this.update_addArticle(a); });
           if (response.articles.length > 0)
-            this.articles = this.articles.sort((a, b) => { return a.name > b.name ? 1 : a.name < b.name ? -1 : 0 });
+            this.articles.sort((a, b) => { return a.name > b.name ? 1 : a.name < b.name ? -1 : 0 });
 
           response.categories.forEach((a) => { this.update_addCategory(a); });
           if (response.categories.length > 0)
-            this.categories = this.categories.sort((a, b) => { return a.name > b.name ? 1 : a.name < b.name ? -1 : 0 });
-          
+            this.categories.sort((a, b) => { return a.name > b.name ? 1 : a.name < b.name ? -1 : 0 });
+
           response.clients.forEach((a) => { this.update_addClient(a); });
           if (response.clients.length > 0)
-            this.clients = this.clients.sort((a, b) => { return a.name1 > b.name1 ? 1 : a.name1 < b.name1 ? -1 : 0 });
-          
+            this.clients.sort((a, b) => { return a.name1 > b.name1 ? 1 : a.name1 < b.name1 ? -1 : 0 });
+
           response.countries.forEach((a) => { this.update_addCountry(a); });
           if (response.countries.length > 0)
-            this.countries = this.countries.sort((a, b) => { return this.i18n('country.' + a.name) > this.i18n('country.' + b.name) ? 1 : this.i18n('country.' + a.name) < this.i18n('country.' + b.name) ? -1 : 0 });
-          
+            this.countries.sort((a, b) => { return this.i18n('country.' + a.name) > this.i18n('country.' + b.name) ? 1 : this.i18n('country.' + a.name) < this.i18n('country.' + b.name) ? -1 : 0 });
+
           response.currencies.forEach((a) => { this.update_addCurrency(a); });
           if (response.currencies.length > 0)
-            this.currencies = this.currencies.sort((a, b) => { return a.shortname > b.shortname ? 1 : a.shortname < b.shortname ? -1 : 0 });
-          
+            this.currencies.sort((a, b) => { return a.shortname > b.shortname ? 1 : a.shortname < b.shortname ? -1 : 0 });
+
           response.parties.forEach((a) => { this.update_addParty(a); });
           if (response.parties.length > 0)
-            this.parties = this.parties.sort((a, b) => { return a.name1 > b.name1 ? 1 : a.name1 < b.name1 ? -1 : 0 });
-          
+            this.parties.sort((a, b) => { return a.name1 > b.name1 ? 1 : a.name1 < b.name1 ? -1 : 0 });
+
           response.receipts.forEach((a) => { this.update_addReceipt(a); });
           if (response.receipts.length > 0)
-            this.receipts = this.receipts.sort((a, b) => { return a.date < b.date ? 1 : a.date > b.date ? -1 : 0 });
-          
+            this.receipts.sort((a, b) => { return a.date < b.date ? 1 : a.date > b.date ? -1 : 0 });
+
           response.taxrates.forEach((a) => { this.update_addTaxrate(a); });
           if (response.taxrates.length > 0)
-            this.taxrates = this.taxrates.sort((a, b) => { return a.rate < b.rate ? 1 : a.rate > b.rate ? -1 : 0 });
+            this.taxrates.sort((a, b) => { return a.rate < b.rate ? 1 : a.rate > b.rate ? -1 : 0 });
 
         }
         this.currencies.forEach((c) => {
@@ -238,120 +283,136 @@ export class ReceiptsComponent implements OnInit {
         });
       }
       this.busy = false;
-      this.userSettings.setTimeout(setTimeout(() => { this.update(); }, 10000));
+      this.userSettings.setTimeout(setTimeout(() => { this.update(); }, 1500));
     });
   }
 
   update_addArticle(article: ReceiptArticle): void {
-    let changeindex;
+    console.log('New article: ' + article.name, article);
+    let changeindex = -1;
     for (let i = 0; i < this.articles.length - 1; i++) {
       if (this.articles[i].id == article.id) {
         changeindex = i;
         break;
       }
     }
-    if (changeindex)
+    if (changeindex > -1)
       this.articles[changeindex] = article;
     else
       this.articles.push(article);
+      console.log(this.articles)
   }
 
   update_addCategory(cat: ReceiptArticleCategory): void {
-    let changeindex;
+    console.log('New category: ' + cat.name, cat);
+    let changeindex = -1;
     for (let i = 0; i < this.categories.length - 1; i++) {
       if (this.categories[i].id == cat.id) {
         changeindex = i;
         break;
       }
     }
-    if (changeindex)
+    if (changeindex > -1)
       this.categories[changeindex] = cat;
     else
       this.categories.push(cat);
+      console.log(this.categories)
   }
 
   update_addClient(client: Party): void {
-    let changeindex;
+    console.log('New client: ' + client.name1, client);
+    let changeindex = -1;
     for (let i = 0; i < this.clients.length - 1; i++) {
       if (this.clients[i].id == client.id) {
         changeindex = i;
         break;
       }
     }
-    if (changeindex)
+    if (changeindex > -1)
       this.clients[changeindex] = client;
     else
       this.clients.push(client);
+      console.log(this.clients)
   }
 
   update_addCountry(country: Country): void {
-    let changeindex;
+    console.log('New country: ' + country.name, country);
+    let changeindex = -1;
     for (let i = 0; i < this.countries.length - 1; i++) {
       if (this.countries[i].id == country.id) {
         changeindex = i;
         break;
       }
     }
-    if (changeindex)
+    if (changeindex > -1)
       this.countries[changeindex] = country;
     else
       this.countries.push(country);
+      console.log(this.countries)
   }
 
   update_addCurrency(currency: Currency): void {
-    let changeindex;
+    console.log('New currency: ' + currency.shortname, currency);
+    let changeindex = -1;
     for (let i = 0; i < this.currencies.length - 1; i++) {
       if (this.currencies[i].id == currency.id) {
         changeindex = i;
         break;
       }
     }
-    if (changeindex)
+    if (changeindex > -1)
       this.currencies[changeindex] = currency;
     else
       this.currencies.push(currency);
+      console.log(this.currencies)
   }
 
   update_addParty(party: Party): void {
-    let changeindex;
+    console.log('New party: ' + party.name1, party);
+    let changeindex = -1;
     for (let i = 0; i < this.parties.length - 1; i++) {
       if (this.parties[i].id == party.id) {
         changeindex = i;
         break;
       }
     }
-    if (changeindex)
+    if (changeindex > -1)
       this.parties[changeindex] = party;
     else
       this.parties.push(party);
+      console.log(this.parties)
   }
 
   update_addReceipt(receipt: Receipt): void {
-    let changeindex;
+    console.log('New receipt: ' + receipt.date + ' ' + receipt.gross_total, receipt);
+    let changeindex = -1;
     for (let i = 0; i < this.receipts.length - 1; i++) {
       if (this.receipts[i].id == receipt.id) {
         changeindex = i;
         break;
       }
     }
-    if (changeindex)
+    if (changeindex > -1)
       this.receipts[changeindex] = receipt;
     else
       this.receipts.push(receipt);
+      console.log(this.receipts)
   }
 
   update_addTaxrate(rate: TaxRate): void {
-    let changeindex;
+    console.log('New taxrate: ' + rate.rate, rate);
+    let changeindex = -1;
     for (let i = 0; i < this.taxrates.length - 1; i++) {
       if (this.taxrates[i].id == rate.id) {
         changeindex = i;
         break;
       }
     }
-    if (changeindex)
+    if (changeindex > -1)
       this.taxrates[changeindex] = rate;
     else
       this.taxrates.push(rate);
+      console.log(this.taxrates)
   }
 
 }

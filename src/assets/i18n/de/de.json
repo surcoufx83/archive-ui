@@ -481,7 +481,9 @@
       "organic": "Bio"
     },
     "edit": {
-      "title": "Erfassung eines Belegs"
+      "title": "Erfassung eines Belegs",
+      "noitems1": "Noch keine Position erfasst.",
+      "noitems2": "Noch keine Position vollständig erfasst."
     }
   },
   "search": {

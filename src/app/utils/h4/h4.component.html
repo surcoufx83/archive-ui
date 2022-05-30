@@ -1,0 +1,24 @@
+<div [ngClass]="['p-1 d-flex justify-content-between align-items-center', containercss]">
+    <h4>{{ title }}</h4>
+    <div>
+        <nav class="h-100" style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
+            <ol class="breadcrumb d-flex align-items-center h-100 mb-0">
+                <li [ngClass]="{'breadcrumb-item fade': true, 'show': busy}">
+                    <ui-busy-indicator></ui-busy-indicator>
+                </li>
+                <li class="breadcrumb-item" *ngIf="btn1 != '' || btn1css != '' || btn1Icon != ''">
+                    <button type="button" [ngClass]="['me-1', btn1css]" (click)="btn1click()">
+                        <i [ngClass]="btn1Icon"></i>
+                        {{ btn1 }}
+                    </button>
+                </li>
+                <li class="breadcrumb-item" *ngIf="btn2 != '' || btn2css != '' || btn2Icon != ''">
+                    <button type="button" [ngClass]="['me-1', btn2css]" (click)="btn2click()">
+                        <i [ngClass]="btn2Icon"></i>
+                        {{ btn2 }}
+                    </button>
+                </li>
+            </ol>
+        </nav>
+    </div>
+</div>
