@@ -124,6 +124,13 @@ export class ReceiptsComponent implements OnInit {
     this.update();
   }
 
+  onCancelEdit() : void {
+    if (this.selectedReceipt) {
+      this.selectedReceipt = null;
+    this.selectedTotals = { items: 0, discount: 0, deposit: 0, singleprice: 0, gross: 0 };
+    }
+  }
+
   onChangeCurrency(): void {
     if (this.selectedReceipt && this.defaultCurrency) {
       this.selectedReceipt.currency = this.currencies.find((c) => c.id == +(this.selectedReceipt!.currencyid)) ?? this.defaultCurrency;
@@ -131,6 +138,11 @@ export class ReceiptsComponent implements OnInit {
   }
 
   onChangeInput(e: KeyboardEvent): void {
+    if (e.code === 'NumpadMultiply') {
+      (<HTMLInputElement>e.target).value = '';
+      this.activeArticleDropdownItems = [];
+      return;
+    }
     let input: string = (<HTMLInputElement>e.target).value.toLowerCase();
     this.activeArticleDropdownItems = this.articles.filter((a) => a.name.toLowerCase().indexOf(input) > -1 || a.search.toLowerCase().indexOf(input) > -1);
   }
@@ -182,7 +194,6 @@ export class ReceiptsComponent implements OnInit {
 
     let url: string = this.config.api.baseUrl + '/fin/receipt/create';
     this.authService.updateApi(url, payload).subscribe((reply) => {
-      console.log(reply);
       if (reply.success && reply.payload) {
         let newreceipt: Receipt = <Receipt>reply.payload['receipt'];
         this.update_addReceipt(newreceipt);
@@ -195,9 +206,17 @@ export class ReceiptsComponent implements OnInit {
   }
 
   select(receipt: Receipt): void {
+    if (this.selectedReceipt) {
+      if (this.selectedReceipt.id == 0 && this.selectedReceipt.items.length > 1) {
+        this.toastService.warn(this.i18nService.i18n('receipts.select.stillediting.title'),
+          this.i18nService.i18n('receipts.select.stillediting.message'));
+        return;
+      }
+    }
     this.busy = true;
     this.selectedReceipt = null;
     this.selectedTotals = { items: 0, discount: 0, deposit: 0, singleprice: 0, gross: 0 };
+    this.selectedReceipt = receipt;
     let url: string = this.config.api.baseUrl + '/fin/receipt/' + receipt.id + '/items';
     this.authService.queryApi(url).subscribe((reply) => {
       if (reply.success && reply.payload != undefined && reply.payload['items']) {
@@ -209,7 +228,6 @@ export class ReceiptsComponent implements OnInit {
           this.selectedTotals.singleprice += i.quantity * i.singleprice;
           this.selectedTotals.gross += i.totalnet;
         });
-        this.selectedReceipt = receipt;
       }
       this.busy = false;
     });
@@ -288,7 +306,6 @@ export class ReceiptsComponent implements OnInit {
   }
 
   update_addArticle(article: ReceiptArticle): void {
-    console.log('New article: ' + article.name, article);
     let changeindex = -1;
     for (let i = 0; i < this.articles.length - 1; i++) {
       if (this.articles[i].id == article.id) {
@@ -300,11 +317,9 @@ export class ReceiptsComponent implements OnInit {
       this.articles[changeindex] = article;
     else
       this.articles.push(article);
-      console.log(this.articles)
   }
 
   update_addCategory(cat: ReceiptArticleCategory): void {
-    console.log('New category: ' + cat.name, cat);
     let changeindex = -1;
     for (let i = 0; i < this.categories.length - 1; i++) {
       if (this.categories[i].id == cat.id) {
@@ -316,11 +331,9 @@ export class ReceiptsComponent implements OnInit {
       this.categories[changeindex] = cat;
     else
       this.categories.push(cat);
-      console.log(this.categories)
   }
 
   update_addClient(client: Party): void {
-    console.log('New client: ' + client.name1, client);
     let changeindex = -1;
     for (let i = 0; i < this.clients.length - 1; i++) {
       if (this.clients[i].id == client.id) {
@@ -332,11 +345,9 @@ export class ReceiptsComponent implements OnInit {
       this.clients[changeindex] = client;
     else
       this.clients.push(client);
-      console.log(this.clients)
   }
 
   update_addCountry(country: Country): void {
-    console.log('New country: ' + country.name, country);
     let changeindex = -1;
     for (let i = 0; i < this.countries.length - 1; i++) {
       if (this.countries[i].id == country.id) {
@@ -348,11 +359,9 @@ export class ReceiptsComponent implements OnInit {
       this.countries[changeindex] = country;
     else
       this.countries.push(country);
-      console.log(this.countries)
   }
 
   update_addCurrency(currency: Currency): void {
-    console.log('New currency: ' + currency.shortname, currency);
     let changeindex = -1;
     for (let i = 0; i < this.currencies.length - 1; i++) {
       if (this.currencies[i].id == currency.id) {
@@ -364,11 +373,9 @@ export class ReceiptsComponent implements OnInit {
       this.currencies[changeindex] = currency;
     else
       this.currencies.push(currency);
-      console.log(this.currencies)
   }
 
   update_addParty(party: Party): void {
-    console.log('New party: ' + party.name1, party);
     let changeindex = -1;
     for (let i = 0; i < this.parties.length - 1; i++) {
       if (this.parties[i].id == party.id) {
@@ -380,11 +387,9 @@ export class ReceiptsComponent implements OnInit {
       this.parties[changeindex] = party;
     else
       this.parties.push(party);
-      console.log(this.parties)
   }
 
   update_addReceipt(receipt: Receipt): void {
-    console.log('New receipt: ' + receipt.date + ' ' + receipt.gross_total, receipt);
     let changeindex = -1;
     for (let i = 0; i < this.receipts.length - 1; i++) {
       if (this.receipts[i].id == receipt.id) {
@@ -396,11 +401,9 @@ export class ReceiptsComponent implements OnInit {
       this.receipts[changeindex] = receipt;
     else
       this.receipts.push(receipt);
-      console.log(this.receipts)
   }
 
   update_addTaxrate(rate: TaxRate): void {
-    console.log('New taxrate: ' + rate.rate, rate);
     let changeindex = -1;
     for (let i = 0; i < this.taxrates.length - 1; i++) {
       if (this.taxrates[i].id == rate.id) {
@@ -412,7 +415,6 @@ export class ReceiptsComponent implements OnInit {
       this.taxrates[changeindex] = rate;
     else
       this.taxrates.push(rate);
-      console.log(this.taxrates)
   }
 
 }
