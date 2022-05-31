@@ -355,13 +355,12 @@
     "cases": {
       "title": "Cases for review"
     },
+    "database": {
+      "title": "Stammdaten",
+      "dbmanager": "Zur Stammdatenverwaltung"
+    },
     "inbox": {
       "title": "New Documents"
-    },
-    "other": {
-      "title": "Additional Features",
-      "shoppingLink": "Shopping list",
-      "receiptsLink": "Track your shopping receipts"
     },
     "stats": {
       "title": "Quick Stats...",
@@ -373,6 +372,12 @@
       "noclassFilesLink": "Not yet classified",
       "noocrFilesLink": "No OCR",
       "storageLink": "Storage"
+    },
+    "supermarket": {
+      "title": "Im Supermark",
+      "priceComparison": "Preisvergleich und -historie",
+      "receiptsLink": "Erfassung von Einkäufen",
+      "shoppingLink": "Shopping list"
     }
   },
   "lead": {
