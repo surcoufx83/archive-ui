@@ -352,13 +352,12 @@
     "cases": {
       "title": "Akten zur Prüfung"
     },
+    "database": {
+      "title": "Stammdaten",
+      "dbmanager": "Zur Stammdatenverwaltung"
+    },
     "inbox": {
       "title": "Neue Dokumente"
-    },
-    "other": {
-      "title": "Weitere Funktionen",
-      "shoppingLink": "Einkaufsliste",
-      "receiptsLink": "Erfassung von Einkäufen"
     },
     "stats": {
       "title": "Schnelle Statistiken...",
@@ -370,6 +369,12 @@
       "noclassFilesLink": "Nicht klassifiziert",
       "noocrFilesLink": "Kein OCR",
       "storageLink": "Speicher"
+    },
+    "supermarket": {
+      "title": "Im Supermark",
+      "priceComparison": "Preisvergleich und -historie",
+      "receiptsLink": "Erfassung von Einkäufen",
+      "shoppingLink": "Einkaufsliste"
     }
   },
   "lead": {

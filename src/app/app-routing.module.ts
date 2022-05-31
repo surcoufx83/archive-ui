@@ -28,6 +28,7 @@ import { DbClassesComponent } from './db/classes/classes.component';
 import { DbManagerComponent } from './db/manager/manager.component';
 import { DbCountriesComponent } from './db/countries/countries.component';
 import { ShoppingComponent } from './finance/shopping/shopping.component';
+import { PriceComparisonComponent } from './finance/price-comparison/price-comparison.component';
 
 const routes: Routes = [
   { path: 'account', component: AccountComponent, canActivate: [SessionGuard] },
@@ -60,6 +61,7 @@ const routes: Routes = [
   },
   { path: 'logout', component: LogoutComponent, canActivate: [SessionGuard] },
   { path: 'notepad', component: NotepadComponent, canActivate: [SessionGuard] },
+  { path: 'price-comparison', component: PriceComparisonComponent, canActivate: [SessionGuard] },
   { path: 'receipts', component: ReceiptsComponent, canActivate: [SessionGuard] },
   { path: 'shopping', component: ShoppingComponent, canActivate: [SessionGuard] },
   { path: 'search/:phrase/:token/:tab', component: SearchComponent, canActivate: [SessionGuard] },

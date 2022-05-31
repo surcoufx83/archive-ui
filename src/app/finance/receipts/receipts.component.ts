@@ -22,6 +22,7 @@ export class ReceiptsComponent implements OnInit {
 
   activeArticleIndex: number = -1;
   activeArticleDropdownItems: ReceiptArticle[] = [];
+  activeArticleDropdownPickIndex = -1;
   articles: ReceiptArticle[] = [];
   busy: boolean = false;
   categories: ReceiptArticleCategory[] = [];
@@ -124,10 +125,10 @@ export class ReceiptsComponent implements OnInit {
     this.update();
   }
 
-  onCancelEdit() : void {
+  onCancelEdit(): void {
     if (this.selectedReceipt) {
       this.selectedReceipt = null;
-    this.selectedTotals = { items: 0, discount: 0, deposit: 0, singleprice: 0, gross: 0 };
+      this.selectedTotals = { items: 0, discount: 0, deposit: 0, singleprice: 0, gross: 0 };
     }
   }
 
@@ -137,14 +138,44 @@ export class ReceiptsComponent implements OnInit {
     }
   }
 
-  onChangeInput(e: KeyboardEvent): void {
+  onBeforeChangeInput(i: number, e: KeyboardEvent): void {
+    if ((e.key === 'Enter' || e.code === 'Tab') && this.activeArticleDropdownPickIndex > -1 && this.activeArticleDropdownPickIndex < this.activeArticleDropdownItems.length) {
+      this.onDropdownSelect(i, this.activeArticleDropdownItems[this.activeArticleDropdownPickIndex]);
+      e.preventDefault();
+      return;
+    }
+    if ((e.key === 'Enter' || e.code === 'Tab') && this.activeArticleDropdownItems.length == 1) {
+      this.onDropdownSelect(i, this.activeArticleDropdownItems[0]);
+      e.preventDefault();
+      return;
+    }
+  }
+
+  onAfterChangeInput(i: number, e: KeyboardEvent): void {
     if (e.code === 'NumpadMultiply') {
       (<HTMLInputElement>e.target).value = '';
       this.activeArticleDropdownItems = [];
       return;
     }
+    if (e.code === 'ArrowDown') {
+      if (this.activeArticleDropdownItems.length > 0 && this.activeArticleDropdownItems.length > this.activeArticleDropdownPickIndex + 1)
+        this.activeArticleDropdownPickIndex += 1;
+      return;
+    }
+    if (e.code === 'ArrowUp') {
+      if (this.activeArticleDropdownItems.length > 0 && this.activeArticleDropdownPickIndex > -1)
+        this.activeArticleDropdownPickIndex -= 1;
+      return;
+    }
     let input: string = (<HTMLInputElement>e.target).value.toLowerCase();
-    this.activeArticleDropdownItems = this.articles.filter((a) => a.name.toLowerCase().indexOf(input) > -1 || a.search.toLowerCase().indexOf(input) > -1);
+    // 1. match exact, 2. match start, 3. match containing
+    let items = this.articles.filter((a) => a.search.toLowerCase() === input);
+    items = items.concat(this.articles.filter((a) => items.indexOf(a) === -1 && a.search.toLowerCase().indexOf(input) === 0));
+    items = items.concat(this.articles.filter((a) => items.indexOf(a) === -1 && (a.name.toLowerCase().indexOf(input) > 0 || a.search.toLowerCase().indexOf(input) > 0)));
+    if (items.length > 5)
+      items = items.slice(0, 5);
+    this.activeArticleDropdownPickIndex = -1;
+    this.activeArticleDropdownItems = items;
   }
 
   onChangeValues(i: number): void {
@@ -161,6 +192,20 @@ export class ReceiptsComponent implements OnInit {
 
   onDropdownSelect(i: number, a: ReceiptArticle): void {
     (<HTMLInputElement>document.getElementById('receipt-article-' + i)).value = a.search;
+    this.selectedReceipt!.items[i].articleid = a.id;
+    this.activeArticleIndex = -1;
+    this.activeArticleDropdownItems = [];
+    this.onChangeValues(i);
+    this.newItem();
+    document.getElementById('receipt-quantity-' + i)?.focus();
+  }
+
+  onKeydownValue(i: number, e: KeyboardEvent) : void {
+    if (e.code === 'NumpadAdd') {
+      document.getElementById('receipt-article-' + (i + 1))?.focus();
+      e.preventDefault();
+      return;
+    }
   }
 
   saveSelected(form: any, e: any): void {

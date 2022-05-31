@@ -75,28 +75,28 @@ export class HomeComponent implements OnInit {
   }
 
   update_addInactiveCase(c: Case): void {
-    let changeindex;
+    let changeindex = -1;
     for (let i = 0; i < this.inactivecases.length - 1; i++) {
       if (this.inactivecases[i].id == c.id) {
         changeindex = i;
         break;
       }
     }
-    if (changeindex)
+    if (changeindex > -1)
       this.inactivecases[changeindex] = c;
     else
       this.inactivecases.push(c);
   }
 
   update_addFile(f: File): void {
-    let changeindex;
+    let changeindex = -1;
     for (let i = 0; i < this.newfiles.length - 1; i++) {
       if (this.newfiles[i].id == f.id) {
         changeindex = i;
         break;
       }
     }
-    if (changeindex)
+    if (changeindex > -1)
       this.newfiles[changeindex] = f;
     else
       this.newfiles.push(f);
