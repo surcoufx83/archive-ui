@@ -356,8 +356,8 @@
       "title": "Cases for review"
     },
     "database": {
-      "title": "Stammdaten",
-      "dbmanager": "Zur Stammdatenverwaltung"
+      "title": "Master data",
+      "dbmanager": "To the database management"
     },
     "inbox": {
       "title": "New Documents"
@@ -374,9 +374,9 @@
       "storageLink": "Storage"
     },
     "supermarket": {
-      "title": "Im Supermark",
-      "priceComparison": "Preisvergleich und -historie",
-      "receiptsLink": "Erfassung von Einkäufen",
+      "title": "In the super market",
+      "priceComparison": "Price comparison and history",
+      "receiptsLink": "Recording of receipts",
       "shoppingLink": "Shopping list"
     }
   },
