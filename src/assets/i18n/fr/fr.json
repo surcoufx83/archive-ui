@@ -355,13 +355,12 @@
     "cases": {
       "title": "Akten zur Prüfung"
     },
+    "database": {
+      "title": "Stammdaten",
+      "dbmanager": "Zur Stammdatenverwaltung"
+    },
     "inbox": {
       "title": "Neue Dokumente"
-    },
-    "other": {
-      "title": "Weitere Funktionen",
-      "shoppingLink": "Einkaufsliste",
-      "receiptsLink": "Erfassung von Einkäufen"
     },
     "stats": {
       "title": "Schnelle Statistiken...",
@@ -373,6 +372,12 @@
       "noclassFilesLink": "Nicht klassifiziert",
       "noocrFilesLink": "Kein OCR",
       "storageLink": "Speicher"
+    },
+    "supermarket": {
+      "title": "Im Supermark",
+      "priceComparison": "Preisvergleich und -historie",
+      "receiptsLink": "Erfassung von Einkäufen",
+      "shoppingLink": "Einkaufsliste"
     }
   },
   "lead": {
@@ -467,6 +472,8 @@
   },
   "receipts": {
     "title": "Belegerfassung",
+    "client": "Käufer",
+    "currency": "Währung",
     "date": "Datum",
     "party": "Händler",
     "amount": "Betrag",
@@ -478,10 +485,19 @@
       "discount": "Rabatt",
       "deposit": "Pfand",
       "totalnet": "G-Preis",
-      "summary": "Summen"
+      "summary": "Summen",
+      "organic": "Bio"
     },
     "edit": {
-      "title": "Erfassung eines Belegs"
+      "title": "Erfassung eines Belegs",
+      "noitems1": "Noch keine Position erfasst.",
+      "noitems2": "Noch keine Position vollständig erfasst."
+    },
+    "select": {
+      "stillediting": {
+        "title": "Belegauswahl abgebrochen",
+        "message": "Der Wechsel des Belegs wurde abgebrochen, da aktuell noch ein Beleg erfasst wird. Der zu erfassende Beleg muss gespeichert oder abgebrochen werden."
+      }
     }
   },
   "search": {

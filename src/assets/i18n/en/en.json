@@ -46,12 +46,12 @@
   "cases": {
     "title": "Cases",
     "filescount": [
-      "1 Datei",
-      "{0} Dateien"
+      "1 file",
+      "{0} files"
     ],
     "reference": "Reference {0}",
     "card": {
-      "title": "Hierarchie"
+      "title": "Hierarchy"
     }
   },
   "casestatus": {
@@ -355,13 +355,12 @@
     "cases": {
       "title": "Cases for review"
     },
+    "database": {
+      "title": "Stammdaten",
+      "dbmanager": "Zur Stammdatenverwaltung"
+    },
     "inbox": {
       "title": "New Documents"
-    },
-    "other": {
-      "title": "Additional Features",
-      "shoppingLink": "Shopping list",
-      "receiptsLink": "Track your shopping receipts"
     },
     "stats": {
       "title": "Quick Stats...",
@@ -373,6 +372,12 @@
       "noclassFilesLink": "Not yet classified",
       "noocrFilesLink": "No OCR",
       "storageLink": "Storage"
+    },
+    "supermarket": {
+      "title": "Im Supermark",
+      "priceComparison": "Preisvergleich und -historie",
+      "receiptsLink": "Erfassung von Einkäufen",
+      "shoppingLink": "Shopping list"
     }
   },
   "lead": {
@@ -467,6 +472,8 @@
   },
   "receipts": {
     "title": "Voucher registration",
+    "client": "Buyer",
+    "currency": "Currency",
     "date": "Date",
     "party": "Trader",
     "amount": "Amount",
@@ -478,10 +485,19 @@
       "discount": "Discount",
       "deposit": "Deposit",
       "totalnet": "Total",
-      "summary": "Totals"
+      "summary": "Totals",
+      "organic": "Organic"
     },
     "edit": {
-      "title": "Record a new receipt"
+      "title": "Record a new receipt",
+      "noitems1": "No items added yet.",
+      "noitems2": "No item fully entered yet."
+    },
+    "select": {
+      "stillediting": {
+        "title": "Receipt selection canceled",
+        "message": "The receipt change was canceled because a new receipt is currently being entered. The receipt to be entered must be saved or canceled."
+      }
     }
   },
   "search": {
