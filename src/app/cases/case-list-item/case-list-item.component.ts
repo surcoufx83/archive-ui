@@ -13,10 +13,16 @@ import { FormatService } from 'src/app/utils/format.service';
 export class CaseListItemComponent {
 
   @Input() case!: Case;
+  @Input() gotoButton: boolean = false;
   @Input() relevance: number|null = null;
   @Output() clicked = new EventEmitter();
+  @Output() gotoClicked = new EventEmitter();
 
   constructor(private configService: ConfigService, private i18nService: I18nService, public formatService: FormatService) { }
+
+  btnClick() : void {
+    this.gotoClicked.emit();
+  }
 
   click() : void {
     this.clicked.emit();
@@ -26,8 +32,8 @@ export class CaseListItemComponent {
     return this.configService.config;
   }
 
-  i18n(key: string, params: string[] = []): string {
-    return this.i18nService.i18n(key, params);
+  i18n(key: string, params: any[] = [], i: number = 0): string {
+    return this.i18nService.i18n(key, params, i);
   }
 
 }

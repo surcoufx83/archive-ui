@@ -148,17 +148,32 @@
                       <input type="date" class="form-control form-control" id="file-date" name="file-date"
                         [(ngModel)]="file.date"
                         (change)="changes['date'] = (file.date != '' ? file.date : null); submitFile();">
+                      <label class="form-label mt-2" *ngIf="ai_classifiedDate.length > 0">
+                        <ng-container *ngFor="let date of ai_classifiedDate.slice(0, 3); let i = index;">
+                          <span class="text-primary pointer me-1"
+                            (click)="file.date = date; changes['date'] = date; submitFile();">
+                            {{ formatService.fdate(date, 'P') }}
+                          </span>
+                        </ng-container>
+                      </label>
                     </div>
                   </div>
                   <div class="col-8 mb-3">
                     <div class="form-group">
                       <label for="file-class" class="form-label">{{ i18n('file.classify.class') }}</label>
-                      <select class="form-select" id="file-class" name="file-class" [(ngModel)]="file.classid"
-                        (change)="setClassId();">
-                        <option [value]="null">{{ i18n('common.select.pickOne') }}</option>
-                        <option *ngFor="let item of classes" [value]="item.id">{{ i18n('classify.classes.' +
-                          item.techname) }}</option>
-                      </select>
+                      <div class="input-group">
+                        <select class="form-select" id="file-class" name="file-class" [(ngModel)]="file.classid"
+                          (change)="setClassId();">
+                          <option [value]="null">{{ i18n('common.select.pickOne') }}</option>
+                          <option *ngFor="let item of classes" [value]="item.id">{{ i18n('classify.classes.' +
+                            item.techname) }}</option>
+                        </select>
+                        <button type="button" class="btn-sm btn-success text-nowrap" (click)="guess()"
+                          [disabled]="guessing">
+                          <i class="fa-solid fa-fingerprint" *ngIf="!guessing"></i>
+                          <i [class]="config.icons['busy']" *ngIf="guessing"></i>
+                        </button>
+                      </div>
                       <label class="form-label text-primary pointer mt-2 text-truncate" *ngIf="ai_classifiedAs"
                         (click)="file.classid = ai_classifiedAs.id; setClassId();">
                         {{ i18n('file.classify.suggestion', [i18n('classify.classes.' + ai_classifiedAs.techname),
@@ -178,6 +193,11 @@
                         <option [value]="null">{{ i18n('common.select.pickOne') }}</option>
                         <option *ngFor="let item of cases" [value]="item.id">{{ item.casepath }}</option>
                       </select>
+                      <label class="form-label text-primary pointer mt-2 text-truncate" *ngIf="ai_classifiedCase"
+                        (click)="file.caseid = ai_classifiedCase.id; setCaseId();">
+                        {{ i18n('file.classify.suggestion', [ai_classifiedCase.casepath,
+                        formatService.fnumber(ai_classifiedCaseConfidence * 100, 1)]) }}
+                      </label>
                     </div>
                   </div>
                   <div class="col-6 mb-3">
@@ -240,9 +260,15 @@
                       <select class="form-select" id="file-party" name="file-party" [(ngModel)]="file.partyaddressid"
                         (change)="setPartyAddressId();">
                         <option [value]="null">{{ i18n('common.select.pickOne') }}</option>
-                        <option *ngFor="let item of addresses" [value]="item.id">{{ item.name1 }}{{ item.department != '' ? ', ' + item.department : '' }}{{ item.street != '' ? ', ' + item.street : '' }}, {{
+                        <option *ngFor="let item of addresses" [value]="item.id">{{ item.name1 }}{{ item.department !=
+                          '' ? ', ' + item.department : '' }}{{ item.street != '' ? ', ' + item.street : '' }}, {{
                           item.zip }} {{ item.city }}</option>
                       </select>
+                      <label class="form-label text-primary pointer mt-2 text-truncate" *ngIf="ai_classifiedAddress"
+                        (click)="file.partyaddressid = ai_classifiedAddress.id; setPartyAddressId();">
+                        {{ i18n('file.classify.suggestion', [ai_classifiedAddress.name1,
+                        formatService.fnumber(ai_classifiedAddressConfidence * 100, 1)]) }}
+                      </label>
                     </div>
                   </div>
                 </div><!-- file parties -->
@@ -251,7 +277,8 @@
                   <!-- tax review -->
                   <div class="col-6 col-lg-3 mb-3">
                     <div class="form-group">
-                      <label for="file-is-tax" class="form-label d-block mb-1">{{ i18n('file.classify.taxreceipt') }}</label>
+                      <label for="file-is-tax" class="form-label d-block mb-1">{{ i18n('file.classify.taxreceipt')
+                        }}</label>
                       <input class="form-check-input" type="checkbox" [value]="true" id="file-is-tax" name="file-is-tax"
                         [(ngModel)]="file.istaxreceipt"
                         (change)="file.taxyear = file.taxyear ?? maxyear; changes['taxreceipt'] = file.istaxreceipt; changes['taxyear'] = file.taxyear; submitFile();">
@@ -313,8 +340,8 @@
                   <div class="text-muted">{{ i18n('file.housekeeping.delete.description') }}</div>
                 </div>
                 <div class="ms-3 ms-lg-4">
-                  <button type="button" class="form-control btn-sm btn-outline-danger text-nowrap" (click)="delete(file)"
-                    [disabled]="busy">
+                  <button type="button" class="form-control btn-sm btn-outline-danger text-nowrap"
+                    (click)="delete(file)" [disabled]="busy">
                     <i [class]="config.icons[updating ? 'busy' : 'delete']"></i>
                     <span class="ms-1">{{ i18n('file.housekeeping.delete.btn') }}</span>
                   </button>

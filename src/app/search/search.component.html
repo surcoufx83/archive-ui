@@ -113,18 +113,7 @@
         ''+resultgroupcount['cases']), i18n('search.result.group.cases')]) }}</h4>
       <ul class="list-group" *ngIf="searchresults.cases">
         <a class="list-group-item" *ngFor="let item of searchresults.cases;" [routerLink]="['/case', item.case.id]">
-          <div class="d-flex">
-            <div class="d-none d-lg-block">
-              <span class="badge bg-light text-dark fw-lighter">{{ i18n('search.result.points', ['' + (item.relevance |
-                number)]) }}</span>
-            </div>
-            <div>
-              <div>{{ item.case.title }}</div>
-              <div class="fs-8">
-                {{ item.case.extid }}
-              </div>
-            </div>
-          </div>
+          <case-list-item [case]="item.case" [relevance]="item.relevance"></case-list-item>
         </a>
       </ul>
     </div>

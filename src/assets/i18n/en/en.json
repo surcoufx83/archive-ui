@@ -1,4 +1,10 @@
 {
+  "authService": {
+    "apiError": {
+      "title": "Error",
+      "message": "Error retrieving data: {0}"
+    }
+  },
   "calendar": {
     "showAsGridTitle": "Display as calendar",
     "showAsListTitle": "Show as list",
@@ -38,7 +44,15 @@
     "termination": "Termination"
   },
   "cases": {
-    "reference": "Reference {0}"
+    "title": "Cases",
+    "filescount": [
+      "1 file",
+      "{0} files"
+    ],
+    "reference": "Reference {0}",
+    "card": {
+      "title": "Hierarchy"
+    }
   },
   "casestatus": {
     "created": "Created",
@@ -96,7 +110,7 @@
       "In_ContractRenewal": "Contract Renewal",
       "In_ContractTermination": "Confirmation of termination, dissolution",
       "In_ContractTermsAndConditions": "Terms of Service",
-      "In_CoverLetter": "Allgemeines Anschreiben",
+      "In_CoverLetter": "Cover letter",
       "In_CreditVoucher": "Credit note",
       "In_DeliveryNote": "Delivery Note",
       "In_DepositStatement": "Deposit statement",
@@ -110,7 +124,7 @@
       "In_Information": "General information",
       "In_InsuranceStatement": "Registration confirmation social security",
       "In_Invoice": "Invoice",
-      "In_InvoiceReminder": "Mahnung",
+      "In_InvoiceReminder": "Reminder",
       "In_LeadStatus": "Lead/Incentive Status",
       "In_LegalNotice": "Notice of Proceedings",
       "In_Mandate": "Power of attorney, mandate",
@@ -127,7 +141,8 @@
       "In_RepairOrder": "Repair Order",
       "In_RepairReport": "Repair report",
       "In_Request": "Application",
-      "In_Stock_Info": "Wertpapier Information",
+      "In_Statement": "General statement",
+      "In_Stock_Info": "Stock information",
       "In_TaxAssessment": "Tax assessment",
       "In_TaxReceipt": "Tax Receipt",
       "In_TaxReport": "Tax Report",
@@ -153,31 +168,137 @@
     "add": "New",
     "back": "Back",
     "cancel": "Cancel",
-    "no": "Nein",
+    "confirm": {
+      "save": {
+        "title": "Saved",
+        "message": "Changes have been saved successfully."
+      }
+    },
+    "no": "No",
     "none": "None",
     "novalue": "---",
     "save": "Save",
     "select": {
       "pickOne": " Please choose"
     },
-    "yes": "Ja"
-  },
-  "country": {
-    "germany": "Germany"
-  },
-  "db": {
-    "classes": {
-      "title": "Dokumentarten",
-      "techname": "Technischer Name",
-      "localized": "Lokalisierter Name",
-      "pattern": "Namensvorgabe",
-      "editor": {
-        "title": "Dokumentenart bearbeiten",
-        "localized": "Lokalisierung über json-Dateien"
+    "warn": {
+      "formInvalid": {
+        "title": "Warning",
+        "message": "This form contains errors."
       }
     },
+    "yes": "Yes"
+  },
+  "country": {
+    "germany": "Germany",
+    "nederlands": "The Netherlands"
+  },
+  "db": {
+    "accounts": {
+      "title": "Bank accounts",
+      "mandates": {
+        "title": "SEPA direct debit mandates"
+      },
+      "orders": {
+        "title": "Standing orders"
+      }
+    },
+    "articles": {
+      "title": "Receipt articles",
+      "categories": {
+        "title": "Article categories"
+      }
+    },
+    "cases": {
+      "title": "Cases",
+      "actions": {
+        "title": "Case actions"
+      },
+      "filetypes": {
+        "title": "File types"
+      },
+      "status": {
+        "title": "Case status"
+      },
+      "types": {
+        "title": "Case types"
+      }
+    },
+    "classes": {
+      "title": "Document types",
+      "techname": "Technical name",
+      "localized": "Localized name",
+      "pattern": "Name pattern",
+      "default": "System Default",
+      "editor": {
+        "title": "Edit Document type",
+        "localized": "Localisation via json files",
+        "description": "Description",
+        "descriptionPlaceholder": "Full description",
+        "namepattern": "Filename pattern",
+        "namepatternPlaceholder": "Use placeholder {...} to create filenames automatically"
+      }
+    },
+    "contacts": {
+      "types": {
+        "title": "Contact Types"
+      }
+    },
+    "countries": {
+      "title": "Countries",
+      "default": "System Default",
+      "name": "Technical name",
+      "i18nname": "Localized name",
+      "currency": "Currency",
+      "key2": "Code-2",
+      "key3": "Code-3",
+      "taxrates": {
+        "title": "Tax rates"
+      },
+      "editor": {
+        "key2": "2-digits code",
+        "key3": "3-digits code",
+        "title": "Edit countries",
+        "localized": "Localisation via json files"
+      }
+    },
+    "cronjobs": {
+      "title": "Cronjobs"
+    },
+    "currencies": {
+      "title": "Currencies"
+    },
+    "extension": {
+      "title": "File types"
+    },
     "manager": {
-      "title": "Stammdatenverwaltung"
+      "title": "Data management"
+    },
+    "meters": {
+      "title": "Counters"
+    },
+    "oauth": {
+      "services": {
+        "title": "OAuth-Services"
+      }
+    },
+    "parties": {
+      "title": "Correspondents",
+      "addresses": {
+        "title": "Addresses"
+      },
+      "contacts": {
+        "title": "Contact Information"
+      },
+      "roles": {
+        "title": "Roles"
+      }
+    },
+    "stocks": {
+      "title": "Stocks",
+      "apis": {
+        "title": "APIs"
+      }
     }
   },
   "file": {
@@ -207,8 +328,8 @@
       "caseFiledesc": "Description",
       "client": "Client",
       "party": "Correspondent",
-      "taxreceipt": "Steuerbeleg",
-      "taxyear": "Steuerjahr"
+      "taxreceipt": "Tax document",
+      "taxyear": "Tax year"
     },
     "housekeeping": {
       "title": "Organization",
@@ -221,7 +342,7 @@
         "title": "Delete File",
         "description": "Deletes the file irrevocably from the archive.",
         "btn": "Delete",
-        "confirm": "Datei wirklich löschen?"
+        "confirm": "Confirm file deletion?"
       }
     }
   },
@@ -233,6 +354,10 @@
     "title": "Archive home",
     "cases": {
       "title": "Cases for review"
+    },
+    "database": {
+      "title": "Stammdaten",
+      "dbmanager": "Zur Stammdatenverwaltung"
     },
     "inbox": {
       "title": "New Documents"
@@ -247,6 +372,12 @@
       "noclassFilesLink": "Not yet classified",
       "noocrFilesLink": "No OCR",
       "storageLink": "Storage"
+    },
+    "supermarket": {
+      "title": "Im Supermark",
+      "priceComparison": "Preisvergleich und -historie",
+      "receiptsLink": "Erfassung von Einkäufen",
+      "shoppingLink": "Shopping list"
     }
   },
   "lead": {
@@ -341,6 +472,8 @@
   },
   "receipts": {
     "title": "Voucher registration",
+    "client": "Buyer",
+    "currency": "Currency",
     "date": "Date",
     "party": "Trader",
     "amount": "Amount",
@@ -352,10 +485,19 @@
       "discount": "Discount",
       "deposit": "Deposit",
       "totalnet": "Total",
-      "summary": "Summen"
+      "summary": "Totals",
+      "organic": "Organic"
     },
     "edit": {
-      "title": "Erfassung eines Belegs"
+      "title": "Record a new receipt",
+      "noitems1": "No items added yet.",
+      "noitems2": "No item fully entered yet."
+    },
+    "select": {
+      "stillediting": {
+        "title": "Receipt selection canceled",
+        "message": "The receipt change was canceled because a new receipt is currently being entered. The receipt to be entered must be saved or canceled."
+      }
     }
   },
   "search": {
@@ -391,6 +533,11 @@
       "points": "{0} P.",
       "showHistoric": "hist.",
       "showHistoricTooltip": "Also show older entries from history?"
+    }
+  },
+  "shopping": {
+    "cart": {
+      "title": "Shopping list"
     }
   },
   "work": {

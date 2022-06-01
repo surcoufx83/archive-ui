@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { SearchResults } from './search/searchresult';
+import { BehaviorSubject } from 'rxjs';
+import { Case } from './cases/case';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +13,18 @@ export class ConfigService {
   private appConfig: AppConfig = <AppConfig>{ loaded: false };
   private startUrl: string = '';
 
-  private cache: {[ key: string ]: any } = {};
+  private cache: { [key: string]: any } = {};
 
   constructor(private http: HttpClient, private router: Router) {
     this.startUrl = location.href.substr(location.href.indexOf('#') + 1);
+  }
+
+  get config(): AppConfig {
+    return this.appConfig;
+  }
+
+  getCacheItem(key: string): any | null {
+    return this.cache[key];
   }
 
   loadAppConfig() {
@@ -27,15 +37,7 @@ export class ConfigService {
       });
   }
 
-  get config() : AppConfig {
-    return this.appConfig;
-  }
-
-  getCacheItem(key: string) : any|null {
-    return this.cache[key];
-  }
-
-  setCacheItem(key: string, obj: any) : void {
+  setCacheItem(key: string, obj: any): void {
     this.cache[key] = obj;
   }
 

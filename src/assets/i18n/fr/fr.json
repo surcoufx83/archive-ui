@@ -1,4 +1,10 @@
 {
+  "authService": {
+    "apiError": {
+      "title": "Fehler",
+      "message": "Fehler beim Abrufen von Daten: {0}"
+    }
+  },
   "calendar": {
     "showAsGridTitle": "Als Kalender darstellen",
     "showAsListTitle": "Als Liste darstellen",
@@ -38,7 +44,15 @@
     "termination": "Kündigung"
   },
   "cases": {
-    "reference": "Referenz {0}"
+    "title": "Aktenstruktur",
+    "filescount": [
+      "1 Datei",
+      "{0} Dateien"
+    ],
+    "reference": "Referenz {0}",
+    "card": {
+      "title": "Hierarchie"
+    }
   },
   "casestatus": {
     "created": "Erstellt",
@@ -127,6 +141,7 @@
       "In_RepairOrder": "Reparaturauftrag",
       "In_RepairReport": "Reparaturbericht",
       "In_Request": "Antrag",
+      "In_Statement": "Bescheinigung allgemein",
       "In_Stock_Info": "Wertpapier Information",
       "In_TaxAssessment": "Steuerbescheid",
       "In_TaxReceipt": "Steuerbescheinigung",
@@ -153,6 +168,12 @@
     "add": "Neu",
     "back": "Zurück",
     "cancel": "Abbruch",
+    "confirm": {
+      "save": {
+        "title": "Gespeichert",
+        "message": "Die Änderungen wurden erfolgreich gespeichert."
+      }
+    },
     "no": "Nein",
     "none": "Keine",
     "novalue": "---",
@@ -160,24 +181,124 @@
     "select": {
       "pickOne": " Bitte wählen "
     },
+    "warn": {
+      "formInvalid": {
+        "title": "Warnung",
+        "message": "Das Formular enthält noch Fehler."
+      }
+    },
     "yes": "Ja"
   },
   "country": {
-    "germany": "Deutschland"
+    "germany": "Deutschland",
+    "nederlands": "Niederlande"
   },
   "db": {
+    "accounts": {
+      "title": "Bankkonten",
+      "mandates": {
+        "title": "Lastschriftmandate"
+      },
+      "orders": {
+        "title": "Daueraufträge"
+      }
+    },
+    "articles": {
+      "title": "Artikel (für Rechnungen)",
+      "categories": {
+        "title": "Artikel-Kategorien"
+      }
+    },
+    "cases": {
+      "title": "Aktenstruktur",
+      "actions": {
+        "title": "Akten-Workflows"
+      },
+      "filetypes": {
+        "title": "Dateitypen"
+      },
+      "status": {
+        "title": "Akten-Status"
+      },
+      "types": {
+        "title": "Aktenarten"
+      }
+    },
     "classes": {
       "title": "Dokumentarten",
       "techname": "Technischer Name",
       "localized": "Lokalisierter Name",
       "pattern": "Namensvorgabe",
+      "default": "Standard",
       "editor": {
         "title": "Dokumentenart bearbeiten",
-        "localized": "Lokalisierung über json-Dateien"
+        "localized": "Lokalisierung per json-Dateien",
+        "description": "Beschreibung",
+        "descriptionPlaceholder": "Ausführlicher Beschreibungstext",
+        "namepattern": "Vorgabe für Dateinamen",
+        "namepatternPlaceholder": "Platzhalter mit {...} um Dateinamen automatisch zu erzeugen"
       }
+    },
+    "contacts": {
+      "types": {
+        "title": "Kontaktarten"
+      }
+    },
+    "countries": {
+      "title": "Länder",
+      "default": "Standard",
+      "name": "Technischer Name",
+      "i18nname": "Lokalisierter Name",
+      "currency": "Währung",
+      "key2": "Code-2",
+      "key3": "Code-3",
+      "taxrates": {
+        "title": "Steuersätze"
+      },
+      "editor": {
+        "key2": "2-stelliger Code",
+        "key3": "3-stelliger Code",
+        "title": "Länder bearbeiten",
+        "localized": "Lokalisierung per json-Dateien"
+      }
+    },
+    "cronjobs": {
+      "title": "Cronjobs"
+    },
+    "currencies": {
+      "title": "Währungen"
+    },
+    "extension": {
+      "title": "Dateitypen"
     },
     "manager": {
       "title": "Stammdatenverwaltung"
+    },
+    "meters": {
+      "title": "Zähler"
+    },
+    "oauth": {
+      "services": {
+        "title": "OAuth-Services"
+      }
+    },
+    "parties": {
+      "title": "Korrespondenten",
+      "addresses": {
+        "title": "Addressdatensätze"
+      },
+      "contacts": {
+        "title": "Kontaktdaten"
+      },
+      "roles": {
+        "title": "Rollen"
+      }
+    },
+    "stocks": {
+      "title": "Wertpapiere und CC",
+      "apis": {
+        "title": "APIs"
+      }
     }
   },
   "file": {
@@ -234,6 +355,10 @@
     "cases": {
       "title": "Akten zur Prüfung"
     },
+    "database": {
+      "title": "Stammdaten",
+      "dbmanager": "Zur Stammdatenverwaltung"
+    },
     "inbox": {
       "title": "Neue Dokumente"
     },
@@ -247,6 +372,12 @@
       "noclassFilesLink": "Nicht klassifiziert",
       "noocrFilesLink": "Kein OCR",
       "storageLink": "Speicher"
+    },
+    "supermarket": {
+      "title": "Im Supermark",
+      "priceComparison": "Preisvergleich und -historie",
+      "receiptsLink": "Erfassung von Einkäufen",
+      "shoppingLink": "Einkaufsliste"
     }
   },
   "lead": {
@@ -341,6 +472,8 @@
   },
   "receipts": {
     "title": "Belegerfassung",
+    "client": "Käufer",
+    "currency": "Währung",
     "date": "Datum",
     "party": "Händler",
     "amount": "Betrag",
@@ -352,10 +485,19 @@
       "discount": "Rabatt",
       "deposit": "Pfand",
       "totalnet": "G-Preis",
-      "summary": "Summen"
+      "summary": "Summen",
+      "organic": "Bio"
     },
     "edit": {
-      "title": "Erfassung eines Belegs"
+      "title": "Erfassung eines Belegs",
+      "noitems1": "Noch keine Position erfasst.",
+      "noitems2": "Noch keine Position vollständig erfasst."
+    },
+    "select": {
+      "stillediting": {
+        "title": "Belegauswahl abgebrochen",
+        "message": "Der Wechsel des Belegs wurde abgebrochen, da aktuell noch ein Beleg erfasst wird. Der zu erfassende Beleg muss gespeichert oder abgebrochen werden."
+      }
     }
   },
   "search": {
@@ -391,6 +533,11 @@
       "points": "{0} P.",
       "showHistoric": "Hist.",
       "showHistoricTooltip": "Auch ältere Werte aus der Historie anzeigen?"
+    }
+  },
+  "shopping": {
+    "cart": {
+      "title": "Einkaufsliste"
     }
   },
   "work": {

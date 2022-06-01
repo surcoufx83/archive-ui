@@ -30,8 +30,8 @@ export class WorkDayComponent implements OnInit {
   recentEntries: RecentBooking[] = [];
   timepattern: RegExp = /^(?<hr>\d{1,2}):?(?<min>\d{2})$/;
   today: Date = new Date();
-  usersettingsObj?: Settings;
-  workprops?: WorkProperties;
+  usersettingsObj: Settings|null = null;
+  workprops: WorkProperties|null = null;
 
   constructor(private authService: AuthService,
     private configService: ConfigService,
@@ -44,9 +44,11 @@ export class WorkDayComponent implements OnInit {
       this.usersettingsObj = settings;
     });
     this.userSettings.workprops$.subscribe((props) => {
-      this.workprops = props;
-      this.customers = props.customers.sort((a, b) => a.name > b.name ? 1 : a.name === b.name ? 0 : -1);
-      this.categories = props.timeCategories.sort((a, b) => this.i18n('work.timecategories.' + a.name) > this.i18n('work.timecategories.' + b.name) ? 1 : this.i18n('work.timecategories.' + a.name) === this.i18n('work.timecategories.' + b.name) ? 0 : -1);
+      if (props != null) {
+        this.workprops = props;
+        this.customers = props.customers.sort((a, b) => a.name > b.name ? 1 : a.name === b.name ? 0 : -1);
+        this.categories = props.timeCategories.sort((a, b) => this.i18n('work.timecategories.' + a.name) > this.i18n('work.timecategories.' + b.name) ? 1 : this.i18n('work.timecategories.' + a.name) === this.i18n('work.timecategories.' + b.name) ? 0 : -1);
+      }
     });
     setTimeout(() => { this.refreshRecentBookings(); }, 1000);
   }

@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { de } from 'date-fns/locale';
 import { Locale } from 'date-fns';
+import { environment } from 'src/environments/environment';
+import { ToastsService } from './utils/toasts.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,52 +11,68 @@ import { Locale } from 'date-fns';
 export class I18nService {
 
   private locale: string = navigator.language.substr(0, 2);
-  private strings: { [key: string]: string; } = {};
+  private entries: { [key: string]: { [key: string]: string|string[] } } = {};
 
-  constructor(private http: HttpClient) {
-	   this.http = http;
+  constructor(private http: HttpClient,
+    private toastService: ToastsService) {
+    this.loadStrings(this.locale);
+    if (this.locale != environment.i18nFallback)
+      this.loadStrings(environment.i18nFallback);
   }
 
-  loadLocalStrings(lang: string) {
-    return this.http.get('/assets/i18n/' + lang + '/' + lang + '.json').subscribe(
-      (i18nstrings) => {
-        i18nstrings = <{ [key: string]: any; }>i18nstrings;
-        if (i18nstrings == undefined)
-          return;
-        for (const key in i18nstrings) {
-          this.iterateStrings(<{ [key: string]: any; }>i18nstrings, key, '');
+  private loadStrings(locale: string) {
+    this.http.get('/assets/i18n/' + locale + '/' + locale + '.json').subscribe({
+      next: (strings: any) => {
+        if (!this.entries[locale])
+          this.entries[locale] = {};
+        if (strings) {
+          Object.entries(strings).forEach((e) => {
+            this.iterateStrings(locale, '', e[0], <I18nEntry>e[1]);
+          });
         }
       },
-      (error) => {
-        if (lang != 'de')
-          this.loadLocalStrings('de');
+      error: () => {
+        this.toastService.fatal('Application error', 'Error retrieving localization files!');
       }
-    );
+    });
   }
 
-  private iterateStrings(strings: { [key: string]: any; }, key: string, parent: string) : void {
-    let mykey: string = (parent !== '' ? parent + '.' : '') + key;
-    if (typeof strings[key] === 'object') {
-      for (const childkey in strings[key]) {
-        this.iterateStrings(<{ [key: string]: any; }>strings[key], childkey, mykey);
-      }
+  private iterateStrings(locale: string, parentkey: string, key: string, content: I18nEntry): void {
+    let mykey = (parentkey !== '' ? parentkey + '.' : '') + key;
+    if (typeof content === 'object' && !Array.isArray(content)) {
+      Object.entries(content).forEach((e) => {
+        this.iterateStrings(locale, mykey, e[0], <I18nEntry>e[1]);
+      });
     }
     else
-      this.strings[mykey] = strings[key];
+      this.entries[locale][mykey] = content;
   }
 
-  i18n(key: string, params: string[] = []) : string {
-    if (this.strings[key] != undefined) {
-      let str: string = this.strings[key];
+  public i18n(key: string, params: any[] = [], i: number = 0): string {
+    return this.i18n_locale(this.locale, key, params, i);
+  }
+
+  private i18n_locale(locale: string, key: string, params: any[] = [], i: number = 0): string {
+    if (this.entries[locale] == undefined)
+      return '...';
+    if (this.entries[locale][key] != undefined) {
+      let str: string = '';
+      if (Array.isArray(this.entries[locale][key])) {
+        str = (<string[]>this.entries[locale][key])[i];
+      } else {
+        str = <string>this.entries[locale][key];
+      }
       for (let i = 0; i < params.length; i++) {
         str = str.replace('{' + i + '}', params[i]);
       }
       return str;
     }
-    return '<I18n: string \'' + key + '\' missing!>';
+    if (locale != environment.i18nFallback)
+      return this.i18n_locale(environment.i18nFallback, key, params, i);
+    return `<I18n/${locale}: string '${key}' missing!>`;
   }
 
-  get DateLocale() : undefined|Locale {
+  get DateLocale(): undefined | Locale {
     switch (this.locale) {
       case 'de':
         return de;
@@ -62,8 +80,12 @@ export class I18nService {
     return undefined;
   }
 
-  get Locale() : string {
+  get Locale(): string {
     return this.locale;
   }
 
+}
+
+export interface I18nEntry {
+  [key: string]: I18nEntry | string;
 }

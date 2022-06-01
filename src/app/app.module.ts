@@ -50,6 +50,16 @@ import { ReceiptsComponent } from './finance/receipts/receipts.component';
 import { ReceiptComponent } from './finance/receipt/receipt.component';
 import { DbClassesComponent } from './db/classes/classes.component';
 import { DbManagerComponent } from './db/manager/manager.component';
+import { ToastContainerComponent } from './utils/toast-container/toast-container.component';
+import { ToastsService } from './utils/toasts.service';
+import { ToastComponent } from './utils/toast/toast.component';
+import { DbCountriesComponent } from './db/countries/countries.component';
+import { ShoppingComponent } from './finance/shopping/shopping.component';
+import { CacheService } from './svcs/cache.service';
+import { H4Component } from './utils/h4/h4.component';
+import { H2Component } from './utils/h2/h2.component';
+import { H3Component } from './utils/h3/h3.component';
+import { PriceComparisonComponent } from './finance/price-comparison/price-comparison.component';
 
 registerLocaleData(localeDe);
 
@@ -91,6 +101,14 @@ registerLocaleData(localeDe);
     ReceiptComponent,
     DbClassesComponent,
     DbManagerComponent,
+    ToastContainerComponent,
+    ToastComponent,
+    DbCountriesComponent,
+    ShoppingComponent,
+    H4Component,
+    H2Component,
+    H3Component,
+    PriceComparisonComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -112,18 +130,10 @@ registerLocaleData(localeDe);
       multi: true,
       useFactory: (configService: ConfigService) => () => configService.loadAppConfig()
     },
-    {
-      provide: APP_INITIALIZER,
-      deps: [I18nService],
-      multi: true,
-      useFactory: (i18nService: I18nService) => () => i18nService.loadLocalStrings(navigator.language.substr(0, 2))
-    },
-    {
-      provide: APP_INITIALIZER,
-      deps: [AuthService],
-      multi: true,
-      useFactory: (authService: AuthService) => () => {}
-    }
+    { provide: I18nService, multi: false, },
+    { provide: ToastsService, multi: false, },
+    { provide: AuthService, multi: false, },
+    { provide: CacheService, multi: false, },
   ],
   bootstrap: [
     AppComponent

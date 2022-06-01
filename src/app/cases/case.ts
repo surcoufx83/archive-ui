@@ -4,6 +4,7 @@ import { Directory } from "../files/file";
 export interface Case {
     id: number;
     casepath: string;
+    childs: Case[];
     client: Party|null;
     clientid: number|null;
     comment: string;
@@ -11,6 +12,7 @@ export interface Case {
     directoryid: number|null;
     extid: string;
     files: File[];
+    filescount: number;
     followupcase: Case|null;
     followupcaseid: number|null;
     issub: boolean;
@@ -25,6 +27,7 @@ export interface Case {
     search3: string;
     status: CaseStatus;
     statusid: number;
+    taxyear: number|null;
     title: string;
     type: CaseType;
     typeid: number

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ReplaySubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { Settings } from './settings';
 import { AuthService } from '../../auth.service';
 import { ConfigService } from '../../config.service';
@@ -7,12 +7,14 @@ import { WorkProperties } from '../../work/work';
 import { User } from '../user';
 import { Case, CaseFiletype } from 'src/app/cases/case';
 import { Class } from 'src/app/files/class';
-import { Address, ContactType, Party, PartyContact, PartyRole } from 'src/app/common';
+import { Address, ContactType, Country, Party, PartyContact, PartyRole } from 'src/app/common';
+import { Currency } from 'src/app/account/account';
 
 @Injectable()
 export class SettingsService {
 
   private archiveLoaded : boolean = false;
+  private componentRefresher : any;
 
   constructor(private authService: AuthService,
               private configService: ConfigService)
@@ -33,6 +35,8 @@ export class SettingsService {
         this.updateClients(reply.payload['clients']);
         this.updateContacts(reply.payload['contacts']);
         this.updateContactTypes(reply.payload['contacttypes']);
+        this.updateCountries(reply.payload['countries']);
+        this.updateCurrencies(reply.payload['currencies']);
         this.updateFiletypes(reply.payload['casefiletypes']);
         this.updateParties(reply.payload['parties']);
         this.updateRoles(reply.payload['roles']);
@@ -51,43 +55,55 @@ export class SettingsService {
     });
   }
 
-  private addresses: ReplaySubject<Address[]> = new ReplaySubject<Address[]>();
+  public setTimeout(timeout: any) : void {
+    if (this.componentRefresher)
+      clearTimeout(this.componentRefresher);
+    this.componentRefresher = timeout;
+  }
+
+  private addresses: BehaviorSubject<Address[]> = new BehaviorSubject<Address[]>([]);
   addresses$ = this.addresses.asObservable();
 
-  private cases: ReplaySubject<Case[]> = new ReplaySubject<Case[]>();
+  private cases: BehaviorSubject<Case[]> = new BehaviorSubject<Case[]>([]);
   cases$ = this.cases.asObservable();
 
-  private caseFileStatus: ReplaySubject<string[]> = new ReplaySubject<string[]>();
+  private caseFileStatus: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
   caseFileStatus$ = this.caseFileStatus.asObservable();
 
-  private classes: ReplaySubject<Class[]> = new ReplaySubject<Class[]>();
+  private classes: BehaviorSubject<Class[]> = new BehaviorSubject<Class[]>([]);
   classes$ = this.classes.asObservable();
 
-  private clients: ReplaySubject<Party[]> = new ReplaySubject<Party[]>();
+  private clients: BehaviorSubject<Party[]> = new BehaviorSubject<Party[]>([]);
   clients$ = this.clients.asObservable();
 
-  private contacts: ReplaySubject<PartyContact[]> = new ReplaySubject<PartyContact[]>();
+  private contacts: BehaviorSubject<PartyContact[]> = new BehaviorSubject<PartyContact[]>([]);
   contacts$ = this.contacts.asObservable();
 
-  private contacttypes: ReplaySubject<ContactType[]> = new ReplaySubject<ContactType[]>();
+  private contacttypes: BehaviorSubject<ContactType[]> = new BehaviorSubject<ContactType[]>([]);
   contacttypes$ = this.contacttypes.asObservable();
 
-  private filetypes: ReplaySubject<CaseFiletype[]> = new ReplaySubject<CaseFiletype[]>();
+  private countries: BehaviorSubject<Country[]> = new BehaviorSubject<Country[]>([]);
+  countries$ = this.countries.asObservable();
+
+  private currencies: BehaviorSubject<Currency[]> = new BehaviorSubject<Currency[]>([]);
+  currencies$ = this.currencies.asObservable();
+
+  private filetypes: BehaviorSubject<CaseFiletype[]> = new BehaviorSubject<CaseFiletype[]>([]);
   filetypes$ = this.filetypes.asObservable();
 
-  private parties: ReplaySubject<Party[]> = new ReplaySubject<Party[]>();
+  private parties: BehaviorSubject<Party[]> = new BehaviorSubject<Party[]>([]);
   parties$ = this.parties.asObservable();
 
-  private roles: ReplaySubject<PartyRole[]> = new ReplaySubject<PartyRole[]>();
+  private roles: BehaviorSubject<PartyRole[]> = new BehaviorSubject<PartyRole[]>([]);
   roles$ = this.roles.asObservable();
 
-  private settings: ReplaySubject<Settings> = new ReplaySubject<Settings>();
+  private settings: BehaviorSubject<Settings|null> = new BehaviorSubject<Settings|null>(null);
   settings$ = this.settings.asObservable();
   
-  private user: ReplaySubject<User> = new ReplaySubject<User>();
+  private user: BehaviorSubject<User|null> = new BehaviorSubject<User|null>(null);
   user$ = this.user.asObservable();
 
-  private workprops: ReplaySubject<WorkProperties> = new ReplaySubject<WorkProperties>();
+  private workprops: BehaviorSubject<WorkProperties|null> = new BehaviorSubject<WorkProperties|null>(null);
   workprops$ = this.workprops.asObservable();
 
   private updateAddresses(addresses: Address[]) {
@@ -114,6 +130,14 @@ export class SettingsService {
     this.contacttypes.next(contacttypes);
   }
 
+  private updateCountries(countries: Country[]) {
+    this.countries.next(countries);
+  }
+
+  private updateCurrencies(currencies: Currency[]) {
+    this.currencies.next(currencies);
+  }
+
   private updateFiletypes(filetypes: CaseFiletype[]) {
     this.filetypes.next(filetypes);
   }
@@ -124,6 +148,80 @@ export class SettingsService {
 
   private updateRoles(roles: PartyRole[]) {
     this.roles.next(roles);
+  }
+
+  updateClass(classitem: Class) : BehaviorSubject<Class|null> {
+    let subject = new BehaviorSubject<Class|null>(null);
+    let url = this.configService.config.api.baseUrl + '/class/';
+    if (classitem.id == 0)
+      url += 'create';
+    else
+      url += classitem.id;
+    this.authService.updateApi(url, {class: classitem}).subscribe((reply) => {
+      if (reply.success && reply.payload && reply.payload['class']) {
+        let newitem = <Class>reply.payload['class'];
+        let classes = this.classes.value;
+        if (classitem.id > 0) {
+          let removei = -1;
+          for (let i = 0; i < classes.length; i++) {
+            if (classes[i].id == classitem.id) {
+              removei = i;
+              break;
+            }
+          }
+          classes.splice(removei, 1, newitem);
+        } else {
+          classes.push(newitem);
+        }
+        if (newitem.isdefault) {
+          classes.forEach((c) => {
+            if (c.id != newitem.id && c.isdefault)
+              c.isdefault = false;
+          });
+        }
+        this.updateClasses(classes);
+        subject.next(newitem);
+        subject.complete();
+      }
+    });
+    return subject;
+  }
+
+  updateCountry(countryitem: Country) : BehaviorSubject<Country|null> {
+    let subject = new BehaviorSubject<Country|null>(null);
+    let url = this.configService.config.api.baseUrl + '/country/';
+    if (countryitem.id == 0)
+      url += 'create';
+    else
+      url += countryitem.id;
+    this.authService.updateApi(url, {country: countryitem}).subscribe((reply) => {
+      if (reply.success && reply.payload && reply.payload['country']) {
+        let newitem = <Country>reply.payload['country'];
+        let countries = this.countries.value;
+        if (countryitem.id > 0) {
+          let removei = -1;
+          for (let i = 0; i < countries.length; i++) {
+            if (countries[i].id == countryitem.id) {
+              removei = i;
+              break;
+            }
+          }
+          countries.splice(removei, 1, newitem);
+        } else {
+          countries.push(newitem);
+        }
+        if (newitem.isdefault) {
+          countries.forEach((c) => {
+            if (c.id != newitem.id && c.isdefault)
+              c.isdefault = false;
+          });
+        }
+        this.updateCountries(countries);
+        subject.next(newitem);
+        subject.complete();
+      }
+    });
+    return subject;
   }
 
   updateSettings(settings: Settings, push: boolean = false) {

@@ -1,0 +1,11 @@
+<div [ngClass]="['toast', show ? 'show' : 'hide', 'toast-'+toast.type ]" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+        <i [ngClass]="['me-2', 'toast-icon', toast.icon]" *ngIf="toast.icon"></i>
+        <strong class="me-auto toast-title">{{ toast.title }}</strong>
+        <small class="toast-time" *ngIf="toast.when">{{ fdist(toast.when) }}</small>
+        <button type="button" class="btn-close toast-close" data-bs-dismiss="toast" aria-label="Close" *ngIf="toast.closable"></button>
+    </div>
+    <div class="toast-body">
+        {{ toast.message }}
+    </div>
+</div>

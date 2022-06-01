@@ -29,12 +29,15 @@ export interface Receipt {
 
 export interface ReceiptArticle {
     id: number;
-    categoryid: number|null;
+    category: ReceiptArticleCategory;
+    categoryid: number;
     taxrateid: number|null;
     name: string;
     search: string;
     ean: string;
     organic: boolean;
+    sort: string;
+    icon: string|null;
 }
 
 export interface ReceiptArticleCategory {
@@ -42,12 +45,14 @@ export interface ReceiptArticleCategory {
     parent: ReceiptArticleCategory|null;
     parentid: number|null;
     name: string;
+    sort: string;
+    icon: string|null;
 }
 
 export interface ReceiptItem {
     id: number;
     receiptid: number;
-    articleid: number;
+    articleid: number|null;
     singleprice: number;
     quantity: number;
     discount: number;

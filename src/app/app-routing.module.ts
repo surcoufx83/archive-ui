@@ -26,52 +26,71 @@ import { CaseComponent } from './cases/case/case.component';
 import { ReceiptsComponent } from './finance/receipts/receipts.component';
 import { DbClassesComponent } from './db/classes/classes.component';
 import { DbManagerComponent } from './db/manager/manager.component';
+import { DbCountriesComponent } from './db/countries/countries.component';
+import { ShoppingComponent } from './finance/shopping/shopping.component';
+import { PriceComparisonComponent } from './finance/price-comparison/price-comparison.component';
 
 const routes: Routes = [
-  { path: 'account', component: AccountComponent, canActivate: [ SessionGuard ] },
-  { path: 'case/:id', component: CaseComponent, canActivate: [ SessionGuard ] },
-  { path: 'cases', component: CasesComponent, canActivate: [ SessionGuard ] },
-  { path: 'dashboard', component: DashboardComponent, canActivate: [ SessionGuard ] },
-  { path: 'db', children: [
-    { path: 'classes', component: DbClassesComponent, canActivate: [ SessionGuard ] },
-    { path: '', component: DbManagerComponent, canActivate: [ SessionGuard ], pathMatch: 'full' },
-  ]},
-  { path: 'home', component: HomeComponent, canActivate: [ SessionGuard ] },
-  { path: 'file/:id/:view', component: FileComponent, canActivate: [ SessionGuard ] },
-  { path: 'file/:id', component: FileComponent, canActivate: [ SessionGuard ] },
-  { path: 'files/:id', component: FilesComponent, canActivate: [ SessionGuard ] },
-  { path: 'files', component: FilesComponent, canActivate: [ SessionGuard ], pathMatch: 'full' },
-  { path: 'finance', component: FinanceComponent, canActivate: [ SessionGuard ] },
-  { path: 'login', children: [
-    { path: 'oauth2', component: Oauth2CallbackComponent, canActivate: [ SessionGuard ] },
-    { path: '', component: LoginComponent, canActivate: [ SessionGuard ], pathMatch: 'full' },
-  ]},
-  { path: 'logout', component: LogoutComponent, canActivate: [ SessionGuard ] },
-  { path: 'notepad', component: NotepadComponent, canActivate: [ SessionGuard ] },
-  { path: 'receipts', component: ReceiptsComponent, canActivate: [ SessionGuard ] },
-  { path: 'search/:phrase/:token/:tab', component: SearchComponent, canActivate: [ SessionGuard ] },
-  { path: 'search/:phrase/:token', component: SearchComponent, canActivate: [ SessionGuard ], pathMatch: 'full' },
-  { path: 'search/:phrase', component: SearchComponent, canActivate: [ SessionGuard ], pathMatch: 'full' },
-  { path: 'search', component: SearchComponent, canActivate: [ SessionGuard ], pathMatch: 'full' },
-  { path: 'work', component: WorkComponent, canActivate: [ SessionGuard ], children: [
-    { path: '', redirectTo: 'today', pathMatch: 'full' },
-    { path: 'day/:date', component: WorkDayComponent, canActivate: [ SessionGuard ] },
-    { path: 'leads', component: WorkLeadsComponent, canActivate: [ SessionGuard ] },
-    { path: 'lead/:id', component: WorkLeadComponent, canActivate: [ SessionGuard ] },
-    { path: 'month', component: WorkMonthComponent, canActivate: [ SessionGuard ] },
-    { path: 'month/:year/:month', component: WorkMonthComponent, canActivate: [ SessionGuard ] },
-    { path: 'settings', children: [
-      { path: 'customer/:id', component: WorkCustomerComponent, canActivate: [ SessionGuard ] },
-      { path: 'customers', component: WorkCustomersComponent, canActivate: [ SessionGuard ] },
-    ]},
-    { path: 'today', component: WorkDayComponent, canActivate: [ SessionGuard ] },
-  ]},
+  { path: 'account', component: AccountComponent, canActivate: [SessionGuard] },
+  { path: 'case/:id', component: CaseComponent, canActivate: [SessionGuard] },
+  { path: 'cases', component: CasesComponent, canActivate: [SessionGuard] },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [SessionGuard] },
+  {
+    path: 'db', children: [
+      { path: 'classes', component: DbClassesComponent, canActivate: [SessionGuard] },
+      {
+        path: 'countries', canActivate: [SessionGuard], children:
+          [
+            { path: '', component: DbCountriesComponent, canActivate: [SessionGuard], pathMatch: 'full' },
+          ]
+      },
+      { path: '', component: DbManagerComponent, canActivate: [SessionGuard], pathMatch: 'full' },
+    ]
+  },
+  { path: 'home', component: HomeComponent, canActivate: [SessionGuard] },
+  { path: 'file/:id/:view', component: FileComponent, canActivate: [SessionGuard] },
+  { path: 'file/:id', component: FileComponent, canActivate: [SessionGuard] },
+  { path: 'files/:id', component: FilesComponent, canActivate: [SessionGuard] },
+  { path: 'files', component: FilesComponent, canActivate: [SessionGuard], pathMatch: 'full' },
+  { path: 'finance', component: FinanceComponent, canActivate: [SessionGuard] },
+  {
+    path: 'login', children: [
+      { path: 'oauth2', component: Oauth2CallbackComponent, canActivate: [SessionGuard] },
+      { path: '', component: LoginComponent, canActivate: [SessionGuard], pathMatch: 'full' },
+    ]
+  },
+  { path: 'logout', component: LogoutComponent, canActivate: [SessionGuard] },
+  { path: 'notepad', component: NotepadComponent, canActivate: [SessionGuard] },
+  { path: 'price-comparison', component: PriceComparisonComponent, canActivate: [SessionGuard] },
+  { path: 'receipts', component: ReceiptsComponent, canActivate: [SessionGuard] },
+  { path: 'shopping', component: ShoppingComponent, canActivate: [SessionGuard] },
+  { path: 'search/:phrase/:token/:tab', component: SearchComponent, canActivate: [SessionGuard] },
+  { path: 'search/:phrase/:token', component: SearchComponent, canActivate: [SessionGuard], pathMatch: 'full' },
+  { path: 'search/:phrase', component: SearchComponent, canActivate: [SessionGuard], pathMatch: 'full' },
+  { path: 'search', component: SearchComponent, canActivate: [SessionGuard], pathMatch: 'full' },
+  {
+    path: 'work', component: WorkComponent, canActivate: [SessionGuard], children: [
+      { path: '', redirectTo: 'today', pathMatch: 'full' },
+      { path: 'day/:date', component: WorkDayComponent, canActivate: [SessionGuard] },
+      { path: 'leads', component: WorkLeadsComponent, canActivate: [SessionGuard] },
+      { path: 'lead/:id', component: WorkLeadComponent, canActivate: [SessionGuard] },
+      { path: 'month', component: WorkMonthComponent, canActivate: [SessionGuard] },
+      { path: 'month/:year/:month', component: WorkMonthComponent, canActivate: [SessionGuard] },
+      {
+        path: 'settings', children: [
+          { path: 'customer/:id', component: WorkCustomerComponent, canActivate: [SessionGuard] },
+          { path: 'customers', component: WorkCustomersComponent, canActivate: [SessionGuard] },
+        ]
+      },
+      { path: 'today', component: WorkDayComponent, canActivate: [SessionGuard] },
+    ]
+  },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', redirectTo: '/home' },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { useHash: true })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

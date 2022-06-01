@@ -1,12 +1,9 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthService } from 'src/app/auth.service';
 import { AppConfig, ConfigService } from 'src/app/config.service';
 import { Class } from 'src/app/files/class';
 import { I18nService } from 'src/app/i18n.service';
 import { Settings } from 'src/app/user/settings/settings';
 import { SettingsService } from 'src/app/user/settings/settings.service';
-import { WorkLead } from 'src/app/work/work';
 
 @Component({
   selector: 'app-classes',
@@ -18,17 +15,17 @@ export class DbClassesComponent implements OnInit {
   @ViewChild('editor') editor?: ElementRef;
 
   busy: boolean = false;
+  saving: boolean = false;
   classes: Class[] = [];
   editclass?: Class;
-  usersettingsObj?: Settings;
+  usersettingsObj: Settings|null = null;
   sortAsc: boolean = true;
   sortBy: string = 'name';
+  timeout: any;
 
-  constructor(private authService: AuthService,
-    private configService: ConfigService,
+  constructor(private configService: ConfigService,
     private i18nService: I18nService,
-    private userSettings: SettingsService,
-    private router: Router) {
+    private userSettings: SettingsService) {
     this.userSettings.loadArchiveSettings();
     this.userSettings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
@@ -38,14 +35,13 @@ export class DbClassesComponent implements OnInit {
       this.classes.forEach((item) => { item.name = this.i18n('classify.classes.' + item.techname) });
       this.sort();
     });
-    this.edit();
   }
 
   get config(): AppConfig {
     return this.configService.config;
   }
 
-  edit(item?: Class) : void {
+  edit(item?: Class): void {
     if (item)
       this.editclass = item;
     else
@@ -65,12 +61,12 @@ export class DbClassesComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  sort() : void {
+  sort(): void {
     switch (this.sortBy) {
 
       case 'techname':
         this.classes.sort((a, b) => { return (a.techname > b.techname ? 1 : a.techname < b.techname ? -1 : 0) * (this.sortAsc ? 1 : -1) });
-      break;
+        break;
 
       default:
         this.sortBy = 'name';
@@ -78,8 +74,20 @@ export class DbClassesComponent implements OnInit {
     }
   }
 
-  submit() : void {
-    
+  submit(): void {
+    if (!this.timeout)
+      window.clearTimeout(this.timeout);
+    this.timeout = window.setTimeout(() => this.sendUpdate(), 500);
+  }
+
+  private sendUpdate(): void {
+    if (!this.editclass)
+      return;
+    this.saving = true;
+    this.userSettings.updateClass(this.editclass).subscribe((reply) => {
+      if (reply != null)
+        this.saving = false;
+    });
   }
 
 }

@@ -16,10 +16,23 @@
 <div class="container pt-4 pt-md-2 mb-2">
     <div class="card px-0">
         <ul class="list-group list-group-flush">
-            <a class="list-group-item" *ngFor="let item of items" [routerLink]="item.link">
-                <i [ngClass]="[ item.icon, 'me-1' ]"></i>
-                {{ i18n(item.title) }}
-            </a>
+            <ng-container *ngFor="let item of items">
+                <ng-container *ngTemplateOutlet="itemTemplate;context:{item: item}"></ng-container>
+            </ng-container>
         </ul>
     </div>
 </div>
+
+<ng-template #itemTemplate let-item="item">
+    <a [ngClass]="{ 'list-group-item': true, 'has-childs': item.children && item.children.length }" [routerLink]="item.link">
+        <i [ngClass]="[ item.icon, 'me-1' ]"></i>
+        {{ i18n(item.title) }}
+    </a>
+    <li class="list-group-item py-0" *ngIf="item.children && item.children.length > 0">
+        <ul class="list-group list-group-flush">
+            <ng-container *ngFor="let item of item.children">
+                <ng-container *ngTemplateOutlet="itemTemplate;context:{item: item}"></ng-container>
+            </ng-container>
+        </ul>
+    </li>
+</ng-template>

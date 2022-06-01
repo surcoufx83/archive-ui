@@ -1,0 +1,181 @@
+<div class="container pt-4 pt-md-2 mb-2">
+    <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between">
+        <h2>{{ i18n('db.countries.title') }}</h2>
+        <div>
+            <nav class="h-100" style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
+                <ol class="breadcrumb d-flex align-items-center h-100 mb-0">
+                    <li class="breadcrumb-item" *ngIf="busy">
+                        <ui-busy-indicator></ui-busy-indicator>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a routerLink="/db">
+                            <button type="button" class="btn btn-sm btn-outline-primary">
+                                <i [class]="config.icons['go-left'] + ' me-1'"></i>
+                                {{ i18n('common.back') }}
+                            </button>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <button type="button" class="btn btn-sm btn-outline-primary" (click)="edit()">
+                            <i [class]="config.icons['add'] + ' me-1'"></i>
+                            {{ i18n('common.add') }}
+                        </button>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<div #editor>
+    <div class="container pt-4 pt-md-2 mb-2" *ngIf="editcountry">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <h5>{{ i18n('db.countries.editor.title') }}</h5>
+                <button type="button" class="btn btn-sm btn-success" (click)="submit(f)">
+                    <i [class]="config.icons['save']" *ngIf="!saving"></i>
+                    <i [class]="config.icons['busy']" *ngIf="saving"></i>
+                    <span class="d-none d-lg-inline ms-1">{{ i18n('common.save') }}</span>
+                </button>
+            </div>
+            <div class="card-body">
+                <form #f="ngForm" (submit)="submit(f)" ngNativeValidate>
+
+                    <div class="row">
+                        <div class="col-12 col-lg-6 mb-3">
+                            <div class="form-group">
+                                <label for="class-name" class="form-label required">{{
+                                    i18n('db.countries.name') }}</label>
+                                <input type="text" class="form-control" id="class-name" name="class-name"
+                                    [(ngModel)]="editcountry.name" [placeholder]="i18n('db.countries.name')" required>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 mb-3">
+                            <div class="form-group">
+                                <label for="class-default" class="form-label">{{
+                                    i18n('db.countries.default') }}</label>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="class-default"
+                                        name="class-default" [(ngModel)]="editcountry.isdefault">
+                                    <label for="class-default" class="form-check-label" *ngIf="editcountry.isdefault">{{
+                                        i18n('common.yes') }}</label>
+                                    <label for="class-default" class="form-check-label"
+                                        *ngIf="!editcountry.isdefault">{{
+                                        i18n('common.no') }}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 col-lg-6 mb-3">
+                            <div class="form-group">
+                                <label for="class-i18nname" class="form-label">{{
+                                    i18n('db.countries.i18nname') }}</label>
+                                <input type="text" class="form-control" id="class-i18nname" name="class-i18nname"
+                                    [(ngModel)]="editcountry.i18nname" [placeholder]="i18n('db.countries.i18nname')"
+                                    readonly>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 mb-3">
+                            <div class="form-group">
+                                <label for="class-currency" class="form-label required">{{
+                                    i18n('db.countries.currency') }}</label>
+                                <select class="form-select" id="class-currency" name="class-currency"
+                                    [(ngModel)]="editcountry.currencyid" required>
+                                    <option [value]="null">{{ i18n('common.select.pickOne') }}</option>
+                                    <option *ngFor="let item of currencies" [value]="item.id">
+                                        {{ item.shortname }} - {{ item.name }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6 col-md-4 col-lg-3 mb-3">
+                            <div class="form-group">
+                                <label for="class-key2" class="form-label required">{{
+                                    i18n('db.countries.editor.key2') }}</label>
+                                <input type="text" class="form-control" id="class-key2" name="class-key2" maxlength="2" minlength="2"
+                                    [(ngModel)]="editcountry.key2" [placeholder]="i18n('db.countries.key2')" required>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4 col-lg-3 mb-3">
+                            <div class="form-group">
+                                <label for="class-key3" class="form-label required">{{
+                                    i18n('db.countries.editor.key3') }}</label>
+                                <input type="text" class="form-control" id="class-key3" name="class-key3" maxlength="3" minlength="3"
+                                    [(ngModel)]="editcountry.key3" [placeholder]="i18n('db.countries.key3')" required>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container pt-4 pt-md-2 mb-2">
+    <div class="flex-table flex-table-sm mb-3">
+        <div class="flex-table-head row">
+            <div class="col-6 col-lg-3">
+                {{ i18n('db.countries.name') }}
+                <ng-container [ngTemplateOutlet]="sorter" [ngTemplateOutletContext]="{ field: 'name' }">
+                </ng-container>
+            </div>
+            <div class="col-6 col-lg-3">
+                {{ i18n('db.countries.i18nname') }}
+                <ng-container [ngTemplateOutlet]="sorter" [ngTemplateOutletContext]="{ field: 'i18nname' }">
+                </ng-container>
+            </div>
+            <div class="col-lg-2 d-none d-lg-block">
+                {{ i18n('db.countries.currency') }}
+            </div>
+            <div class="col-lg-2 d-none d-lg-block">
+                {{ i18n('db.countries.key2') }}
+                <ng-container [ngTemplateOutlet]="sorter" [ngTemplateOutletContext]="{ field: 'key2' }">
+                </ng-container>
+            </div>
+            <div class="col-lg-2 d-none d-lg-block">
+                {{ i18n('db.countries.key3') }}
+                <ng-container [ngTemplateOutlet]="sorter" [ngTemplateOutletContext]="{ field: 'key3' }">
+                </ng-container>
+            </div>
+        </div>
+        <ng-container *ngFor="let item of countries; let i = index;">
+            <div (click)="edit(item);" class="flex-table-body row pointer">
+                <div class="col-6 col-lg-3 text-truncate">
+                    {{ item.name }}
+                    <span class="badge bg-primary" *ngIf="item.isdefault">{{ i18n('db.countries.default') }}</span>
+                </div>
+                <div class="col-6 col-lg-3 text-truncate">
+                    {{ i18n('country.' + item.name) }}
+                </div>
+                <div class="col-lg-2 d-none d-lg-block text-truncate">
+                    <ng-container *ngIf="item.currency">
+                        {{ item.currency.sign }} - {{ item.currency.shortname }}
+                    </ng-container>
+                </div>
+                <div class="col-lg-2 d-none d-lg-block text-truncate">
+                    {{ item.key2 }}
+                </div>
+                <div class="col-lg-2 d-none d-lg-block text-truncate">
+                    {{ item.key3 }}
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</div>
+
+<ng-template #sorter let-field="field">
+    <span *ngIf="sortBy === field" (click)="sortAsc = !sortAsc; sort();">
+        <i [class]="config.icons['sortasc'] + ' text-primary me-1 fs-7 pointer'" *ngIf="sortAsc"></i>
+        <i [class]="config.icons['sortdesc'] + ' text-primary me-1 fs-7 pointer'" *ngIf="!sortAsc"></i>
+    </span>
+    <span *ngIf="sortBy !== field" (click)="sortBy = field; sort();">
+        <i [class]="config.icons['sortasc'] + ' text-muted me-1 fs-7 pointer'" *ngIf="sortAsc"></i>
+        <i [class]="config.icons['sortdesc'] + ' text-muted me-1 fs-7 pointer'" *ngIf="!sortAsc"></i>
+    </span>
+</ng-template>
