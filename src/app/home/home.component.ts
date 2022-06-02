@@ -22,6 +22,7 @@ export class HomeComponent implements OnInit {
   newfiles: File[] = [];
   usersettingsObj: Settings | null = null;
   stats?: HomeStats;
+  storagename: string = this.config.storage.prefix + 'homeData';
   when: number = 0;
 
   constructor(private authService: AuthService,
@@ -34,6 +35,13 @@ export class HomeComponent implements OnInit {
     this.userSettings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
     });
+    let olddata: string|null|HomeStorage = localStorage.getItem(this.storagename);
+    if (olddata) {
+      olddata = <HomeStorage>JSON.parse(olddata);
+      this.inactivecases = olddata.inactivecases;
+      this.newfiles = olddata.inboxfiles;
+      this.stats = olddata.stats;
+    }
   }
 
   get config(): AppConfig {
@@ -49,6 +57,7 @@ export class HomeComponent implements OnInit {
   }
 
   update(): void {
+    console.log(this.storagename);
     this.busy = true;
     let url: string = this.config.api.baseUrl + '/home' + (this.when > 0 ? '/' + this.when : '');
     let clean = this.when == 0;
@@ -68,9 +77,14 @@ export class HomeComponent implements OnInit {
 
         }
         this.stats = response.stats;
+        localStorage.setItem(this.storagename, JSON.stringify({
+          inactivecases: this.inactivecases,
+          inboxfiles: this.newfiles,
+          stats: this.stats
+        }));
       }
       this.busy = false;
-      this.userSettings.setTimeout(setTimeout(() => { this.update(); }, 10000));
+      this.userSettings.setTimeout(setTimeout(() => { this.update(); }, 60000));
     });
   }
 
@@ -149,4 +163,10 @@ export interface HomeNewFilesStats {
   newest: string;
   oldest: string;
   year: number;
+}
+
+export interface HomeStorage {
+  inactivecases: Case[];
+  inboxfiles: File[];
+  stats: HomeStats;
 }
