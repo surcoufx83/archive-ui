@@ -57,7 +57,6 @@ export class HomeComponent implements OnInit {
   }
 
   update(): void {
-    console.log(this.storagename);
     this.busy = true;
     let url: string = this.config.api.baseUrl + '/home' + (this.when > 0 ? '/' + this.when : '');
     let clean = this.when == 0;
