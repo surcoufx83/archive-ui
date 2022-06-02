@@ -25,6 +25,7 @@ export class ReceiptsComponent implements OnInit {
   activeArticleDropdownPickIndex = -1;
   articles: ReceiptArticle[] = [];
   busy: boolean = false;
+  storagename: string = this.config.storage.prefix + 'receiptsData';
   categories: ReceiptArticleCategory[] = [];
   clients: Party[] = [];
   countries: Country[] = [];
@@ -49,6 +50,18 @@ export class ReceiptsComponent implements OnInit {
     this.userSettings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
     });
+    let olddata: string | null | ReceiptsStorage = localStorage.getItem(this.storagename);
+    if (olddata) {
+      olddata = <ReceiptsStorage>JSON.parse(olddata);
+      this.articles = olddata.articles;
+      this.categories = olddata.categories;
+      this.clients = olddata.clients;
+      this.countries = olddata.countries;
+      this.currencies = olddata.currencies;
+      this.parties = olddata.parties;
+      this.receipts = olddata.receipts;
+      this.taxrates = olddata.taxrates;
+    }
   }
 
   article(id: number): ReceiptArticle | null {
@@ -200,12 +213,25 @@ export class ReceiptsComponent implements OnInit {
     document.getElementById('receipt-quantity-' + i)?.focus();
   }
 
-  onKeydownValue(i: number, e: KeyboardEvent) : void {
+  onKeydownValue(i: number, e: KeyboardEvent): void {
     if (e.code === 'NumpadAdd') {
       document.getElementById('receipt-article-' + (i + 1))?.focus();
       e.preventDefault();
       return;
     }
+  }
+
+  saveLocalStorage() : void {
+    localStorage.setItem(this.storagename, JSON.stringify({
+      articles: this.articles,
+      categories: this.categories,
+      clients: this.clients,
+      countries: this.countries,
+      currencies: this.currencies,
+      parties: this.parties,
+      receipts: this.receipts,
+      taxrates: this.taxrates,
+    }));
   }
 
   saveSelected(form: any, e: any): void {
@@ -243,6 +269,7 @@ export class ReceiptsComponent implements OnInit {
         let newreceipt: Receipt = <Receipt>reply.payload['receipt'];
         this.update_addReceipt(newreceipt);
         this.receipts.sort((a, b) => { return a.date < b.date ? 1 : a.date > b.date ? -1 : 0 });
+        this.saveLocalStorage();
         this.new();
         this.newItem();
       }
@@ -266,6 +293,7 @@ export class ReceiptsComponent implements OnInit {
     this.authService.queryApi(url).subscribe((reply) => {
       if (reply.success && reply.payload != undefined && reply.payload['items']) {
         receipt.items = reply.payload['items'];
+        this.saveLocalStorage();
         receipt.items.forEach(i => {
           this.selectedTotals.items++;
           this.selectedTotals.deposit += i.deposit;
@@ -344,6 +372,7 @@ export class ReceiptsComponent implements OnInit {
           if (c.isdefault && (!this.defaultCurrency || c.id != this.defaultCurrency.id))
             this.defaultCurrency = c;
         });
+        this.saveLocalStorage();
       }
       this.busy = false;
       this.userSettings.setTimeout(setTimeout(() => { this.update(); }, 1500));
@@ -481,4 +510,15 @@ export interface ReceiptTotals {
   deposit: number;
   singleprice: number;
   gross: number;
+}
+
+export interface ReceiptsStorage {
+  articles: ReceiptArticle[];
+  categories: ReceiptArticleCategory[];
+  clients: Party[];
+  countries: Country[];
+  currencies: Currency[];
+  parties: Party[];
+  receipts: Receipt[];
+  taxrates: TaxRate[];
 }
