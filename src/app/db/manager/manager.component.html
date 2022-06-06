@@ -27,6 +27,7 @@
     <a [ngClass]="{ 'list-group-item': true, 'has-childs': item.children && item.children.length }" [routerLink]="item.link">
         <i [ngClass]="[ item.icon, 'me-1' ]"></i>
         {{ i18n(item.title) }}
+        <span class="fs-7 ms-1" *ngIf="cache.itemcount[item.link]">[{{ cache.itemcount[item.link] }}]</span>
     </a>
     <li class="list-group-item py-0" *ngIf="item.children && item.children.length > 0">
         <ul class="list-group list-group-flush">
