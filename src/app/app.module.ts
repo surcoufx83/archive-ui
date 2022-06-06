@@ -60,6 +60,7 @@ import { H4Component } from './utils/h4/h4.component';
 import { H2Component } from './utils/h2/h2.component';
 import { H3Component } from './utils/h3/h3.component';
 import { PriceComparisonComponent } from './finance/price-comparison/price-comparison.component';
+import { NgChartsModule } from 'ng2-charts';
 
 registerLocaleData(localeDe);
 
@@ -122,6 +123,7 @@ registerLocaleData(localeDe);
     }),
     NgxFilesizeModule,
     PdfJsViewerModule,
+    NgChartsModule,
   ],
   providers: [
     {
