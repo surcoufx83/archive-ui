@@ -7,6 +7,7 @@ import { I18nService } from 'src/app/i18n.service';
 import { Settings } from 'src/app/user/settings/settings';
 import { SettingsService } from 'src/app/user/settings/settings.service';
 import { ToastsService } from 'src/app/utils/toasts.service';
+import { DbCurrenciesStorage } from './currencies/currencies.component';
 
 @Component({
   selector: 'app-countries',
@@ -25,26 +26,44 @@ export class DbCountriesComponent implements OnInit {
   usersettingsObj: Settings | null = null;
   sortAsc: boolean = true;
   sortBy: string = 'i18nname';
+  storagename: string = this.config.storage.prefix + 'dbcountriesData';
+  storagenameCurrency: string = this.config.storage.prefix + 'dbcurrenciesData';
   timeout: any;
+  when: number = 0;
 
   constructor(private configService: ConfigService,
     private i18nService: I18nService,
     private userSettings: SettingsService,
     private toastService: ToastsService) {
+    let olddata: string | null | DbCountriesStorage = localStorage.getItem(this.storagename);
+    if (olddata) {
+      this.countries = (<DbCountriesStorage>JSON.parse(olddata)).items;
+      this.sort();
+    }
+    let olddata2: string | null | DbCurrenciesStorage = localStorage.getItem(this.storagenameCurrency);
+    if (olddata2) {
+      this.currencies = (<DbCurrenciesStorage>JSON.parse(olddata2)).items;
+      this.currencies.sort((a, b) => { return ((a.isdefault && !b.isdefault ? -1 : !a.isdefault && b.isdefault ? 1 : 0) || a.shortname.localeCompare(b.shortname)) });
+    }
     this.userSettings.loadArchiveSettings();
     this.userSettings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
     });
     this.userSettings.countries$.subscribe((countries) => {
+      if (countries.length == 0)
+        return;
       this.countries = countries;
       this.countries.forEach((item) => { item.i18nname = this.i18n('country.' + item.name) });
       this.sort();
+      localStorage.setItem(this.storagename, JSON.stringify({ items: this.countries }));
     });
     this.userSettings.currencies$.subscribe((currencies) => {
+      if (currencies.length == 0)
+        return;
       this.currencies = currencies;
       this.currencies.sort((a, b) => { return ((a.isdefault && !b.isdefault ? -1 : !a.isdefault && b.isdefault ? 1 : 0) || a.shortname.localeCompare(b.shortname)) });
+      localStorage.setItem(this.storagenameCurrency, JSON.stringify({ items: this.currencies }));
     });
-    this.edit();
   }
 
   get config(): AppConfig {
@@ -95,8 +114,8 @@ export class DbCountriesComponent implements OnInit {
   submit(form: NgForm): void {
     if (!form.valid) {
       this.toastService.warn(this.i18nService.i18n('common.warn.formInvalid.title'),
-          this.i18nService.i18n('common.warn.formInvalid.message'));
-          return;
+        this.i18nService.i18n('common.warn.formInvalid.message'));
+      return;
     }
     if (!this.timeout)
       window.clearTimeout(this.timeout);
@@ -115,4 +134,8 @@ export class DbCountriesComponent implements OnInit {
     });
   }
 
+}
+
+export interface DbCountriesStorage {
+  items: Country[]
 }
