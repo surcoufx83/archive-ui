@@ -74,6 +74,7 @@ export class DbCountriesComponent implements OnInit {
     if (confirm(this.i18n('common.confirm.askDeletion', [item.name]))) {
       this.saving = true;
       this.userSettings.deleteCountry(item).subscribe((e) => {
+        console.log(e)
         if (e) {
           this.toastService.confirm(this.i18nService.i18n('common.confirm.delete.title'),
             this.i18nService.i18n('common.confirm.delete.message'));

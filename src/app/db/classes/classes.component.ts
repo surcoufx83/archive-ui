@@ -4,6 +4,7 @@ import { Class } from 'src/app/files/class';
 import { I18nService } from 'src/app/i18n.service';
 import { Settings } from 'src/app/user/settings/settings';
 import { SettingsService } from 'src/app/user/settings/settings.service';
+import { ToastsService } from 'src/app/utils/toasts.service';
 
 @Component({
   selector: 'app-classes',
@@ -27,7 +28,8 @@ export class DbClassesComponent implements OnInit {
 
   constructor(private configService: ConfigService,
     private i18nService: I18nService,
-    private userSettings: SettingsService) {
+    private userSettings: SettingsService,
+    private toastService: ToastsService) {
     let olddata: string | null | DbClassesStorage = localStorage.getItem(this.storagename);
     if (olddata) {
       this.classes = (<DbClassesStorage>JSON.parse(olddata)).items;
@@ -49,6 +51,20 @@ export class DbClassesComponent implements OnInit {
 
   get config(): AppConfig {
     return this.configService.config;
+  }
+
+  delete(item: Class) {
+    if (confirm(this.i18n('common.confirm.askDeletion', [item.name]))) {
+      this.saving = true;
+      this.userSettings.deleteClass(item).subscribe((e) => {
+        if (e) {
+          this.toastService.confirm(this.i18nService.i18n('common.confirm.delete.title'),
+            this.i18nService.i18n('common.confirm.delete.message'));
+          this.editclass = undefined;
+        }
+        this.saving = false;
+      });
+    }
   }
 
   edit(item?: Class): void {
