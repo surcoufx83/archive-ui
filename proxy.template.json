@@ -1,10 +1,7 @@
 {
   "/api": {
-    "target": "https://your-domain.com/api",
-    "secure": true
-  },
-  "/auth": {
-    "target": "https://your-domain.com/auth",
+    "target": "https://your-domain.com",
+    "changeOrigin": true,
     "secure": true
   }
 }
