@@ -265,11 +265,34 @@
     "currencies": {
       "title": "Währungen"
     },
+    "directories": {
+      "title": "Root-Verzeichnisse"
+    },
+    "expenses": {
+      "title": "Ausgaben",
+      "categories": {
+        "title": "Ausgabearten"
+      },
+      "templates": {
+        "title": "Vorlagen"
+      },
+      "types": {
+        "title": "Buchungsarten"
+      }
+    },
     "extension": {
       "title": "Dateitypen"
     },
     "manager": {
-      "title": "Stammdatenverwaltung"
+      "title": "Stammdatenverwaltung",
+      "countries": "Länder",
+      "filesystem": "Dateisystem",
+      "finance": "Finanzen",
+      "files": "Dateien und Klassifizierung",
+      "living": "Wohnung",
+      "parties": "Korrespondenten",
+      "system": "Verwaltung",
+      "work": "Arbeitszeitverwaltung"
     },
     "meters": {
       "title": "Zähler"
@@ -284,6 +307,12 @@
       "addresses": {
         "title": "Addressdatensätze"
       },
+      "banks": {
+        "title": "Nur Kreditinstitute"
+      },
+      "clients": {
+        "title": "Nur eigene Mandanten"
+      },
       "contacts": {
         "title": "Kontaktdaten"
       },
@@ -295,6 +324,26 @@
       "title": "Wertpapiere und CC",
       "apis": {
         "title": "APIs"
+      }
+    },
+    "units": {
+      "title": "Maßeinheiten"
+    },
+    "user": {
+      "title": "Benutzer"
+    },
+    "work": {
+      "customers": {
+        "title": "Kunden"
+      },
+      "holidays": {
+        "title": "Feiertage"
+      },
+      "offcategories": {
+        "title": "Abwesenheitsarten"
+      },
+      "timecategories": {
+        "title": "Buchungsarten"
       }
     }
   },

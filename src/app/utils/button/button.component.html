@@ -1,0 +1,12 @@
+<a *ngIf="link !== ''" [routerLink]="link" class="breadcrumb-item">
+    <button type="button" [ngClass]="['me-1', css]">
+        <i [ngClass]="icon"></i>
+        {{ title }}
+    </button>
+</a>
+<li *ngIf="link === ''" class="breadcrumb-item">
+    <button type="button" [ngClass]="['me-1', css]" (click)="click()">
+        <i [ngClass]="icon"></i>
+        {{ title }}
+    </button>
+</li>
