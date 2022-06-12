@@ -13,16 +13,15 @@ import { Currency } from 'src/app/account/account';
 @Injectable()
 export class SettingsService {
 
-  private archiveLoaded : boolean = false;
-  private componentRefresher : any;
+  private archiveLoaded: boolean = false;
+  private componentRefresher: any;
 
   constructor(private authService: AuthService,
-              private configService: ConfigService)
-  {
+    private configService: ConfigService) {
     this.loadUserSettings();
   }
 
-  public loadArchiveSettings() : void {
+  public loadArchiveSettings(): void {
     if (this.archiveLoaded)
       return;
     this.archiveLoaded = true;
@@ -45,7 +44,7 @@ export class SettingsService {
     this.caseFileStatus.next(['new', 'checked', 'approved']);
   }
 
-  private loadUserSettings() : void {
+  private loadUserSettings(): void {
     let url = this.configService.config.api.baseUrl + '/user/settings';
     this.authService.queryApi(url).subscribe((reply) => {
       if (reply.success && reply.payload != null) {
@@ -55,7 +54,7 @@ export class SettingsService {
     });
   }
 
-  public setTimeout(timeout: any) : void {
+  public setTimeout(timeout: any): void {
     if (this.componentRefresher)
       clearTimeout(this.componentRefresher);
     this.componentRefresher = timeout;
@@ -97,14 +96,64 @@ export class SettingsService {
   private roles: BehaviorSubject<PartyRole[]> = new BehaviorSubject<PartyRole[]>([]);
   roles$ = this.roles.asObservable();
 
-  private settings: BehaviorSubject<Settings|null> = new BehaviorSubject<Settings|null>(null);
+  private settings: BehaviorSubject<Settings | null> = new BehaviorSubject<Settings | null>(null);
   settings$ = this.settings.asObservable();
-  
-  private user: BehaviorSubject<User|null> = new BehaviorSubject<User|null>(null);
+
+  private user: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
   user$ = this.user.asObservable();
 
-  private workprops: BehaviorSubject<WorkProperties|null> = new BehaviorSubject<WorkProperties|null>(null);
+  private workprops: BehaviorSubject<WorkProperties | null> = new BehaviorSubject<WorkProperties | null>(null);
   workprops$ = this.workprops.asObservable();
+
+  deleteCountry(countryitem: Country): BehaviorSubject<boolean | null> {
+    let subject = new BehaviorSubject<boolean | null>(null);
+    let url = this.configService.config.api.baseUrl + '/country/' + countryitem.id + '/delete';
+    this.authService.updateApi(url, {}).subscribe((reply) => {
+      if (reply.success) {
+        let countries = this.countries.value;
+        let removei = -1;
+        for (let i = 0; i < countries.length; i++) {
+          if (countries[i].id == countryitem.id) {
+            removei = i;
+            break;
+          }
+        }
+        countries.splice(removei, 1);
+        this.updateCountries(countries);
+        subject.next(true);
+        subject.complete();
+      } else {
+        subject.next(false);
+        subject.complete();
+      }
+    });
+    return subject;
+  }
+
+  deleteCurrency(currencyitem: Currency): BehaviorSubject<boolean | null> {
+    let subject = new BehaviorSubject<boolean | null>(null);
+    let url = this.configService.config.api.baseUrl + '/currency/' + currencyitem.id + '/delete';
+    this.authService.updateApi(url, {}).subscribe((reply) => {
+      if (reply.success) {
+        let currencies = this.currencies.value;
+        let removei = -1;
+        for (let i = 0; i < currencies.length; i++) {
+          if (currencies[i].id == currencyitem.id) {
+            removei = i;
+            break;
+          }
+        }
+        currencies.splice(removei, 1);
+        this.updateCurrencies(currencies);
+        subject.next(true);
+        subject.complete();
+      } else {
+        subject.next(false);
+        subject.complete();
+      }
+    });
+    return subject;
+  }
 
   private updateAddresses(addresses: Address[]) {
     this.addresses.next(addresses);
@@ -150,14 +199,14 @@ export class SettingsService {
     this.roles.next(roles);
   }
 
-  updateClass(classitem: Class) : BehaviorSubject<Class|null> {
-    let subject = new BehaviorSubject<Class|null>(null);
+  updateClass(classitem: Class): BehaviorSubject<Class | null> {
+    let subject = new BehaviorSubject<Class | null>(null);
     let url = this.configService.config.api.baseUrl + '/class/';
     if (classitem.id == 0)
       url += 'create';
     else
       url += classitem.id;
-    this.authService.updateApi(url, {class: classitem}).subscribe((reply) => {
+    this.authService.updateApi(url, { class: classitem }).subscribe((reply) => {
       if (reply.success && reply.payload && reply.payload['class']) {
         let newitem = <Class>reply.payload['class'];
         let classes = this.classes.value;
@@ -187,14 +236,14 @@ export class SettingsService {
     return subject;
   }
 
-  updateCountry(countryitem: Country) : BehaviorSubject<Country|null> {
-    let subject = new BehaviorSubject<Country|null>(null);
+  updateCountry(countryitem: Country): BehaviorSubject<Country | null> {
+    let subject = new BehaviorSubject<Country | null>(null);
     let url = this.configService.config.api.baseUrl + '/country/';
     if (countryitem.id == 0)
       url += 'create';
     else
       url += countryitem.id;
-    this.authService.updateApi(url, {country: countryitem}).subscribe((reply) => {
+    this.authService.updateApi(url, { country: countryitem }).subscribe((reply) => {
       if (reply.success && reply.payload && reply.payload['country']) {
         let newitem = <Country>reply.payload['country'];
         let countries = this.countries.value;
@@ -224,11 +273,48 @@ export class SettingsService {
     return subject;
   }
 
+  updateCurrency(currencyitem: Currency): BehaviorSubject<Currency | null> {
+    let subject = new BehaviorSubject<Currency | null>(null);
+    let url = this.configService.config.api.baseUrl + '/currency/';
+    if (currencyitem.id == 0)
+      url += 'create';
+    else
+      url += currencyitem.id;
+    this.authService.updateApi(url, { currency: currencyitem }).subscribe((reply) => {
+      if (reply.success && reply.payload && reply.payload['currency']) {
+        let newitem = <Currency>reply.payload['currency'];
+        let currencies = this.currencies.value;
+        if (currencyitem.id > 0) {
+          let removei = -1;
+          for (let i = 0; i < currencies.length; i++) {
+            if (currencies[i].id == currencyitem.id) {
+              removei = i;
+              break;
+            }
+          }
+          currencies.splice(removei, 1, newitem);
+        } else {
+          currencies.push(newitem);
+        }
+        if (newitem.isdefault) {
+          currencies.forEach((c) => {
+            if (c.id != newitem.id && c.isdefault)
+              c.isdefault = false;
+          });
+        }
+        this.updateCurrencies(currencies);
+        subject.next(newitem);
+        subject.complete();
+      }
+    });
+    return subject;
+  }
+
   updateSettings(settings: Settings, push: boolean = false) {
     this.settings.next(settings);
     if (push) {
       let url = this.configService.config.api.baseUrl + '/user/settings';
-      this.authService.updateApi(url, {userSettings: settings});
+      this.authService.updateApi(url, { userSettings: settings });
     }
   }
 
@@ -241,7 +327,7 @@ export class SettingsService {
     this.workprops.next(props);
     if (push) {
       let url = this.configService.config.api.baseUrl + '/work/settings';
-      this.authService.updateApi(url, {workSettings: props});
+      this.authService.updateApi(url, { workSettings: props });
     }
   }
 
