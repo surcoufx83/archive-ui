@@ -19,22 +19,22 @@
                     <div class="row">
                         <div class="col-12 col-lg-6 mb-3">
                             <div class="form-group">
-                                <label for="class-name" class="form-label required">{{
+                                <label for="country-name" class="form-label required">{{
                                     i18n('db.countries.name') }}</label>
-                                <input type="text" class="form-control" id="class-name" name="class-name"
+                                <input type="text" class="form-control" id="country-name" name="country-name"
                                     [(ngModel)]="editcountry.name" [placeholder]="i18n('db.countries.name')" required>
                             </div>
                         </div>
                         <div class="col-12 col-lg-6 mb-3">
                             <div class="form-group">
-                                <label for="class-default" class="form-label">{{
+                                <label for="country-default" class="form-label">{{
                                     i18n('db.countries.default') }}</label>
                                 <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="class-default"
-                                        name="class-default" [(ngModel)]="editcountry.isdefault">
-                                    <label for="class-default" class="form-check-label" *ngIf="editcountry.isdefault">{{
+                                    <input type="checkbox" class="form-check-input" id="country-default"
+                                        name="country-default" [(ngModel)]="editcountry.isdefault">
+                                    <label for="country-default" class="form-check-label" *ngIf="editcountry.isdefault">{{
                                         i18n('common.yes') }}</label>
-                                    <label for="class-default" class="form-check-label"
+                                    <label for="country-default" class="form-check-label"
                                         *ngIf="!editcountry.isdefault">{{
                                         i18n('common.no') }}</label>
                                 </div>
@@ -45,18 +45,18 @@
                     <div class="row">
                         <div class="col-12 col-lg-6 mb-3">
                             <div class="form-group">
-                                <label for="class-i18nname" class="form-label">{{
+                                <label for="country-i18nname" class="form-label">{{
                                     i18n('db.countries.i18nname') }}</label>
-                                <input type="text" class="form-control" id="class-i18nname" name="class-i18nname"
+                                <input type="text" class="form-control" id="country-i18nname" name="country-i18nname"
                                     [(ngModel)]="editcountry.i18nname" [placeholder]="i18n('db.countries.i18nname')"
                                     readonly>
                             </div>
                         </div>
                         <div class="col-12 col-lg-6 mb-3">
                             <div class="form-group">
-                                <label for="class-currency" class="form-label required">{{
+                                <label for="country-currency" class="form-label required">{{
                                     i18n('db.countries.currency') }}</label>
-                                <select class="form-select" id="class-currency" name="class-currency"
+                                <select class="form-select" id="country-currency" name="country-currency"
                                     [(ngModel)]="editcountry.currencyid" required>
                                     <option [value]="null">{{ i18n('common.select.pickOne') }}</option>
                                     <option *ngFor="let item of currencies" [value]="item.id">
@@ -70,17 +70,17 @@
                     <div class="row">
                         <div class="col-6 col-md-4 col-lg-3 mb-3">
                             <div class="form-group">
-                                <label for="class-key2" class="form-label required">{{
+                                <label for="country-key2" class="form-label required">{{
                                     i18n('db.countries.editor.key2') }}</label>
-                                <input type="text" class="form-control" id="class-key2" name="class-key2" maxlength="2" minlength="2"
+                                <input type="text" class="form-control" id="country-key2" name="country-key2" maxlength="2" minlength="2"
                                     [(ngModel)]="editcountry.key2" [placeholder]="i18n('db.countries.key2')" required>
                             </div>
                         </div>
                         <div class="col-6 col-md-4 col-lg-3 mb-3">
                             <div class="form-group">
-                                <label for="class-key3" class="form-label required">{{
+                                <label for="country-key3" class="form-label required">{{
                                     i18n('db.countries.editor.key3') }}</label>
-                                <input type="text" class="form-control" id="class-key3" name="class-key3" maxlength="3" minlength="3"
+                                <input type="text" class="form-control" id="country-key3" name="country-key3" maxlength="3" minlength="3"
                                     [(ngModel)]="editcountry.key3" [placeholder]="i18n('db.countries.key3')" required>
                             </div>
                         </div>
