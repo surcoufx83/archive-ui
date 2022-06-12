@@ -43,7 +43,7 @@ export class DbManagerComponent implements OnInit {
           { link: '/db/parties/contacts', title: 'db.parties.contacts.title', icon: 'fa-solid fa-shapes', children: [
             { link: '/db/contacts/types', title: 'db.contacts.types.title', icon: 'fa-solid fa-shapes' },
           ] },
-          { link: '/db/parties/roles', title: 'db.parties.roles.title', icon: 'fa-solid fa-shapes' },
+          { link: '/db/parties/roles', title: 'db.parties.roles.title', icon: this.config.icons['role'] + this.colFinished },
         ] }
       ]
     },
