@@ -269,18 +269,18 @@
       "title": "Currencies"
     },
     "directories": {
-      "title": "Root-Verzeichnisse"
+      "title": "Root directories"
     },
     "expenses": {
-      "title": "Ausgaben",
+      "title": "Expenses",
       "categories": {
-        "title": "Ausgabearten"
+        "title": "Expense types"
       },
       "templates": {
-        "title": "Vorlagen"
+        "title": "Templates"
       },
       "types": {
-        "title": "Buchungsarten"
+        "title": "Expense types"
       }
     },
     "extension": {
@@ -289,13 +289,13 @@
     "manager": {
       "title": "Data management",
       "countries": "Countries",
-      "filesystem": "Dateisystem",
+      "filesystem": "File system",
       "finance": "Finance",
-      "files": "Dateien und Klassifizierung",
-      "living": "Wohnung",
+      "files": "Files and classification",
+      "living": "Housing",
       "parties": "Correspondents",
-      "system": "Verwaltung",
-      "work": "Arbeitszeitverwaltung"
+      "system": "Administrative",
+      "work": "Worktime management"
     },
     "meters": {
       "title": "Counters"
@@ -311,10 +311,10 @@
         "title": "Addresses"
       },
       "banks": {
-        "title": "Nur Kreditinstitute"
+        "title": "Banks"
       },
       "clients": {
-        "title": "Nur eigene Mandanten"
+        "title": "Clients"
       },
       "contacts": {
         "title": "Contact Information"
@@ -330,23 +330,23 @@
       }
     },
     "units": {
-      "title": "Maßeinheiten"
+      "title": "Units of measurement"
     },
     "user": {
-      "title": "Benutzer"
+      "title": "Site Users"
     },
     "work": {
       "customers": {
-        "title": "Kunden"
+        "title": "Customer"
       },
       "holidays": {
-        "title": "Feiertage"
+        "title": "Holidays"
       },
       "offcategories": {
-        "title": "Abwesenheitsarten"
+        "title": "Time off types"
       },
       "timecategories": {
-        "title": "Buchungsarten"
+        "title": "Expense types"
       }
     }
   },
