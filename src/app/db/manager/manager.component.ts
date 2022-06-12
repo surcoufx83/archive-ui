@@ -30,8 +30,7 @@ export class DbManagerComponent implements OnInit {
           { link: '/db/cases/status', title: 'db.cases.status.title', icon: 'fa-solid fa-shapes' },
           { link: '/db/cases/types', title: 'db.cases.types.title', icon: 'fa-solid fa-shapes' },
           { link: '/db/cases/filetypes', title: 'db.cases.filetypes.title', icon: 'fa-solid fa-shapes' },
-        ] },
-        { link: '/db/extension', title: 'db.extension.title', icon: 'fa-solid fa-shapes' }
+        ] }
       ]
     },
     {
@@ -86,7 +85,8 @@ export class DbManagerComponent implements OnInit {
     {
       title: 'db.manager.filesystem',
       items: [
-        { link: '/db/dirs', title: 'db.directories.title', icon: 'fa-solid fa-shapes' }
+        { link: '/db/dirs', title: 'db.directories.title', icon: 'fa-solid fa-shapes' },
+        { link: '/db/extension', title: 'db.extension.title', icon: 'fa-solid fa-shapes' }
       ]
     },
     {
