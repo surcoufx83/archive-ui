@@ -336,7 +336,9 @@
         "title": "Contact Information"
       },
       "roles": {
-        "title": "Roles"
+        "title": "Roles",
+        "name": "Technical name",
+        "i18nname": "Localized name"
       }
     },
     "stocks": {
