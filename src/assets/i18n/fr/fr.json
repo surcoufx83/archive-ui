@@ -336,7 +336,9 @@
         "title": "Kontaktdaten"
       },
       "roles": {
-        "title": "Rollen"
+        "title": "Rollen",
+        "name": "Technischer Name",
+        "i18nname": "Lokalisierter Name"
       }
     },
     "stocks": {
