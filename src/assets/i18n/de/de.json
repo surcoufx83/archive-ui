@@ -166,11 +166,17 @@
     "back": "Zurück",
     "cancel": "Abbruch",
     "confirm": {
+      "askDeletion": "Bist du sicher, dass der Datensatz {0} gelöscht werden soll?",
+      "delete": {
+        "title": "Gespeichert",
+        "message": "Der Datensatz wurde aus der Datenbank gelöscht."
+      },
       "save": {
         "title": "Gespeichert",
         "message": "Die Änderungen wurden erfolgreich gespeichert."
       }
     },
+    "delete": "Löschen",
     "no": "Nein",
     "none": "Keine",
     "novalue": "---",
@@ -263,7 +269,17 @@
       "title": "Cronjobs"
     },
     "currencies": {
-      "title": "Währungen"
+      "title": "Währungen",
+      "default": "Standard",
+      "name": "Name",
+      "shortname": "Kürzel",
+      "sign": "Zeichen",
+      "editor": {
+        "name": "Vollständiger Name",
+        "shortname": "3-stelliger Code",
+        "sign": "Internationales Zeichen",
+        "title": "Währung bearbeiten"
+      }
     },
     "directories": {
       "title": "Root-Verzeichnisse"

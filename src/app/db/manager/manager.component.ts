@@ -55,7 +55,7 @@ export class DbManagerComponent implements OnInit {
           { link: '/db/accounts/mandates', title: 'db.accounts.mandates.title', icon: 'fa-solid fa-shapes' },
           { link: '/db/accounts/orders', title: 'db.accounts.orders.title', icon: 'fa-solid fa-shapes' },
         ] },
-        { link: '/db/currencies', title: 'db.currencies.title', icon: 'fa-solid fa-shapes' },
+        { link: '/db/currencies', title: 'db.currencies.title', icon: this.config.icons['currency'] + this.colFinished },
         { link: '/db/stocks', title: 'db.stocks.title', icon: 'fa-solid fa-shapes', children: [
           { link: '/db/stocks/apis', title: 'db.stocks.apis.title', icon: 'fa-solid fa-shapes' },
         ] },
