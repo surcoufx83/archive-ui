@@ -61,6 +61,8 @@ import { H2Component } from './utils/h2/h2.component';
 import { H3Component } from './utils/h3/h3.component';
 import { PriceComparisonComponent } from './finance/price-comparison/price-comparison.component';
 import { NgChartsModule } from 'ng2-charts';
+import { ButtonComponent } from './utils/button/button.component';
+import { CurrenciesComponent } from './db/countries/currencies/currencies.component';
 
 registerLocaleData(localeDe);
 
@@ -110,6 +112,8 @@ registerLocaleData(localeDe);
     H2Component,
     H3Component,
     PriceComparisonComponent,
+    ButtonComponent,
+    CurrenciesComponent,
   ],
   imports: [
     AppRoutingModule,

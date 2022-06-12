@@ -18,22 +18,32 @@ export class DbClassesComponent implements OnInit {
   saving: boolean = false;
   classes: Class[] = [];
   editclass?: Class;
-  usersettingsObj: Settings|null = null;
+  usersettingsObj: Settings | null = null;
   sortAsc: boolean = true;
   sortBy: string = 'name';
-  timeout: any;
+  storagename: string = this.config.storage.prefix + 'dbclassesData';
+  timeout?: any = undefined;
+  when: number = 0;
 
   constructor(private configService: ConfigService,
     private i18nService: I18nService,
     private userSettings: SettingsService) {
+    let olddata: string | null | DbClassesStorage = localStorage.getItem(this.storagename);
+    if (olddata) {
+      this.classes = (<DbClassesStorage>JSON.parse(olddata)).items;
+      this.sort();
+    }
     this.userSettings.loadArchiveSettings();
     this.userSettings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
     });
     this.userSettings.classes$.subscribe((classes) => {
+      if (classes.length == 0)
+        return;
       this.classes = classes;
       this.classes.forEach((item) => { item.name = this.i18n('classify.classes.' + item.techname) });
       this.sort();
+      localStorage.setItem(this.storagename, JSON.stringify({ items: this.classes }));
     });
   }
 
@@ -43,7 +53,7 @@ export class DbClassesComponent implements OnInit {
 
   edit(item?: Class): void {
     if (item)
-      this.editclass = item;
+      this.editclass = { ...item };
     else
       this.editclass = {
         description: '', email: '', id: 0, isdefault: false,
@@ -76,8 +86,8 @@ export class DbClassesComponent implements OnInit {
 
   submit(): void {
     if (!this.timeout)
-      window.clearTimeout(this.timeout);
-    this.timeout = window.setTimeout(() => this.sendUpdate(), 500);
+      clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => this.sendUpdate(), 500);
   }
 
   private sendUpdate(): void {
@@ -86,8 +96,13 @@ export class DbClassesComponent implements OnInit {
     this.saving = true;
     this.userSettings.updateClass(this.editclass).subscribe((reply) => {
       if (reply != null)
-        this.saving = false;
+        this.editclass!.id = reply.id;
+      this.saving = false;
     });
   }
 
+}
+
+export interface DbClassesStorage {
+  items: Class[]
 }

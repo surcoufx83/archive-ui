@@ -3,21 +3,15 @@
     <div>
         <nav class="h-100" style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
             <ol class="breadcrumb d-flex align-items-center h-100 mb-0">
-                <li [ngClass]="{'breadcrumb-item fade': true, 'show': busy}">
+                <li [ngClass]="{'breadcrumb-item fade me-1 me-lg-2': true, 'show': busy}">
                     <ui-busy-indicator></ui-busy-indicator>
                 </li>
-                <li class="breadcrumb-item" *ngIf="btn1 != '' || btn1css != '' || btn1Icon != ''">
-                    <button type="button" [ngClass]="['me-1', btn1css]" (click)="btn1click()">
-                        <i [ngClass]="btn1Icon"></i>
-                        {{ btn1 }}
-                    </button>
-                </li>
-                <li class="breadcrumb-item" *ngIf="btn2 != '' || btn2css != '' || btn2Icon != ''">
-                    <button type="button" [ngClass]="['me-1', btn2css]" (click)="btn2click()">
-                        <i [ngClass]="btn2Icon"></i>
-                        {{ btn2 }}
-                    </button>
-                </li>
+                <app-button *ngIf="btn1 != '' || btn1css != '' || btn1Icon != ''" [css]="btn1css" [icon]="btn1Icon"
+                    [link]="btn1Link" [title]="btn1" (click)="btn1click()"></app-button>
+                <app-button *ngIf="btn2 != '' || btn2css != '' || btn2Icon != ''" [css]="btn2css" [icon]="btn2Icon"
+                    [link]="btn2Link" [title]="btn2" (click)="btn2click()"></app-button>
+                <button type="button" class="btn-close ms-2" aria-label="Close" *ngIf="xShow"
+                    (click)="xclick()"></button>
             </ol>
         </nav>
     </div>
