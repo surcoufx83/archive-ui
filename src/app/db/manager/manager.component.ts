@@ -18,7 +18,7 @@ export class DbManagerComponent implements OnInit {
   storagename: string = this.config.storage.prefix + 'dbmanagerData';
   usersettingsObj: Settings|null = null;
   when: number = 0;
-  colFinished: string = ' text-primary';
+  colFinished: string = ' text-success';
 
   items: DbManagerGroup[] = [
     {
