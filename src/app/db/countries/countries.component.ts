@@ -70,6 +70,21 @@ export class DbCountriesComponent implements OnInit {
     return this.configService.config;
   }
 
+  delete(item: Country) {
+    if (confirm(this.i18n('common.confirm.askDeletion', [item.name]))) {
+      this.saving = true;
+      this.userSettings.deleteCountry(item).subscribe((e) => {
+        if (e) {
+          this.toastService.confirm(this.i18nService.i18n('common.confirm.delete.title'),
+            this.i18nService.i18n('common.confirm.delete.message'));
+          this.editcountry = undefined;
+        }
+        this.saving = false;
+      });
+    }
+  }
+
+
   edit(item?: Country): void {
     if (item)
       this.editcountry = item;

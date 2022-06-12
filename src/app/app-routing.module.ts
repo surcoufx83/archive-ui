@@ -29,6 +29,7 @@ import { DbManagerComponent } from './db/manager/manager.component';
 import { DbCountriesComponent } from './db/countries/countries.component';
 import { ShoppingComponent } from './finance/shopping/shopping.component';
 import { PriceComparisonComponent } from './finance/price-comparison/price-comparison.component';
+import { DbCurrenciesComponent } from './db/countries/currencies/currencies.component';
 
 const routes: Routes = [
   { path: 'account', component: AccountComponent, canActivate: [SessionGuard] },
@@ -44,6 +45,7 @@ const routes: Routes = [
             { path: '', component: DbCountriesComponent, canActivate: [SessionGuard], pathMatch: 'full' },
           ]
       },
+      { path: 'currencies', component: DbCurrenciesComponent, canActivate: [SessionGuard] },
       { path: '', component: DbManagerComponent, canActivate: [SessionGuard], pathMatch: 'full' },
     ]
   },

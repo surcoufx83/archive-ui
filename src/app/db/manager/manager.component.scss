@@ -9,7 +9,7 @@
     @include media-breakpoint-only(md) {
         column-count: 2;
       }
-    @include media-breakpoint-up(md) {
+    @include media-breakpoint-up(lg) {
       column-count: 3;
     }
     .card {
