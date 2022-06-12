@@ -69,4 +69,5 @@ export interface PartyContact {
 export interface PartyRole {
   id: number;
   name: string;
+  i18nname: string;
 }

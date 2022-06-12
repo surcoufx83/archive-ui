@@ -9,6 +9,8 @@ import { Case, CaseFiletype } from 'src/app/cases/case';
 import { Class } from 'src/app/files/class';
 import { Address, ContactType, Country, Party, PartyContact, PartyRole } from 'src/app/common';
 import { Currency } from 'src/app/account/account';
+import { ApiReply } from 'src/app/api-reply';
+import { sub } from 'date-fns';
 
 @Injectable()
 export class SettingsService {
@@ -105,53 +107,73 @@ export class SettingsService {
   private workprops: BehaviorSubject<WorkProperties | null> = new BehaviorSubject<WorkProperties | null>(null);
   workprops$ = this.workprops.asObservable();
 
-  deleteCountry(countryitem: Country): BehaviorSubject<boolean | null> {
-    let subject = new BehaviorSubject<boolean | null>(null);
-    let url = this.configService.config.api.baseUrl + '/country/' + countryitem.id + '/delete';
-    this.authService.updateApi(url, {}).subscribe((reply) => {
+  private postCommon(method: string, item: any, urlitem: string, listing: any[], subject: BehaviorSubject<boolean | any | null>,
+      callback: Function) {
+
+    let url = this.configService.config.api.baseUrl + '/' + urlitem + '/';
+    if (method == 'create')
+      url += 'create';
+    else
+      url += item.id + (method == 'delete' ? '/delete' : '');
+    let obj: { [key:string]: any} = {};
+    if (method != 'delete')
+        obj[urlitem] = item;
+    this.authService.updateApi(url, obj).subscribe((reply) => {
       if (reply.success) {
-        let countries = this.countries.value;
-        let removei = -1;
-        for (let i = 0; i < countries.length; i++) {
-          if (countries[i].id == countryitem.id) {
-            removei = i;
-            break;
+        let newitem = null;
+        if (method != 'delete' && reply.payload)
+          newitem = reply.payload[urlitem];
+        if (item.id > 0) {
+          let removei = -1;
+          for (let i = 0; i < listing.length; i++) {
+            if (listing[i].id == item.id) {
+              removei = i;
+              break;
+            }
+          }
+          if (removei > -1) {
+            if (method == 'delete')
+              listing.splice(removei, 1);
+            else
+              listing.splice(removei, 1, newitem);
           }
         }
-        countries.splice(removei, 1);
-        this.updateCountries(countries);
-        subject.next(true);
+        else
+          listing.push(newitem);
+        
+        subject.next(method != 'delete' ? newitem : true);
         subject.complete();
-      } else {
+        callback(listing);
+      }
+      else {
         subject.next(false);
         subject.complete();
       }
     });
+
+  }
+
+  deleteClass(classitem: Class): BehaviorSubject<boolean | null> {
+    let subject = new BehaviorSubject<boolean | null>(null);
+    this.postCommon('delete', classitem, 'class', this.classes.value, subject, (c: Class[]) => this.updateClasses(c));
+    return subject;
+  }
+
+  deleteCountry(countryitem: Country): BehaviorSubject<boolean | null> {
+    let subject = new BehaviorSubject<boolean | null>(null);
+    this.postCommon('delete', countryitem, 'country', this.countries.value, subject, (c: Country[]) => this.updateCountries(c));
     return subject;
   }
 
   deleteCurrency(currencyitem: Currency): BehaviorSubject<boolean | null> {
     let subject = new BehaviorSubject<boolean | null>(null);
-    let url = this.configService.config.api.baseUrl + '/currency/' + currencyitem.id + '/delete';
-    this.authService.updateApi(url, {}).subscribe((reply) => {
-      if (reply.success) {
-        let currencies = this.currencies.value;
-        let removei = -1;
-        for (let i = 0; i < currencies.length; i++) {
-          if (currencies[i].id == currencyitem.id) {
-            removei = i;
-            break;
-          }
-        }
-        currencies.splice(removei, 1);
-        this.updateCurrencies(currencies);
-        subject.next(true);
-        subject.complete();
-      } else {
-        subject.next(false);
-        subject.complete();
-      }
-    });
+    this.postCommon('delete', currencyitem, 'currency', this.currencies.value, subject, (c: Currency[]) => this.updateCurrencies(c));
+    return subject;
+  }
+
+  deleteRole(roleitem: PartyRole): BehaviorSubject<boolean | null> {
+    let subject = new BehaviorSubject<boolean | null>(null);
+    this.postCommon('delete', roleitem, 'role', this.roles.value, subject, (c: PartyRole[]) => this.updateRoles(c));
     return subject;
   }
 
@@ -184,6 +206,7 @@ export class SettingsService {
   }
 
   private updateCurrencies(currencies: Currency[]) {
+    console.log('updateCurrencies', currencies);
     this.currencies.next(currencies);
   }
 
@@ -201,112 +224,29 @@ export class SettingsService {
 
   updateClass(classitem: Class): BehaviorSubject<Class | null> {
     let subject = new BehaviorSubject<Class | null>(null);
-    let url = this.configService.config.api.baseUrl + '/class/';
-    if (classitem.id == 0)
-      url += 'create';
-    else
-      url += classitem.id;
-    this.authService.updateApi(url, { class: classitem }).subscribe((reply) => {
-      if (reply.success && reply.payload && reply.payload['class']) {
-        let newitem = <Class>reply.payload['class'];
-        let classes = this.classes.value;
-        if (classitem.id > 0) {
-          let removei = -1;
-          for (let i = 0; i < classes.length; i++) {
-            if (classes[i].id == classitem.id) {
-              removei = i;
-              break;
-            }
-          }
-          classes.splice(removei, 1, newitem);
-        } else {
-          classes.push(newitem);
-        }
-        if (newitem.isdefault) {
-          classes.forEach((c) => {
-            if (c.id != newitem.id && c.isdefault)
-              c.isdefault = false;
-          });
-        }
-        this.updateClasses(classes);
-        subject.next(newitem);
-        subject.complete();
-      }
-    });
+    this.postCommon(classitem.id == 0 ? 'create' : 'update', classitem,
+    'class', this.classes.value, subject, (c: Class[]) => this.updateClasses(c));
     return subject;
   }
 
   updateCountry(countryitem: Country): BehaviorSubject<Country | null> {
     let subject = new BehaviorSubject<Country | null>(null);
-    let url = this.configService.config.api.baseUrl + '/country/';
-    if (countryitem.id == 0)
-      url += 'create';
-    else
-      url += countryitem.id;
-    this.authService.updateApi(url, { country: countryitem }).subscribe((reply) => {
-      if (reply.success && reply.payload && reply.payload['country']) {
-        let newitem = <Country>reply.payload['country'];
-        let countries = this.countries.value;
-        if (countryitem.id > 0) {
-          let removei = -1;
-          for (let i = 0; i < countries.length; i++) {
-            if (countries[i].id == countryitem.id) {
-              removei = i;
-              break;
-            }
-          }
-          countries.splice(removei, 1, newitem);
-        } else {
-          countries.push(newitem);
-        }
-        if (newitem.isdefault) {
-          countries.forEach((c) => {
-            if (c.id != newitem.id && c.isdefault)
-              c.isdefault = false;
-          });
-        }
-        this.updateCountries(countries);
-        subject.next(newitem);
-        subject.complete();
-      }
-    });
+    this.postCommon(countryitem.id == 0 ? 'create' : 'update', countryitem,
+      'country', this.countries.value, subject, (c: Country[]) => this.updateCountries(c));
     return subject;
   }
 
   updateCurrency(currencyitem: Currency): BehaviorSubject<Currency | null> {
     let subject = new BehaviorSubject<Currency | null>(null);
-    let url = this.configService.config.api.baseUrl + '/currency/';
-    if (currencyitem.id == 0)
-      url += 'create';
-    else
-      url += currencyitem.id;
-    this.authService.updateApi(url, { currency: currencyitem }).subscribe((reply) => {
-      if (reply.success && reply.payload && reply.payload['currency']) {
-        let newitem = <Currency>reply.payload['currency'];
-        let currencies = this.currencies.value;
-        if (currencyitem.id > 0) {
-          let removei = -1;
-          for (let i = 0; i < currencies.length; i++) {
-            if (currencies[i].id == currencyitem.id) {
-              removei = i;
-              break;
-            }
-          }
-          currencies.splice(removei, 1, newitem);
-        } else {
-          currencies.push(newitem);
-        }
-        if (newitem.isdefault) {
-          currencies.forEach((c) => {
-            if (c.id != newitem.id && c.isdefault)
-              c.isdefault = false;
-          });
-        }
-        this.updateCurrencies(currencies);
-        subject.next(newitem);
-        subject.complete();
-      }
-    });
+    this.postCommon(currencyitem.id == 0 ? 'create' : 'update', currencyitem,
+      'currency', this.currencies.value, subject, (c: Currency[]) => this.updateCurrencies(c));
+    return subject;
+  }
+
+  updateRole(roleitem: PartyRole): BehaviorSubject<PartyRole | null> {
+    let subject = new BehaviorSubject<PartyRole | null>(null);
+    this.postCommon(roleitem.id == 0 ? 'create' : 'update', roleitem,
+      'role', this.roles.value, subject, (c: PartyRole[]) => this.updateRoles(c));
     return subject;
   }
 

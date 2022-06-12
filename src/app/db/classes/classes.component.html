@@ -12,7 +12,9 @@
         <div class="card">
             <app-h4 [containercss]="'card-header'" [title]="i18n('db.classes.editor.title')" [busy]="saving"
                 [btn1]="i18n('common.save')" [btn1css]="'btn btn-sm btn-success'" [btn1icon]="config.icons['save']"
-                (btn1Clicked)="submit()" [xshow]="true" (xClicked)="this.editclass = undefined"></app-h4>
+                (btn1Clicked)="submit()" [btn2css]="editclass.id > 0 ? 'btn btn-sm btn-outline-danger' : ''"
+                [btn2icon]="editclass.id > 0 ? config.icons['delete'] : ''"
+                (btn2Clicked)="delete(editclass)"  [xshow]="true" (xClicked)="this.editclass = undefined"></app-h4>
             <div class="card-body">
                 <form #f (submit)="submit()" ngNativeValidate>
 
