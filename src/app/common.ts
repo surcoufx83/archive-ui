@@ -1,4 +1,5 @@
 import { Currency } from "./account/account";
+import { TaxRate } from "./finance/finance";
 
 export interface Address {
   id: number;
@@ -38,6 +39,7 @@ export interface Country {
   key2: string;
   key3: string;
   isdefault: boolean;
+  taxrates: TaxRate[];
 }
 
 export interface Party {

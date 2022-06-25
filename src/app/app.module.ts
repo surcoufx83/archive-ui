@@ -56,9 +56,10 @@ import { ToastComponent } from './utils/toast/toast.component';
 import { DbCountriesComponent } from './db/countries/countries.component';
 import { ShoppingComponent } from './finance/shopping/shopping.component';
 import { CacheService } from './svcs/cache.service';
-import { H4Component } from './utils/h4/h4.component';
 import { H2Component } from './utils/h2/h2.component';
 import { H3Component } from './utils/h3/h3.component';
+import { H4Component } from './utils/h4/h4.component';
+import { H5Component } from './utils/h5/h5.component';
 import { PriceComparisonComponent } from './finance/price-comparison/price-comparison.component';
 import { NgChartsModule } from 'ng2-charts';
 import { ButtonComponent } from './utils/button/button.component';
@@ -111,9 +112,10 @@ registerLocaleData(localeDe);
     ToastComponent,
     DbCountriesComponent,
     ShoppingComponent,
-    H4Component,
     H2Component,
     H3Component,
+    H4Component,
+    H5Component,
     PriceComparisonComponent,
     ButtonComponent,
     DbCurrenciesComponent,

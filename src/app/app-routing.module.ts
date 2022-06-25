@@ -42,12 +42,7 @@ const routes: Routes = [
   {
     path: 'db', children: [
       { path: 'classes', component: DbClassesComponent, canActivate: [SessionGuard] },
-      {
-        path: 'countries', canActivate: [SessionGuard], children:
-          [
-            { path: '', component: DbCountriesComponent, canActivate: [SessionGuard], pathMatch: 'full' },
-          ]
-      },
+      { path: 'countries', component: DbCountriesComponent, canActivate: [SessionGuard] },
       { path: 'currencies', component: DbCurrenciesComponent, canActivate: [SessionGuard] },
       {
         path: 'parties', canActivate: [SessionGuard], children:

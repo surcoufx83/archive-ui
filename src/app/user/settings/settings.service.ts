@@ -9,8 +9,7 @@ import { Case, CaseFiletype } from 'src/app/cases/case';
 import { Class } from 'src/app/files/class';
 import { Address, ContactType, Country, Party, PartyContact, PartyRole } from 'src/app/common';
 import { Currency } from 'src/app/account/account';
-import { ApiReply } from 'src/app/api-reply';
-import { sub } from 'date-fns';
+import { TaxRate } from 'src/app/finance/finance';
 
 @Injectable()
 export class SettingsService {

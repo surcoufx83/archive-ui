@@ -19,6 +19,7 @@ export class H3Component {
   @Input('btn2icon') btn2Icon: string = '';
   @Input('btn2link') btn2Link: string = '';
   @Input('xshow') xShow: boolean = false;
+  @Input('xlink') xLink: string = '';
   @Output() btn1Clicked = new EventEmitter();
   @Output() btn2Clicked = new EventEmitter();
   @Output() xClicked = new EventEmitter();

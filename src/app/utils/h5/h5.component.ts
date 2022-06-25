@@ -1,15 +1,15 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-h2',
-  templateUrl: './h2.component.html',
-  styleUrls: ['./h2.component.scss']
+  selector: 'app-h5',
+  templateUrl: './h5.component.html',
+  styleUrls: ['./h5.component.scss']
 })
-export class H2Component {
+export class H5Component {
 
   @Input('containercss') containercss: string = '';
   @Input('title') title: string = '';
-  @Input('busy') busy: boolean = false;
+  @Input('busy') busy?: boolean;
   @Input('btn1') btn1: string = '';
   @Input('btn1css') btn1css: string = '';
   @Input('btn1icon') btn1Icon: string = '';
