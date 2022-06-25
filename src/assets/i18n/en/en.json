@@ -195,6 +195,12 @@
     },
     "yes": "Yes"
   },
+  "contacttypes": {
+    "phone": "Telefon",
+    "email": "E-Mail",
+    "mobile": "Mobil",
+    "fax": "Fax"
+  },
   "country": {
     "germany": "Germany",
     "nederlands": "The Netherlands"
@@ -247,7 +253,16 @@
     },
     "contacts": {
       "types": {
-        "title": "Contact Types"
+        "title": "Contact Types",
+        "name": "Technical name",
+        "i18nname": "Localized name",
+        "icon": "Icon",
+        "editor": {
+          "title": "Kontaktarten bearbeiten",
+          "localized": "Localisation via json files",
+          "name": "Technical name",
+          "icon": "Icon"
+        }
       }
     },
     "countries": {
@@ -521,6 +536,7 @@
     "filterPlaceholder": "Filter"
   },
   "partyroles": {
+    "authority": "Authority",
     "bank": "Bank",
     "borrower": "Borrower",
     "buyer": "Buyer",
@@ -534,8 +550,7 @@
     "main": "Main participant",
     "patient": "Patient",
     "renter": "Renter",
-    "vendor": "Vendor",
-    "authority": "Authority"
+    "vendor": "Vendor"
   },
   "receipts": {
     "title": "Voucher registration",
