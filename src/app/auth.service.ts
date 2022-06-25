@@ -1,10 +1,9 @@
 import { Injectable, OnInit } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { map, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { ApiReply } from './api-reply';
 import { ConfigService, AppConfig } from './config.service';
 import { Session } from './session';
-import { User } from './user';
 import { Router } from '@angular/router';
 import { ToastsService } from './utils/toasts.service';
 import { I18nService } from './i18n.service';
@@ -119,23 +118,27 @@ export class AuthService implements OnInit {
 
   public processOauth2Redirect(state: string, code: string): Subject<ApiReply> {
     let reply: Subject<ApiReply> = new Subject<ApiReply>();
+    let hostconfig = this.config.auth.oauth2.items[window.location.host];
+    if (!hostconfig) {
+      return reply;
+    }
     if (this.isLoggedin) {
       reply.next({ success: false });
       return reply;
     }
-    if (this.config.auth.oauth2.state !== state) {
+    if (hostconfig.state !== state) {
       reply.next({ success: false });
       return reply;
     }
     let formdata = new FormData();
     formdata.append('archauth_oauth2_code', code);
     formdata.append('archauth_oauth2_state', state);
-    this.http.post<ApiReply>(this.config.auth.oauth2.tokenEndpoint, formdata).subscribe(
+    this.http.post<ApiReply>(hostconfig.tokenEndpoint, formdata).subscribe(
       (response) => {
         if (response.success && response.payload != undefined) {
           this.session = {
             token: response.payload['token'],
-            username: this.config.auth.oauth2.state
+            username: hostconfig.state
           };
           localStorage.setItem(this.storeName, JSON.stringify(this.session));
           location.replace('/home');

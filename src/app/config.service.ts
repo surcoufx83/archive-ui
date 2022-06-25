@@ -83,6 +83,10 @@ export interface NavbarItem {
 
 export interface OAuth2Config {
   enabled: boolean;
+  items: {[key: string]: OAuth2Item};
+}
+
+export interface OAuth2Item {
   endpoint: string;
   tokenEndpoint: string;
   clientId: string;

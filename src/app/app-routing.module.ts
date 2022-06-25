@@ -64,12 +64,8 @@ const routes: Routes = [
   { path: 'files/:id', component: FilesComponent, canActivate: [SessionGuard] },
   { path: 'files', component: FilesComponent, canActivate: [SessionGuard], pathMatch: 'full' },
   { path: 'finance', component: FinanceComponent, canActivate: [SessionGuard] },
-  {
-    path: 'login', children: [
-      { path: 'oauth2', component: Oauth2CallbackComponent, canActivate: [SessionGuard] },
-      { path: '', component: LoginComponent, canActivate: [SessionGuard], pathMatch: 'full' },
-    ]
-  },
+  { path: 'login', component: LoginComponent, canActivate: [SessionGuard], pathMatch: 'full' },
+  { path: 'login/oauth2', component: Oauth2CallbackComponent, canActivate: [SessionGuard] },
   { path: 'logout', component: LogoutComponent, canActivate: [SessionGuard] },
   { path: 'notepad', component: NotepadComponent, canActivate: [SessionGuard] },
   { path: 'price-comparison', component: PriceComparisonComponent, canActivate: [SessionGuard] },
