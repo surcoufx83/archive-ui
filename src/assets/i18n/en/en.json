@@ -274,7 +274,7 @@
       "key2": "Code-2",
       "key3": "Code-3",
       "taxrates": {
-        "title": "Steuersätze bearbeiten"
+        "title": "Edit tax rates"
       },
       "editor": {
         "key2": "2-digits code",
