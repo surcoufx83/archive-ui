@@ -196,9 +196,9 @@
     "yes": "Yes"
   },
   "contacttypes": {
-    "phone": "Telefon",
+    "phone": "Phone",
     "email": "E-Mail",
-    "mobile": "Mobil",
+    "mobile": "Mobile phone",
     "fax": "Fax"
   },
   "country": {
@@ -258,7 +258,7 @@
         "i18nname": "Localized name",
         "icon": "Icon",
         "editor": {
-          "title": "Kontaktarten bearbeiten",
+          "title": "Edit contact types",
           "localized": "Localisation via json files",
           "name": "Technical name",
           "icon": "Icon"
