@@ -32,6 +32,7 @@ import { PriceComparisonComponent } from './finance/price-comparison/price-compa
 import { DbCurrenciesComponent } from './db/countries/currencies/currencies.component';
 import { DbRoleComponent } from './db/parties/role/role.component';
 import { DbPartyComponent } from './db/parties/party/party.component';
+import { DbContactTypeComponent } from './db/parties/contacts/type/type.component';
 
 const routes: Routes = [
   { path: 'account', component: AccountComponent, canActivate: [SessionGuard] },
@@ -52,6 +53,12 @@ const routes: Routes = [
         path: 'parties', canActivate: [SessionGuard], children:
           [
             { path: '', component: DbPartyComponent, canActivate: [SessionGuard], pathMatch: 'full' },
+            {
+              path: 'contacts', canActivate: [SessionGuard], children:
+                [
+                  { path: 'types', component: DbContactTypeComponent, canActivate: [SessionGuard] },
+                ]
+            },
             { path: 'roles', component: DbRoleComponent, canActivate: [SessionGuard] },
           ]
       },

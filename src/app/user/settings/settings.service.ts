@@ -159,6 +159,12 @@ export class SettingsService {
     return subject;
   }
 
+  deleteContactType(ctypeitem: ContactType): BehaviorSubject<boolean | null> {
+    let subject = new BehaviorSubject<boolean | null>(null);
+    this.postCommon('delete', ctypeitem, 'contacttype', this.contacttypes.value, subject, (c: ContactType[]) => this.updateContactTypes(c));
+    return subject;
+  }
+
   deleteCountry(countryitem: Country): BehaviorSubject<boolean | null> {
     let subject = new BehaviorSubject<boolean | null>(null);
     this.postCommon('delete', countryitem, 'country', this.countries.value, subject, (c: Country[]) => this.updateCountries(c));
@@ -206,7 +212,6 @@ export class SettingsService {
   }
 
   private updateCurrencies(currencies: Currency[]) {
-    console.log('updateCurrencies', currencies);
     this.currencies.next(currencies);
   }
 
@@ -226,6 +231,13 @@ export class SettingsService {
     let subject = new BehaviorSubject<Class | null>(null);
     this.postCommon(classitem.id == 0 ? 'create' : 'update', classitem,
     'class', this.classes.value, subject, (c: Class[]) => this.updateClasses(c));
+    return subject;
+  }
+
+  updateContactType(typeitem: ContactType): BehaviorSubject<ContactType | null> {
+    let subject = new BehaviorSubject<ContactType | null>(null);
+    this.postCommon(typeitem.id == 0 ? 'create' : 'update', typeitem,
+      'contacttype', this.contacttypes.value, subject, (c: ContactType[]) => this.updateContactTypes(c));
     return subject;
   }
 

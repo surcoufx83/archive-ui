@@ -192,6 +192,12 @@
     },
     "yes": "Ja"
   },
+  "contacttypes": {
+    "phone": "Telefon",
+    "email": "E-Mail",
+    "mobile": "Mobil",
+    "fax": "Fax"
+  },
   "country": {
     "germany": "Deutschland",
     "nederlands": "Niederlande"
@@ -244,7 +250,16 @@
     },
     "contacts": {
       "types": {
-        "title": "Kontaktarten"
+        "title": "Kontaktarten",
+        "name": "Technischer Name",
+        "i18nname": "Lokalisierter Name",
+        "icon": "Icon",
+        "editor": {
+          "title": "Kontaktarten bearbeiten",
+          "localized": "Lokalisierung per json-Dateien",
+          "name": "Technischer Name",
+          "icon": "Icon"
+        }
       }
     },
     "countries": {
@@ -518,6 +533,7 @@
     "filterPlaceholder": "Filtern"
   },
   "partyroles": {
+    "authority": "Behörde",
     "bank": "Bank",
     "borrower": "Kreditnehmer",
     "buyer": "Käufer",
@@ -531,8 +547,7 @@
     "main": "Hauptbeteiligter",
     "patient": "Patient",
     "renter": "Mieter",
-    "vendor": "Verkäufer",
-    "authority": "Behörde"
+    "vendor": "Verkäufer"
   },
   "receipts": {
     "title": "Belegerfassung",

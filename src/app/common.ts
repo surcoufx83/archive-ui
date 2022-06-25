@@ -24,6 +24,7 @@ export enum ButtonType {
 
 export interface ContactType {
   id: number;
+  i18nname: string;
   icon: string;
   name: string;
 }

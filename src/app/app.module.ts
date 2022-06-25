@@ -65,6 +65,7 @@ import { ButtonComponent } from './utils/button/button.component';
 import { DbCurrenciesComponent } from './db/countries/currencies/currencies.component';
 import { DbRoleComponent } from './db/parties/role/role.component';
 import { DbPartyComponent } from './db/parties/party/party.component';
+import { DbContactTypeComponent } from './db/parties/contacts/type/type.component';
 
 registerLocaleData(localeDe);
 
@@ -118,6 +119,7 @@ registerLocaleData(localeDe);
     DbCurrenciesComponent,
     DbRoleComponent,
     DbPartyComponent,
+    DbContactTypeComponent,
   ],
   imports: [
     AppRoutingModule,
