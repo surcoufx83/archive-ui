@@ -61,7 +61,7 @@
                                     i18n('db.countries.currency') }}</label>
                                 <select class="form-select" id="country-currency" name="country-currency"
                                     [(ngModel)]="editcountry.currencyid" required>
-                                    <option [value]="null">{{ i18n('common.select.pickOne') }}</option>
+                                    <option [value]="0">{{ i18n('common.select.pickOne') }}</option>
                                     <option *ngFor="let item of currencies" [value]="item.id">
                                         {{ item.shortname }} - {{ item.name }}
                                     </option>
@@ -163,7 +163,7 @@
 </ng-template>
 
 <ng-template #taxratesEditor let-country="country">
-    <div class="container pt-4 pt-md-2 mb-2" *ngIf="editcountry">
+    <div class="container pt-4 pt-md-2 mb-2 px-0" *ngIf="editcountry">
         <div class="card">
             <app-h5 [containercss]="'card-header'" [title]="i18n('db.countries.taxrates.title')"></app-h5>
             <div class="card-body">
