@@ -169,11 +169,17 @@
     "back": "Back",
     "cancel": "Cancel",
     "confirm": {
+      "askDeletion": "Are you sure you want to remove record {0}?",
+      "delete": {
+        "title": "Saved",
+        "message": "The record was deleted from the database."
+      },
       "save": {
         "title": "Saved",
         "message": "Changes have been saved successfully."
       }
     },
+    "delete": "Delete",
     "no": "No",
     "none": "None",
     "novalue": "---",
@@ -188,6 +194,12 @@
       }
     },
     "yes": "Yes"
+  },
+  "contacttypes": {
+    "phone": "Phone",
+    "email": "E-Mail",
+    "mobile": "Mobile phone",
+    "fax": "Fax"
   },
   "country": {
     "germany": "Germany",
@@ -241,7 +253,16 @@
     },
     "contacts": {
       "types": {
-        "title": "Contact Types"
+        "title": "Contact Types",
+        "name": "Technical name",
+        "i18nname": "Localized name",
+        "icon": "Icon",
+        "editor": {
+          "title": "Edit contact types",
+          "localized": "Localisation via json files",
+          "name": "Technical name",
+          "icon": "Icon"
+        }
       }
     },
     "countries": {
@@ -266,13 +287,46 @@
       "title": "Cronjobs"
     },
     "currencies": {
-      "title": "Currencies"
+      "title": "Currencies",
+      "default": "System Default",
+      "name": "Name",
+      "shortname": "Short name",
+      "sign": "Symbol",
+      "editor": {
+        "name": "Full Name",
+        "shortname": "3-digits code",
+        "sign": "Sign",
+        "title": "Edit currency"
+      }
+    },
+    "directories": {
+      "title": "Root directories"
+    },
+    "expenses": {
+      "title": "Expenses",
+      "categories": {
+        "title": "Expense types"
+      },
+      "templates": {
+        "title": "Templates"
+      },
+      "types": {
+        "title": "Expense types"
+      }
     },
     "extension": {
       "title": "File types"
     },
     "manager": {
-      "title": "Data management"
+      "title": "Data management",
+      "countries": "Countries",
+      "filesystem": "File system",
+      "finance": "Finance",
+      "files": "Files and classification",
+      "living": "Housing",
+      "parties": "Correspondents",
+      "system": "Administrative",
+      "work": "Worktime management"
     },
     "meters": {
       "title": "Counters"
@@ -287,17 +341,45 @@
       "addresses": {
         "title": "Addresses"
       },
+      "banks": {
+        "title": "Banks"
+      },
+      "clients": {
+        "title": "Clients"
+      },
       "contacts": {
         "title": "Contact Information"
       },
       "roles": {
-        "title": "Roles"
+        "title": "Roles",
+        "name": "Technical name",
+        "i18nname": "Localized name"
       }
     },
     "stocks": {
       "title": "Stocks",
       "apis": {
         "title": "APIs"
+      }
+    },
+    "units": {
+      "title": "Units of measurement"
+    },
+    "user": {
+      "title": "Site Users"
+    },
+    "work": {
+      "customers": {
+        "title": "Customer"
+      },
+      "holidays": {
+        "title": "Holidays"
+      },
+      "offcategories": {
+        "title": "Time off types"
+      },
+      "timecategories": {
+        "title": "Expense types"
       }
     }
   },
@@ -356,8 +438,8 @@
       "title": "Cases for review"
     },
     "database": {
-      "title": "Stammdaten",
-      "dbmanager": "Zur Stammdatenverwaltung"
+      "title": "Master data",
+      "dbmanager": "To the database management"
     },
     "inbox": {
       "title": "New Documents"
@@ -374,9 +456,9 @@
       "storageLink": "Storage"
     },
     "supermarket": {
-      "title": "Im Supermark",
-      "priceComparison": "Preisvergleich und -historie",
-      "receiptsLink": "Erfassung von Einkäufen",
+      "title": "In the super market",
+      "priceComparison": "Price comparison and history",
+      "receiptsLink": "Recording of receipts",
       "shoppingLink": "Shopping list"
     }
   },
@@ -454,6 +536,7 @@
     "filterPlaceholder": "Filter"
   },
   "partyroles": {
+    "authority": "Authority",
     "bank": "Bank",
     "borrower": "Borrower",
     "buyer": "Buyer",
@@ -467,8 +550,7 @@
     "main": "Main participant",
     "patient": "Patient",
     "renter": "Renter",
-    "vendor": "Vendor",
-    "authority": "Authority"
+    "vendor": "Vendor"
   },
   "receipts": {
     "title": "Voucher registration",
