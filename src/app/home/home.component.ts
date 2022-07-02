@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as _filesize from 'filesize';
 import { AuthService } from '../auth.service';
@@ -15,11 +15,12 @@ import { FormatService } from '../utils/format.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
 
   busy: boolean = false;
   inactivecases: Case[] = [];
   newfiles: File[] = [];
+  updatetimeout: any;
   usersettingsObj: Settings | null = null;
   stats?: HomeStats;
   storagename: string = this.config.storage.prefix + 'homeData';
@@ -50,6 +51,11 @@ export class HomeComponent implements OnInit {
 
   i18n(key: string, params: string[] = []): string {
     return this.i18nService.i18n(key, params);
+  }
+  
+  ngOnDestroy(): void {
+    if (this.updatetimeout)
+      clearTimeout(this.updatetimeout);
   }
 
   ngOnInit(): void {
@@ -83,7 +89,7 @@ export class HomeComponent implements OnInit {
         }));
       }
       this.busy = false;
-      this.userSettings.setTimeout(setTimeout(() => { this.update(); }, 60000));
+      this.updatetimeout = setTimeout(() => { this.update(); }, 60000);
     });
   }
 
