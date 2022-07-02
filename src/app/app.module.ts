@@ -7,6 +7,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { NgxEchartsModule } from 'ngx-echarts';
 import { NgxFilesizeModule } from 'ngx-filesize';
 import { PdfJsViewerModule } from 'ng2-pdfjs-viewer';
 
@@ -56,10 +57,17 @@ import { ToastComponent } from './utils/toast/toast.component';
 import { DbCountriesComponent } from './db/countries/countries.component';
 import { ShoppingComponent } from './finance/shopping/shopping.component';
 import { CacheService } from './svcs/cache.service';
-import { H4Component } from './utils/h4/h4.component';
 import { H2Component } from './utils/h2/h2.component';
 import { H3Component } from './utils/h3/h3.component';
+import { H4Component } from './utils/h4/h4.component';
+import { H5Component } from './utils/h5/h5.component';
 import { PriceComparisonComponent } from './finance/price-comparison/price-comparison.component';
+import { NgChartsModule } from 'ng2-charts';
+import { ButtonComponent } from './utils/button/button.component';
+import { DbCurrenciesComponent } from './db/countries/currencies/currencies.component';
+import { DbRoleComponent } from './db/parties/role/role.component';
+import { DbPartyComponent } from './db/parties/party/party.component';
+import { DbContactTypeComponent } from './db/parties/contacts/type/type.component';
 
 registerLocaleData(localeDe);
 
@@ -105,10 +113,16 @@ registerLocaleData(localeDe);
     ToastComponent,
     DbCountriesComponent,
     ShoppingComponent,
-    H4Component,
     H2Component,
     H3Component,
+    H4Component,
+    H5Component,
     PriceComparisonComponent,
+    ButtonComponent,
+    DbCurrenciesComponent,
+    DbRoleComponent,
+    DbPartyComponent,
+    DbContactTypeComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -120,8 +134,12 @@ registerLocaleData(localeDe);
       provide: DateAdapter,
       useFactory: adapterFactory,
     }),
+    NgxEchartsModule.forRoot({
+      echarts: () => import('echarts')
+    }),
     NgxFilesizeModule,
     PdfJsViewerModule,
+    NgChartsModule,
   ],
   providers: [
     {

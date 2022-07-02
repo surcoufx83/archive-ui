@@ -12,12 +12,24 @@
     },
     "oauth2": {
       "enabled": true,
-      "endpoint": "https://<your nextcloud server>/apps/oauth2/authorize",
-      "tokenEndpoint": "/api/auth/oauth2",
-      "clientId": "<your client id>",
-      "clientSecret": "<your client secret>",
-      "redirectUrl": "https://<your server>/login/oauth2",
-      "state": "arcnc"
+      "items": {
+        "<your server>": {
+          "endpoint": "https://<your nextcloud server>/apps/oauth2/authorize",
+          "tokenEndpoint": "/api/auth/oauth2",
+          "clientId": "<your client id>",
+          "clientSecret": "<your client secret>",
+          "redirectUrl": "https://<your server>/login/oauth2",
+          "state": "<your server>"
+        },
+        "localhost:4200": {
+          "endpoint": "https://<your nextcloud server>/apps/oauth2/authorize",
+          "tokenEndpoint": "/api/auth/oauth2",
+          "clientId": "<your client id>",
+          "clientSecret": "<your client secret>",
+          "redirectUrl": "https://localhost:4200/login/oauth2",
+          "state": "localhost:4200"
+        }
+      }
     }
   },
   "icons": {
@@ -26,9 +38,23 @@
     "busy": "fa-solid fa-fan fa-spin",
     "calendar": "fa-solid fa-calendar-days",
     "cases": "fa-solid fa-file-signature",
+    "copy": "fa-solid fa-copy",
+    "class": "fa-solid fa-fingerprint",
+    "close": "fa-solid fa-xmark",
     "cloud": "fa-brands fa-cloudversify",
+    "country": "fa-solid fa-globe",
+    "currency": "fa-solid fa-coins",
     "dashboard": "fa-solid fa-chart-pie",
+    "database": "fa-solid fa-database",
+    "delete": "fa-solid fa-trash",
+    "download": "fa-solid fa-cloud-arrow-down",
+    "edit": "fa-solid fa-file-pen",
+    "error": "fa-solid fa-triangle-exclamation",
+    "file": "fa-solid fa-file",
+    "filter-price": "fa-solid fa-filter-circle-dollar",
     "finance": "fa-regular fa-money-bill-alt",
+    "folder": "fa-solid fa-folder",
+    "folder-up": "fa-solid fa-turn-up fa-flip-horizontal",
     "go-down": "fa-solid fa-caret-down",
     "go-left": "fa-solid fa-caret-left",
     "go-right": "fa-solid fa-caret-right",
@@ -40,10 +66,17 @@
     "list": "fa-solid fa-grip-lines",
     "login": "fa-solid fa-user-lock",
     "notepad": "fa-regular fa-lightbulb",
-    "preview": "fa-solid fa-image",
+    "organic": "fa-solid fa-seedling",
+    "preview": "fa-solid fa-eye",
+    "receipt": "fa-solid fa-receipt",
+    "role": "fa-solid fa-user-shield",
     "save": "fa-solid fa-cloud-arrow-up",
     "search": "fa-brands fa-searchengin",
     "settings": "fa-solid fa-cog",
+    "shopping": "fa-solid fa-cart-shopping",
+    "sortasc": "fa-solid fa-arrow-down-a-z",
+    "sortdesc": "fa-solid fa-arrow-down-z-a",
+    "star": "fa-solid fa-star",
     "stopwatch": "fa-solid fa-stopwatch",
     "today": "fa-solid fa-calendar-day",
     "toggle-off": "fa-solid fa-toggle-off",
@@ -63,7 +96,7 @@
     ],
     "workitems": [
       { "title": "navbar.workitems.today", "icon": "today", "link": "/work/today" },
-      { "title": "navbar.workitems.month", "icon": "month", "link": "/work/month" },
+      { "title": "navbar.workitems.month", "icon": "calendar", "link": "/work/month" },
       { "title": "navbar.workitems.leads", "icon": "leads", "link": "/work/leads" },
       { "title": "navbar.workitems.settings", "icon": "settings", "link": "/work/settings" }
     ]

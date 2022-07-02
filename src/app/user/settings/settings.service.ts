@@ -9,20 +9,20 @@ import { Case, CaseFiletype } from 'src/app/cases/case';
 import { Class } from 'src/app/files/class';
 import { Address, ContactType, Country, Party, PartyContact, PartyRole } from 'src/app/common';
 import { Currency } from 'src/app/account/account';
+import { TaxRate } from 'src/app/finance/finance';
 
 @Injectable()
 export class SettingsService {
 
-  private archiveLoaded : boolean = false;
-  private componentRefresher : any;
+  private archiveLoaded: boolean = false;
+  private componentRefresher: any;
 
   constructor(private authService: AuthService,
-              private configService: ConfigService)
-  {
+    private configService: ConfigService) {
     this.loadUserSettings();
   }
 
-  public loadArchiveSettings() : void {
+  public loadArchiveSettings(): void {
     if (this.archiveLoaded)
       return;
     this.archiveLoaded = true;
@@ -45,7 +45,7 @@ export class SettingsService {
     this.caseFileStatus.next(['new', 'checked', 'approved']);
   }
 
-  private loadUserSettings() : void {
+  private loadUserSettings(): void {
     let url = this.configService.config.api.baseUrl + '/user/settings';
     this.authService.queryApi(url).subscribe((reply) => {
       if (reply.success && reply.payload != null) {
@@ -55,7 +55,7 @@ export class SettingsService {
     });
   }
 
-  public setTimeout(timeout: any) : void {
+  public setTimeout(timeout: any): void {
     if (this.componentRefresher)
       clearTimeout(this.componentRefresher);
     this.componentRefresher = timeout;
@@ -97,14 +97,90 @@ export class SettingsService {
   private roles: BehaviorSubject<PartyRole[]> = new BehaviorSubject<PartyRole[]>([]);
   roles$ = this.roles.asObservable();
 
-  private settings: BehaviorSubject<Settings|null> = new BehaviorSubject<Settings|null>(null);
+  private settings: BehaviorSubject<Settings | null> = new BehaviorSubject<Settings | null>(null);
   settings$ = this.settings.asObservable();
-  
-  private user: BehaviorSubject<User|null> = new BehaviorSubject<User|null>(null);
+
+  private user: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
   user$ = this.user.asObservable();
 
-  private workprops: BehaviorSubject<WorkProperties|null> = new BehaviorSubject<WorkProperties|null>(null);
+  private workprops: BehaviorSubject<WorkProperties | null> = new BehaviorSubject<WorkProperties | null>(null);
   workprops$ = this.workprops.asObservable();
+
+  private postCommon(method: string, item: any, urlitem: string, listing: any[], subject: BehaviorSubject<boolean | any | null>,
+      callback: Function) {
+
+    let url = this.configService.config.api.baseUrl + '/' + urlitem + '/';
+    if (method == 'create')
+      url += 'create';
+    else
+      url += item.id + (method == 'delete' ? '/delete' : '');
+    let obj: { [key:string]: any} = {};
+    if (method != 'delete')
+        obj[urlitem] = item;
+    this.authService.updateApi(url, obj).subscribe((reply) => {
+      if (reply.success) {
+        let newitem = null;
+        if (method != 'delete' && reply.payload)
+          newitem = reply.payload[urlitem];
+        if (item.id > 0) {
+          let removei = -1;
+          for (let i = 0; i < listing.length; i++) {
+            if (listing[i].id == item.id) {
+              removei = i;
+              break;
+            }
+          }
+          if (removei > -1) {
+            if (method == 'delete')
+              listing.splice(removei, 1);
+            else
+              listing.splice(removei, 1, newitem);
+          }
+        }
+        else
+          listing.push(newitem);
+        
+        subject.next(method != 'delete' ? newitem : true);
+        subject.complete();
+        callback(listing);
+      }
+      else {
+        subject.next(false);
+        subject.complete();
+      }
+    });
+
+  }
+
+  deleteClass(classitem: Class): BehaviorSubject<boolean | null> {
+    let subject = new BehaviorSubject<boolean | null>(null);
+    this.postCommon('delete', classitem, 'class', this.classes.value, subject, (c: Class[]) => this.updateClasses(c));
+    return subject;
+  }
+
+  deleteContactType(ctypeitem: ContactType): BehaviorSubject<boolean | null> {
+    let subject = new BehaviorSubject<boolean | null>(null);
+    this.postCommon('delete', ctypeitem, 'contacttype', this.contacttypes.value, subject, (c: ContactType[]) => this.updateContactTypes(c));
+    return subject;
+  }
+
+  deleteCountry(countryitem: Country): BehaviorSubject<boolean | null> {
+    let subject = new BehaviorSubject<boolean | null>(null);
+    this.postCommon('delete', countryitem, 'country', this.countries.value, subject, (c: Country[]) => this.updateCountries(c));
+    return subject;
+  }
+
+  deleteCurrency(currencyitem: Currency): BehaviorSubject<boolean | null> {
+    let subject = new BehaviorSubject<boolean | null>(null);
+    this.postCommon('delete', currencyitem, 'currency', this.currencies.value, subject, (c: Currency[]) => this.updateCurrencies(c));
+    return subject;
+  }
+
+  deleteRole(roleitem: PartyRole): BehaviorSubject<boolean | null> {
+    let subject = new BehaviorSubject<boolean | null>(null);
+    this.postCommon('delete', roleitem, 'role', this.roles.value, subject, (c: PartyRole[]) => this.updateRoles(c));
+    return subject;
+  }
 
   private updateAddresses(addresses: Address[]) {
     this.addresses.next(addresses);
@@ -150,77 +226,38 @@ export class SettingsService {
     this.roles.next(roles);
   }
 
-  updateClass(classitem: Class) : BehaviorSubject<Class|null> {
-    let subject = new BehaviorSubject<Class|null>(null);
-    let url = this.configService.config.api.baseUrl + '/class/';
-    if (classitem.id == 0)
-      url += 'create';
-    else
-      url += classitem.id;
-    this.authService.updateApi(url, {class: classitem}).subscribe((reply) => {
-      if (reply.success && reply.payload && reply.payload['class']) {
-        let newitem = <Class>reply.payload['class'];
-        let classes = this.classes.value;
-        if (classitem.id > 0) {
-          let removei = -1;
-          for (let i = 0; i < classes.length; i++) {
-            if (classes[i].id == classitem.id) {
-              removei = i;
-              break;
-            }
-          }
-          classes.splice(removei, 1, newitem);
-        } else {
-          classes.push(newitem);
-        }
-        if (newitem.isdefault) {
-          classes.forEach((c) => {
-            if (c.id != newitem.id && c.isdefault)
-              c.isdefault = false;
-          });
-        }
-        this.updateClasses(classes);
-        subject.next(newitem);
-        subject.complete();
-      }
-    });
+  updateClass(classitem: Class): BehaviorSubject<Class | null> {
+    let subject = new BehaviorSubject<Class | null>(null);
+    this.postCommon(classitem.id == 0 ? 'create' : 'update', classitem,
+    'class', this.classes.value, subject, (c: Class[]) => this.updateClasses(c));
     return subject;
   }
 
-  updateCountry(countryitem: Country) : BehaviorSubject<Country|null> {
-    let subject = new BehaviorSubject<Country|null>(null);
-    let url = this.configService.config.api.baseUrl + '/country/';
-    if (countryitem.id == 0)
-      url += 'create';
-    else
-      url += countryitem.id;
-    this.authService.updateApi(url, {country: countryitem}).subscribe((reply) => {
-      if (reply.success && reply.payload && reply.payload['country']) {
-        let newitem = <Country>reply.payload['country'];
-        let countries = this.countries.value;
-        if (countryitem.id > 0) {
-          let removei = -1;
-          for (let i = 0; i < countries.length; i++) {
-            if (countries[i].id == countryitem.id) {
-              removei = i;
-              break;
-            }
-          }
-          countries.splice(removei, 1, newitem);
-        } else {
-          countries.push(newitem);
-        }
-        if (newitem.isdefault) {
-          countries.forEach((c) => {
-            if (c.id != newitem.id && c.isdefault)
-              c.isdefault = false;
-          });
-        }
-        this.updateCountries(countries);
-        subject.next(newitem);
-        subject.complete();
-      }
-    });
+  updateContactType(typeitem: ContactType): BehaviorSubject<ContactType | null> {
+    let subject = new BehaviorSubject<ContactType | null>(null);
+    this.postCommon(typeitem.id == 0 ? 'create' : 'update', typeitem,
+      'contacttype', this.contacttypes.value, subject, (c: ContactType[]) => this.updateContactTypes(c));
+    return subject;
+  }
+
+  updateCountry(countryitem: Country): BehaviorSubject<Country | null> {
+    let subject = new BehaviorSubject<Country | null>(null);
+    this.postCommon(countryitem.id == 0 ? 'create' : 'update', countryitem,
+      'country', this.countries.value, subject, (c: Country[]) => this.updateCountries(c));
+    return subject;
+  }
+
+  updateCurrency(currencyitem: Currency): BehaviorSubject<Currency | null> {
+    let subject = new BehaviorSubject<Currency | null>(null);
+    this.postCommon(currencyitem.id == 0 ? 'create' : 'update', currencyitem,
+      'currency', this.currencies.value, subject, (c: Currency[]) => this.updateCurrencies(c));
+    return subject;
+  }
+
+  updateRole(roleitem: PartyRole): BehaviorSubject<PartyRole | null> {
+    let subject = new BehaviorSubject<PartyRole | null>(null);
+    this.postCommon(roleitem.id == 0 ? 'create' : 'update', roleitem,
+      'role', this.roles.value, subject, (c: PartyRole[]) => this.updateRoles(c));
     return subject;
   }
 
@@ -228,7 +265,7 @@ export class SettingsService {
     this.settings.next(settings);
     if (push) {
       let url = this.configService.config.api.baseUrl + '/user/settings';
-      this.authService.updateApi(url, {userSettings: settings});
+      this.authService.updateApi(url, { userSettings: settings });
     }
   }
 
@@ -241,7 +278,7 @@ export class SettingsService {
     this.workprops.next(props);
     if (push) {
       let url = this.configService.config.api.baseUrl + '/work/settings';
-      this.authService.updateApi(url, {workSettings: props});
+      this.authService.updateApi(url, { workSettings: props });
     }
   }
 

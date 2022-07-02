@@ -1,4 +1,5 @@
 import { Currency } from "./account/account";
+import { TaxRate } from "./finance/finance";
 
 export interface Address {
   id: number;
@@ -24,6 +25,7 @@ export enum ButtonType {
 
 export interface ContactType {
   id: number;
+  i18nname: string;
   icon: string;
   name: string;
 }
@@ -37,6 +39,7 @@ export interface Country {
   key2: string;
   key3: string;
   isdefault: boolean;
+  taxrates: TaxRate[];
 }
 
 export interface Party {
@@ -69,4 +72,5 @@ export interface PartyContact {
 export interface PartyRole {
   id: number;
   name: string;
+  i18nname: string;
 }

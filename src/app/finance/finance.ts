@@ -62,8 +62,6 @@ export interface ReceiptItem {
 
 export interface TaxRate {
     id: number;
-    country: Country;
-    countryid: number;
     rate: number;
     validfrom: string|null;
     validuntil: string|null;

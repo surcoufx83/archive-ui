@@ -15,8 +15,8 @@ export class FormatService {
     return _filesize(size);
   }
 
-  fcur(n: number, c: Currency) : string {
-    return new Intl.NumberFormat(this.i18nService.Locale, { style: 'currency', currency: c.shortname }).format(n);
+  fcur(n: number, c?: Currency) : string {
+    return new Intl.NumberFormat(this.i18nService.Locale, { style: 'currency', currency: c?.shortname ?? 'EUR' }).format(n);
   }
 
   fdate(date: Date|string|null, form: string): string {

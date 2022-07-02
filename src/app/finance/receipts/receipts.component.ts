@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { format } from 'date-fns';
@@ -18,7 +18,7 @@ import { Receipt, ReceiptArticle, ReceiptArticleCategory, TaxRate } from '../fin
   templateUrl: './receipts.component.html',
   styleUrls: ['./receipts.component.scss']
 })
-export class ReceiptsComponent implements OnInit {
+export class ReceiptsComponent implements OnInit, OnDestroy {
 
   activeArticleIndex: number = -1;
   activeArticleDropdownItems: ReceiptArticle[] = [];
@@ -33,6 +33,7 @@ export class ReceiptsComponent implements OnInit {
   parties: Party[] = [];
   receipts: Receipt[] = [];
   taxrates: TaxRate[] = [];
+  updatetimeout: any;
   usersettingsObj: Settings | null = null;
   when: number = 0;
 
@@ -132,6 +133,11 @@ export class ReceiptsComponent implements OnInit {
         totalnet: 0.0,
       });
     }
+  }
+  
+  ngOnDestroy(): void {
+    if (this.updatetimeout)
+      clearTimeout(this.updatetimeout);
   }
 
   ngOnInit(): void {
@@ -375,7 +381,7 @@ export class ReceiptsComponent implements OnInit {
         this.saveLocalStorage();
       }
       this.busy = false;
-      this.userSettings.setTimeout(setTimeout(() => { this.update(); }, 1500));
+      this.updatetimeout = setTimeout(() => { this.update(); }, 1500);
     });
   }
 

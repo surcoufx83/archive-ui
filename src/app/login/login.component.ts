@@ -52,11 +52,14 @@ export class LoginComponent implements OnInit {
     if (this.busy)
       return;
     this.busy = true;
-    let url = this.config.auth.oauth2.endpoint + '?response_type=code'
-              + '&client_id=' + this.config.auth.oauth2.clientId
-              + '&client_secret=' + this.config.auth.oauth2.clientSecret
-              + '&state=' + this.config.auth.oauth2.state
-              + '&redirect_uri=' + this.config.auth.oauth2.redirectUrl;
+    let hostconfig = this.config.auth.oauth2.items[window.location.host];
+    if (!hostconfig)
+      return;
+    let url = hostconfig.endpoint + '?response_type=code'
+              + '&client_id=' + hostconfig.clientId
+              + '&client_secret=' + hostconfig.clientSecret
+              + '&state=' + hostconfig.state
+              + '&redirect_uri=' + hostconfig.redirectUrl;
     location.replace(url);
   }
 

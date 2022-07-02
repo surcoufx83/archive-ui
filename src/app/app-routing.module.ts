@@ -29,6 +29,10 @@ import { DbManagerComponent } from './db/manager/manager.component';
 import { DbCountriesComponent } from './db/countries/countries.component';
 import { ShoppingComponent } from './finance/shopping/shopping.component';
 import { PriceComparisonComponent } from './finance/price-comparison/price-comparison.component';
+import { DbCurrenciesComponent } from './db/countries/currencies/currencies.component';
+import { DbRoleComponent } from './db/parties/role/role.component';
+import { DbPartyComponent } from './db/parties/party/party.component';
+import { DbContactTypeComponent } from './db/parties/contacts/type/type.component';
 
 const routes: Routes = [
   { path: 'account', component: AccountComponent, canActivate: [SessionGuard] },
@@ -38,10 +42,19 @@ const routes: Routes = [
   {
     path: 'db', children: [
       { path: 'classes', component: DbClassesComponent, canActivate: [SessionGuard] },
+      { path: 'countries', component: DbCountriesComponent, canActivate: [SessionGuard] },
+      { path: 'currencies', component: DbCurrenciesComponent, canActivate: [SessionGuard] },
       {
-        path: 'countries', canActivate: [SessionGuard], children:
+        path: 'parties', canActivate: [SessionGuard], children:
           [
-            { path: '', component: DbCountriesComponent, canActivate: [SessionGuard], pathMatch: 'full' },
+            { path: '', component: DbPartyComponent, canActivate: [SessionGuard], pathMatch: 'full' },
+            {
+              path: 'contacts', canActivate: [SessionGuard], children:
+                [
+                  { path: 'types', component: DbContactTypeComponent, canActivate: [SessionGuard] },
+                ]
+            },
+            { path: 'roles', component: DbRoleComponent, canActivate: [SessionGuard] },
           ]
       },
       { path: '', component: DbManagerComponent, canActivate: [SessionGuard], pathMatch: 'full' },
@@ -53,12 +66,8 @@ const routes: Routes = [
   { path: 'files/:id', component: FilesComponent, canActivate: [SessionGuard] },
   { path: 'files', component: FilesComponent, canActivate: [SessionGuard], pathMatch: 'full' },
   { path: 'finance', component: FinanceComponent, canActivate: [SessionGuard] },
-  {
-    path: 'login', children: [
-      { path: 'oauth2', component: Oauth2CallbackComponent, canActivate: [SessionGuard] },
-      { path: '', component: LoginComponent, canActivate: [SessionGuard], pathMatch: 'full' },
-    ]
-  },
+  { path: 'login', component: LoginComponent, canActivate: [SessionGuard], pathMatch: 'full' },
+  { path: 'login/oauth2', component: Oauth2CallbackComponent, canActivate: [SessionGuard] },
   { path: 'logout', component: LogoutComponent, canActivate: [SessionGuard] },
   { path: 'notepad', component: NotepadComponent, canActivate: [SessionGuard] },
   { path: 'price-comparison', component: PriceComparisonComponent, canActivate: [SessionGuard] },
