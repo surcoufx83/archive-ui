@@ -7,6 +7,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { NgxEchartsModule } from 'ngx-echarts';
 import { NgxFilesizeModule } from 'ngx-filesize';
 import { PdfJsViewerModule } from 'ng2-pdfjs-viewer';
 
@@ -132,6 +133,9 @@ registerLocaleData(localeDe);
     CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory,
+    }),
+    NgxEchartsModule.forRoot({
+      echarts: () => import('echarts')
     }),
     NgxFilesizeModule,
     PdfJsViewerModule,

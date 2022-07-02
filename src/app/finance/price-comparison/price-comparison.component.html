@@ -6,10 +6,10 @@
 <div class="container">
     <div class="flex-table flex-table-sm mb-3">
         <div class="flex-table-head row">
-            <div class="col-3">{{ i18n('pricecomparison.chart') }}</div>
-            <div class="col-3">{{ i18n('pricecomparison.time') }}</div>
-            <div class="col-3">{{ i18n('pricecomparison.range') }}</div>
-            <div class="col-3">{{ i18n('pricecomparison.article') }}</div>
+            <div class="col-3 text-nowrap text-truncate">{{ i18n('pricecomparison.chart') }}</div>
+            <div class="col-3 text-nowrap text-truncate">{{ i18n('pricecomparison.time') }}</div>
+            <div class="col-3 text-nowrap text-truncate">{{ i18n('pricecomparison.range') }}</div>
+            <div class="col-3 text-nowrap text-truncate">{{ i18n('pricecomparison.article') }}</div>
         </div>
         <ng-container *ngFor="let itemsarray of items">
             <ng-container [ngTemplateOutlet]="compareitem" [ngTemplateOutletContext]="{ items: itemsarray, article: articles[itemsarray[0].articleid]}"></ng-container>
@@ -18,17 +18,19 @@
 </div>
 
 <ng-template #compareitem let-items="items" let-article="article">
-    <div class="flex-table-body row">
-        <div class="col-3">
-            
+    <div class="flex-table-body row align-items-center">
+        <div class="col-12 col-lg-3 order-1 order-lg-0">
+            <ng-container *ngIf="articlecharts[article.id]">
+                <div echarts [options]="articlecharts[article.id]" class="chart" height="48"></div>
+            </ng-container>
         </div>
-        <div class="col-3">
+        <div class="col-6 col-lg-3 order-2 order-lg-1 text-center text-lg-start text-nowrap text-truncate">
             {{formatService.fdate(first(items), 'P')}} - {{formatService.fdate(last(items), 'P')}}
         </div>
-        <div class="col-3">
+        <div class="col-6 col-lg-3 order-3 order-lg-2 text-center text-lg-start text-nowrap text-truncate">
             {{formatService.fcur(min(items))}} - {{formatService.fcur(max(items))}}
         </div>
-        <div class="col-3">
+        <div class="col-12 col-lg-3 order-0 order-lg-4 text-center text-lg-start text-nowrap text-truncate">
             {{article.name}} - {{article.search}}
         </div>
     </div>
