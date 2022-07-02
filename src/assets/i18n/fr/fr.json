@@ -169,11 +169,17 @@
     "back": "Zurück",
     "cancel": "Abbruch",
     "confirm": {
+      "askDeletion": "Bist du sicher, dass der Datensatz {0} gelöscht werden soll?",
+      "delete": {
+        "title": "Gespeichert",
+        "message": "Der Datensatz wurde aus der Datenbank gelöscht."
+      },
       "save": {
         "title": "Gespeichert",
         "message": "Die Änderungen wurden erfolgreich gespeichert."
       }
     },
+    "delete": "Löschen",
     "no": "Nein",
     "none": "Keine",
     "novalue": "---",
@@ -188,6 +194,12 @@
       }
     },
     "yes": "Ja"
+  },
+  "contacttypes": {
+    "phone": "Telefon",
+    "email": "E-Mail",
+    "mobile": "Mobil",
+    "fax": "Fax"
   },
   "country": {
     "germany": "Deutschland",
@@ -241,7 +253,16 @@
     },
     "contacts": {
       "types": {
-        "title": "Kontaktarten"
+        "title": "Kontaktarten",
+        "name": "Technischer Name",
+        "i18nname": "Lokalisierter Name",
+        "icon": "Icon",
+        "editor": {
+          "title": "Kontaktarten bearbeiten",
+          "localized": "Lokalisierung per json-Dateien",
+          "name": "Technischer Name",
+          "icon": "Icon"
+        }
       }
     },
     "countries": {
@@ -266,13 +287,46 @@
       "title": "Cronjobs"
     },
     "currencies": {
-      "title": "Währungen"
+      "title": "Währungen",
+      "default": "Standard",
+      "name": "Name",
+      "shortname": "Kürzel",
+      "sign": "Zeichen",
+      "editor": {
+        "name": "Vollständiger Name",
+        "shortname": "3-stelliger Code",
+        "sign": "Internationales Zeichen",
+        "title": "Währung bearbeiten"
+      }
+    },
+    "directories": {
+      "title": "Root-Verzeichnisse"
+    },
+    "expenses": {
+      "title": "Ausgaben",
+      "categories": {
+        "title": "Ausgabearten"
+      },
+      "templates": {
+        "title": "Vorlagen"
+      },
+      "types": {
+        "title": "Buchungsarten"
+      }
     },
     "extension": {
       "title": "Dateitypen"
     },
     "manager": {
-      "title": "Stammdatenverwaltung"
+      "title": "Stammdatenverwaltung",
+      "countries": "Länder",
+      "filesystem": "Dateisystem",
+      "finance": "Finanzen",
+      "files": "Dateien und Klassifizierung",
+      "living": "Wohnung",
+      "parties": "Korrespondenten",
+      "system": "Verwaltung",
+      "work": "Arbeitszeitverwaltung"
     },
     "meters": {
       "title": "Zähler"
@@ -287,17 +341,45 @@
       "addresses": {
         "title": "Addressdatensätze"
       },
+      "banks": {
+        "title": "Nur Kreditinstitute"
+      },
+      "clients": {
+        "title": "Nur eigene Mandanten"
+      },
       "contacts": {
         "title": "Kontaktdaten"
       },
       "roles": {
-        "title": "Rollen"
+        "title": "Rollen",
+        "name": "Technischer Name",
+        "i18nname": "Lokalisierter Name"
       }
     },
     "stocks": {
       "title": "Wertpapiere und CC",
       "apis": {
         "title": "APIs"
+      }
+    },
+    "units": {
+      "title": "Maßeinheiten"
+    },
+    "user": {
+      "title": "Benutzer"
+    },
+    "work": {
+      "customers": {
+        "title": "Kunden"
+      },
+      "holidays": {
+        "title": "Feiertage"
+      },
+      "offcategories": {
+        "title": "Abwesenheitsarten"
+      },
+      "timecategories": {
+        "title": "Buchungsarten"
       }
     }
   },
@@ -454,6 +536,7 @@
     "filterPlaceholder": "Filtern"
   },
   "partyroles": {
+    "authority": "Behörde",
     "bank": "Bank",
     "borrower": "Kreditnehmer",
     "buyer": "Käufer",
@@ -467,8 +550,7 @@
     "main": "Hauptbeteiligter",
     "patient": "Patient",
     "renter": "Mieter",
-    "vendor": "Verkäufer",
-    "authority": "Behörde"
+    "vendor": "Verkäufer"
   },
   "receipts": {
     "title": "Belegerfassung",
