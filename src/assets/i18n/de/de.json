@@ -549,6 +549,13 @@
     "renter": "Mieter",
     "vendor": "Verkäufer"
   },
+  "pricecomparison": {
+    "title": "Preisvergleich und -historie",
+    "chart": "Verlauf",
+    "time": "Zeitraum",
+    "range": "Preisspanne",
+    "article": "Artikel"
+  },
   "receipts": {
     "title": "Belegerfassung",
     "client": "Käufer",
