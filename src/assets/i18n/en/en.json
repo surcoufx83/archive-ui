@@ -552,6 +552,13 @@
     "renter": "Renter",
     "vendor": "Vendor"
   },
+  "pricecomparison": {
+    "title": "Price comparison and history",
+    "chart": "Verlauf",
+    "time": "Zeitraum",
+    "range": "Preisspanne",
+    "article": "Product"
+  },
   "receipts": {
     "title": "Voucher registration",
     "client": "Buyer",
