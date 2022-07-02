@@ -554,7 +554,7 @@
   },
   "pricecomparison": {
     "title": "Preisvergleich und -historie",
-    "chart": "Verlauf",
+    "chart": "Verlauf (180 Tage)",
     "time": "Zeitraum",
     "range": "Preisspanne",
     "article": "Artikel"
