@@ -31,6 +31,18 @@
       "whit_sunday": "Whit Sunday"
     }
   },
+  "case": {
+    "title": "{0} (Akte)",
+    "metacard": {
+      "title": "General information",
+      "name": "Name der Akte",
+      "parent": "Übergeordnete Akte",
+      "created": "Created",
+      "deleted": "Deleted",
+      "filecount": "Anzahl Dateien",
+      "followup": "nachfolgende Akte"
+    }
+  },
   "casefilestatus": {
     "approved": "Approved",
     "checked": "Checked",
@@ -180,6 +192,7 @@
       }
     },
     "delete": "Delete",
+    "goto": "Gehe zu",
     "no": "No",
     "none": "None",
     "novalue": "---",
