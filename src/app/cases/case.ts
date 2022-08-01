@@ -8,6 +8,8 @@ export interface Case {
     client: Party|null;
     clientid: number|null;
     comment: string;
+    created: string;
+    deleted: string|null;
     directory: Directory|null;
     directoryid: number|null;
     extid: string;
@@ -16,6 +18,7 @@ export interface Case {
     followupcase: Case|null;
     followupcaseid: number|null;
     issub: boolean;
+    modified: string;
     notification: CaseNotification;
     parent: Case|null;
     parentid: number|null;

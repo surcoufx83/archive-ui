@@ -26,22 +26,22 @@
         <div class="card-body">
             <ul class="list-group list-group-flush">
                 <ng-container *ngFor="let id of rootcases">
-                    <ng-container *ngTemplateOutlet="caseTemplate;context: { caseid: id }"></ng-container>
+                    <ng-container *ngTemplateOutlet="caseTemplate;context: { caseid: id, level: 0 }"></ng-container>
                 </ng-container>
             </ul>
         </div>
     </div>
 </div>
 
-<ng-template #caseTemplate let-caseid="caseid">
-    <a class="list-group-item" [routerLink]="['/case', case(caseid).id]">
-        <case-list-item [case]="case(caseid)"></case-list-item>
-    </a>
-    <li class="list-group-item py-0 pe-0" *ngIf="casechilds[caseid] != undefined">
-        <ul class="list-group list-group-flush">
+<ng-template #caseTemplate let-caseid="caseid" let-level="level">
+    <ng-container *ngIf="case(caseid) != null">
+        <a [ngClass]="['list-group-item', 'py-2', 'pe-2', 'intend-level-' + level]" [routerLink]="['/case', case(caseid).id]">
+            <case-list-item [case]="case(caseid)"></case-list-item>
+        </a>
+        <ng-container *ngIf="haschilds(caseid)">
             <ng-container *ngFor="let id of childs(caseid)">
-                <ng-container *ngTemplateOutlet="caseTemplate;context: { caseid: id }"></ng-container>
+                <ng-container *ngTemplateOutlet="caseTemplate;context: { caseid: id, level: level + 1 }"></ng-container>
             </ng-container>
-        </ul>
-    </li>
+        </ng-container>
+    </ng-container>
 </ng-template>
