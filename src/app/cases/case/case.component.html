@@ -1,3 +1,99 @@
-<p>case works!</p>
-<p>{{ caseid }}  </p>
-<p>{{ case | json }}</p>
+<ui-centered-busy-indicator *ngIf="usersettingsObj == undefined"></ui-centered-busy-indicator>
+
+<ng-container *ngIf="case != null">
+
+    <div class="container pt-4 pt-md-2 mb-2">
+        <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between">
+            <h2>{{ i18n('case.title', [case.title]) }}</h2>
+            <div>
+                <nav class="h-100" style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
+                    <ol class="breadcrumb d-flex align-items-center h-100 mb-0">
+                        <li [ngClass]="{'breadcrumb-item fade': true, 'show': busy}">
+                            <ui-busy-indicator></ui-busy-indicator>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <div class="container pt-4 pt-md-2 mb-2">
+        <form #f (submit)="updateCase()" ngNativeValidate>
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h3 class="text-nowrap text-truncate">{{ i18n('case.metacard.title') }}</h3>
+                </div>
+                <div class="card-body">
+
+                    <div class="row">
+                        <!-- case header data parent + casename -->
+                        <div class="col-12 col-lg-6 mb-3">
+                            <div class="form-group">
+                                <label for="case-name" class="form-label required">{{ i18n('case.metacard.name')
+                                    }}</label>
+                                <input type="text" class="form-control" id="case-name" name="case-name"
+                                    [(ngModel)]="case.title" (change)="changes['name'] = case.title; updateCase();"
+                                    required>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 mb-3">
+                            <div class="form-group">
+                                <label for="case-parent" class="form-label required">{{ i18n('case.metacard.parent')
+                                    }}<span *ngIf="getCase(case.parentid)"> [ <a [routerLink]="['/case', case.parentid]" class="text-muted fs-7"><i
+                                        [class]="config.icons['goto'] + ' me-1 fs-8'"></i>{{ i18n('common.goto')
+                                    }}</a> ]</span></label>
+                                <input type="text" class="form-control-plaintext form-control-px" id="case-parent"
+                                    name="case-parent" [(ngModel)]="case.casepath" readonly>
+                            </div>
+                        </div>
+                    </div><!-- case header data parent + casename -->
+
+                    <div class="row">
+                        <!-- case meta information -->
+                        <div class="col-6 col-lg-3 mb-3">
+                            <div class="form-group">
+                                <label for="case-created" class="form-label">{{ i18n('case.metacard.created') }}</label>
+                                <input type="text" class="form-control-plaintext form-control-px" id="case-created"
+                                    name="case-created" [value]="formatService.fdate(case.created, 'Pp')" readonly>
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3 mb-3" *ngIf="case.deleted">
+                            <div class="form-group">
+                                <label for="case-deleted" class="form-label">{{ i18n('case.metacard.deleted') }}</label>
+                                <input type="text" class="form-control-plaintext form-control-px" id="case-deleted"
+                                    name="case-deleted" [value]="formatService.fdate(case.deleted, 'Pp')" readonly>
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3 mb-3" *ngIf="getCase(case.followupcaseid)">
+                            <div class="form-group">
+                                <label for="case-followup" class="form-label">{{ i18n('case.metacard.followup')
+                                    }} [ <a [routerLink]="['/case', case.followupcaseid]" class="text-muted fs-7"><i
+                                            [class]="config.icons['goto'] + ' me-1 fs-8'"></i>{{ i18n('common.goto')
+                                        }}</a> ]</label>
+                                <input type="text" class="form-control-plaintext form-control-px" id="case-followup"
+                                    name="case-followup" [value]="getCase(case.followupcaseid)!.title" readonly>
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3 mb-3">
+                            <div class="form-group">
+                                <label for="case-filecount" class="form-label">{{ i18n('case.metacard.filecount')
+                                    }} [ <a [routerLink]="['files']" class="text-muted fs-7"><i
+                                        [class]="config.icons['goto'] + ' me-1 fs-8'"></i>{{ i18n('common.goto')
+                                    }}</a> ]</label>
+                                <input type="text" class="form-control-plaintext form-control-px" id="case-filecount"
+                                    name="case-filecount" [value]="formatService.fnumber(case.filescount)" readonly>
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3 mb-3">
+
+                        </div>
+                        <!-- case meta information -->
+                    </div>
+
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+</ng-container>

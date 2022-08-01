@@ -31,6 +31,18 @@
       "whit_sunday": "Pfingstsonntag"
     }
   },
+  "case": {
+    "title": "{0} (Akte)",
+    "metacard": {
+      "title": "Allgemeine Informationen",
+      "name": "Name der Akte",
+      "parent": "Übergeordnete Akte",
+      "created": "Erstellt",
+      "deleted": "Gelöscht",
+      "filecount": "Anzahl Dateien",
+      "followup": "nachfolgende Akte"
+    }
+  },
   "casefilestatus": {
     "approved": "Freigegeben",
     "checked": "Geprüft",
@@ -177,6 +189,7 @@
       }
     },
     "delete": "Löschen",
+    "goto": "Gehe zu",
     "no": "Nein",
     "none": "Keine",
     "novalue": "---",
