@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { format } from 'date-fns';
 import { AuthService } from '../auth.service';
@@ -7,23 +7,21 @@ import { I18nService } from '../i18n.service';
 import { Settings } from '../user/settings/settings';
 import { SettingsService } from '../user/settings/settings.service';
 import { FormatService } from '../utils/format.service';
-import { Case } from './case';
+import { Case, CaseStatus } from './case';
 
 @Component({
   selector: 'app-cases',
   templateUrl: './cases.component.html',
   styleUrls: ['./cases.component.scss']
 })
-export class CasesComponent implements OnInit, OnDestroy {
+export class CasesComponent implements OnInit {
 
-  busy: boolean = false;
   cases: { [key: number]: Case } = {};
   casechilds: { [key: number]: number[] } = {};
   rootcases: number[] = [];
-  storagename: string = this.config.storage.prefix + 'casesData';
-  updatetimeout: any;
+  showDeleted: boolean = false;
+  showInRetention: boolean = false;
   usersettingsObj: Settings | null = null;
-  when: number = 0;
 
   constructor(private authService: AuthService,
     private configService: ConfigService,
@@ -34,14 +32,6 @@ export class CasesComponent implements OnInit, OnDestroy {
     this.userSettings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
     });
-    let olddata: string | null | CasesStorage = localStorage.getItem(this.storagename);
-    if (olddata) {
-      olddata = <CasesStorage>JSON.parse(olddata);
-      this.cases = olddata.cases;
-      this.rootcases = olddata.rootcases;
-      this.casechilds = olddata.casechilds;
-      this.when = olddata.ts;
-    }
   }
 
   case(id: number): Case {
@@ -58,6 +48,10 @@ export class CasesComponent implements OnInit, OnDestroy {
     return this.configService.config;
   }
 
+  getCaseStatus(id: number | null): CaseStatus | null {
+    return this.userSettings.getCaseStatus(id);
+  }
+
   haschilds(id: number): boolean {
     return this.casechilds[id] != undefined && this.casechilds[id].length > 0;
   }
@@ -72,87 +66,17 @@ export class CasesComponent implements OnInit, OnDestroy {
     return this.i18nService.i18n(key, params);
   }
 
-  ngOnDestroy(): void {
-    if (this.updatetimeout)
-      clearTimeout(this.updatetimeout);
-  }
-
   ngOnInit(): void {
-    this.update();
+    this.userSettings.cases$.subscribe((cases) => { this.cases = cases; });
+    this.userSettings.casechilds$.subscribe((childs) => { this.casechilds = childs; });
+    this.userSettings.caseroots$.subscribe((roots) => { this.rootcases = roots; });
   }
 
-  saveLocalStorage(): void {
-    localStorage.setItem(this.storagename, JSON.stringify({
-      casechilds: this.casechilds,
-      cases: this.cases,
-      rootcases: this.rootcases,
-      ts: this.when,
-    }));
+  showCase(c: Case): boolean {
+    let status = this.getCaseStatus(c.statusid);
+    if (status == null)
+      return true;
+    return (!status.flags.deletion || this.showInRetention) && (!status.flags.deleted || this.showDeleted);
   }
 
-  update(): void {
-    this.busy = true;
-    let url: string = this.config.api.baseUrl + '/cases' + (this.when > 0 ? '/' + this.when : '');
-    let clean = this.when == 0;
-    this.when = Math.floor(Date.now() / 1000);
-    this.authService.queryApi(url).subscribe((reply) => {
-      if (reply.success && reply.payload != undefined) {
-        let response = <CasesResponse>reply.payload;
-        let needsrefresh = false;
-        response.cases.forEach((c) => { if (this.update_addCase(c)) needsrefresh = true; });
-        if (needsrefresh)
-          this.update_evaluateCases();
-        this.saveLocalStorage();
-      }
-      this.busy = false;
-      this.updatetimeout = setTimeout(() => { this.update(); }, 1500);
-    });
-  }
-
-  update_addCase(c: Case): boolean {
-    let needsrefresh = false;
-    if (this.cases[c.id] != undefined) {
-      if (this.cases[c.id].parentid !== c.parentid)
-        needsrefresh = true;
-    }
-    else
-      needsrefresh = true;
-    if (c.deleted == null)
-      this.cases[c.id] = c;
-    else {
-      delete this.cases[c.id];
-      needsrefresh = true;
-    }
-    return needsrefresh;
-  }
-
-  update_evaluateCases(): void {
-    this.rootcases = [];
-    this.casechilds = {};
-    for (let key in this.cases) {
-      console.log(key);
-      let c = this.cases[key];
-      if (c.parentid == null) {
-        this.rootcases.push(c.id);
-        this.casechilds[c.id] = [];
-      } else {
-        if (this.casechilds[c.parentid] == undefined)
-          this.casechilds[c.parentid] = [];
-        this.casechilds[c.parentid].push(c.id);
-      }
-    }
-    this.rootcases.sort((a, b) => this.case(a).title > this.case(b).title ? 1 : -1);
-  }
-
-}
-
-export interface CasesResponse {
-  cases: Case[];
-}
-
-export interface CasesStorage {
-  rootcases: number[];
-  casechilds: { [key: number]: number[] };
-  cases: { [key: number]: Case };
-  ts: number;
 }

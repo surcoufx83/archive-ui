@@ -77,7 +77,7 @@ export class FileComponent implements OnInit {
       this.addresses.sort((a, b) => { return (a.name1 + a.street + a.zip + a.city).toLowerCase() > (b.name1 + b.street + b.zip + b.city).toLowerCase() ? 1 : (a.name1 + a.street + a.zip + a.city).toLowerCase() < (b.name1 + b.street + b.zip + b.city).toLowerCase() ? -1 : 0 });
     });
     this.userSettings.cases$.subscribe((cases) => {
-      this.cases = cases;
+      this.cases = Object.values(cases);
       this.cases.sort((a, b) => { return a.casepath > b.casepath ? 1 : a.casepath < b.casepath ? -1 : 0 });
     });
     this.userSettings.caseFileStatus$.subscribe((status) => { this.casefilestatus = status; });

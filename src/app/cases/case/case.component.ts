@@ -7,8 +7,7 @@ import { I18nService } from 'src/app/i18n.service';
 import { Settings } from 'src/app/user/settings/settings';
 import { SettingsService } from 'src/app/user/settings/settings.service';
 import { FormatService } from 'src/app/utils/format.service';
-import { Case } from '../case';
-import { CasesStorage } from '../cases.component';
+import { Case, CaseStatus, CaseType } from '../case';
 
 @Component({
   selector: 'app-case',
@@ -25,6 +24,10 @@ export class CaseComponent implements OnInit {
   storagename: string = this.config.storage.prefix + 'casesData';
   usersettingsObj: Settings | null = null;
 
+  listOfCases: Case[] = [];
+  listOfCaseStatus: CaseStatus[] = [];
+  listOfCaseTypes: CaseType[] = [];
+
   constructor(private authService: AuthService,
     private configService: ConfigService,
     private i18nService: I18nService,
@@ -34,11 +37,12 @@ export class CaseComponent implements OnInit {
     this.userSettings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
     });
-    let olddata: string | null | CasesStorage = localStorage.getItem(this.storagename);
-    if (olddata) {
-      olddata = <CasesStorage>JSON.parse(olddata);
-      this.cases = olddata.cases;
-    }
+    this.i18nService.loaded.subscribe((v) => {
+      if (v === true) {
+        this.listOfCaseStatus = this.listOfCaseStatus.sort((a, b) => this.i18n('casestatus.' + a.name) > this.i18n('casestatus.' + b.name) ? 1 : -1);
+        this.listOfCaseTypes = this.listOfCaseTypes.sort((a, b) => this.i18n('casetype.' + a.name) > this.i18n('casetype.' + b.name) ? 1 : -1);
+      }
+    })
   }
 
   get config(): AppConfig {
@@ -51,7 +55,7 @@ export class CaseComponent implements OnInit {
     return format(date, form, { locale: this.i18nService.DateLocale });
   }
 
-  getCase(id: number|null): Case|null {
+  getCase(id: number | null): Case | null {
     if (id == null)
       return null;
     if (this.cases[id])
@@ -59,25 +63,65 @@ export class CaseComponent implements OnInit {
     return null;
   }
 
+  getCaseStatus(id: number | null): CaseStatus | null {
+    return this.userSettings.getCaseStatus(id);
+  }
+
+  hasParent(caseid: number, parentid: number) : boolean {
+    if (caseid == parentid)
+      return true;
+    let case1 = this.getCase(caseid);
+    if (case1 == null)
+      return false;
+    if (case1.parentid == parentid)
+      return true;
+    if (case1.parentid != null) {
+      return this.hasParent(case1.parentid, parentid);
+    }
+    return false;
+  }
+
   i18n(key: string, params: string[] = []): string {
     return this.i18nService.i18n(key, params);
   }
 
   ngOnInit(): void {
+    this.userSettings.cases$.subscribe((cases) => {
+      this.cases = cases;
+      this.listOfCases = Object.values(cases).sort((a, b) => a.casepath > b.casepath ? 1 : -1);
+      if (this.caseid != null) {
+        if (this.cases[this.caseid]) {
+          this.case = { ...this.cases[this.caseid] };
+          if (this.case.parentid == null)
+            this.case.parentid = -1;
+        }
+      }
+    });
+    this.userSettings.caseStatus$.subscribe((items) => {
+      this.listOfCaseStatus = Object.values(items).sort((a, b) => this.i18n('casestatus.' + a.name) > this.i18n('casestatus.' + b.name) ? 1 : -1);
+    });
+    this.userSettings.caseTypes$.subscribe((items) => {
+      this.listOfCaseTypes = Object.values(items).sort((a, b) => this.i18n('casetype.' + a.name) > this.i18n('casetype.' + b.name) ? 1 : -1);
+    });
     this.route.paramMap.subscribe((params) => {
       if (params.has('id')) {
         let casetemp = params.get('id');
         if (casetemp) {
           this.caseid = +casetemp;
-          if (this.cases[this.caseid])
-            this.case = this.cases[this.caseid];
+          if (this.cases[this.caseid]) {
+            this.case = { ...this.cases[this.caseid] };
+            if (this.case.parentid == null)
+              this.case.parentid = -1;
+          }
         }
       }
     });
   }
 
   updateCase(): void {
-
+    if (!this.case)
+      return;
+    this.userSettings.updateCase(this.case).subscribe((reply) => { if (reply != null && typeof reply === 'object') this.case = reply; });
   }
 
 }

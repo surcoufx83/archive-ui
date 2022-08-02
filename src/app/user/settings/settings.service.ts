@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Settings } from './settings';
 import { AuthService } from '../../auth.service';
-import { ConfigService } from '../../config.service';
+import { AppConfig, ConfigService } from '../../config.service';
 import { WorkProperties } from '../../work/work';
 import { User } from '../user';
-import { Case, CaseFiletype } from 'src/app/cases/case';
+import { Case, CaseFiletype, CaseStatus, CaseType } from 'src/app/cases/case';
 import { Class } from 'src/app/files/class';
 import { Address, ContactType, Country, Party, PartyContact, PartyRole } from 'src/app/common';
 import { Currency } from 'src/app/account/account';
-import { TaxRate } from 'src/app/finance/finance';
+import { ToastsService } from 'src/app/utils/toasts.service';
 
 @Injectable()
 export class SettingsService {
@@ -17,9 +17,31 @@ export class SettingsService {
   private archiveLoaded: boolean = false;
   private componentRefresher: any;
 
+  private casesstorage: string = this.config.storage.prefix + 'casesData';
+  private casessync: number = 0;
+
   constructor(private authService: AuthService,
     private configService: ConfigService) {
+    this.loadCasesData();
     this.loadUserSettings();
+  }
+
+  get config(): AppConfig {
+    return this.configService.config;
+  }
+
+  private loadCasesData(): void {
+    let olddata: string | null | CasesStorage = localStorage.getItem(this.casesstorage);
+    if (olddata) {
+      olddata = <CasesStorage>JSON.parse(olddata);
+      this.cases.next(olddata.cases);
+      this.casechilds.next(olddata.casechilds);
+      this.caseroots.next(olddata.rootcases);
+      this.caseStatus.next(olddata.casestatus);
+      this.caseTypes.next(olddata.casetypes);
+      this.casessync = olddata.ts;
+    }
+    this.syncCases();
   }
 
   public loadArchiveSettings(): void {
@@ -30,7 +52,6 @@ export class SettingsService {
     this.authService.queryApi(url).subscribe((reply) => {
       if (reply.success && reply.payload != null) {
         this.updateAddresses(reply.payload['addresses']);
-        this.updateCases(reply.payload['cases']);
         this.updateClasses(reply.payload['classes']);
         this.updateClients(reply.payload['clients']);
         this.updateContacts(reply.payload['contacts']);
@@ -64,11 +85,39 @@ export class SettingsService {
   private addresses: BehaviorSubject<Address[]> = new BehaviorSubject<Address[]>([]);
   addresses$ = this.addresses.asObservable();
 
-  private cases: BehaviorSubject<Case[]> = new BehaviorSubject<Case[]>([]);
+  private cases: BehaviorSubject<{ [key: number]: Case }> = new BehaviorSubject<{ [key: number]: Case }>({});
   cases$ = this.cases.asObservable();
+
+  private casechilds: BehaviorSubject<{ [key: number]: number[] }> = new BehaviorSubject<{ [key: number]: number[] }>({});
+  casechilds$ = this.casechilds.asObservable();
+
+  private caseroots: BehaviorSubject<number[]> = new BehaviorSubject<number[]>([]);
+  caseroots$ = this.caseroots.asObservable();
 
   private caseFileStatus: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
   caseFileStatus$ = this.caseFileStatus.asObservable();
+
+  private caseStatus: BehaviorSubject<{ [key: number]: CaseStatus }> = new BehaviorSubject<{ [key: number]: CaseStatus }>({});
+  caseStatus$ = this.caseStatus.asObservable();
+
+  getCaseStatus(id: number | null): CaseStatus | null {
+    if (id == null)
+      return null;
+    if (this.caseStatus.value[id])
+      return this.caseStatus.value[id];
+    return null;
+  }
+
+  private caseTypes: BehaviorSubject<{ [key: number]: CaseType }> = new BehaviorSubject<{ [key: number]: CaseType }>({});
+  caseTypes$ = this.caseTypes.asObservable();
+
+  getCaseType(id: number | null): CaseType | null {
+    if (id == null)
+      return null;
+    if (this.caseTypes.value[id])
+      return this.caseTypes.value[id];
+    return null;
+  }
 
   private classes: BehaviorSubject<Class[]> = new BehaviorSubject<Class[]>([]);
   classes$ = this.classes.asObservable();
@@ -107,16 +156,16 @@ export class SettingsService {
   workprops$ = this.workprops.asObservable();
 
   private postCommon(method: string, item: any, urlitem: string, listing: any[], subject: BehaviorSubject<boolean | any | null>,
-      callback: Function) {
+    callback: Function) {
 
     let url = this.configService.config.api.baseUrl + '/' + urlitem + '/';
     if (method == 'create')
       url += 'create';
     else
       url += item.id + (method == 'delete' ? '/delete' : '');
-    let obj: { [key:string]: any} = {};
+    let obj: { [key: string]: any } = {};
     if (method != 'delete')
-        obj[urlitem] = item;
+      obj[urlitem] = item;
     this.authService.updateApi(url, obj).subscribe((reply) => {
       if (reply.success) {
         let newitem = null;
@@ -139,10 +188,38 @@ export class SettingsService {
         }
         else
           listing.push(newitem);
-        
+
         subject.next(method != 'delete' ? newitem : true);
         subject.complete();
         callback(listing);
+      }
+      else {
+        subject.next(false);
+        subject.complete();
+      }
+    });
+
+  }
+
+  private postObject(method: string, item: any, urlitem: string, subject: BehaviorSubject<boolean | any | null>,
+    callback: Function) {
+    let url = this.configService.config.api.baseUrl + '/' + urlitem + '/';
+    if (method == 'create')
+      url += 'create';
+    else
+      url += item.id + (method == 'delete' ? '/delete' : '');
+    let obj: { [key: string]: any } = {};
+    if (method != 'delete')
+      obj[urlitem] = item;
+    this.authService.updateApi(url, obj).subscribe((reply) => {
+      if (reply.success) {
+        let newitem = null;
+        if (reply.payload) {
+          newitem = reply.payload[urlitem];
+        }
+        subject.next(method != 'delete' ? newitem : true);
+        subject.complete();
+        callback([newitem]);
       }
       else {
         subject.next(false);
@@ -182,12 +259,113 @@ export class SettingsService {
     return subject;
   }
 
+  private saveCases(): void {
+    localStorage.setItem(this.casesstorage, JSON.stringify({
+      casechilds: this.casechilds.value,
+      cases: this.cases.value,
+      casestatus: this.caseStatus.value,
+      casetypes: this.caseTypes.value,
+      rootcases: this.caseroots.value,
+      ts: this.casessync,
+    }));
+  }
+
+  private casesynctimeout: any = null;
+  private syncCases(): void {
+    if (this.casesynctimeout != null) {
+      clearTimeout(this.casesynctimeout);
+      this.casesynctimeout = null;
+    }
+    let url: string = this.config.api.baseUrl + '/cases' + (this.casessync > 0 ? '/' + this.casessync : '');
+    this.casessync = Math.floor(Date.now() / 1000);
+    this.authService.queryApi(url).subscribe((reply) => {
+      if (reply.success && reply.payload != undefined) {
+        let response = <CasesResponse>reply.payload;
+        this.updateCaseStatus(response.casestatus);
+        this.updateCaseTypes(response.casetypes);
+        this.updateCases(response.cases);
+        this.saveCases();
+      }
+      this.casesynctimeout = setTimeout(() => { this.syncCases(); }, 30000);
+    });
+  }
+
   private updateAddresses(addresses: Address[]) {
     this.addresses.next(addresses);
   }
 
-  private updateCases(cases: Case[]) {
-    this.cases.next(cases);
+  private updateCases(cases: Case[]): void {
+    if (cases.length == 0)
+      return;
+    let needsrefresh = false;
+    let tempcases = { ...this.cases.value };
+    cases.forEach((c) => { if (this._updateCase(tempcases, c)) needsrefresh = true; });
+    this.cases.next(tempcases);
+    if (needsrefresh)
+      this._updateCasesEvaluation(tempcases);
+  }
+
+  private _updateCase(cases: { [key: number]: Case }, c: Case): boolean {
+    let needsrefresh = false;
+    if (cases[c.id] != undefined) {
+      if (cases[c.id].parentid != c.parentid)
+        needsrefresh = true;
+    }
+    else
+      needsrefresh = true;
+    if (c.deleted == null)
+      cases[c.id] = c;
+    else {
+      delete cases[c.id];
+      needsrefresh = true;
+    }
+    return needsrefresh;
+  }
+
+  private _updateCasesEvaluation(cases: { [key: number]: Case }): void {
+    let rootcases: number[] = [];
+    let casechilds: { [key: number]: number[] } = {};
+    for (let key in cases) {
+      let c = cases[key];
+      if (c.parentid == null) {
+        rootcases.push(c.id);
+        casechilds[c.id] = [];
+      } else {
+        if (casechilds[c.parentid] == undefined)
+          casechilds[c.parentid] = [];
+        casechilds[c.parentid].push(c.id);
+      }
+    }
+    rootcases.sort((a, b) => cases[a].title > cases[b].title ? 1 : -1);
+    this.casechilds.next(casechilds);
+    this.caseroots.next(rootcases);
+    this.syncCases();
+  }
+
+  private updateCaseStatus(items: CaseStatus[]): void {
+    if (items.length == 0)
+      return;
+    let temp = this.caseStatus.value;
+    items.forEach((cs) => {
+      if (cs.deleted == null)
+        temp[cs.id] = cs;
+      else
+        delete temp[cs.id];
+    });
+    this.caseStatus.next(temp);
+  }
+
+  private updateCaseTypes(items: CaseType[]): void {
+    if (items.length == 0)
+      return;
+    let temp = this.caseTypes.value;
+    items.forEach((cs) => {
+      if (cs.deleted == null)
+        temp[cs.id] = cs;
+      else
+        delete temp[cs.id];
+    });
+    this.caseTypes.next(temp);
   }
 
   private updateClasses(classes: Class[]) {
@@ -226,10 +404,17 @@ export class SettingsService {
     this.roles.next(roles);
   }
 
+  updateCase(item: Case): BehaviorSubject<Case | null> {
+    let subject = new BehaviorSubject<Case | null>(null);
+    this.postObject(item.id == 0 ? 'create' : 'update', item,
+      'case', subject, (c: Case[]) => { this.updateCases(c); this.saveCases(); });
+    return subject;
+  }
+
   updateClass(classitem: Class): BehaviorSubject<Class | null> {
     let subject = new BehaviorSubject<Class | null>(null);
     this.postCommon(classitem.id == 0 ? 'create' : 'update', classitem,
-    'class', this.classes.value, subject, (c: Class[]) => this.updateClasses(c));
+      'class', this.classes.value, subject, (c: Class[]) => this.updateClasses(c));
     return subject;
   }
 
@@ -282,4 +467,19 @@ export class SettingsService {
     }
   }
 
+}
+
+export interface CasesResponse {
+  cases: Case[];
+  casestatus: CaseStatus[];
+  casetypes: CaseType[];
+}
+
+export interface CasesStorage {
+  rootcases: number[];
+  casechilds: { [key: number]: number[] };
+  cases: { [key: number]: Case };
+  casestatus: { [key: number]: CaseStatus };
+  casetypes: { [key: number]: CaseType };
+  ts: number;
 }
