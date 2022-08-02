@@ -37,10 +37,17 @@
       "title": "General information",
       "name": "Name of case",
       "parent": "Parent case",
+      "noparent": "None",
       "created": "Created",
       "deleted": "Deleted",
       "filecount": "Number of files",
-      "followup": "subsequent case"
+      "followup": "subsequent case",
+      "type": "Category",
+      "status": "Status",
+      "nextstatus": "Nächster Status"
+    },
+    "referencescard": {
+      "title": "Referenzen"
     }
   },
   "casefilestatus": {
@@ -62,9 +69,8 @@
       "{0} files"
     ],
     "reference": "Reference {0}",
-    "card": {
-      "title": "Hierarchy"
-    }
+    "showDeleted": "Gel.",
+    "showInRetention": "Ausgebl."
   },
   "casestatus": {
     "created": "Created",
@@ -97,7 +103,7 @@
     "misc": "Miscellaneous",
     "repair": "Repair and maintenance",
     "studies": "Education and studies",
-    "taxes": "Taxes",
+    "taxes": "Steuern",
     "work": "Work"
   },
   "classify": {
@@ -200,6 +206,7 @@
     "select": {
       "pickOne": " Please choose"
     },
+    "switchTo": "Wechseln zu",
     "warn": {
       "formInvalid": {
         "title": "Warning",
