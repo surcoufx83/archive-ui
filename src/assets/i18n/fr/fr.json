@@ -37,10 +37,17 @@
       "title": "Allgemeine Informationen",
       "name": "Name der Akte",
       "parent": "Übergeordnete Akte",
+      "noparent": "Keine",
       "created": "Erstellt",
       "deleted": "Gelöscht",
       "filecount": "Anzahl Dateien",
-      "followup": "nachfolgende Akte"
+      "followup": "nachfolgende Akte",
+      "type": "Kategorie",
+      "status": "Status",
+      "nextstatus": "Nächster Status"
+    },
+    "referencescard": {
+      "title": "Referenzen"
     }
   },
   "casefilestatus": {
@@ -62,9 +69,8 @@
       "{0} Dateien"
     ],
     "reference": "Referenz {0}",
-    "card": {
-      "title": "Hierarchie"
-    }
+    "showDeleted": "Gel.",
+    "showInRetention": "Ausgebl."
   },
   "casestatus": {
     "created": "Erstellt",
@@ -97,7 +103,7 @@
     "misc": "Sonstige",
     "repair": "Reparaturen und Wartung",
     "studies": "Ausbildung und Studium",
-    "taxes": "Finanzamt und Steuern",
+    "taxes": "Steuern",
     "work": "Beschäftigungsverhältnis"
   },
   "classify": {
@@ -200,6 +206,7 @@
     "select": {
       "pickOne": " Bitte wählen "
     },
+    "switchTo": "Wechseln zu",
     "warn": {
       "formInvalid": {
         "title": "Warnung",
