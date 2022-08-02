@@ -32,15 +32,15 @@
     }
   },
   "case": {
-    "title": "{0} (Akte)",
+    "title": "{0} (Case)",
     "metacard": {
       "title": "General information",
-      "name": "Name der Akte",
-      "parent": "Übergeordnete Akte",
+      "name": "Name of case",
+      "parent": "Parent case",
       "created": "Created",
       "deleted": "Deleted",
-      "filecount": "Anzahl Dateien",
-      "followup": "nachfolgende Akte"
+      "filecount": "Number of files",
+      "followup": "subsequent case"
     }
   },
   "casefilestatus": {
@@ -192,7 +192,7 @@
       }
     },
     "delete": "Delete",
-    "goto": "Gehe zu",
+    "goto": "Jump to",
     "no": "No",
     "none": "None",
     "novalue": "---",
