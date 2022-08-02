@@ -44,10 +44,10 @@
       "followup": "subsequent case",
       "type": "Category",
       "status": "Status",
-      "nextstatus": "Nächster Status"
+      "nextstatus": "Next state"
     },
     "referencescard": {
-      "title": "Referenzen"
+      "title": "References"
     }
   },
   "casefilestatus": {
@@ -69,8 +69,8 @@
       "{0} files"
     ],
     "reference": "Reference {0}",
-    "showDeleted": "Gel.",
-    "showInRetention": "Ausgebl."
+    "showDeleted": "del.",
+    "showInRetention": "retention"
   },
   "casestatus": {
     "created": "Created",
@@ -103,7 +103,7 @@
     "misc": "Miscellaneous",
     "repair": "Repair and maintenance",
     "studies": "Education and studies",
-    "taxes": "Steuern",
+    "taxes": "Taxes",
     "work": "Work"
   },
   "classify": {
@@ -206,7 +206,7 @@
     "select": {
       "pickOne": " Please choose"
     },
-    "switchTo": "Wechseln zu",
+    "switchTo": "Switch to",
     "warn": {
       "formInvalid": {
         "title": "Warning",
