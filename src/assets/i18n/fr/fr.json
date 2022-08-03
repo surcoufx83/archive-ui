@@ -31,6 +31,27 @@
       "whit_sunday": "Pfingstsonntag"
     }
   },
+  "case": {
+    "title": "{0} (Akte)",
+    "metacard": {
+      "title": "Allgemeine Informationen",
+      "name": "Name der Akte",
+      "parent": "Übergeordnete Akte",
+      "noparent": "Keine",
+      "created": "Erstellt",
+      "deleted": "Gelöscht",
+      "filecount": "Anzahl Dateien",
+      "followup": "nachfolgende Akte",
+      "type": "Kategorie",
+      "status": "Status",
+      "nextstatus": "Nächster Status",
+      "client": "Mandant",
+      "party": "Hauptbeteiligte"
+    },
+    "childscard": {
+      "title": "Zugehörige Akten"
+    }
+  },
   "casefilestatus": {
     "approved": "Freigegeben",
     "checked": "Geprüft",
@@ -50,9 +71,8 @@
       "{0} Dateien"
     ],
     "reference": "Referenz {0}",
-    "card": {
-      "title": "Hierarchie"
-    }
+    "showDeleted": "Gel.",
+    "showInRetention": "Ausgebl."
   },
   "casestatus": {
     "created": "Erstellt",
@@ -85,7 +105,7 @@
     "misc": "Sonstige",
     "repair": "Reparaturen und Wartung",
     "studies": "Ausbildung und Studium",
-    "taxes": "Finanzamt und Steuern",
+    "taxes": "Steuern",
     "work": "Beschäftigungsverhältnis"
   },
   "classify": {
@@ -180,6 +200,7 @@
       }
     },
     "delete": "Löschen",
+    "goto": "Gehe zu",
     "no": "Nein",
     "none": "Keine",
     "novalue": "---",
@@ -187,6 +208,7 @@
     "select": {
       "pickOne": " Bitte wählen "
     },
+    "switchTo": "Wechseln zu",
     "warn": {
       "formInvalid": {
         "title": "Warnung",
@@ -551,6 +573,13 @@
     "patient": "Patient",
     "renter": "Mieter",
     "vendor": "Verkäufer"
+  },
+  "pricecomparison": {
+    "title": "Preisvergleich und -historie",
+    "chart": "Verlauf (180 Tage)",
+    "time": "Zeitraum",
+    "range": "Preisspanne",
+    "article": "Artikel"
   },
   "receipts": {
     "title": "Belegerfassung",

@@ -31,6 +31,27 @@
       "whit_sunday": "Whit Sunday"
     }
   },
+  "case": {
+    "title": "{0} (Case)",
+    "metacard": {
+      "title": "General information",
+      "name": "Name of case",
+      "parent": "Parent case",
+      "noparent": "None",
+      "created": "Created",
+      "deleted": "Deleted",
+      "filecount": "Number of files",
+      "followup": "subsequent case",
+      "type": "Category",
+      "status": "Status",
+      "nextstatus": "Next state",
+      "client": "Client",
+      "party": "Hauptbeteiligte"
+    },
+    "childscard": {
+      "title": "Zugehörige Akten"
+    }
+  },
   "casefilestatus": {
     "approved": "Approved",
     "checked": "Checked",
@@ -50,9 +71,8 @@
       "{0} files"
     ],
     "reference": "Reference {0}",
-    "card": {
-      "title": "Hierarchy"
-    }
+    "showDeleted": "del.",
+    "showInRetention": "retention"
   },
   "casestatus": {
     "created": "Created",
@@ -180,6 +200,7 @@
       }
     },
     "delete": "Delete",
+    "goto": "Jump to",
     "no": "No",
     "none": "None",
     "novalue": "---",
@@ -187,6 +208,7 @@
     "select": {
       "pickOne": " Please choose"
     },
+    "switchTo": "Switch to",
     "warn": {
       "formInvalid": {
         "title": "Warning",
@@ -551,6 +573,13 @@
     "patient": "Patient",
     "renter": "Renter",
     "vendor": "Vendor"
+  },
+  "pricecomparison": {
+    "title": "Price comparison and history",
+    "chart": "Trend over 180 days",
+    "time": "Period",
+    "range": "Price range",
+    "article": "Product"
   },
   "receipts": {
     "title": "Voucher registration",
