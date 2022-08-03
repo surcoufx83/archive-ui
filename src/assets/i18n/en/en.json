@@ -44,10 +44,12 @@
       "followup": "subsequent case",
       "type": "Category",
       "status": "Status",
-      "nextstatus": "Next state"
+      "nextstatus": "Next state",
+      "client": "Client",
+      "party": "Hauptbeteiligte"
     },
-    "referencescard": {
-      "title": "References"
+    "childscard": {
+      "title": "Zugehörige Akten"
     }
   },
   "casefilestatus": {
