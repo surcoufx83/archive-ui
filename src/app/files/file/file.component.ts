@@ -73,7 +73,7 @@ export class FileComponent implements OnInit {
     this.userSettings.loadArchiveSettings();
     this.userSettings.settings$.subscribe((settings) => { this.usersettingsObj = settings; });
     this.userSettings.addresses$.subscribe((addresses) => {
-      this.addresses = addresses;
+      this.addresses = Object.values(addresses);
       this.addresses.sort((a, b) => { return (a.name1 + a.street + a.zip + a.city).toLowerCase() > (b.name1 + b.street + b.zip + b.city).toLowerCase() ? 1 : (a.name1 + a.street + a.zip + a.city).toLowerCase() < (b.name1 + b.street + b.zip + b.city).toLowerCase() ? -1 : 0 });
     });
     this.userSettings.cases$.subscribe((cases) => {
@@ -87,18 +87,18 @@ export class FileComponent implements OnInit {
       this.classes.sort((a, b) => { return a.name > b.name ? 1 : a.name < b.name ? -1 : 0 });
     });
     this.userSettings.clients$.subscribe((clients) => {
-      this.clients = clients;
+      this.clients = Object.values(clients);
       this.clients.sort((a, b) => { return a.name1 > b.name1 ? 1 : a.name1 < b.name1 ? -1 : 0 });
     });
-    this.userSettings.contacts$.subscribe((contacts) => { this.contacts = contacts; });
-    this.userSettings.contacttypes$.subscribe((contacttypes) => { this.contacttypes = contacttypes; });
+    this.userSettings.contacts$.subscribe((contacts) => { this.contacts = Object.values(contacts); });
+    this.userSettings.contacttypes$.subscribe((contacttypes) => { this.contacttypes = Object.values(contacttypes); });
     this.userSettings.filetypes$.subscribe((filetypes) => {
       this.filetypes = filetypes;
       this.filetypes.forEach((item) => { item.i18nname = this.i18n('casefiletypes.' + item.name) });
       this.filetypes.sort((a, b) => { return a.i18nname > b.i18nname ? 1 : a.i18nname < b.i18nname ? -1 : 0 });
     });
     this.userSettings.parties$.subscribe((parties) => {
-      this.parties = parties;
+      this.parties = Object.values(parties);
       this.parties.sort((a, b) => { return a.name1 > b.name1 ? 1 : a.name1 < b.name1 ? -1 : 0 });
     });
   }

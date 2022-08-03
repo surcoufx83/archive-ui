@@ -4,10 +4,13 @@ import { TaxRate } from "./finance/finance";
 export interface Address {
   id: number;
   city: string;
+  created: string;
+  deleted: string|null;
   department: string;
   firstnames: string;
   houseno: string
   lastnames: string;
+  modified: string;
   name1: string;
   name2: string;
   partyid: number;
@@ -25,8 +28,11 @@ export enum ButtonType {
 
 export interface ContactType {
   id: number;
+  created: string;
+  deleted: string|null;
   i18nname: string;
   icon: string;
+  modified: string;
   name: string;
 }
 
@@ -44,13 +50,14 @@ export interface Country {
 
 export interface Party {
   id: number;
-  addresses: Address[];
   city: string;
-  contacts: PartyContact[];
+  created: string;
+  deleted: string|null;
   department: string;
   iban: string;
   isbank: boolean;
   isclient: boolean;
+  modified: string;
   name1: string;
   name2: string;
   search1: string;
@@ -64,6 +71,9 @@ export interface Party {
 
 export interface PartyContact {
   id: number;
+  created: string;
+  deleted: string|null;
+  modified: string;
   partyid: number;
   typeid: number;
   value: string;
@@ -71,6 +81,9 @@ export interface PartyContact {
 
 export interface PartyRole {
   id: number;
+  created: string;
+  deleted: string|null;
+  modified: string;
   name: string;
   i18nname: string;
 }

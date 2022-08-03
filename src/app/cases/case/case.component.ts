@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { format } from 'date-fns';
 import { AuthService } from 'src/app/auth.service';
+import { Party } from 'src/app/common';
 import { AppConfig, ConfigService } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
 import { Settings } from 'src/app/user/settings/settings';
@@ -27,6 +28,8 @@ export class CaseComponent implements OnInit {
   listOfCases: Case[] = [];
   listOfCaseStatus: CaseStatus[] = [];
   listOfCaseTypes: CaseType[] = [];
+  listOfClients: Party[] = [];
+  listOfParties: Party[] = [];
 
   constructor(private authService: AuthService,
     private configService: ConfigService,
@@ -67,7 +70,7 @@ export class CaseComponent implements OnInit {
     return this.userSettings.getCaseStatus(id);
   }
 
-  hasParent(caseid: number, parentid: number) : boolean {
+  hasParent(caseid: number, parentid: number): boolean {
     if (caseid == parentid)
       return true;
     let case1 = this.getCase(caseid);
@@ -85,17 +88,27 @@ export class CaseComponent implements OnInit {
     return this.i18nService.i18n(key, params);
   }
 
+  private loadCase(id: number | null, obj: Case | null = null): void {
+    this.caseid = id;
+    if (this.caseid != null) {
+      if (obj != null)
+        this.case = obj;
+      else if (this.cases[this.caseid])
+        this.case = { ...this.cases[this.caseid] };
+      if (this.case) {
+        this.case.parentid = this.case.parentid ?? -1;
+        this.case.clientid = this.case.clientid ?? -1;
+        this.case.partyid = this.case.partyid ?? -1;
+      }
+      console.log(this.case)
+    }
+  }
+
   ngOnInit(): void {
     this.userSettings.cases$.subscribe((cases) => {
       this.cases = cases;
       this.listOfCases = Object.values(cases).sort((a, b) => a.casepath > b.casepath ? 1 : -1);
-      if (this.caseid != null) {
-        if (this.cases[this.caseid]) {
-          this.case = { ...this.cases[this.caseid] };
-          if (this.case.parentid == null)
-            this.case.parentid = -1;
-        }
-      }
+      this.loadCase(this.caseid);
     });
     this.userSettings.caseStatus$.subscribe((items) => {
       this.listOfCaseStatus = Object.values(items).sort((a, b) => this.i18n('casestatus.' + a.name) > this.i18n('casestatus.' + b.name) ? 1 : -1);
@@ -103,17 +116,17 @@ export class CaseComponent implements OnInit {
     this.userSettings.caseTypes$.subscribe((items) => {
       this.listOfCaseTypes = Object.values(items).sort((a, b) => this.i18n('casetype.' + a.name) > this.i18n('casetype.' + b.name) ? 1 : -1);
     });
+    this.userSettings.clients$.subscribe((items) => {
+      this.listOfClients = Object.values(items).sort((a, b) => a.name1.toLocaleLowerCase() > b.name1.toLocaleLowerCase() ? 1 : -1);
+    });
+    this.userSettings.parties$.subscribe((items) => {
+      this.listOfParties = Object.values(items).sort((a, b) => a.name1.toLocaleLowerCase() > b.name1.toLocaleLowerCase() ? 1 : -1);
+    });
     this.route.paramMap.subscribe((params) => {
       if (params.has('id')) {
         let casetemp = params.get('id');
-        if (casetemp) {
-          this.caseid = +casetemp;
-          if (this.cases[this.caseid]) {
-            this.case = { ...this.cases[this.caseid] };
-            if (this.case.parentid == null)
-              this.case.parentid = -1;
-          }
-        }
+        if (casetemp)
+          this.loadCase(+casetemp);
       }
     });
   }
@@ -121,7 +134,11 @@ export class CaseComponent implements OnInit {
   updateCase(): void {
     if (!this.case)
       return;
-    this.userSettings.updateCase(this.case).subscribe((reply) => { if (reply != null && typeof reply === 'object') this.case = reply; });
+    this.userSettings.updateCase(this.case).subscribe((reply) => {
+      if (reply != null && typeof reply === 'object') {
+        this.loadCase(this.caseid);
+      }
+    });
   }
 
 }

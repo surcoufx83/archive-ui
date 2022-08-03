@@ -30,16 +30,51 @@
                                             class="text-muted fs-7"><i
                                                 [class]="config.icons['goto'] + ' me-1 fs-8'"></i>{{ i18n('common.goto')
                                             }}</a> ]</span></label>
-                                <select class="form-select" id="case-parent" name="case-parent" [(ngModel)]="case.parentid"
-                                    (change)="case.parentid = +case.parentid!; updateCase();" required>
+                                <select class="form-select" id="case-parent" name="case-parent"
+                                    [(ngModel)]="case.parentid"
+                                    (change)="case.parentid = +case.parentid!; updateCase();"
+                                    required>
                                     <option [value]="-1">{{ i18n('case.metacard.noparent') }}</option>
                                     <ng-container *ngFor="let item of listOfCases">
-                                        <option [value]="item.id" [disabled]="hasParent(item.id, case.id)">{{ item.casepath }}</option>
+                                        <option [value]="item.id" [disabled]="hasParent(item.id, case.id)">{{
+                                            item.casepath }}</option>
                                     </ng-container>
                                 </select>
                             </div>
                         </div>
                         <!-- case header data parent + casename -->
+                    </div>
+
+                    <div class="row">
+                        <!-- case participants -->
+                        <div class="col-12 col-lg-6 mb-3">
+                            <div class="form-group">
+                                <label for="case-client" class="form-label">{{ i18n('case.metacard.client') }}</label>
+                                <select class="form-select" id="case-client" name="case-client"
+                                    [(ngModel)]="case.clientid"
+                                    (change)="case.clientid = +case.clientid!; updateCase();">
+                                    <option [value]="-1">{{ i18n('common.select.pickOne') }}</option>
+                                    <ng-container *ngFor="let item of listOfClients">
+                                        <option [value]="item.id">{{ item.name1 }}, {{ item.street }}, {{
+                                            item.zip }} {{ item.city }}</option>
+                                    </ng-container>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 mb-3">
+                            <div class="form-group">
+                                <label for="case-party" class="form-label">{{ i18n('case.metacard.party') }}</label>
+                                <select class="form-select" id="case-party" name="case-party" [(ngModel)]="case.partyid"
+                                    (change)="case.partyid = +case.partyid!; updateCase();">
+                                    <option [value]="-1">{{ i18n('common.select.pickOne') }}</option>
+                                    <ng-container *ngFor="let item of listOfParties">
+                                        <option [value]="item.id">{{ item.name1 }}, {{ item.street }}, {{
+                                            item.zip }} {{ item.city }}</option>
+                                    </ng-container>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- case participants -->
                     </div>
 
                     <div class="row">
@@ -71,7 +106,8 @@
                             *ngIf="getCaseStatus(case.statusid) && getCaseStatus(case.statusid)?.followup?.status && getCaseStatus(getCaseStatus(case.statusid)!.followup!.status)">
                             <div class="form-group">
                                 <label for="case-nextstatus" class="form-label">{{ i18n('case.metacard.nextstatus')
-                                    }}<ng-container *ngIf="getCaseStatus(case.statusid)!.followup!.autoswitch == false || case.period.end == null">
+                                    }}<ng-container
+                                        *ngIf="getCaseStatus(case.statusid)!.followup!.autoswitch == false || case.period.end == null">
                                         [ <span class="text-muted fs-7 pointer"
                                             (click)="case.statusid = getCaseStatus(case.statusid)!.followup!.status!; updateCase();"><i
                                                 [class]="config.icons['step-next'] + ' me-1 fs-8'"></i>{{
@@ -131,7 +167,7 @@
 
             <div class="card mt-4 mt-lg-2">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h3 class="text-nowrap text-truncate">{{ i18n('case.referencescard.title') }}</h3>
+                    <h3 class="text-nowrap text-truncate">{{ i18n('case.childscard.title') }}</h3>
                 </div>
             </div>
 

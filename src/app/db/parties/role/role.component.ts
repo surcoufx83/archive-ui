@@ -40,13 +40,13 @@ export class DbRoleComponent implements OnInit {
     this.userSettings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
     });
-    this.userSettings.roles$.subscribe((roles) => {
+    this.userSettings.roles$.subscribe((roles) => {/*
       if (roles.length == 0)
         return;
       this.roles = roles;
       this.roles.forEach((item) => { item.i18nname = this.i18n('partyroles.' + item.name) });
       this.sort();
-      localStorage.setItem(this.storagename, JSON.stringify({ items: this.roles }));
+      localStorage.setItem(this.storagename, JSON.stringify({ items: this.roles }));*/
     });
   }
 
@@ -73,7 +73,8 @@ export class DbRoleComponent implements OnInit {
       this.editrole = item;
     else
       this.editrole = {
-        id: 0, name: '', i18nname: ''
+        id: 0, name: '', i18nname: '',
+        created: '', modified: '', deleted: null
       };
     if (this.editor && this.editor.nativeElement) {
       window.scrollTo(0, this.editor.nativeElement.offsetTop - 64);

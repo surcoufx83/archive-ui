@@ -44,10 +44,12 @@
       "followup": "nachfolgende Akte",
       "type": "Kategorie",
       "status": "Status",
-      "nextstatus": "Nächster Status"
+      "nextstatus": "Nächster Status",
+      "client": "Mandant",
+      "party": "Hauptbeteiligte"
     },
-    "referencescard": {
-      "title": "Referenzen"
+    "childscard": {
+      "title": "Zugehörige Akten"
     }
   },
   "casefilestatus": {

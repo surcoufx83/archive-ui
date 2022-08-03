@@ -40,13 +40,13 @@ export class DbContactTypeComponent implements OnInit {
     this.userSettings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
     });
-    this.userSettings.contacttypes$.subscribe((ctypes) => {
+    this.userSettings.contacttypes$.subscribe((ctypes) => {/*
       if (ctypes.length == 0)
         return;
       this.ctypes = ctypes;
       this.ctypes.forEach((item) => { item.i18nname = this.i18n('contacttypes.' + item.name) });
       this.sort();
-      localStorage.setItem(this.storagename, JSON.stringify({ items: this.ctypes }));
+      localStorage.setItem(this.storagename, JSON.stringify({ items: this.ctypes }));*/
     });
   }
 
@@ -73,7 +73,8 @@ export class DbContactTypeComponent implements OnInit {
       this.editctype = item;
     else
       this.editctype = {
-        id: 0, name: '', i18nname: '', icon: ''
+        id: 0, name: '', i18nname: '', icon: '',
+        created: '', modified: '', deleted: null
       };
     if (this.editor && this.editor.nativeElement) {
       window.scrollTo(0, this.editor.nativeElement.offsetTop - 64);

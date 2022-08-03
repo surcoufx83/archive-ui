@@ -19,10 +19,13 @@ export class SettingsService {
 
   private casesstorage: string = this.config.storage.prefix + 'casesData';
   private casessync: number = 0;
+  private partiesstorage: string = this.config.storage.prefix + 'partiesData';
+  private partiessync: number = 0;
 
   constructor(private authService: AuthService,
     private configService: ConfigService) {
     this.loadCasesData();
+    this.loadPartiesData();
     this.loadUserSettings();
   }
 
@@ -44,6 +47,22 @@ export class SettingsService {
     this.syncCases();
   }
 
+  private loadPartiesData(): void {
+    let olddata: string | null | PartiesStorage = localStorage.getItem(this.partiesstorage);
+    if (olddata) {
+      olddata = <PartiesStorage>JSON.parse(olddata);
+      this.addresses.next(olddata.addresses);
+      this.banks.next(olddata.banks);
+      this.clients.next(olddata.clients);
+      this.contacts.next(olddata.contacts);
+      this.contacttypes.next(olddata.contacttypes);
+      this.parties.next(olddata.parties);
+      this.roles.next(olddata.roles);
+      this.partiessync = olddata.ts;
+    }
+    this.syncParties();
+  }
+
   public loadArchiveSettings(): void {
     if (this.archiveLoaded)
       return;
@@ -51,16 +70,10 @@ export class SettingsService {
     let url = this.configService.config.api.baseUrl + '/common/props';
     this.authService.queryApi(url).subscribe((reply) => {
       if (reply.success && reply.payload != null) {
-        this.updateAddresses(reply.payload['addresses']);
         this.updateClasses(reply.payload['classes']);
-        this.updateClients(reply.payload['clients']);
-        this.updateContacts(reply.payload['contacts']);
-        this.updateContactTypes(reply.payload['contacttypes']);
         this.updateCountries(reply.payload['countries']);
         this.updateCurrencies(reply.payload['currencies']);
         this.updateFiletypes(reply.payload['casefiletypes']);
-        this.updateParties(reply.payload['parties']);
-        this.updateRoles(reply.payload['roles']);
       }
     });
     this.caseFileStatus.next(['new', 'checked', 'approved']);
@@ -82,8 +95,11 @@ export class SettingsService {
     this.componentRefresher = timeout;
   }
 
-  private addresses: BehaviorSubject<Address[]> = new BehaviorSubject<Address[]>([]);
+  private addresses: BehaviorSubject<{ [key: number]: Address }> = new BehaviorSubject<{ [key: number]: Address }>({});
   addresses$ = this.addresses.asObservable();
+
+  private banks: BehaviorSubject<{ [key: number]: Party }> = new BehaviorSubject<{ [key: number]: Party }>({});
+  banks$ = this.banks.asObservable();
 
   private cases: BehaviorSubject<{ [key: number]: Case }> = new BehaviorSubject<{ [key: number]: Case }>({});
   cases$ = this.cases.asObservable();
@@ -122,13 +138,13 @@ export class SettingsService {
   private classes: BehaviorSubject<Class[]> = new BehaviorSubject<Class[]>([]);
   classes$ = this.classes.asObservable();
 
-  private clients: BehaviorSubject<Party[]> = new BehaviorSubject<Party[]>([]);
+  private clients: BehaviorSubject<{ [key: number]: Party }> = new BehaviorSubject<{ [key: number]: Party }>({});
   clients$ = this.clients.asObservable();
 
-  private contacts: BehaviorSubject<PartyContact[]> = new BehaviorSubject<PartyContact[]>([]);
+  private contacts: BehaviorSubject<{ [key: number]: PartyContact }> = new BehaviorSubject<{ [key: number]: PartyContact }>({});
   contacts$ = this.contacts.asObservable();
 
-  private contacttypes: BehaviorSubject<ContactType[]> = new BehaviorSubject<ContactType[]>([]);
+  private contacttypes: BehaviorSubject<{ [key: number]: ContactType }> = new BehaviorSubject<{ [key: number]: ContactType }>({});
   contacttypes$ = this.contacttypes.asObservable();
 
   private countries: BehaviorSubject<Country[]> = new BehaviorSubject<Country[]>([]);
@@ -140,10 +156,10 @@ export class SettingsService {
   private filetypes: BehaviorSubject<CaseFiletype[]> = new BehaviorSubject<CaseFiletype[]>([]);
   filetypes$ = this.filetypes.asObservable();
 
-  private parties: BehaviorSubject<Party[]> = new BehaviorSubject<Party[]>([]);
+  private parties: BehaviorSubject<{ [key: number]: Party }> = new BehaviorSubject<{ [key: number]: Party }>({});
   parties$ = this.parties.asObservable();
 
-  private roles: BehaviorSubject<PartyRole[]> = new BehaviorSubject<PartyRole[]>([]);
+  private roles: BehaviorSubject<{ [key: number]: PartyRole }> = new BehaviorSubject<{ [key: number]: PartyRole }>({});
   roles$ = this.roles.asObservable();
 
   private settings: BehaviorSubject<Settings | null> = new BehaviorSubject<Settings | null>(null);
@@ -237,7 +253,7 @@ export class SettingsService {
 
   deleteContactType(ctypeitem: ContactType): BehaviorSubject<boolean | null> {
     let subject = new BehaviorSubject<boolean | null>(null);
-    this.postCommon('delete', ctypeitem, 'contacttype', this.contacttypes.value, subject, (c: ContactType[]) => this.updateContactTypes(c));
+    //this.postCommon('delete', ctypeitem, 'contacttype', this.contacttypes.value, subject, (c: ContactType[]) => this.updateContactTypes(c));
     return subject;
   }
 
@@ -255,7 +271,7 @@ export class SettingsService {
 
   deleteRole(roleitem: PartyRole): BehaviorSubject<boolean | null> {
     let subject = new BehaviorSubject<boolean | null>(null);
-    this.postCommon('delete', roleitem, 'role', this.roles.value, subject, (c: PartyRole[]) => this.updateRoles(c));
+    //this.postCommon('delete', roleitem, 'role', this.roles.value, subject, (c: PartyRole[]) => this.updateRoles(c));
     return subject;
   }
 
@@ -267,6 +283,19 @@ export class SettingsService {
       casetypes: this.caseTypes.value,
       rootcases: this.caseroots.value,
       ts: this.casessync,
+    }));
+  }
+
+  private saveParties(): void {
+    localStorage.setItem(this.partiesstorage, JSON.stringify({
+      addresses: this.addresses.value,
+      banks: this.banks.value,
+      clients: this.clients.value,
+      contacts: this.contacts.value,
+      contacttypes: this.contacttypes.value,
+      parties: this.parties.value,
+      roles: this.roles.value,
+      ts: this.partiessync,
     }));
   }
 
@@ -290,8 +319,47 @@ export class SettingsService {
     });
   }
 
+  private partiessynctimeout: any = null;
+  private syncParties(): void {
+    if (this.partiessynctimeout != null) {
+      clearTimeout(this.partiessynctimeout);
+      this.partiessynctimeout = null;
+    }
+    let url: string = this.config.api.baseUrl + '/parties' + (this.partiessync > 0 ? '/' + this.partiessync : '');
+    this.partiessync = Math.floor(Date.now() / 1000);
+    this.authService.queryApi(url).subscribe((reply) => {
+      if (reply.success && reply.payload != undefined) {
+        let response = <PartiesResponse>reply.payload;
+        this.updateAddresses(response.addresses);
+        this.updateBanks(response.banks);
+        this.updateClients(response.clients);
+        this.updateContacts(response.contacts);
+        this.updateContactTypes(response.contacttypes);
+        this.updateParties(response.parties);
+        this.updateRoles(response.roles);
+        this.saveParties();
+      }
+      this.partiessynctimeout = setTimeout(() => { this.syncParties(); }, 15000);
+    });
+  }
+
+  private _updateCommon<T extends CommonProperty>(listing: { [key: number]: T }, item: T): void {
+    if (item.deleted == null)
+      listing[item.id] = item;
+    else
+      delete listing[item.id];
+  }
+
   private updateAddresses(addresses: Address[]) {
-    this.addresses.next(addresses);
+    let temp = { ...this.addresses.value };
+    addresses.forEach((a) => this._updateCommon(temp, a) );
+    this.addresses.next(temp);
+  }
+
+  private updateBanks(banks: Party[]) {
+    let temp = { ...this.banks.value };
+    banks.forEach((a) => this._updateCommon(temp, a) );
+    this.banks.next(temp);
   }
 
   private updateCases(cases: Case[]): void {
@@ -373,15 +441,21 @@ export class SettingsService {
   }
 
   private updateClients(clients: Party[]) {
-    this.clients.next(clients);
+    let temp = { ...this.clients.value };
+    clients.forEach((a) => this._updateCommon(temp, a) );
+    this.clients.next(temp);
   }
 
   private updateContacts(contacts: PartyContact[]) {
-    this.contacts.next(contacts);
+    let temp = { ...this.contacts.value };
+    contacts.forEach((a) => this._updateCommon(temp, a) );
+    this.contacts.next(temp);
   }
 
   private updateContactTypes(contacttypes: ContactType[]) {
-    this.contacttypes.next(contacttypes);
+    let temp = { ...this.contacttypes.value };
+    contacttypes.forEach((a) => this._updateCommon(temp, a) );
+    this.contacttypes.next(temp);
   }
 
   private updateCountries(countries: Country[]) {
@@ -397,11 +471,15 @@ export class SettingsService {
   }
 
   private updateParties(parties: Party[]) {
-    this.parties.next(parties);
+    let temp = { ...this.parties.value };
+    parties.forEach((a) => this._updateCommon(temp, a) );
+    this.parties.next(temp);
   }
 
   private updateRoles(roles: PartyRole[]) {
-    this.roles.next(roles);
+    let temp = { ...this.roles.value };
+    roles.forEach((a) => this._updateCommon(temp, a) );
+    this.roles.next(temp);
   }
 
   updateCase(item: Case): BehaviorSubject<Case | null> {
@@ -420,8 +498,9 @@ export class SettingsService {
 
   updateContactType(typeitem: ContactType): BehaviorSubject<ContactType | null> {
     let subject = new BehaviorSubject<ContactType | null>(null);
-    this.postCommon(typeitem.id == 0 ? 'create' : 'update', typeitem,
-      'contacttype', this.contacttypes.value, subject, (c: ContactType[]) => this.updateContactTypes(c));
+    //this.postCommon(typeitem.id == 0 ? 'create' : 'update', typeitem,
+    
+    //'contacttype', this.contacttypes.value, subject, (c: ContactType[]) => this.updateContactTypes(c));
     return subject;
   }
 
@@ -441,8 +520,8 @@ export class SettingsService {
 
   updateRole(roleitem: PartyRole): BehaviorSubject<PartyRole | null> {
     let subject = new BehaviorSubject<PartyRole | null>(null);
-    this.postCommon(roleitem.id == 0 ? 'create' : 'update', roleitem,
-      'role', this.roles.value, subject, (c: PartyRole[]) => this.updateRoles(c));
+    //this.postCommon(roleitem.id == 0 ? 'create' : 'update', roleitem,
+    //  'role', this.roles.value, subject, (c: PartyRole[]) => this.updateRoles(c));
     return subject;
   }
 
@@ -481,5 +560,31 @@ export interface CasesStorage {
   cases: { [key: number]: Case };
   casestatus: { [key: number]: CaseStatus };
   casetypes: { [key: number]: CaseType };
+  ts: number;
+}
+
+export interface CommonProperty {
+  deleted: string|null;
+  id: number;
+}
+
+export interface PartiesResponse {
+  addresses: Address[];
+  banks: Party[];
+  clients: Party[];
+  contacts: PartyContact[];
+  contacttypes: ContactType[];
+  parties: Party[];
+  roles: PartyRole[];
+}
+
+export interface PartiesStorage {
+  addresses: { [key: number]: Address };
+  banks: { [key: number]: Party };
+  clients: { [key: number]: Party };
+  contacts: { [key: number]: PartyContact };
+  contacttypes: { [key: number]: ContactType };
+  parties: { [key: number]: Party };
+  roles: { [key: number]: PartyRole };
   ts: number;
 }
