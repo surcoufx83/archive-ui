@@ -1,5 +1,3 @@
-import { Party } from "../common";
-import { Directory } from "../files/file";
 
 export interface Case {
     id: number;
@@ -43,20 +41,20 @@ export interface CaseNotification {
 }
 
 export interface CasePeriod {
-    end: string;
-    minperiod: Duration;
+    end: string|null;
+    minperiod: Duration|null;
     minperiodFullfilled: boolean;
-    period: Duration;
+    period: Duration|null;
     renewal: CasePeriodRenewal;
-    start: string;
-    terminationperiod: Duration;
+    start: string|null;
+    terminationperiod: Duration|null;
 }
 
 export interface CasePeriodRenewal {
-    after: Duration;
+    after: Duration|null;
     enabled: boolean;
     nextdate: string|null;
-    period: Duration;
+    period: Duration|null;
 }
 
 export interface CaseStatus {

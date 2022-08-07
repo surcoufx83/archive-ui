@@ -68,6 +68,7 @@ import { DbCurrenciesComponent } from './db/countries/currencies/currencies.comp
 import { DbRoleComponent } from './db/parties/role/role.component';
 import { DbPartyComponent } from './db/parties/party/party.component';
 import { DbContactTypeComponent } from './db/parties/contacts/type/type.component';
+import { PeriodDropdownMenuComponent } from './utils/period-dropdown-menu/period-dropdown-menu.component';
 
 registerLocaleData(localeDe);
 
@@ -123,6 +124,7 @@ registerLocaleData(localeDe);
     DbRoleComponent,
     DbPartyComponent,
     DbContactTypeComponent,
+    PeriodDropdownMenuComponent,
   ],
   imports: [
     AppRoutingModule,

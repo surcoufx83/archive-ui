@@ -51,6 +51,16 @@
     },
     "childscard": {
       "title": "Zugehörige Akten"
+    },
+    "timecard": {
+      "title": "Zeiträume",
+      "notifyUpcoming": "Benachrichtigen, wenn Ende in weniger als 3 Monaten",
+      "notifyForecast": "Benachrichtigen, wenn Ende in weniger als 9 Monaten",
+      "start": "Vertragsbeginn",
+      "end": "Vertragsende",
+      "minperiod": "Mindestvertragslaufzeit",
+      "period": "Feste Laufzeit",
+      "termination": "Kündigungsfrist"
     }
   },
   "casefilestatus": {
@@ -197,12 +207,29 @@
         "message": "Die Änderungen wurden erfolgreich gespeichert."
       }
     },
+    "day": "Tag",
+    "days": "Tage",
     "delete": "Löschen",
     "goto": "Gehe zu",
+    "hour": "Stunde",
+    "hours": "Stunden",
+    "minute": "Minute",
+    "minutes": "Minuten",
+    "month": "Monat",
+    "months": "Monate",
     "no": "Nein",
     "none": "Keine",
     "novalue": "---",
+    "period": {
+      "placeholder": "0j 0m 0t 0:0:0",
+      "patternYears": "{0}j",
+      "patternMonths": "{0}m",
+      "patternDays": "{0}t",
+      "patternTime": "{0}h:{1}m:{2}s"
+    },
     "save": "Speichern",
+    "second": "Sekunde",
+    "seconds": "Sekunden",
     "select": {
       "pickOne": " Bitte wählen "
     },
@@ -213,6 +240,8 @@
         "message": "Das Formular enthält noch Fehler."
       }
     },
+    "year": "Jahr",
+    "years": "Jahre",
     "yes": "Ja"
   },
   "contacttypes": {

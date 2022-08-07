@@ -19,6 +19,53 @@ export class FormatService {
     return new Intl.NumberFormat(this.i18nService.Locale, { style: 'currency', currency: c?.shortname ?? 'EUR' }).format(n);
   }
 
+  fdur(duration: Duration|null) : string {
+    if (duration == null)
+      return '';
+    let items = [];
+    if (!duration.years)
+      duration.years = 0;
+    if (!duration.months)
+      duration.months = 0;
+    if (!duration.days)
+      duration.days = 0;
+    if (!duration.hours)
+      duration.hours = 0;
+    if (!duration.minutes)
+      duration.minutes = 0;
+    if (!duration.seconds)
+      duration.seconds = 0;
+    while (duration.seconds > 59) {
+      duration.minutes += 1;
+      duration.seconds -= 60;
+    }
+    while (duration.minutes > 59) {
+      duration.hours += 1;
+      duration.minutes -= 60;
+    }
+    while (duration.hours > 23) {
+      duration.days += 1;
+      duration.hours -= 24;
+    }
+    while (duration.days > 30) {
+      duration.months += 1;
+      duration.days -= 31;
+    }
+    while (duration.months > 11) {
+      duration.years += 1;
+      duration.months -= 12;
+    }
+    if (duration.years > 0)
+      items.push(this.i18nService.i18n('common.period.patternYears', [this.fnumber(duration.years)]));
+    if (duration.months > 0)
+      items.push(this.i18nService.i18n('common.period.patternMonths', [this.fnumber(duration.months)]));
+    if (duration.days > 0)
+      items.push(this.i18nService.i18n('common.period.patternDays', [this.fnumber(duration.days)]));
+    if (duration.hours > 0 || duration.minutes > 0 || duration.seconds > 0)
+      items.push(this.i18nService.i18n('common.period.patternTime', [this.fnumber(duration.hours), this.fnumber(duration.minutes), this.fnumber(duration.seconds)]));
+    return items.join(' ');
+  }
+
   fdate(date: Date|string|null, form: string): string {
     if (date == null)
       return this.i18nService.i18n('common.novalue');

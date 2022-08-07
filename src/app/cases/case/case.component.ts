@@ -64,6 +64,11 @@ export class CaseComponent implements OnInit {
     return this.configService.config;
   }
 
+  duration(duration: Duration|null) : string {
+    console.log(duration, this.formatService.fdur(duration))
+    return this.formatService.fdur(duration);
+  }
+
   f(date: Date | string, form: string): string {
     if (typeof date === 'string')
       date = new Date(date);
@@ -106,6 +111,9 @@ export class CaseComponent implements OnInit {
         this.case.clientid = this.case.clientid ?? -1;
         this.case.partyid = this.case.partyid ?? -1;
         this.childs = this.casechilds[this.case.id] ?? [];
+        this.case.period.period = this.case.period.period ?? {};
+        this.case.period.minperiod = this.case.period.minperiod ?? {};
+        this.case.period.terminationperiod = this.case.period.terminationperiod ?? {};
       }
     }
     console.log(this.case)
