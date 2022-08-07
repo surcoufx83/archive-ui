@@ -32,8 +32,7 @@
                                             }}</a> ]</span></label>
                                 <select class="form-select" id="case-parent" name="case-parent"
                                     [(ngModel)]="case.parentid"
-                                    (change)="case.parentid = +case.parentid!; updateCase();"
-                                    required>
+                                    (change)="case.parentid = +case.parentid!; updateCase();" required>
                                     <option [value]="-1">{{ i18n('case.metacard.noparent') }}</option>
                                     <ng-container *ngFor="let item of listOfCases">
                                         <option [value]="item.id" [disabled]="hasParent(item.id, case.id)">{{
@@ -165,13 +164,46 @@
 
             </div>
 
-            <div class="card mt-4 mt-lg-2">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h3 class="text-nowrap text-truncate">{{ i18n('case.childscard.title') }}</h3>
+            <div class="card mt-4 mt-lg-2" *ngIf="haschilds(case.id)">
+                <div class="card-header">
+                    <app-h3 [title]="i18n('case.childscard.title')" [btn1]="i18n('cases.showDeleted')"
+                        [btn1icon]="showDeleted ? 'fa-solid fa-toggle-on' : 'fa-solid fa-toggle-off'"
+                        [btn1css]="'btn btn-sm btn-secondary'" (btn1Clicked)="changeShowDeleted(!showDeleted)"
+                        [btn2]="i18n('cases.showInRetention')"
+                        [btn2icon]="showInRetention ? 'fa-solid fa-toggle-on' : 'fa-solid fa-toggle-off'"
+                        [btn2css]="'btn btn-sm btn-secondary'" (btn2Clicked)="changeShowRetention(!showInRetention)">
+                    </app-h3>
                 </div>
+                <ul class="list-group">
+                    <div class="card-body">
+                        <ng-container *ngFor="let id of childs">
+                            <ng-container
+                                *ngTemplateOutlet="caseTemplate;context: { caseid: id, case: getCase(id), level: 0 }">
+                            </ng-container>
+                        </ng-container>
+                    </div>
+                </ul>
             </div>
 
         </form>
     </div>
 
 </ng-container>
+
+<ng-template #caseTemplate let-caseid="caseid" let-case="case" let-level="level">
+    <ng-container *ngIf="case != null">
+        <ng-container *ngIf="showCase(case)">
+            <a [ngClass]="['list-group-item', 'py-2', 'pe-2', 'intend-level-' + level]"
+                [routerLink]="['/case', case.id]">
+                <case-list-item [case]="case"></case-list-item>
+            </a>
+        </ng-container>
+        <ng-container *ngIf="haschilds(caseid)">
+            <ng-container *ngFor="let id of getChilds(caseid)">
+                <ng-container
+                    *ngTemplateOutlet="caseTemplate;context: { caseid: id, case: getCase(id), level: level + 1 }">
+                </ng-container>
+            </ng-container>
+        </ng-container>
+    </ng-container>
+</ng-template>

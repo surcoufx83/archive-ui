@@ -21,7 +21,11 @@ export class CaseComponent implements OnInit {
   case: Case | null = null;
   cases: { [key: number]: Case } = {};
   caseid: number | null = null;
+  casechilds: { [key: number]: number[] } = {};
+  childs: number[] = [];
   changes: { [key: string]: any } = {};
+  showDeleted: boolean = false;
+  showInRetention: boolean = false;
   storagename: string = this.config.storage.prefix + 'casesData';
   usersettingsObj: Settings | null = null;
 
@@ -48,6 +52,14 @@ export class CaseComponent implements OnInit {
     })
   }
 
+  changeShowDeleted(switchvalue: boolean) : void {
+    this.userSettings.showCasesInDeletion(switchvalue);
+  }
+
+  changeShowRetention(switchvalue: boolean) : void {
+    this.userSettings.showCasesInRetention(switchvalue);
+  }
+
   get config(): AppConfig {
     return this.configService.config;
   }
@@ -59,29 +71,23 @@ export class CaseComponent implements OnInit {
   }
 
   getCase(id: number | null): Case | null {
-    if (id == null)
-      return null;
-    if (this.cases[id])
-      return this.cases[id];
-    return null;
+    return this.userSettings.getCase(id);
+  }
+
+  getChilds(id: number): number[] {
+    return this.userSettings.getCaseChilds(id);
   }
 
   getCaseStatus(id: number | null): CaseStatus | null {
     return this.userSettings.getCaseStatus(id);
   }
 
+  haschilds(id: number): boolean {
+    return this.userSettings.hasChildCases(id);
+  }
+
   hasParent(caseid: number, parentid: number): boolean {
-    if (caseid == parentid)
-      return true;
-    let case1 = this.getCase(caseid);
-    if (case1 == null)
-      return false;
-    if (case1.parentid == parentid)
-      return true;
-    if (case1.parentid != null) {
-      return this.hasParent(case1.parentid, parentid);
-    }
-    return false;
+    return this.userSettings.hasParentCaseWithId(caseid, parentid);
   }
 
   i18n(key: string, params: string[] = []): string {
@@ -99,12 +105,21 @@ export class CaseComponent implements OnInit {
         this.case.parentid = this.case.parentid ?? -1;
         this.case.clientid = this.case.clientid ?? -1;
         this.case.partyid = this.case.partyid ?? -1;
+        this.childs = this.casechilds[this.case.id] ?? [];
       }
-      console.log(this.case)
     }
   }
 
   ngOnInit(): void {
+    this.userSettings.clientSettings$.subscribe((settings) => {
+      this.showDeleted = settings.casesettings.showCasesInDeletion;
+      this.showInRetention = settings.casesettings.showCasesInRetention;
+    });
+    this.userSettings.casechilds$.subscribe((childs) => {
+      this.casechilds = childs;
+      if (this.case)
+        this.childs = this.casechilds[this.case.id] ?? [];
+    });
     this.userSettings.cases$.subscribe((cases) => {
       this.cases = cases;
       this.listOfCases = Object.values(cases).sort((a, b) => a.casepath > b.casepath ? 1 : -1);
@@ -129,6 +144,13 @@ export class CaseComponent implements OnInit {
           this.loadCase(+casetemp);
       }
     });
+  }
+
+  showCase(c: Case): boolean {
+    let status = this.getCaseStatus(c.statusid);
+    if (status == null)
+      return true;
+    return (!status.flags.deletion || this.showInRetention) && (!status.flags.deleted || this.showDeleted);
   }
 
   updateCase(): void {

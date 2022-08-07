@@ -38,6 +38,14 @@ export class CasesComponent implements OnInit {
     return this.cases[id];
   }
 
+  changeShowDeleted(switchvalue: boolean) : void {
+    this.userSettings.showCasesInDeletion(switchvalue);
+  }
+
+  changeShowRetention(switchvalue: boolean) : void {
+    this.userSettings.showCasesInRetention(switchvalue);
+  }
+
   childs(id: number): number[] {
     let childs = this.casechilds[id];
     childs.sort((a, b) => this.case(a).casepath > this.case(b).casepath ? 1 : this.case(a).casepath < this.case(b).casepath ? -1 : 0);
@@ -67,6 +75,10 @@ export class CasesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.userSettings.clientSettings$.subscribe((settings) => {
+      this.showDeleted = settings.casesettings.showCasesInDeletion;
+      this.showInRetention = settings.casesettings.showCasesInRetention;
+    });
     this.userSettings.cases$.subscribe((cases) => { this.cases = cases; });
     this.userSettings.casechilds$.subscribe((childs) => { this.casechilds = childs; });
     this.userSettings.caseroots$.subscribe((roots) => { this.rootcases = roots; });

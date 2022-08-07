@@ -17,6 +17,15 @@ export class SettingsService {
   private archiveLoaded: boolean = false;
   private componentRefresher: any;
 
+  private clientSettings: BehaviorSubject<ClientSettings> = new BehaviorSubject<ClientSettings>({
+    casesettings: {
+      showCasesInDeletion: false,
+      showCasesInRetention: false,
+    }
+  });
+  clientSettings$ = this.clientSettings.asObservable();
+  private clientSettingsStorage: string = 'userSettings';
+
   private casesstorage: string = this.config.storage.prefix + 'casesData';
   private casessync: number = 0;
   private partiesstorage: string = this.config.storage.prefix + 'partiesData';
@@ -80,6 +89,11 @@ export class SettingsService {
   }
 
   private loadUserSettings(): void {
+    let olddata: string | null | ClientSettings = localStorage.getItem(this.clientSettingsStorage);
+    if (olddata) {
+      olddata = <ClientSettings>JSON.parse(olddata);
+      this.clientSettings.next(olddata);
+    }
     let url = this.configService.config.api.baseUrl + '/user/settings';
     this.authService.queryApi(url).subscribe((reply) => {
       if (reply.success && reply.payload != null) {
@@ -104,8 +118,40 @@ export class SettingsService {
   private cases: BehaviorSubject<{ [key: number]: Case }> = new BehaviorSubject<{ [key: number]: Case }>({});
   cases$ = this.cases.asObservable();
 
+  getCase(id: number | null): Case | null {
+    if (id == null)
+      return null;
+    if (this.cases.value[id])
+      return this.cases.value[id];
+    return null;
+  }
+
+  hasParentCaseWithId(caseid: number, parentid: number): boolean {
+    if (caseid == parentid)
+      return true;
+    let case1 = this.getCase(caseid);
+    if (case1 == null)
+      return false;
+    if (case1.parentid == parentid)
+      return true;
+    if (case1.parentid != null) {
+      return this.hasParentCaseWithId(case1.parentid, parentid);
+    }
+    return false;
+  }
+
   private casechilds: BehaviorSubject<{ [key: number]: number[] }> = new BehaviorSubject<{ [key: number]: number[] }>({});
   casechilds$ = this.casechilds.asObservable();
+
+  getCaseChilds(id: number): number[] {
+    let childs = this.casechilds.value[id];
+    childs.sort((a, b) => this.getCase(a)!.casepath > this.getCase(b)!.casepath ? 1 : this.getCase(a)!.casepath < this.getCase(b)!.casepath ? -1 : 0);
+    return childs;
+  }
+
+  hasChildCases(id: number): boolean {
+    return this.casechilds.value[id] != undefined && this.casechilds.value[id].length > 0;
+  }
 
   private caseroots: BehaviorSubject<number[]> = new BehaviorSubject<number[]>([]);
   caseroots$ = this.caseroots.asObservable();
@@ -286,6 +332,10 @@ export class SettingsService {
     }));
   }
 
+  private saveClientSettings() : void {
+    localStorage.setItem(this.clientSettingsStorage, JSON.stringify(this.clientSettings.value));
+  }
+
   private saveParties(): void {
     localStorage.setItem(this.partiesstorage, JSON.stringify({
       addresses: this.addresses.value,
@@ -297,6 +347,24 @@ export class SettingsService {
       roles: this.roles.value,
       ts: this.partiessync,
     }));
+  }
+
+  showCasesInDeletion(newvalue: boolean) : void {
+    if (this.clientSettings.value.casesettings.showCasesInDeletion != newvalue) {
+      let settings = { ...this.clientSettings.value };
+      settings.casesettings.showCasesInDeletion = newvalue;
+      this.clientSettings.next(settings);
+      this.saveClientSettings();
+    }
+  }
+
+  showCasesInRetention(newvalue: boolean) : void {
+    if (this.clientSettings.value.casesettings.showCasesInRetention != newvalue) {
+      let settings = { ...this.clientSettings.value };
+      settings.casesettings.showCasesInRetention = newvalue;
+      this.clientSettings.next(settings);
+      this.saveClientSettings();
+    }
   }
 
   private casesynctimeout: any = null;
@@ -587,4 +655,13 @@ export interface PartiesStorage {
   parties: { [key: number]: Party };
   roles: { [key: number]: PartyRole };
   ts: number;
+}
+
+export interface ClientSettings {
+  casesettings: ClientCaseSettings
+}
+
+export interface ClientCaseSettings {
+  showCasesInDeletion: boolean;
+  showCasesInRetention: boolean;
 }
