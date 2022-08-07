@@ -46,7 +46,8 @@
       "status": "Status",
       "nextstatus": "Next state",
       "client": "Client",
-      "party": "Main participant"
+      "party": "Main participant",
+      "comment": "Description"
     },
     "childscard": {
       "title": "Related cases"
