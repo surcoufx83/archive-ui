@@ -41,6 +41,15 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="col-12 mb-3">
+                            <div class="form-group">
+                                <label for="case-comment" class="form-label">{{ i18n('case.metacard.comment')
+                                    }}</label>
+                                <textarea class="form-control" id="case-comment" name="case-comment"
+                                    [(ngModel)]="case.comment"
+                                    (change)="changes['comment'] = case.title; updateCase();"></textarea>
+                            </div>
+                        </div>
                         <!-- case header data parent + casename -->
                     </div>
 

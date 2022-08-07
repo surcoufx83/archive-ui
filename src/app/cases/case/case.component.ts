@@ -108,6 +108,7 @@ export class CaseComponent implements OnInit {
         this.childs = this.casechilds[this.case.id] ?? [];
       }
     }
+    console.log(this.case)
   }
 
   ngOnInit(): void {
