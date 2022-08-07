@@ -46,7 +46,8 @@
       "status": "Status",
       "nextstatus": "Nächster Status",
       "client": "Mandant",
-      "party": "Hauptbeteiligte"
+      "party": "Hauptbeteiligte",
+      "comment": "Beschreibung"
     },
     "childscard": {
       "title": "Zugehörige Akten"
