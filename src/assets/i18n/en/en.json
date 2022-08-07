@@ -46,10 +46,10 @@
       "status": "Status",
       "nextstatus": "Next state",
       "client": "Client",
-      "party": "Hauptbeteiligte"
+      "party": "Main participant"
     },
     "childscard": {
-      "title": "Zugehörige Akten"
+      "title": "Related cases"
     }
   },
   "casefilestatus": {
