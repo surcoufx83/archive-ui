@@ -26,19 +26,22 @@
                         <div class="col-12 col-lg-6 mb-3">
                             <div class="form-group">
                                 <label for="case-parent" class="form-label required">{{ i18n('case.metacard.parent')
-                                    }}<span *ngIf="getCase(case.parentid)"> [ <a [routerLink]="['/case', case.parentid]"
-                                            class="text-muted fs-7"><i
-                                                [class]="config.icons['goto'] + ' me-1 fs-8'"></i>{{ i18n('common.goto')
-                                            }}</a> ]</span></label>
-                                <select class="form-select" id="case-parent" name="case-parent"
-                                    [(ngModel)]="case.parentid"
-                                    (change)="case.parentid = +case.parentid!; updateCase();" required>
-                                    <option [value]="-1">{{ i18n('case.metacard.noparent') }}</option>
-                                    <ng-container *ngFor="let item of listOfCases">
-                                        <option [value]="item.id" [disabled]="hasParent(item.id, case.id)">{{
-                                            item.casepath }}</option>
-                                    </ng-container>
-                                </select>
+                                    }}</label>
+                                <div class="input-group">
+                                    <select class="form-select" id="case-parent" name="case-parent"
+                                        [(ngModel)]="case.parentid"
+                                        (change)="case.parentid = +case.parentid!; updateCase();" required>
+                                        <option [value]="-1">{{ i18n('case.metacard.noparent') }}</option>
+                                        <ng-container *ngFor="let item of listOfCases">
+                                            <option [value]="item.id" [disabled]="hasParent(item.id, case.id)">{{
+                                                item.casepath }}</option>
+                                        </ng-container>
+                                    </select>
+                                    <a [routerLink]="['/case', case.parentid]" class="btn btn-outline-secondary"
+                                        type="button" *ngIf="getCase(case.parentid)"><i
+                                            [class]="config.icons['goto']"></i></a>
+                                </div>
+
                             </div>
                         </div>
                         <div class="col-12 mb-3">
@@ -114,17 +117,18 @@
                             *ngIf="getCaseStatus(case.statusid) && getCaseStatus(case.statusid)?.followup?.status && getCaseStatus(getCaseStatus(case.statusid)!.followup!.status)">
                             <div class="form-group">
                                 <label for="case-nextstatus" class="form-label">{{ i18n('case.metacard.nextstatus')
-                                    }}<ng-container
-                                        *ngIf="getCaseStatus(case.statusid)!.followup!.autoswitch == false || case.period.end == null">
-                                        [ <span class="text-muted fs-7 pointer"
-                                            (click)="case.statusid = getCaseStatus(case.statusid)!.followup!.status!; updateCase();"><i
-                                                [class]="config.icons['step-next'] + ' me-1 fs-8'"></i>{{
-                                            i18n('common.switchTo')
-                                            }}</span> ]</ng-container></label>
-                                <input type="text" class="form-control-plaintext form-control-px" id="case-nextstatus"
-                                    name="case-nextstatus"
-                                    [value]="i18n('casestatus.' + getCaseStatus(getCaseStatus(case.statusid)!.followup!.status)!.name)"
-                                    readonly>
+                                    }}</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control-plaintext form-control-px"
+                                        id="case-nextstatus" name="case-nextstatus"
+                                        [value]="i18n('casestatus.' + getCaseStatus(getCaseStatus(case.statusid)!.followup!.status)!.name)"
+                                        readonly>
+                                    <button
+                                        (click)="case.statusid = getCaseStatus(case.statusid)!.followup!.status!; updateCase();"
+                                        *ngIf="getCaseStatus(case.statusid)!.followup!.autoswitch == false || case.period.end == null"
+                                        class="btn btn-outline-secondary rounded" type="button"><i
+                                            [class]="config.icons['step-next']"></i></button>
+                                </div>
                             </div>
                         </div>
                         <!-- case type and status -->
@@ -146,24 +150,38 @@
                                     name="case-deleted" [value]="formatService.fdate(case.deleted, 'Pp')" readonly>
                             </div>
                         </div>
-                        <div class="col-6 col-lg-3 mb-3" *ngIf="getCase(case.followupcaseid)">
+                        <div class="col-6 col-lg-3 mb-3">
                             <div class="form-group">
                                 <label for="case-followup" class="form-label">{{ i18n('case.metacard.followup')
-                                    }} [ <a [routerLink]="['/case', case.followupcaseid]" class="text-muted fs-7"><i
-                                            [class]="config.icons['goto'] + ' me-1 fs-8'"></i>{{ i18n('common.goto')
-                                        }}</a> ]</label>
-                                <input type="text" class="form-control-plaintext form-control-px" id="case-followup"
-                                    name="case-followup" [value]="getCase(case.followupcaseid)!.title" readonly>
+                                    }}</label>
+                                <div class="input-group">
+                                    <select class="form-select" id="case-followup" name="case-followup"
+                                        [(ngModel)]="case.followupcaseid"
+                                        (change)="case.followupcaseid = +case.followupcaseid!; updateCase();">
+                                        <option [value]="-1">{{ i18n('common.select.pickOne') }}</option>
+                                        <ng-container *ngFor="let item of listOfCases">
+                                            <option [value]="item.id" [disabled]="item.id ==  case.id">{{
+                                                item.casepath }}</option>
+                                        </ng-container>
+                                    </select>
+                                    <a [routerLink]="['/case', case.followupcaseid]"
+                                        *ngIf="getCaseStatus(case.statusid)!.followup!.autoswitch == false || case.period.end == null"
+                                        class="btn btn-outline-secondary" type="button"><i
+                                            [class]="config.icons['goto']"></i></a>
+                                </div>
                             </div>
                         </div>
                         <div class="col-6 col-lg-3 mb-3">
                             <div class="form-group">
                                 <label for="case-filecount" class="form-label">{{ i18n('case.metacard.filecount')
-                                    }} [ <a [routerLink]="['files']" class="text-muted fs-7"><i
-                                            [class]="config.icons['goto'] + ' me-1 fs-8'"></i>{{ i18n('common.goto')
-                                        }}</a> ]</label>
-                                <input type="text" class="form-control-plaintext form-control-px" id="case-filecount"
-                                    name="case-filecount" [value]="formatService.fnumber(case.filescount)" readonly>
+                                    }}</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control-plaintext form-control-px"
+                                        id="case-filecount" name="case-filecount"
+                                        [value]="formatService.fnumber(case.filescount)" readonly>
+                                    <a [routerLink]="['files']" class="btn btn-outline-secondary rounded" type="button"><i
+                                            [class]="config.icons['goto']"></i></a>
+                                </div>
                             </div>
                         </div>
                         <!-- case meta information -->
@@ -194,10 +212,10 @@
                                 <label for="case-period-minperiod" class="form-label">{{ i18n('case.timecard.minperiod')
                                     }}</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control form-control-px" id="case-period-minperiod"
+                                    <input type="text" class="form-control-plaintext form-control-px" id="case-period-minperiod"
                                         name="case-period-minperiod" [value]="this.duration(case.period.minperiod)"
                                         [placeholder]="i18n('common.period.placeholder')" readonly>
-                                    <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                    <button class="btn btn-outline-secondary rounded dropdown-toggle" type="button"
                                         data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
                                         <i [ngClass]="config.icons['edit']"></i>
                                     </button>
@@ -212,10 +230,10 @@
                                 <label for="case-period-period" class="form-label">{{ i18n('case.timecard.period')
                                     }}</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control form-control-px" id="case-period-period"
+                                    <input type="text" class="form-control-plaintext form-control-px" id="case-period-period"
                                         name="case-period-period" [value]="this.duration(case.period.period)"
                                         [placeholder]="i18n('common.period.placeholder')" readonly>
-                                    <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                    <button class="btn btn-outline-secondary rounded dropdown-toggle" type="button"
                                         data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
                                         <i [ngClass]="config.icons['edit']"></i>
                                     </button>
@@ -227,13 +245,15 @@
                         </div>
                         <div class="col-6 col-lg-3 mb-3">
                             <div class="form-group">
-                                <label for="case-period-termination" class="form-label">{{ i18n('case.timecard.termination')
+                                <label for="case-period-termination" class="form-label">{{
+                                    i18n('case.timecard.termination')
                                     }}</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control form-control-px" id="case-period-termination"
-                                        name="case-period-termination" [value]="this.duration(case.period.terminationperiod)"
+                                    <input type="text" class="form-control-plaintext form-control-px" id="case-period-termination"
+                                        name="case-period-termination"
+                                        [value]="this.duration(case.period.terminationperiod)"
                                         [placeholder]="i18n('common.period.placeholder')" readonly>
-                                    <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                    <button class="btn btn-outline-secondary rounded dropdown-toggle" type="button"
                                         data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
                                         <i [ngClass]="config.icons['edit']"></i>
                                     </button>

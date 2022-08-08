@@ -123,6 +123,15 @@ form {
   }
 }
 
+.input-group {
+  .form-control-plaintext {
+    position: relative;
+    flex: 1 1 auto;
+    width: 1%;
+    min-width: 0;
+  }
+}
+
 .fs-7 {
   font-size: $font-size-base * .9 !important;
 }

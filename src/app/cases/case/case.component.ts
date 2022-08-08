@@ -65,7 +65,6 @@ export class CaseComponent implements OnInit {
   }
 
   duration(duration: Duration|null) : string {
-    console.log(duration, this.formatService.fdur(duration))
     return this.formatService.fdur(duration);
   }
 

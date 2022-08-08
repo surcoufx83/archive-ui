@@ -40,8 +40,8 @@
       "noparent": "Keine",
       "created": "Erstellt",
       "deleted": "Gelöscht",
-      "filecount": "Anzahl Dateien",
-      "followup": "nachfolgende Akte",
+      "filecount": "Dateien",
+      "followup": "Nachfolgend",
       "type": "Kategorie",
       "status": "Status",
       "nextstatus": "Nächster Status",
@@ -56,9 +56,9 @@
       "title": "Zeiträume",
       "notifyUpcoming": "Benachrichtigen, wenn Ende in weniger als 3 Monaten",
       "notifyForecast": "Benachrichtigen, wenn Ende in weniger als 9 Monaten",
-      "start": "Vertragsbeginn",
-      "end": "Vertragsende",
-      "minperiod": "Mindestvertragslaufzeit",
+      "start": "Beginn",
+      "end": "Ende",
+      "minperiod": "Mindestlaufzeit",
       "period": "Feste Laufzeit",
       "termination": "Kündigungsfrist"
     }
