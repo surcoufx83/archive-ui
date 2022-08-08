@@ -40,8 +40,8 @@
       "noparent": "None",
       "created": "Created",
       "deleted": "Deleted",
-      "filecount": "Number of files",
-      "followup": "subsequent case",
+      "filecount": "Files",
+      "followup": "Nachfolgend",
       "type": "Category",
       "status": "Status",
       "nextstatus": "Next state",
@@ -53,14 +53,14 @@
       "title": "Related cases"
     },
     "timecard": {
-      "title": "Zeiträume",
-      "notifyUpcoming": "Benachrichtigen, wenn Ende in weniger als 3 Monaten",
-      "notifyForecast": "Benachrichtigen, wenn Ende in weniger als 9 Monaten",
-      "start": "Vertragsbeginn",
-      "end": "Vertragsende",
-      "minperiod": "Mindestvertragslaufzeit",
-      "period": "Feste Laufzeit",
-      "termination": "Kündigungsfrist"
+      "title": "Periods",
+      "notifyUpcoming": "Notify if end in less than three months",
+      "notifyForecast": "Notify if end in less than nine months",
+      "start": "Beginn",
+      "end": "Ende",
+      "minperiod": "Mindestlaufzeit",
+      "period": "Fixed duration",
+      "termination": "Termination period"
     }
   },
   "casefilestatus": {
