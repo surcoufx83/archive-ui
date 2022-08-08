@@ -60,7 +60,7 @@
       "end": "Ende",
       "minperiod": "Mindestlaufzeit",
       "period": "Fixed duration",
-      "termination": "Termination period"
+      "termination": "Termination"
     }
   },
   "casefilestatus": {
@@ -210,29 +210,29 @@
         "message": "Changes have been saved successfully."
       }
     },
-    "day": "Tag",
-    "days": "Tage",
+    "day": "Day",
+    "days": "Days",
     "delete": "Delete",
     "goto": "Jump to",
-    "hour": "Stunde",
-    "hours": "Stunden",
+    "hour": "Hour",
+    "hours": "Hours",
     "minute": "Minute",
-    "minutes": "Minuten",
-    "month": "Monat",
-    "months": "Monate",
+    "minutes": "Minutes",
+    "month": "Month",
+    "months": "Months",
     "no": "No",
     "none": "None",
     "novalue": "---",
     "period": {
-      "placeholder": "0j 0m 0t 0:0:0",
-      "patternYears": "{0}j",
+      "placeholder": "0y 0m 0d 0:0:0",
+      "patternYears": "{0}y",
       "patternMonths": "{0}m",
-      "patternDays": "{0}t",
+      "patternDays": "{0}d",
       "patternTime": "{0}h:{1}m:{2}s"
     },
     "save": "Save",
-    "second": "Sekunde",
-    "seconds": "Sekunden",
+    "second": "Second",
+    "seconds": "Seconds",
     "select": {
       "pickOne": " Please choose"
     },
@@ -243,8 +243,8 @@
         "message": "This form contains errors."
       }
     },
-    "year": "Jahr",
-    "years": "Jahre",
+    "year": "Year",
+    "years": "Years",
     "yes": "Yes"
   },
   "contacttypes": {
