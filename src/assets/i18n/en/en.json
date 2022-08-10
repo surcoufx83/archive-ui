@@ -41,7 +41,7 @@
       "created": "Created",
       "deleted": "Deleted",
       "filecount": "Files",
-      "followup": "Nachfolgend",
+      "followup": "Followed by",
       "type": "Category",
       "status": "Status",
       "nextstatus": "Next state",
@@ -56,9 +56,9 @@
       "title": "Periods",
       "notifyUpcoming": "Notify if end in less than three months",
       "notifyForecast": "Notify if end in less than nine months",
-      "start": "Beginn",
-      "end": "Ende",
-      "minperiod": "Mindestlaufzeit",
+      "start": "Start",
+      "end": "End",
+      "minperiod": "Min. duration",
       "period": "Fixed duration",
       "termination": "Termination"
     }
