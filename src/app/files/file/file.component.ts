@@ -92,9 +92,13 @@ export class FileComponent implements OnInit {
     });
     this.userSettings.contacts$.subscribe((contacts) => { this.contacts = Object.values(contacts); });
     this.userSettings.contacttypes$.subscribe((contacttypes) => { this.contacttypes = Object.values(contacttypes); });
-    this.userSettings.filetypes$.subscribe((filetypes) => {
-      this.filetypes = filetypes;
-      this.filetypes.forEach((item) => { item.i18nname = this.i18n('casefiletypes.' + item.name) });
+    this.userSettings.casefiletypes$.subscribe((filetypes) => {
+      this.filetypes = [];
+      for (let key in filetypes) {
+        let item = filetypes[key];
+        item.i18nname = this.i18n('casefiletypes.' + item.name);
+        this.filetypes.push(item);
+      }
       this.filetypes.sort((a, b) => { return a.i18nname > b.i18nname ? 1 : a.i18nname < b.i18nname ? -1 : 0 });
     });
     this.userSettings.parties$.subscribe((parties) => {

@@ -28,9 +28,12 @@ export interface Case {
 }
 
 export interface CaseFiletype {
+    id: number;
+    created: string;
+    deleted: string|null;
     icon: string;
     iconcolor: string;
-    id: number;
+    modified: string;
     name: string;
     i18nname: string;
 }

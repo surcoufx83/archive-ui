@@ -48,6 +48,7 @@ export class SettingsService {
       olddata = <CasesStorage>JSON.parse(olddata);
       this.cases.next(olddata.cases);
       this.casechilds.next(olddata.casechilds);
+      this.casefiletypes.next(olddata.casefiletypes);
       this.caseroots.next(olddata.rootcases);
       this.caseStatus.next(olddata.casestatus);
       this.caseTypes.next(olddata.casetypes);
@@ -82,7 +83,6 @@ export class SettingsService {
         this.updateClasses(reply.payload['classes']);
         this.updateCountries(reply.payload['countries']);
         this.updateCurrencies(reply.payload['currencies']);
-        this.updateFiletypes(reply.payload['casefiletypes']);
       }
     });
     this.caseFileStatus.next(['new', 'checked', 'approved']);
@@ -159,6 +159,17 @@ export class SettingsService {
   private caseFileStatus: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
   caseFileStatus$ = this.caseFileStatus.asObservable();
 
+  private casefiletypes: BehaviorSubject<{ [key: number]:CaseFiletype }> = new BehaviorSubject<{ [key: number]:CaseFiletype }>({});
+  casefiletypes$ = this.casefiletypes.asObservable();
+
+  getCaseFiletype(id: number | null): CaseFiletype | null {
+    if (id == null)
+      return null;
+    if (this.casefiletypes.value[id])
+      return this.casefiletypes.value[id];
+    return null;
+  }
+
   private caseStatus: BehaviorSubject<{ [key: number]: CaseStatus }> = new BehaviorSubject<{ [key: number]: CaseStatus }>({});
   caseStatus$ = this.caseStatus.asObservable();
 
@@ -198,9 +209,6 @@ export class SettingsService {
 
   private currencies: BehaviorSubject<Currency[]> = new BehaviorSubject<Currency[]>([]);
   currencies$ = this.currencies.asObservable();
-
-  private filetypes: BehaviorSubject<CaseFiletype[]> = new BehaviorSubject<CaseFiletype[]>([]);
-  filetypes$ = this.filetypes.asObservable();
 
   private parties: BehaviorSubject<{ [key: number]: Party }> = new BehaviorSubject<{ [key: number]: Party }>({});
   parties$ = this.parties.asObservable();
@@ -324,6 +332,7 @@ export class SettingsService {
   private saveCases(): void {
     localStorage.setItem(this.casesstorage, JSON.stringify({
       casechilds: this.casechilds.value,
+      casefiletypes: this.casefiletypes.value,
       cases: this.cases.value,
       casestatus: this.caseStatus.value,
       casetypes: this.caseTypes.value,
@@ -378,6 +387,7 @@ export class SettingsService {
     this.authService.queryApi(url).subscribe((reply) => {
       if (reply.success && reply.payload != undefined) {
         let response = <CasesResponse>reply.payload;
+        this.updateCaseFiletypes(response.casefiletypes);
         this.updateCaseStatus(response.casestatus);
         this.updateCaseTypes(response.casetypes);
         this.updateCases(response.cases);
@@ -428,6 +438,19 @@ export class SettingsService {
     let temp = { ...this.banks.value };
     banks.forEach((a) => this._updateCommon(temp, a) );
     this.banks.next(temp);
+  }
+
+  private updateCaseFiletypes(items: CaseFiletype[]): void {
+    if (items.length == 0)
+      return;
+    let temp = this.casefiletypes.value;
+    items.forEach((cs) => {
+      if (cs.deleted == null)
+        temp[cs.id] = cs;
+      else
+        delete temp[cs.id];
+    });
+    this.casefiletypes.next(temp);
   }
 
   private updateCases(cases: Case[]): void {
@@ -534,10 +557,6 @@ export class SettingsService {
     this.currencies.next(currencies);
   }
 
-  private updateFiletypes(filetypes: CaseFiletype[]) {
-    this.filetypes.next(filetypes);
-  }
-
   private updateParties(parties: Party[]) {
     let temp = { ...this.parties.value };
     parties.forEach((a) => this._updateCommon(temp, a) );
@@ -618,6 +637,7 @@ export class SettingsService {
 
 export interface CasesResponse {
   cases: Case[];
+  casefiletypes: CaseFiletype[];
   casestatus: CaseStatus[];
   casetypes: CaseType[];
 }
@@ -625,6 +645,7 @@ export interface CasesResponse {
 export interface CasesStorage {
   rootcases: number[];
   casechilds: { [key: number]: number[] };
+  casefiletypes: { [key: number]: CaseFiletype };
   cases: { [key: number]: Case };
   casestatus: { [key: number]: CaseStatus };
   casetypes: { [key: number]: CaseType };
