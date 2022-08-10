@@ -40,16 +40,27 @@
       "noparent": "None",
       "created": "Created",
       "deleted": "Deleted",
-      "filecount": "Number of files",
-      "followup": "subsequent case",
+      "filecount": "Files",
+      "followup": "Followed by",
       "type": "Category",
       "status": "Status",
       "nextstatus": "Next state",
       "client": "Client",
-      "party": "Hauptbeteiligte"
+      "party": "Main participant",
+      "comment": "Description"
     },
     "childscard": {
-      "title": "Zugehörige Akten"
+      "title": "Related cases"
+    },
+    "timecard": {
+      "title": "Periods",
+      "notifyUpcoming": "Notify if end in less than three months",
+      "notifyForecast": "Notify if end in less than nine months",
+      "start": "Start",
+      "end": "End",
+      "minperiod": "Min. duration",
+      "period": "Fixed duration",
+      "termination": "Termination"
     }
   },
   "casefilestatus": {
@@ -199,12 +210,29 @@
         "message": "Changes have been saved successfully."
       }
     },
+    "day": "Day",
+    "days": "Days",
     "delete": "Delete",
     "goto": "Jump to",
+    "hour": "Hour",
+    "hours": "Hours",
+    "minute": "Minute",
+    "minutes": "Minutes",
+    "month": "Month",
+    "months": "Months",
     "no": "No",
     "none": "None",
     "novalue": "---",
+    "period": {
+      "placeholder": "0y 0m 0d 0:0:0",
+      "patternYears": "{0}y",
+      "patternMonths": "{0}m",
+      "patternDays": "{0}d",
+      "patternTime": "{0}h:{1}m:{2}s"
+    },
     "save": "Save",
+    "second": "Second",
+    "seconds": "Seconds",
     "select": {
       "pickOne": " Please choose"
     },
@@ -215,6 +243,8 @@
         "message": "This form contains errors."
       }
     },
+    "year": "Year",
+    "years": "Years",
     "yes": "Yes"
   },
   "contacttypes": {
