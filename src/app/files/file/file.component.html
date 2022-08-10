@@ -168,7 +168,7 @@
                           <option *ngFor="let item of classes" [value]="item.id">{{ i18n('classify.classes.' +
                             item.techname) }}</option>
                         </select>
-                        <button type="button" class="btn-sm btn-success text-nowrap" (click)="guess()"
+                        <button type="button" class="btn btn-sm btn-success text-nowrap" (click)="guess()"
                           [disabled]="guessing">
                           <i class="fa-solid fa-fingerprint" *ngIf="!guessing"></i>
                           <i [class]="config.icons['busy']" *ngIf="guessing"></i>
