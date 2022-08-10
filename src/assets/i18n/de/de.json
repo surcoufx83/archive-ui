@@ -475,6 +475,12 @@
         "btn": "Löschen",
         "confirm": "Datei wirklich löschen?"
       }
+    },
+    "errors": {
+      "noNextFile": {
+        "title": "Keine Daten",
+        "message": "Es gibt keine weiteren Dateien die eine Klassifizierung erfordern."
+      }
     }
   },
   "folderbrowser": {

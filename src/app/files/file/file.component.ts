@@ -16,6 +16,7 @@ import { ReplaySubject } from 'rxjs';
 import { Case, CaseFiletype } from 'src/app/cases/case';
 import { Class } from '../class';
 import { SelectedItem } from '../folder-browser-dialog/folder-browser-dialog.component';
+import { ToastsService } from 'src/app/utils/toasts.service';
 
 @Component({
   selector: 'app-file',
@@ -39,7 +40,7 @@ export class FileComponent implements OnInit {
   recentVersion: Version | null | undefined;
   textcontent: string[] = [];
   updating: boolean = false;
-  usersettingsObj: Settings|null = null;
+  usersettingsObj: Settings | null = null;
   view: string = '';
 
   addresses: Address[] = [];
@@ -69,7 +70,8 @@ export class FileComponent implements OnInit {
     private router: Router,
     private userSettings: SettingsService,
     public formatService: FormatService,
-    private fileService: FileService) {
+    private fileService: FileService,
+    private toastService: ToastsService) {
     this.userSettings.loadArchiveSettings();
     this.userSettings.settings$.subscribe((settings) => { this.usersettingsObj = settings; });
     this.userSettings.addresses$.subscribe((addresses) => {
@@ -271,8 +273,6 @@ export class FileComponent implements OnInit {
         this.configService.setCacheItem(key, this.file);
         this.downloadFile(this.file.id);
       }
-      else
-        alert("Error calling API :(");
       this.busy = false;
     });
   }
@@ -295,8 +295,6 @@ export class FileComponent implements OnInit {
           this.configService.setCacheItem(key, this.file);
           this.downloadFile(this.file.id);
         }
-        else
-          alert("Error calling API :(");
       });
     }
   }
@@ -304,19 +302,22 @@ export class FileComponent implements OnInit {
   nextFile(): void {
     let url = this.config.api.baseUrl + '/file/next';
     this.authService.queryApi(url).subscribe((reply) => {
-      if (reply.success && reply.payload != undefined) {
-        let id = <number>reply.payload['file'];
-        if (id == this.file?.id)
-          return;
-        this.file = undefined;
-        this.recentVersion = undefined;
-        this.filecontent = undefined;
-        this.ai_classifiedAs = null;
-        this.ai_classifiedConfidence = 0.0;
-        this.router.navigate(['/file', id]);
+      if (reply.errno === 204) {
+        this.toastService.warn(this.i18nService.i18n('file.errors.noNextFile.title'),
+        this.i18nService.i18n('file.errors.noNextFile.message'));
+      } else {
+        if (reply.success && reply.payload != undefined) {
+          let id = <number>reply.payload['file'];
+          if (id == this.file?.id)
+            return;
+          this.file = undefined;
+          this.recentVersion = undefined;
+          this.filecontent = undefined;
+          this.ai_classifiedAs = null;
+          this.ai_classifiedConfidence = 0.0;
+          this.router.navigate(['/file', id]);
+        }
       }
-      else
-        alert("Error calling API :(");
     });
   }
 

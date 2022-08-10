@@ -1,5 +1,5 @@
 import { Injectable, OnInit } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { ApiReply } from './api-reply';
 import { ConfigService, AppConfig } from './config.service';
@@ -174,11 +174,18 @@ export class AuthService implements OnInit {
       reply.next({ success: false });
       return reply;
     }
-    this.http.get<ApiReply>(url, { headers: this.header }).subscribe({
-      next: (response) => reply.next(response),
+    this.http.get<HttpResponse<ApiReply>>(url, { headers: this.header, observe: 'response' }).subscribe({
+      next: (response) => {
+        if (response.status === 204)
+          reply.next({ success: true, errno: response.status });
+        else
+          reply.next(<ApiReply><unknown>(response.body));
+        reply.complete();
+      },
       error: (e: HttpErrorResponse) => {
         console.log(e);
         reply.next({ success: false });
+        reply.complete();
         this.toastService.error(this.i18nService.i18n('authService.apiError.title'),
           this.i18nService.i18n('authService.apiError.message', [e.statusText]));
         if (e.status === 401) {
