@@ -478,6 +478,12 @@
         "btn": "Delete",
         "confirm": "Confirm file deletion?"
       }
+    },
+    "errors": {
+      "noNextFile": {
+        "title": "Keine Daten",
+        "message": "Es gibt keine weiteren Dateien die eine Klassifizierung erfordern."
+      }
     }
   },
   "folderbrowser": {
