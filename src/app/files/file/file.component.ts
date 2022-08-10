@@ -141,7 +141,6 @@ export class FileComponent implements OnInit {
   private downloadFile(id: number): void {
     if (this.file == undefined)
       return;
-    this.guess();
     if (Object.keys(this.file.versions).length > 0) {
       this.recentVersion = this.version;
       if (this.recentVersion && !this.recentVersion.ext?.displayable) {
