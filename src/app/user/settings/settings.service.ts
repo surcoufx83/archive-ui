@@ -144,6 +144,8 @@ export class SettingsService {
   casechilds$ = this.casechilds.asObservable();
 
   getCaseChilds(id: number): number[] {
+    if (!this.casechilds.value[id])
+      return [];
     let childs = this.casechilds.value[id];
     childs.sort((a, b) => this.getCase(a)!.casepath > this.getCase(b)!.casepath ? 1 : this.getCase(a)!.casepath < this.getCase(b)!.casepath ? -1 : 0);
     return childs;

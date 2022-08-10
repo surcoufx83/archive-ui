@@ -21,7 +21,6 @@ export class CaseComponent implements OnInit {
   case: Case | null = null;
   cases: { [key: number]: Case } = {};
   caseid: number | null = null;
-  casechilds: { [key: number]: number[] } = {};
   childs: number[] = [];
   changes: { [key: string]: any } = {};
   showDeleted: boolean = false;
@@ -109,13 +108,12 @@ export class CaseComponent implements OnInit {
         this.case.parentid = this.case.parentid ?? -1;
         this.case.clientid = this.case.clientid ?? -1;
         this.case.partyid = this.case.partyid ?? -1;
-        this.childs = this.casechilds[this.case.id] ?? [];
+        this.childs = this.userSettings.getCaseChilds(this.case.id);
         this.case.period.period = this.case.period.period ?? {};
         this.case.period.minperiod = this.case.period.minperiod ?? {};
         this.case.period.terminationperiod = this.case.period.terminationperiod ?? {};
       }
     }
-    console.log(this.case)
   }
 
   ngOnInit(): void {
@@ -124,9 +122,8 @@ export class CaseComponent implements OnInit {
       this.showInRetention = settings.casesettings.showCasesInRetention;
     });
     this.userSettings.casechilds$.subscribe((childs) => {
-      this.casechilds = childs;
       if (this.case)
-        this.childs = this.casechilds[this.case.id] ?? [];
+        this.childs = this.userSettings.getCaseChilds(this.case.id);
     });
     this.userSettings.cases$.subscribe((cases) => {
       this.cases = cases;
