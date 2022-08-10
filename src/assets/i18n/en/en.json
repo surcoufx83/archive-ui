@@ -481,8 +481,8 @@
     },
     "errors": {
       "noNextFile": {
-        "title": "Keine Daten",
-        "message": "Es gibt keine weiteren Dateien die eine Klassifizierung erfordern."
+        "title": "No records",
+        "message": "There are no more files that require classification."
       }
     }
   },
