@@ -165,7 +165,7 @@
                                         </ng-container>
                                     </select>
                                     <a [routerLink]="['/case', case.followupcaseid]"
-                                        *ngIf="getCaseStatus(case.statusid)!.followup!.autoswitch == false || case.period.end == null"
+                                        *ngIf="case.followupcaseid"
                                         class="btn btn-outline-secondary" type="button"><i
                                             [class]="config.icons['goto']"></i></a>
                                 </div>
