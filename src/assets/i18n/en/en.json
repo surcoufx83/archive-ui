@@ -488,7 +488,10 @@
   },
   "folderbrowser": {
     "title": "Browse folders",
-    "selected": "Selected: {0}"
+    "selected": "Selected: {0}",
+    "newFolder": {
+      "title": "Neuer Ordner..."
+    }
   },
   "home": {
     "title": "Archive home",
