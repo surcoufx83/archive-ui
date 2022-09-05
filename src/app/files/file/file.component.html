@@ -331,7 +331,7 @@
                 </div>
               </div>
               <folder-browser-dialog *ngIf="showMoveToFolderBrowser" [initialFolder]="file.directory"
-                (select)="moveTo($event); showMoveToFolderBrowser = false;"></folder-browser-dialog>
+                (select)="moveTo($event); showMoveToFolderBrowser = false;" [showAddFolderBtn]="true"></folder-browser-dialog>
             </div>
             <div class="row py-2">
               <div class="col-12 d-flex justify-content-between">

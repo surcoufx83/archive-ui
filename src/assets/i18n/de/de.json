@@ -485,7 +485,10 @@
   },
   "folderbrowser": {
     "title": "Ordner durchsuchen",
-    "selected": "Gewählt: {0}"
+    "selected": "Gewählt: {0}",
+    "newFolder": {
+      "title": "Neuer Ordner..."
+    }
   },
   "home": {
     "title": "Archiv Start",
