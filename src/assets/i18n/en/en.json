@@ -490,7 +490,7 @@
     "title": "Browse folders",
     "selected": "Selected: {0}",
     "newFolder": {
-      "title": "Neuer Ordner..."
+      "title": "New folder..."
     }
   },
   "home": {
