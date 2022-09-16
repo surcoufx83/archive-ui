@@ -119,6 +119,7 @@
   "classify": {
     "classes": {
       "In_AccountData": "Zugangsdaten, Credentials, Passwörter",
+      "In_AccountReport": "Kontoreport",
       "In_AnnualBonus": "Jahresbonus, Sonderzahlungen, etc.",
       "In_AnnualReport": "Jahresbericht",
       "In_Approval": "Freigabe / Bewilligung",
@@ -174,6 +175,7 @@
       "In_TaxAssessment": "Steuerbescheid",
       "In_TaxReceipt": "Steuerbescheinigung",
       "In_TaxReport": "Steuerauszug",
+      "In_TaxTravelDocumentation": "Reisedokumentation",
       "In_TaxVL": "Steuererklärung Anlage VL",
       "In_TicketEntrance": "Eintrittskarte",
       "In_TicketTransport": "Fahrschein, Ticket",
