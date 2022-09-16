@@ -72,6 +72,7 @@ export interface BasicAuthConfig {
 
 export interface NavbarConfig {
   items: NavbarItem[];
+  financeitems: NavbarItem[];
   workitems: NavbarItem[];
 }
 

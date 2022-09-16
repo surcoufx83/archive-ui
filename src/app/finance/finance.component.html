@@ -1,1 +1,21 @@
-<p>finance works!</p>
+<header>
+    <nav class="navbar navbar-expand navbar-sm navbar-secondary bg-secondary">
+      <div class="container-fluid d-flex justify-content-center">
+        <ul class="navbar-nav">
+          <ng-container *ngFor="let item of config.navbar.financeitems; let i = index">
+            <li class="nav-item mx-2">
+              <a [class]="'nav-link ' + (routeUrl == item.link ? 'active' : '')"
+                 [routerLink]="item.link">
+                <i [class]="config.icons[item.icon] + ' me-1'"></i>
+                <span class="d-none d-md-inline">
+                  {{ i18n(item.title) }}
+                </span>
+              </a>
+            </li>
+          </ng-container>
+        </ul>
+      </div>
+    </nav>
+  </header>
+  
+  <router-outlet></router-outlet>

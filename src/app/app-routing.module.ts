@@ -33,6 +33,8 @@ import { DbCurrenciesComponent } from './db/countries/currencies/currencies.comp
 import { DbRoleComponent } from './db/parties/role/role.component';
 import { DbPartyComponent } from './db/parties/party/party.component';
 import { DbContactTypeComponent } from './db/parties/contacts/type/type.component';
+import { StocksComponent } from './finance/stocks/stocks.component';
+import { AccountsComponent } from './finance/accounts/accounts.component';
 
 const routes: Routes = [
   { path: 'account', component: AccountComponent, canActivate: [SessionGuard] },
@@ -65,7 +67,10 @@ const routes: Routes = [
   { path: 'file/:id', component: FileComponent, canActivate: [SessionGuard] },
   { path: 'files/:id', component: FilesComponent, canActivate: [SessionGuard] },
   { path: 'files', component: FilesComponent, canActivate: [SessionGuard], pathMatch: 'full' },
-  { path: 'finance', component: FinanceComponent, canActivate: [SessionGuard] },
+  { path: 'finance', component: FinanceComponent, canActivate: [SessionGuard], children: [
+    { path: 'accounts', component: AccountsComponent, canActivate: [SessionGuard] },
+    { path: 'stocks', component: StocksComponent, canActivate: [SessionGuard] },
+  ] },
   { path: 'login', component: LoginComponent, canActivate: [SessionGuard], pathMatch: 'full' },
   { path: 'login/oauth2', component: Oauth2CallbackComponent, canActivate: [SessionGuard] },
   { path: 'logout', component: LogoutComponent, canActivate: [SessionGuard] },

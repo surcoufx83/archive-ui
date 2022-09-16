@@ -569,6 +569,10 @@
     "brand": {
       "title": "Archiv"
     },
+    "finance": {
+      "accounts": "Konten",
+      "stocks": "Wertpapiere"
+    },
     "items": {
       "account": "Konto",
       "cases": "Akten",
