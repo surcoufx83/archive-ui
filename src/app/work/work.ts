@@ -17,9 +17,11 @@ export interface WorkCalendarColor {
 
 export interface WorkCustomer {
   created: string;
+  deleted: string|null;
   disabled: boolean;
   id: number;
   lastusage: string|null;
+  modified: string;
   name: string;
   userid: number;
 }

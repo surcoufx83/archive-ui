@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { Settings } from './settings';
 import { AuthService } from '../../auth.service';
 import { AppConfig, ConfigService } from '../../config.service';
-import { WorkProperties } from '../../work/work';
+import { WorkCustomer, WorkProperties } from '../../work/work';
 import { User } from '../user';
 import { Case, CaseFiletype, CaseStatus, CaseType } from 'src/app/cases/case';
 import { Class } from 'src/app/files/class';
@@ -30,6 +30,8 @@ export class SettingsService {
   private casessync: number = 0;
   private partiesstorage: string = this.config.storage.prefix + 'partiesData';
   private partiessync: number = 0;
+  private workstorage: string = this.config.storage.prefix + 'workData';
+  private worksync: number = 0;
 
   constructor(private authService: AuthService,
     private configService: ConfigService) {
@@ -89,6 +91,16 @@ export class SettingsService {
   }
 
   private loadUserSettings(): void {
+    let olddata: string | null | WorkStorage = localStorage.getItem(this.workstorage);
+    if (olddata) {
+      olddata = <WorkStorage>JSON.parse(olddata);
+      this.customers.next(olddata.customers);
+      this.worksync = olddata.ts;
+    }
+    this.syncWork();
+  }
+
+  public loadWorkEntities(): void {
     let olddata: string | null | ClientSettings = localStorage.getItem(this.clientSettingsStorage);
     if (olddata) {
       olddata = <ClientSettings>JSON.parse(olddata);
@@ -161,7 +173,7 @@ export class SettingsService {
   private caseFileStatus: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
   caseFileStatus$ = this.caseFileStatus.asObservable();
 
-  private casefiletypes: BehaviorSubject<{ [key: number]:CaseFiletype }> = new BehaviorSubject<{ [key: number]:CaseFiletype }>({});
+  private casefiletypes: BehaviorSubject<{ [key: number]: CaseFiletype }> = new BehaviorSubject<{ [key: number]: CaseFiletype }>({});
   casefiletypes$ = this.casefiletypes.asObservable();
 
   getCaseFiletype(id: number | null): CaseFiletype | null {
@@ -211,6 +223,9 @@ export class SettingsService {
 
   private currencies: BehaviorSubject<Currency[]> = new BehaviorSubject<Currency[]>([]);
   currencies$ = this.currencies.asObservable();
+
+  private customers: BehaviorSubject<WorkCustomer[]> = new BehaviorSubject<WorkCustomer[]>([]);
+  customers$ = this.customers.asObservable();
 
   private parties: BehaviorSubject<{ [key: number]: Party }> = new BehaviorSubject<{ [key: number]: Party }>({});
   parties$ = this.parties.asObservable();
@@ -343,7 +358,7 @@ export class SettingsService {
     }));
   }
 
-  private saveClientSettings() : void {
+  private saveClientSettings(): void {
     localStorage.setItem(this.clientSettingsStorage, JSON.stringify(this.clientSettings.value));
   }
 
@@ -360,7 +375,14 @@ export class SettingsService {
     }));
   }
 
-  showCasesInDeletion(newvalue: boolean) : void {
+  private saveWork(): void {
+    localStorage.setItem(this.workstorage, JSON.stringify({
+      customers: this.customers.value,
+      ts: this.casessync,
+    }));
+  }
+
+  showCasesInDeletion(newvalue: boolean): void {
     if (this.clientSettings.value.casesettings.showCasesInDeletion != newvalue) {
       let settings = { ...this.clientSettings.value };
       settings.casesettings.showCasesInDeletion = newvalue;
@@ -369,7 +391,7 @@ export class SettingsService {
     }
   }
 
-  showCasesInRetention(newvalue: boolean) : void {
+  showCasesInRetention(newvalue: boolean): void {
     if (this.clientSettings.value.casesettings.showCasesInRetention != newvalue) {
       let settings = { ...this.clientSettings.value };
       settings.casesettings.showCasesInRetention = newvalue;
@@ -423,6 +445,24 @@ export class SettingsService {
     });
   }
 
+  private worksynctimeout: any = null;
+  private syncWork(): void {
+    if (this.worksynctimeout != null) {
+      clearTimeout(this.worksynctimeout);
+      this.worksynctimeout = null;
+    }
+    let url: string = this.config.api.baseUrl + '/work' + (this.worksync > 0 ? '/' + this.worksync : '');
+    this.worksync = Math.floor(Date.now() / 1000);
+    this.authService.queryApi(url).subscribe((reply) => {
+      if (reply.success && reply.payload != undefined) {
+        let response = <WorkResponse>reply.payload;
+        this.updateCustomers(response.customers);
+        this.saveWork();
+      }
+      this.worksynctimeout = setTimeout(() => { this.syncWork(); }, 30000);
+    });
+  }
+
   private _updateCommon<T extends CommonProperty>(listing: { [key: number]: T }, item: T): void {
     if (item.deleted == null)
       listing[item.id] = item;
@@ -432,13 +472,13 @@ export class SettingsService {
 
   private updateAddresses(addresses: Address[]) {
     let temp = { ...this.addresses.value };
-    addresses.forEach((a) => this._updateCommon(temp, a) );
+    addresses.forEach((a) => this._updateCommon(temp, a));
     this.addresses.next(temp);
   }
 
   private updateBanks(banks: Party[]) {
     let temp = { ...this.banks.value };
-    banks.forEach((a) => this._updateCommon(temp, a) );
+    banks.forEach((a) => this._updateCommon(temp, a));
     this.banks.next(temp);
   }
 
@@ -535,19 +575,19 @@ export class SettingsService {
 
   private updateClients(clients: Party[]) {
     let temp = { ...this.clients.value };
-    clients.forEach((a) => this._updateCommon(temp, a) );
+    clients.forEach((a) => this._updateCommon(temp, a));
     this.clients.next(temp);
   }
 
   private updateContacts(contacts: PartyContact[]) {
     let temp = { ...this.contacts.value };
-    contacts.forEach((a) => this._updateCommon(temp, a) );
+    contacts.forEach((a) => this._updateCommon(temp, a));
     this.contacts.next(temp);
   }
 
   private updateContactTypes(contacttypes: ContactType[]) {
     let temp = { ...this.contacttypes.value };
-    contacttypes.forEach((a) => this._updateCommon(temp, a) );
+    contacttypes.forEach((a) => this._updateCommon(temp, a));
     this.contacttypes.next(temp);
   }
 
@@ -559,15 +599,19 @@ export class SettingsService {
     this.currencies.next(currencies);
   }
 
+  private updateCustomers(customers: WorkCustomer[]) {
+    this.customers.next(customers);
+  }
+
   private updateParties(parties: Party[]) {
     let temp = { ...this.parties.value };
-    parties.forEach((a) => this._updateCommon(temp, a) );
+    parties.forEach((a) => this._updateCommon(temp, a));
     this.parties.next(temp);
   }
 
   private updateRoles(roles: PartyRole[]) {
     let temp = { ...this.roles.value };
-    roles.forEach((a) => this._updateCommon(temp, a) );
+    roles.forEach((a) => this._updateCommon(temp, a));
     this.roles.next(temp);
   }
 
@@ -588,7 +632,7 @@ export class SettingsService {
   updateContactType(typeitem: ContactType): BehaviorSubject<ContactType | null> {
     let subject = new BehaviorSubject<ContactType | null>(null);
     //this.postCommon(typeitem.id == 0 ? 'create' : 'update', typeitem,
-    
+
     //'contacttype', this.contacttypes.value, subject, (c: ContactType[]) => this.updateContactTypes(c));
     return subject;
   }
@@ -604,6 +648,13 @@ export class SettingsService {
     let subject = new BehaviorSubject<Currency | null>(null);
     this.postCommon(currencyitem.id == 0 ? 'create' : 'update', currencyitem,
       'currency', this.currencies.value, subject, (c: Currency[]) => this.updateCurrencies(c));
+    return subject;
+  }
+
+  updateCustomer(customeritem: WorkCustomer): BehaviorSubject<WorkCustomer | null> {
+    let subject = new BehaviorSubject<WorkCustomer | null>(null);
+    this.postCommon(customeritem.id == 0 ? 'create' : 'update', customeritem,
+      'customer', this.customers.value, subject, (c: WorkCustomer[]) => this.updateCustomers(c));
     return subject;
   }
 
@@ -655,7 +706,7 @@ export interface CasesStorage {
 }
 
 export interface CommonProperty {
-  deleted: string|null;
+  deleted: string | null;
   id: number;
 }
 
@@ -687,4 +738,13 @@ export interface ClientSettings {
 export interface ClientCaseSettings {
   showCasesInDeletion: boolean;
   showCasesInRetention: boolean;
+}
+
+export interface WorkResponse {
+  customers: WorkCustomer[];
+}
+
+export interface WorkStorage {
+  customers: WorkCustomer[];
+  ts: number;
 }

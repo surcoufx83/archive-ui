@@ -95,30 +95,28 @@
                   <div class="col-12 col-lg-6">{{ i18n('workday.tracked.description') }}</div>
                 </div>
                 <ng-container *ngFor="let item of bookings; let i = index;">
-                  <div [ngClass]="['flex-table-body row pointer']"
-                  (click)="copyFromRecent(item);">
+                  <div [ngClass]="['flex-table-body row pointer']" (click)="copyFromRecent(item);">
                     <div class="col-4 col-lg-2">
-                      {{ i18n('workday.tracked.fromUntil', [f(item.timefrom, 'p'), f(item.timeuntil, 'p')])  }}
+                      {{ i18n('workday.tracked.fromUntil', [f(item.timefrom, 'p'), f(item.timeuntil, 'p')]) }}
                     </div>
                     <div class="col-4 col-lg-2">
                       <ng-container *ngIf="item.break > 0">
-                        {{ i18n('calendar.duration.short', ['' + item.break])  }}
+                        {{ i18n('calendar.duration.short', ['' + item.break]) }}
                       </ng-container>
                     </div>
                     <div class="col-4 col-lg-2">
                       <i [class]="item.timecategory.icon + ' ' + item.timecategory.iconcolor + ' me-1'"
-                         [title]="i18n('work.timecategories.' + item.timecategory.name)"></i>
-                      {{ i18n('calendar.duration.short', ['' + item.duration])  }}
+                        [title]="i18n('work.timecategories.' + item.timecategory.name)"></i>
+                      {{ i18n('calendar.duration.short', ['' + item.duration]) }}
                     </div>
                     <div class="col-12 col-lg-6 d-flex justify-content-between">
                       <div>
                         {{ item.customer?.name }}
                         {{ item.project?.name }}
-                        <div class="fs-7">{{ item.projectstage }}  {{ item.description }}</div>
+                        <div class="fs-7">{{ item.projectstage }} {{ item.description }}</div>
                       </div>
                       <div>
-                        <button class="btn btn-outline-danger"
-                          (click)="deleteBooking(item); $event.stopPropagation();">
+                        <button class="btn btn-outline-danger" (click)="deleteBooking(item); $event.stopPropagation();">
                           <i [class]="config.icons['delete']"></i>
                         </button>
                       </div>
@@ -147,7 +145,8 @@
               <button type="button" [ngClass]="['btn btn-sm', liveButtonColor]"
                 (click)="usersettingsObj.work.livetracking.enabled = !usersettingsObj.work.livetracking.enabled; pushUserSettings();"
                 [title]="i18n('workday.tracking.livebtnTitle')">
-                <i [class]="config.icons[usersettingsObj.work.livetracking.enabled ? 'toggle-on' : 'toggle-off'] + ' me-1'"></i>
+                <i
+                  [class]="config.icons[usersettingsObj.work.livetracking.enabled ? 'toggle-on' : 'toggle-off'] + ' me-1'"></i>
                 {{ i18n('workday.tracking.livebtn') }}
               </button>
             </li>
@@ -163,16 +162,17 @@
       <!-- container tracking -->
 
       <div class="col">
-        
+
         <div class="card">
           <div class="card-body">
 
             <form #f (submit)="onSubmitBooking()" ngNativeValidate>
-            
+
               <div class="row">
                 <div class="col-6 col-lg-3 mb-3">
                   <div class="form-group">
-                    <label for="tracking-from" class="form-label required">{{ i18n('workday.tracking.common.from') }}</label>
+                    <label for="tracking-from" class="form-label required">{{ i18n('workday.tracking.common.from')
+                      }}</label>
                     <input type="text" #focus class="form-control" id="tracking-from" name="tracking-from"
                       [(ngModel)]="booking.timefrom" [placeholder]="i18n('workday.tracking.common.timePlaceholder')"
                       (change)="onChangeTime()" pattern="^(\d{1,2}):?(\d{2})$" required>
@@ -180,7 +180,8 @@
                 </div>
                 <div class="col-6 col-lg-3 mb-3">
                   <div class="form-group">
-                    <label for="tracking-until" class="form-label required">{{ i18n('workday.tracking.common.until') }}</label>
+                    <label for="tracking-until" class="form-label required">{{ i18n('workday.tracking.common.until')
+                      }}</label>
                     <input type="text" class="form-control" id="tracking-until" name="tracking-until"
                       [(ngModel)]="booking.timeuntil" [placeholder]="i18n('workday.tracking.common.timePlaceholder')"
                       (change)="onChangeTime()" pattern="^(\d{1,2}):?(\d{2})$" required>
@@ -188,7 +189,8 @@
                 </div>
                 <div class="col-6 col-lg-3 mb-3">
                   <div class="form-group">
-                    <label for="tracking-break" class="form-label required">{{ i18n('workday.tracking.common.break') }}</label>
+                    <label for="tracking-break" class="form-label required">{{ i18n('workday.tracking.common.break')
+                      }}</label>
                     <input type="text" class="form-control" id="tracking-break" name="tracking-break"
                       [(ngModel)]="booking.break" [placeholder]="i18n('workday.tracking.common.breakPlaceholder')"
                       (change)="onChangeTime()" pattern="^(\d+)$" required>
@@ -196,22 +198,24 @@
                 </div>
                 <div class="col-6 col-lg-3 mb-3">
                   <div class="form-group">
-                    <label for="tracking-duration" class="form-label">{{ i18n('workday.tracking.common.duration') }}</label>
+                    <label for="tracking-duration" class="form-label">{{ i18n('workday.tracking.common.duration')
+                      }}</label>
                     <input type="text" class="form-control" id="tracking-duration" name="tracking-duration"
                       [(ngModel)]="booking.duration" readonly>
                   </div>
                 </div>
               </div>
-              
+
               <div class="row">
                 <div class="col-12 col-lg-6 mb-3">
                   <div class="form-group">
-                    <label for="tracking-category" class="form-label required">{{ i18n('workday.tracking.common.timeCategory') }}</label>
+                    <label for="tracking-category" class="form-label required">{{
+                      i18n('workday.tracking.common.timeCategory') }}</label>
                     <div class="input-group">
                       <select class="form-select" id="tracking-category" name="tracking-category"
                         [(ngModel)]="bookingProps['timecategory']" (change)="onChangeCategory()" required>
-                        <option *ngFor="let category of categories; let i = index"
-                                [value]="i">{{ i18n('work.timecategories.' + category.name) }}</option>
+                        <option *ngFor="let category of categories; let i = index" [value]="i">{{
+                          i18n('work.timecategories.' + category.name) }}</option>
                       </select>
                       <label class="input-group-text" for="tracking-category" *ngIf="booking.timecategory.icon">
                         <i [class]="booking.timecategory.icon + ' ' + booking.timecategory.iconcolor"></i>
@@ -220,21 +224,24 @@
                   </div>
                 </div>
               </div>
-              
+
               <div class="row" *ngIf="usersettingsObj.work.tracking.trackCustomer">
                 <div class="col-12 col-lg-4 mb-3">
                   <div class="form-group">
-                    <label for="tracking-customer" class="form-label required">{{ i18n('workday.tracking.common.customer') }}</label>
+                    <label for="tracking-customer" class="form-label required">{{
+                      i18n('workday.tracking.common.customer') }}</label>
+                    <label class="form-label text-link pointer ms-3 fs-8" data-bs-toggle="modal"
+                      data-bs-target="#createCustomerModal">[{{ i18n('common.add') }}]</label>
                     <select class="form-select" id="tracking-customer" name="tracking-customer"
                       [(ngModel)]="bookingProps['customer']" (change)="onChangeCustomer()" required>
-                      <option *ngFor="let customer of customers; let i = index"
-                              [value]="i">{{ customer.name }}</option>
+                      <option *ngFor="let customer of customers; let i = index" [value]="i">{{ customer.name }}</option>
                     </select>
                   </div>
                 </div>
                 <div class="col-12 col-lg-4 mb-3" *ngIf="usersettingsObj.work.tracking.trackCustomerProject">
                   <div class="form-group">
-                    <label for="tracking-project" class="form-label">{{ i18n('workday.tracking.common.project') }}</label>
+                    <label for="tracking-project" class="form-label">{{ i18n('workday.tracking.common.project')
+                      }}</label>
                     <select class="form-select" id="tracking-project" name="tracking-project"
                       [(ngModel)]="bookingProps['project']" (change)="onChangeProject()">
                       <option value="-1">{{ i18n('common.select.pickOne') }}</option>
@@ -252,17 +259,18 @@
                   </div>
                 </div>
               </div>
-              
+
               <div class="row">
                 <div class="col-12 mb-3">
                   <div class="form-group">
-                    <label for="tracking-description" class="form-label required">{{ i18n('workday.tracking.common.description') }}</label>
+                    <label for="tracking-description" class="form-label required">{{
+                      i18n('workday.tracking.common.description') }}</label>
                     <textarea class="form-control" id="tracking-description" name="tracking-description"
                       [(ngModel)]="booking.description" required></textarea>
                   </div>
                 </div>
               </div>
-              
+
               <div class="row">
                 <div class="col-12 mb-3">
                   <div class="form-group">
@@ -279,7 +287,7 @@
 
           </div>
         </div>
-        
+
       </div>
 
       <div class="col-12 col-lg-4">
@@ -288,16 +296,17 @@
             <div class="card-body">
               <ul class="list-group">
                 <li class="list-group-item pointer" *ngFor="let item of recentEntries;"
-                  [title]="i18n('workday.tracking.common.recentTitle')"
-                  (click)="copyFromRecent(item);">
+                  [title]="i18n('workday.tracking.common.recentTitle')" (click)="copyFromRecent(item);">
                   <div class="d-flex">
                     <div class="me-1">
-                      <span class="badge bg-light text-dark fw-lighter">{{ i18n('search.result.points', ['' + (item.count | number)]) }}</span>
+                      <span class="badge bg-light text-dark fw-lighter">{{ i18n('search.result.points', ['' +
+                        (item.count | number)]) }}</span>
                     </div>
                     <div>
                       <div>
                         <ng-container *ngIf="category(item.timecategoryid) != undefined">
-                          <i [class]="category(item.timecategoryid)?.icon + ' fs-7 me-1 ' + category(item.timecategoryid)?.iconcolor"></i>
+                          <i
+                            [class]="category(item.timecategoryid)?.icon + ' fs-7 me-1 ' + category(item.timecategoryid)?.iconcolor"></i>
                         </ng-container>
                         <ng-container *ngIf="customer(item.customerid) != undefined">
                           {{ customer(item.customerid)?.name }}
@@ -324,3 +333,33 @@
   </div>
 
 </ng-container>
+
+<div class="modal fade" id="createCustomerModal" data-bs-backdrop="static" tabindex="-1">
+  <div class="modal-dialog">
+    <form [formGroup]="createCustomer" (submit)="onSaveCreateCustomer()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{i18n('workday.tracking.createCustomer.title')}}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12 mb-3">
+              <div class="form-group">
+                <label for="tracking-description" class="form-label required">{{
+                  i18n('workday.tracking.createCustomer.nameTitle') }}</label>
+                <input type="text" class="form-control" id="create-customer-name" name="create-customer-name"
+                  [placeholder]="i18n('workday.tracking.createCustomer.namePlaceholder')" formControlName="name">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" #createCustomerModalCloser data-bs-dismiss="modal">{{i18n('common.cancel')}}</button>
+          <button type="submit" class="btn btn-success"
+            [disabled]="!createCustomer.get('name')!.dirty || !createCustomer.get('name')!.valid || createCustomer.get('busy')?.value">{{i18n('common.save')}}</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
