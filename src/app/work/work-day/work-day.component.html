@@ -237,7 +237,7 @@
                     <label for="tracking-project" class="form-label">{{ i18n('workday.tracking.common.project') }}</label>
                     <select class="form-select" id="tracking-project" name="tracking-project"
                       [(ngModel)]="bookingProps['project']" (change)="onChangeProject()">
-                      <option>{{ i18n('common.select.pickOne') }}</option>
+                      <option value="-1">{{ i18n('common.select.pickOne') }}</option>
                       <ng-container *ngFor="let project of projects; let i = index">
                         <option [value]="i">{{ project.name }}</option>
                       </ng-container>
