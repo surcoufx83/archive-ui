@@ -751,9 +751,9 @@
         "until": "To"
       },
       "createCustomer": {
-        "title": "Neuer Kunde",
-        "nameTitle": "Kundenname",
-        "namePlaceholder": "Bitte angeben..."
+        "title": "New customer",
+        "nameTitle": "Customer name",
+        "namePlaceholder": "Please specify..."
       },
       "live": {}
     }
