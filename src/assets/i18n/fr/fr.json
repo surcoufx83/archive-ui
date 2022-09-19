@@ -122,6 +122,7 @@
   "classify": {
     "classes": {
       "In_AccountData": "Zugangsdaten, Credentials, Passwörter",
+      "In_AccountReport": "Kontoreport",
       "In_AnnualBonus": "Jahresbonus, Sonderzahlungen, etc.",
       "In_AnnualReport": "Jahresbericht",
       "In_Approval": "Freigabe / Bewilligung",
@@ -177,6 +178,7 @@
       "In_TaxAssessment": "Steuerbescheid",
       "In_TaxReceipt": "Steuerbescheinigung",
       "In_TaxReport": "Steuerauszug",
+      "In_TaxTravelDocumentation": "Reisedokumentation",
       "In_TaxVL": "Steuererklärung Anlage VL",
       "In_TicketEntrance": "Eintrittskarte",
       "In_TicketTransport": "Fahrschein, Ticket",
@@ -478,11 +480,20 @@
         "btn": "Löschen",
         "confirm": "Datei wirklich löschen?"
       }
+    },
+    "errors": {
+      "noNextFile": {
+        "title": "Keine Daten",
+        "message": "Es gibt keine weiteren Dateien die eine Klassifizierung erfordern."
+      }
     }
   },
   "folderbrowser": {
     "title": "Ordner durchsuchen",
-    "selected": "Gewählt: {0}"
+    "selected": "Gewählt: {0}",
+    "newFolder": {
+      "title": "Neuer Ordner..."
+    }
   },
   "home": {
     "title": "Archiv Start",
@@ -560,6 +571,10 @@
   "navbar": {
     "brand": {
       "title": "Archiv"
+    },
+    "finance": {
+      "accounts": "Konten",
+      "stocks": "Wertpapiere"
     },
     "items": {
       "account": "Konto",
