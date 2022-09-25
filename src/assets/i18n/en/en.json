@@ -750,6 +750,11 @@
         "timePlaceholder": "hh:mm | hmm | hmm",
         "until": "To"
       },
+      "createCustomer": {
+        "title": "New customer",
+        "nameTitle": "Customer name",
+        "namePlaceholder": "Please specify..."
+      },
       "live": {}
     }
   },
