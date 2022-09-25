@@ -9,6 +9,8 @@ import { I18nService } from '../../i18n.service';
 import { Settings } from '../../user/settings/settings';
 import { RecentBooking, WorkCustomer, WorkDay, WorkDayBooking, WorkProject, WorkProperties, WorkTimeCategory } from '../work';
 import { ViewportScroller } from '@angular/common';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ApiReply } from 'src/app/api-reply';
 
 @Component({
   selector: 'app-work-day',
@@ -18,9 +20,10 @@ import { ViewportScroller } from '@angular/common';
 export class WorkDayComponent implements OnInit {
 
   @ViewChild('focus') focusElement?: ElementRef;
+  @ViewChild('createCustomerModalCloser') createCustomerModalCloserElement?: ElementRef;
 
   booking?: WorkDayBooking;
-  bookingProps: {[key: string]: number} = {};
+  bookingProps: { [key: string]: number } = {};
   busy: boolean = false;
   categories: WorkTimeCategory[] = [];
   customers: WorkCustomer[] = [];
@@ -30,8 +33,13 @@ export class WorkDayComponent implements OnInit {
   recentEntries: RecentBooking[] = [];
   timepattern: RegExp = /^(?<hr>\d{1,2}):?(?<min>\d{2})$/;
   today: Date = new Date();
-  usersettingsObj: Settings|null = null;
-  workprops: WorkProperties|null = null;
+  usersettingsObj: Settings | null = null;
+  workprops: WorkProperties | null = null;
+
+  createCustomer = new FormGroup({
+    'name': new FormControl('', { validators: Validators.required }),
+    'busy': new FormControl(false)
+  });
 
   constructor(private authService: AuthService,
     private configService: ConfigService,
@@ -40,26 +48,29 @@ export class WorkDayComponent implements OnInit {
     private router: Router,
     private userSettings: SettingsService,
     private scroller: ViewportScroller) {
+    this.userSettings.loadWorkEntities();
     this.userSettings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
     });
     this.userSettings.workprops$.subscribe((props) => {
       if (props != null) {
         this.workprops = props;
-        this.customers = props.customers.sort((a, b) => a.name > b.name ? 1 : a.name === b.name ? 0 : -1);
         this.categories = props.timeCategories.sort((a, b) => this.i18n('work.timecategories.' + a.name) > this.i18n('work.timecategories.' + b.name) ? 1 : this.i18n('work.timecategories.' + a.name) === this.i18n('work.timecategories.' + b.name) ? 0 : -1);
       }
+    });
+    this.userSettings.customers$.subscribe((customers) => {
+      this.customers = customers.sort((a, b) => a.name.toLocaleLowerCase() > b.name.toLocaleLowerCase() ? 1 : -1);
     });
     setTimeout(() => { this.refreshRecentBookings(); }, 1000);
   }
 
-  get bookings() : WorkDayBooking[] {
+  get bookings(): WorkDayBooking[] {
     if (!this.day)
       return [];
     return Object.values(this.day.bookings);
   }
 
-  category(id: number) : WorkTimeCategory|undefined {
+  category(id: number): WorkTimeCategory | undefined {
     return this.workprops?.timeCategories.find(e => e.id == id);
   }
 
@@ -67,7 +78,7 @@ export class WorkDayComponent implements OnInit {
     return this.configService.config;
   }
 
-  copyFromRecent(item: RecentBooking|WorkDayBooking) : void {
+  copyFromRecent(item: RecentBooking | WorkDayBooking): void {
     this.bookingProps = {};
     for (let i = 0; i < this.categories.length; i++) {
       if (this.categories[i].id == item.timecategoryid) {
@@ -95,15 +106,13 @@ export class WorkDayComponent implements OnInit {
     this.focusElement?.nativeElement.focus();
   }
 
-  customer(id: number) : WorkCustomer|undefined {
+  customer(id: number): WorkCustomer | undefined {
     return this.workprops?.customers.find(e => e.id == id);
   }
 
-  deleteBooking(item: WorkDayBooking) : void {
-    console.log(item);
+  deleteBooking(item: WorkDayBooking): void {
     let url = this.config.api.baseUrl + '/work/bookings/' + item.id + '/delete';
     this.authService.updateApi(url, {}).subscribe((reply) => {
-      console.log(reply);
       if (reply.payload && reply.payload['day'])
         this.day = <WorkDay>reply.payload['day'];
       if (this.focusElement != undefined)
@@ -111,8 +120,8 @@ export class WorkDayComponent implements OnInit {
     });
   }
 
-  f(date: Date|string, form: string): string {
-    if (typeof(date) === 'string')
+  f(date: Date | string, form: string): string {
+    if (typeof (date) === 'string')
       date = new Date(date);
     return format(date, form, { locale: this.i18nService.DateLocale });
   }
@@ -121,13 +130,13 @@ export class WorkDayComponent implements OnInit {
     return this.i18n('calendar.duration.short', [duration.toLocaleString(this.i18nService.Locale, { minimumFractionDigits: 1 })]);
   }
 
-  get hasBookings() : boolean {
+  get hasBookings(): boolean {
     if (!this.day)
       return false;
     return Object.keys(this.day.bookings).length > 0;
   }
 
-  i18n(key: string, params: string[] = []) : string {
+  i18n(key: string, params: string[] = []): string {
     return this.i18nService.i18n(key, params);
   }
 
@@ -143,7 +152,7 @@ export class WorkDayComponent implements OnInit {
     return this.i18nService.Locale;
   }
 
-  newBooking(dayid: number|undefined): void {
+  newBooking(dayid: number | undefined): void {
     this.booking = {
       break: 0,
       customer: null,
@@ -167,7 +176,7 @@ export class WorkDayComponent implements OnInit {
     this.route.paramMap.subscribe((params) => {
       let date = 'today';
       if (params.has('date'))
-        date =  params.get('date') ?? '';
+        date = params.get('date') ?? '';
       this.busy = true;
       let url = this.config.api.baseUrl + '/work/' + date;
       this.authService.queryApi(url).subscribe((reply) => {
@@ -181,7 +190,7 @@ export class WorkDayComponent implements OnInit {
     });
   }
 
-  onChangeCategory() : void {
+  onChangeCategory(): void {
     if (!this.booking || !this.workprops)
       return;
     if (this.bookingProps['timecategory'] == -1) {
@@ -193,7 +202,7 @@ export class WorkDayComponent implements OnInit {
     this.booking.timecategoryid = this.categories[this.bookingProps['timecategory']].id;
   }
 
-  onChangeCustomer() : void {
+  onChangeCustomer(): void {
     this.projects = [];
     if (!this.booking || !this.workprops)
       return;
@@ -209,7 +218,7 @@ export class WorkDayComponent implements OnInit {
     }).sort((a, b) => a.name > b.name ? 1 : a.name === b.name ? 0 : -1);
   }
 
-  onChangeProject() : void {
+  onChangeProject(): void {
     if (!this.booking || !this.workprops)
       return;
     if (this.bookingProps['project'] == -1) {
@@ -221,7 +230,7 @@ export class WorkDayComponent implements OnInit {
     this.booking.projectid = this.projects[this.bookingProps['project']].id;
   }
 
-  onChangeTime() : void {
+  onChangeTime(): void {
     if (!this.booking)
       return;
     let start = this.parseTime(this.booking.timefrom);
@@ -239,8 +248,25 @@ export class WorkDayComponent implements OnInit {
     this.booking.duration = 0;
   }
 
-  onSubmitBooking() : void {
-    console.log('onSubmitBooking', this.booking);
+  onSaveCreateCustomer(): void {
+    if (this.createCustomer.get('busy')?.value)
+      return;
+    this.createCustomer.patchValue({ 'busy': true });
+    let newcustomer: WorkCustomer = {
+      id: 0, name: this.createCustomer.get('name')!.value, created: "", deleted: null,
+      disabled: false, lastusage: "", modified: "", userid: 0
+    }
+    this.userSettings.updateCustomer(newcustomer).subscribe((customer) => {
+      if (customer != null) {
+        this.createCustomerModalCloserElement?.nativeElement.click();
+        this.createCustomer.get('name')!.reset();
+      }
+      this.createCustomer.patchValue({ 'busy': false });
+    });
+    console.log('createCustomer', this.createCustomer);
+  }
+
+  onSubmitBooking(): void {
     if (this.busy || !this.day)
       return;
     this.busy = true;
@@ -257,10 +283,10 @@ export class WorkDayComponent implements OnInit {
     });
   }
 
-  parseTime(time: string) : Date|null {
+  parseTime(time: string): Date | null {
     let match = time.match(this.timepattern);
     if (match && match.groups) {
-      return set(this.today, { hours: +match.groups['hr'], minutes: +match.groups['min'], seconds: 0});
+      return set(this.today, { hours: +match.groups['hr'], minutes: +match.groups['min'], seconds: 0 });
     }
     return null;
   }
@@ -289,7 +315,7 @@ export class WorkDayComponent implements OnInit {
     return '0';
   }
 
-  project(id: number) : WorkProject|undefined {
+  project(id: number): WorkProject | undefined {
     return this.workprops?.projects.find(e => e.id == id);
   }
 
@@ -297,7 +323,7 @@ export class WorkDayComponent implements OnInit {
     this.userSettings.updateSettings(<Settings>this.usersettingsObj, true);
   }
 
-  refreshRecentBookings() : void {
+  refreshRecentBookings(): void {
     this.authService.queryApi(this.config.api.baseUrl + '/work/bookings/recent').subscribe((reply) => {
       if (reply.success && reply.payload && reply.payload['items'])
         this.recentEntries = <RecentBooking[]>reply.payload['items'];

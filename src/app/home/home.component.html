@@ -5,11 +5,11 @@
     <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between align-items-center">
       <h2 class="text-nowrap text-truncate">{{ i18n('home.title') }}</h2>
     </div>
-    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-top pt-4 pt-md-2 mb-2">
 
+    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-top pt-4 pt-md-2 mb-2">
       <div class="flex-grow-1">
 
-        <div class="card mb-3">
+        <div class="card mb-3" *ngIf="newfiles.length > 0">
           <div class="card-header">
             <h5 class="mb-0">
               <i [class]="config.icons['star']"></i>
@@ -21,11 +21,10 @@
               <file-list-item *ngFor="let file of newfiles;" [file]="file" [showButtons]="false"
                 (clicked)="router.navigate(['/file', file.id])"></file-list-item>
             </ul>
-            <ui-busy-indicator *ngIf="newfiles.length == 0"></ui-busy-indicator>
           </div>
         </div>
 
-        <div class="card mb-3">
+        <div class="card mb-3"  *ngIf="inactivecases.length > 0">
           <div class="card-header">
             <h5 class="mb-0">
               <i [class]="config.icons['cases']"></i>
@@ -38,10 +37,9 @@
                 <case-list-item [case]="case"></case-list-item>
               </a>
             </ul>
-            <ui-busy-indicator *ngIf="inactivecases.length == 0"></ui-busy-indicator>
           </div>
-        </div>
 
+        </div>
       </div>
 
       <div class="ms-lg-3 stats-box">

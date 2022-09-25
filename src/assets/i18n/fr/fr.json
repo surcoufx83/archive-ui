@@ -31,6 +31,38 @@
       "whit_sunday": "Pfingstsonntag"
     }
   },
+  "case": {
+    "title": "{0} (Akte)",
+    "metacard": {
+      "title": "Allgemeine Informationen",
+      "name": "Name der Akte",
+      "parent": "Übergeordnete Akte",
+      "noparent": "Keine",
+      "created": "Erstellt",
+      "deleted": "Gelöscht",
+      "filecount": "Dateien",
+      "followup": "Nachfolgend",
+      "type": "Kategorie",
+      "status": "Status",
+      "nextstatus": "Nächster Status",
+      "client": "Mandant",
+      "party": "Hauptbeteiligte",
+      "comment": "Beschreibung"
+    },
+    "childscard": {
+      "title": "Zugehörige Akten"
+    },
+    "timecard": {
+      "title": "Zeiträume",
+      "notifyUpcoming": "Benachrichtigen, wenn Ende in weniger als 3 Monaten",
+      "notifyForecast": "Benachrichtigen, wenn Ende in weniger als 9 Monaten",
+      "start": "Beginn",
+      "end": "Ende",
+      "minperiod": "Mindestlaufzeit",
+      "period": "Feste Laufzeit",
+      "termination": "Kündigungsfrist"
+    }
+  },
   "casefilestatus": {
     "approved": "Freigegeben",
     "checked": "Geprüft",
@@ -50,9 +82,8 @@
       "{0} Dateien"
     ],
     "reference": "Referenz {0}",
-    "card": {
-      "title": "Hierarchie"
-    }
+    "showDeleted": "Gel.",
+    "showInRetention": "Ausgebl."
   },
   "casestatus": {
     "created": "Erstellt",
@@ -85,12 +116,13 @@
     "misc": "Sonstige",
     "repair": "Reparaturen und Wartung",
     "studies": "Ausbildung und Studium",
-    "taxes": "Finanzamt und Steuern",
+    "taxes": "Steuern",
     "work": "Beschäftigungsverhältnis"
   },
   "classify": {
     "classes": {
       "In_AccountData": "Zugangsdaten, Credentials, Passwörter",
+      "In_AccountReport": "Kontoreport",
       "In_AnnualBonus": "Jahresbonus, Sonderzahlungen, etc.",
       "In_AnnualReport": "Jahresbericht",
       "In_Approval": "Freigabe / Bewilligung",
@@ -146,6 +178,7 @@
       "In_TaxAssessment": "Steuerbescheid",
       "In_TaxReceipt": "Steuerbescheinigung",
       "In_TaxReport": "Steuerauszug",
+      "In_TaxTravelDocumentation": "Reisedokumentation",
       "In_TaxVL": "Steuererklärung Anlage VL",
       "In_TicketEntrance": "Eintrittskarte",
       "In_TicketTransport": "Fahrschein, Ticket",
@@ -179,20 +212,41 @@
         "message": "Die Änderungen wurden erfolgreich gespeichert."
       }
     },
+    "day": "Tag",
+    "days": "Tage",
     "delete": "Löschen",
+    "goto": "Gehe zu",
+    "hour": "Stunde",
+    "hours": "Stunden",
+    "minute": "Minute",
+    "minutes": "Minuten",
+    "month": "Monat",
+    "months": "Monate",
     "no": "Nein",
     "none": "Keine",
     "novalue": "---",
+    "period": {
+      "placeholder": "0j 0m 0t 0:0:0",
+      "patternYears": "{0}j",
+      "patternMonths": "{0}m",
+      "patternDays": "{0}t",
+      "patternTime": "{0}h:{1}m:{2}s"
+    },
     "save": "Speichern",
+    "second": "Sekunde",
+    "seconds": "Sekunden",
     "select": {
       "pickOne": " Bitte wählen "
     },
+    "switchTo": "Wechseln zu",
     "warn": {
       "formInvalid": {
         "title": "Warnung",
         "message": "Das Formular enthält noch Fehler."
       }
     },
+    "year": "Jahr",
+    "years": "Jahre",
     "yes": "Ja"
   },
   "contacttypes": {
@@ -426,11 +480,20 @@
         "btn": "Löschen",
         "confirm": "Datei wirklich löschen?"
       }
+    },
+    "errors": {
+      "noNextFile": {
+        "title": "Keine Daten",
+        "message": "Es gibt keine weiteren Dateien die eine Klassifizierung erfordern."
+      }
     }
   },
   "folderbrowser": {
     "title": "Ordner durchsuchen",
-    "selected": "Gewählt: {0}"
+    "selected": "Gewählt: {0}",
+    "newFolder": {
+      "title": "Neuer Ordner..."
+    }
   },
   "home": {
     "title": "Archiv Start",
@@ -509,6 +572,10 @@
     "brand": {
       "title": "Archiv"
     },
+    "finance": {
+      "accounts": "Konten",
+      "stocks": "Wertpapiere"
+    },
     "items": {
       "account": "Konto",
       "cases": "Akten",
@@ -551,6 +618,13 @@
     "patient": "Patient",
     "renter": "Mieter",
     "vendor": "Verkäufer"
+  },
+  "pricecomparison": {
+    "title": "Preisvergleich und -historie",
+    "chart": "Verlauf (180 Tage)",
+    "time": "Zeitraum",
+    "range": "Preisspanne",
+    "article": "Artikel"
   },
   "receipts": {
     "title": "Belegerfassung",
@@ -675,6 +749,11 @@
         "timeCategory": "Kategorie",
         "timePlaceholder": "hh:mm | hhmm | hmm",
         "until": "Bis"
+      },
+      "createCustomer": {
+        "title": "Neuer Kunde",
+        "nameTitle": "Kundenname",
+        "namePlaceholder": "Bitte angeben..."
       },
       "live": {}
     }

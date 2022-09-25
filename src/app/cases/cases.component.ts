@@ -4,11 +4,10 @@ import { format } from 'date-fns';
 import { AuthService } from '../auth.service';
 import { AppConfig, ConfigService } from '../config.service';
 import { I18nService } from '../i18n.service';
-import { CacheService } from '../svcs/cache.service';
 import { Settings } from '../user/settings/settings';
 import { SettingsService } from '../user/settings/settings.service';
 import { FormatService } from '../utils/format.service';
-import { Case } from './case';
+import { Case, CaseStatus } from './case';
 
 @Component({
   selector: 'app-cases',
@@ -17,29 +16,37 @@ import { Case } from './case';
 })
 export class CasesComponent implements OnInit {
 
-  busy: boolean = false;
-  rootcases: number[] = [];
+  cases: { [key: number]: Case } = {};
   casechilds: { [key: number]: number[] } = {};
-  usersettingsObj: Settings|null = null;
+  rootcases: number[] = [];
+  showDeleted: boolean = false;
+  showInRetention: boolean = false;
+  usersettingsObj: Settings | null = null;
 
   constructor(private authService: AuthService,
     private configService: ConfigService,
     private i18nService: I18nService,
     public router: Router,
     private userSettings: SettingsService,
-    public formatService: FormatService,
-    private cacheService: CacheService) {
+    public formatService: FormatService) {
     this.userSettings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
     });
-    this.loadCases();
   }
 
-  case(id: number) : Case {
-    return this.cacheService.cases$.value[id];
+  case(id: number): Case {
+    return this.cases[id];
   }
 
-  childs(id: number) : number[] {
+  changeShowDeleted(switchvalue: boolean) : void {
+    this.userSettings.showCasesInDeletion(switchvalue);
+  }
+
+  changeShowRetention(switchvalue: boolean) : void {
+    this.userSettings.showCasesInRetention(switchvalue);
+  }
+
+  childs(id: number): number[] {
     let childs = this.casechilds[id];
     childs.sort((a, b) => this.case(a).casepath > this.case(b).casepath ? 1 : this.case(a).casepath < this.case(b).casepath ? -1 : 0);
     return childs;
@@ -49,7 +56,15 @@ export class CasesComponent implements OnInit {
     return this.configService.config;
   }
 
-  f(date: Date|string, form: string): string {
+  getCaseStatus(id: number | null): CaseStatus | null {
+    return this.userSettings.getCaseStatus(id);
+  }
+
+  haschilds(id: number): boolean {
+    return this.casechilds[id] != undefined && this.casechilds[id].length > 0;
+  }
+
+  f(date: Date | string, form: string): string {
     if (typeof date === 'string')
       date = new Date(date);
     return format(date, form, { locale: this.i18nService.DateLocale });
@@ -59,30 +74,21 @@ export class CasesComponent implements OnInit {
     return this.i18nService.i18n(key, params);
   }
 
-  loadCases() : void {
-    this.cacheService.cases$.subscribe((c) => {
-      let cases = Object.values(c);
-      let temprootcases: number[] = [];
-      let tempcasechilds: { [key: number]: number[] } = {};
-      for (let i = 0; i < cases.length; i++) {
-        if (cases[i].parentid != null) {
-          let p: number = <number>cases[i].parentid;
-          if (!tempcasechilds[p])
-            tempcasechilds[p] = [];
-          if (!tempcasechilds[p].includes(cases[i].id))
-            tempcasechilds[p].push(cases[i].id)
-        } else {
-          if (!temprootcases.includes(cases[i].id))
-          temprootcases.push(cases[i].id);
-        }
-        temprootcases.sort((a, b) => this.case(a).casepath > this.case(b).casepath ? 1 : this.case(a).casepath < this.case(b).casepath ? -1 : 0);
-        this.casechilds = tempcasechilds;
-        this.rootcases = temprootcases;
-      }
+  ngOnInit(): void {
+    this.userSettings.clientSettings$.subscribe((settings) => {
+      this.showDeleted = settings.casesettings.showCasesInDeletion;
+      this.showInRetention = settings.casesettings.showCasesInRetention;
     });
+    this.userSettings.cases$.subscribe((cases) => { this.cases = cases; });
+    this.userSettings.casechilds$.subscribe((childs) => { this.casechilds = childs; });
+    this.userSettings.caseroots$.subscribe((roots) => { this.rootcases = roots; });
   }
 
-  ngOnInit(): void {
+  showCase(c: Case): boolean {
+    let status = this.getCaseStatus(c.statusid);
+    if (status == null)
+      return true;
+    return (!status.flags.deletion || this.showInRetention) && (!status.flags.deleted || this.showDeleted);
   }
 
 }

@@ -2,7 +2,7 @@ import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
@@ -68,6 +68,9 @@ import { DbCurrenciesComponent } from './db/countries/currencies/currencies.comp
 import { DbRoleComponent } from './db/parties/role/role.component';
 import { DbPartyComponent } from './db/parties/party/party.component';
 import { DbContactTypeComponent } from './db/parties/contacts/type/type.component';
+import { PeriodDropdownMenuComponent } from './utils/period-dropdown-menu/period-dropdown-menu.component';
+import { StocksComponent } from './finance/stocks/stocks.component';
+import { AccountsComponent } from './finance/accounts/accounts.component';
 
 registerLocaleData(localeDe);
 
@@ -123,6 +126,9 @@ registerLocaleData(localeDe);
     DbRoleComponent,
     DbPartyComponent,
     DbContactTypeComponent,
+    PeriodDropdownMenuComponent,
+    StocksComponent,
+    AccountsComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -140,6 +146,7 @@ registerLocaleData(localeDe);
     NgxFilesizeModule,
     PdfJsViewerModule,
     NgChartsModule,
+    ReactiveFormsModule,
   ],
   providers: [
     {

@@ -1,42 +1,39 @@
-import { Party } from "../common";
-import { Directory } from "../files/file";
 
 export interface Case {
     id: number;
     casepath: string;
     childs: Case[];
-    client: Party|null;
     clientid: number|null;
     comment: string;
-    directory: Directory|null;
+    created: string;
+    deleted: string|null;
     directoryid: number|null;
     extid: string;
     files: File[];
     filescount: number;
-    followupcase: Case|null;
     followupcaseid: number|null;
     issub: boolean;
+    modified: string;
     notification: CaseNotification;
-    parent: Case|null;
     parentid: number|null;
-    party: Party|null;
     partyid: number|null;
     period: CasePeriod;
     search1: string;
     search2: string;
     search3: string;
-    status: CaseStatus;
     statusid: number;
     taxyear: number|null;
     title: string;
-    type: CaseType;
     typeid: number
 }
 
 export interface CaseFiletype {
+    id: number;
+    created: string;
+    deleted: string|null;
     icon: string;
     iconcolor: string;
-    id: number;
+    modified: string;
     name: string;
     i18nname: string;
 }
@@ -47,30 +44,33 @@ export interface CaseNotification {
 }
 
 export interface CasePeriod {
-    end: string;
-    minperiod: Duration;
+    end: string|null;
+    minperiod: Duration|null;
     minperiodFullfilled: boolean;
-    period: Duration;
+    period: Duration|null;
     renewal: CasePeriodRenewal;
-    start: string;
-    terminationperiod: Duration;
+    start: string|null;
+    terminationperiod: Duration|null;
 }
 
 export interface CasePeriodRenewal {
-    after: Duration;
+    after: Duration|null;
     enabled: boolean;
     nextdate: string|null;
-    period: Duration;
+    period: Duration|null;
 }
 
 export interface CaseStatus {
+    created: string;
+    deleted: string|null;
     flag: string;
     flags: CaseStatusFlags;
+    followup: CaseStatusFollowUp;
     icon: string;
     iconcolor: string;
     id: number;
+    modified: string;
     name: string;
-    nextstatus?: CaseStatus;
 }
 
 export interface CaseStatusFlags {
@@ -83,8 +83,17 @@ export interface CaseStatusFlags {
     hidden: boolean;
 }
 
+export interface CaseStatusFollowUp {
+    status: number|null;
+    autoswitch: boolean;
+    period: Duration|null;
+}
+
 export interface CaseType {
+    created: string;
+    deleted: string|null;
     icon: string;
     id: number;
+    modified: string;
     name: string;
 }

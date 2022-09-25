@@ -4,12 +4,14 @@ import { de } from 'date-fns/locale';
 import { Locale } from 'date-fns';
 import { environment } from 'src/environments/environment';
 import { ToastsService } from './utils/toasts.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class I18nService {
 
+  loaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private locale: string = navigator.language.substr(0, 2);
   private entries: { [key: string]: { [key: string]: string|string[] } } = {};
 
@@ -29,6 +31,8 @@ export class I18nService {
           Object.entries(strings).forEach((e) => {
             this.iterateStrings(locale, '', e[0], <I18nEntry>e[1]);
           });
+          if (locale === this.locale)
+            this.loaded.next(true);
         }
       },
       error: () => {
