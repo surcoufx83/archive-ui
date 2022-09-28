@@ -106,7 +106,7 @@
                 <div class="form-group">
                   <label for="file-size" class="form-label">{{ i18n('file.main.size') }}</label>
                   <input type="text" class="form-control-plaintext form-control-px" id="file-size" name="file-size"
-                    [value]="formatService.filesize(file.size)" readonly>
+                    [value]="formatService.filesize(file.size, 0, 2)" readonly>
                 </div>
               </div>
               <div class="col-6 col-lg-3 mb-3" *ngIf="pages">

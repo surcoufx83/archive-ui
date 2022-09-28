@@ -98,7 +98,7 @@
                 <div class="px-2">
                   {{ i18n('home.stats.files1', [ formatService.fnumber(stats.general.file_count),
                   formatService.fnumber(stats.general.dir_count),
-                  formatService.filesize(stats.general.file_size_total) ]) }}
+                  formatService.filesize(stats.general.file_size_total, 0, 2) ]) }}
                   {{ i18n('home.stats.files3', [ formatService.fnumber(stats.newfiles.count) ]) }}
                 </div>
                 <div class="card-footer px-2 py-1 fs-7">
