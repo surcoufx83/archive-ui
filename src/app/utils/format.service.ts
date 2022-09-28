@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { format, formatDistanceToNow } from 'date-fns';
-import * as _filesize from 'filesize';
+import { filesize as _filesize } from 'filesize';
 import { Currency } from '../account/account';
 import { I18nService } from '../i18n.service';
 
@@ -12,7 +12,7 @@ export class FormatService {
   constructor(private i18nService: I18nService) { }
 
   filesize(size: number) : string {
-    return _filesize(size);
+    return '' + _filesize(size);
   }
 
   fcur(n: number, c?: Currency) : string {
