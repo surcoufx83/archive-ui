@@ -31,22 +31,14 @@ export class DbRoleComponent implements OnInit {
     private i18nService: I18nService,
     private userSettings: SettingsService,
     private toastService: ToastsService) {
-    let olddata: string | null | DbRolesStorage = localStorage.getItem(this.storagename);
-    if (olddata) {
-      this.roles = (<DbRolesStorage>JSON.parse(olddata)).items;
-      this.sort();
-    }
     this.userSettings.loadArchiveSettings();
     this.userSettings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
     });
-    this.userSettings.roles$.subscribe((roles) => {/*
-      if (roles.length == 0)
-        return;
-      this.roles = roles;
+    this.userSettings.roles$.subscribe((roles) => {
+      this.roles = Object.values(roles);
       this.roles.forEach((item) => { item.i18nname = this.i18n('partyroles.' + item.name) });
       this.sort();
-      localStorage.setItem(this.storagename, JSON.stringify({ items: this.roles }));*/
     });
   }
 
