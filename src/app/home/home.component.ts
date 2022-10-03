@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as _filesize from 'filesize';
 import { AuthService } from '../auth.service';
 import { Case } from '../cases/case';
 import { AppConfig, ConfigService } from '../config.service';

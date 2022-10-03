@@ -1,87 +1,84 @@
-<ui-centered-busy-indicator *ngIf="usersettingsObj == undefined"></ui-centered-busy-indicator>
-
-<ng-container *ngIf="usersettingsObj != undefined">
-  <div class="container pt-4 pt-md-2 mb-2">
-    <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between">
-      <h2>{{ i18n('leads.title') }}</h2>
-      <div>
-        <nav class="h-100" style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
-          <ol class="breadcrumb d-flex align-items-center h-100 mb-0">
-            <li class="breadcrumb-item" *ngIf="busy || leadsLoading">
-              <ui-busy-indicator></ui-busy-indicator>
-            </li>
-            <li class="breadcrumb-item">
-              <button type="button" class="btn btn-sm btn-outline-primary" (click)="goto()">
-                <i [class]="config.icons['add'] + ' me-1'"></i>
-                {{ i18n('common.add') }}
-              </button>
-            </li>
-          </ol>
-        </nav>
-      </div>
+<div class="container pt-4 pt-md-2 mb-2">
+  <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between">
+    <h2>{{ i18n('leads.title') }}</h2>
+    <div>
+      <nav class="h-100" style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
+        <ol class="breadcrumb d-flex align-items-center h-100 mb-0">
+          <li class="breadcrumb-item" *ngIf="busy || leadsLoading">
+            <ui-busy-indicator></ui-busy-indicator>
+          </li>
+          <li class="breadcrumb-item">
+            <button type="button" class="btn btn-sm btn-outline-primary" (click)="goto()">
+              <i [class]="config.icons['add'] + ' me-1'"></i>
+              {{ i18n('common.add') }}
+            </button>
+          </li>
+        </ol>
+      </nav>
     </div>
   </div>
+</div>
 
-  <div class="container">
-    <div class="flex-table flex-table-sm mb-3">
-      <div class="flex-table-head row">
-        <div class="col-4 col-lg-3 col-xl-2">{{ i18n('leads.table.head.customer') }}</div>
-        <div class="col-8 col-lg-5 col-xl-4">{{ i18n('leads.table.head.project') }}</div>
-        <div class="col-xl-2 d-none d-xl-block">{{ i18n('leads.table.head.created') }}</div>
-        <div class="col-lg-2 d-none d-lg-block">{{ i18n('leads.table.head.completed') }}</div>
-        <div class="col-lg-2 d-none d-lg-block">{{ i18n('leads.table.head.payed') }}</div>
-      </div>
-      <ng-container *ngIf="workpropsObj != undefined">
-        <ng-container *ngFor="let lead of leads; let i = index;">
-          <div (click)="goto(lead)"
-              [ngClass]="['flex-table-body row pointer', (lead.paid ? '' : (lead.completed ? 'danger' : 'warning'))]">
-            <div class="col-4 col-lg-3 col-xl-2">
-              {{ lead.customer_name }}
-            </div>
-            <div class="col-8 col-lg-5 col-xl-4 d-flex align-items-start justify-content-between">
-              <span class="me-1">{{ lead.project_name }}</span>
-              <div class="text-secondary ms-1 fs-8 py-0 px-1">
-                <span *ngIf="lead.lead.islead">{{ i18n('leads.table.data.lead') }}</span><span *ngIf="lead.lead.islead && lead.incentive.isincentive">, </span><span *ngIf="lead.incentive.isincentive">{{ i18n('leads.table.data.incentive') }}</span>
-              </div>
-            </div>
-            <div class="col-xl-2 d-none d-xl-block">
-              {{ f(lead.date_reported, 'PP') }}
-            </div>
-            <div class="col-lg-2 d-none d-lg-block">
-              <ng-container *ngIf="lead.date_completed">
-                {{ f(lead.date_completed, 'PP') }}
-              </ng-container>
-            </div>
-            <div class="col-lg-2 d-none d-lg-block">
-              <ng-container *ngIf="lead.incentive.incentive_paid">
-                {{ f(lead.incentive.incentive_paid, 'PP') }}
-              </ng-container>
-              <ng-container *ngIf="!lead.incentive.incentive_paid && lead.lead.lead_paid">
-                {{ f(lead.lead.lead_paid, 'PP') }}
-              </ng-container>
-            </div>
-            <div class="d-block d-lg-none d-flex flex-column fs-8">
-              <div class="d-flex">
-                <div class="me-1">{{ i18n('leads.table.head.created') }}:</div>
-                <div>{{ f(lead.date_reported, 'PP') }}</div>
-              </div>
-              <div class="d-flex" *ngIf="lead.date_completed">
-                <div class="me-1">{{ i18n('leads.table.head.completed') }}:</div>
-                <div>{{ f(lead.date_completed, 'PP') }}</div>
-              </div>
-              <div class="d-flex" *ngIf="lead.incentive.incentive_paid">
-                <div class="me-1">{{ i18n('leads.table.head.payed') }}:</div>
-                <div>{{ f(lead.incentive.incentive_paid, 'PP') }}</div>
-              </div>
-              <div class="d-flex" *ngIf="!lead.incentive.incentive_paid && lead.lead.lead_paid">
-                <div class="me-1">{{ i18n('leads.table.head.payed') }}:</div>
-                <div>{{ f(lead.lead.lead_paid, 'PP') }}</div>
-              </div>
+<div class="container">
+  <div class="flex-table flex-table-sm mb-3">
+    <div class="flex-table-head row">
+      <div class="col-4 col-lg-3 col-xl-2">{{ i18n('leads.table.head.customer') }}</div>
+      <div class="col-8 col-lg-5 col-xl-4">{{ i18n('leads.table.head.project') }}</div>
+      <div class="col-xl-2 d-none d-xl-block">{{ i18n('leads.table.head.created') }}</div>
+      <div class="col-lg-2 d-none d-lg-block">{{ i18n('leads.table.head.completed') }}</div>
+      <div class="col-lg-2 d-none d-lg-block">{{ i18n('leads.table.head.payed') }}</div>
+    </div>
+    <ng-container *ngIf="workpropsObj != undefined">
+      <ng-container *ngFor="let lead of leads; let i = index;">
+        <div (click)="goto(lead)"
+          [ngClass]="['flex-table-body row pointer', (lead.paid ? '' : (lead.completed ? 'danger' : 'warning'))]">
+          <div class="col-4 col-lg-3 col-xl-2">
+            {{ lead.customer_name }}
+          </div>
+          <div class="col-8 col-lg-5 col-xl-4 d-flex align-items-start justify-content-between">
+            <span class="me-1">{{ lead.project_name }}</span>
+            <div class="text-secondary ms-1 fs-8 py-0 px-1">
+              <span *ngIf="lead.lead.islead">{{ i18n('leads.table.data.lead') }}</span><span
+                *ngIf="lead.lead.islead && lead.incentive.isincentive">, </span><span
+                *ngIf="lead.incentive.isincentive">{{ i18n('leads.table.data.incentive') }}</span>
             </div>
           </div>
-        </ng-container>
+          <div class="col-xl-2 d-none d-xl-block">
+            {{ f(lead.date_reported, 'PP') }}
+          </div>
+          <div class="col-lg-2 d-none d-lg-block">
+            <ng-container *ngIf="lead.date_completed">
+              {{ f(lead.date_completed, 'PP') }}
+            </ng-container>
+          </div>
+          <div class="col-lg-2 d-none d-lg-block">
+            <ng-container *ngIf="lead.incentive.incentive_paid">
+              {{ f(lead.incentive.incentive_paid, 'PP') }}
+            </ng-container>
+            <ng-container *ngIf="!lead.incentive.incentive_paid && lead.lead.lead_paid">
+              {{ f(lead.lead.lead_paid, 'PP') }}
+            </ng-container>
+          </div>
+          <div class="d-block d-lg-none d-flex flex-column fs-8">
+            <div class="d-flex">
+              <div class="me-1">{{ i18n('leads.table.head.created') }}:</div>
+              <div>{{ f(lead.date_reported, 'PP') }}</div>
+            </div>
+            <div class="d-flex" *ngIf="lead.date_completed">
+              <div class="me-1">{{ i18n('leads.table.head.completed') }}:</div>
+              <div>{{ f(lead.date_completed, 'PP') }}</div>
+            </div>
+            <div class="d-flex" *ngIf="lead.incentive.incentive_paid">
+              <div class="me-1">{{ i18n('leads.table.head.payed') }}:</div>
+              <div>{{ f(lead.incentive.incentive_paid, 'PP') }}</div>
+            </div>
+            <div class="d-flex" *ngIf="!lead.incentive.incentive_paid && lead.lead.lead_paid">
+              <div class="me-1">{{ i18n('leads.table.head.payed') }}:</div>
+              <div>{{ f(lead.lead.lead_paid, 'PP') }}</div>
+            </div>
+          </div>
+        </div>
       </ng-container>
-    </div>
+    </ng-container>
   </div>
-
-</ng-container>
+</div>

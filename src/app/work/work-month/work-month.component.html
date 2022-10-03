@@ -17,8 +17,8 @@
                 {{ f(LastMonth, 'MMM') }}
               </button>
             </a>
-            <a *ngIf="!IsToday"
-              class="breadcrumb-item" [routerLink]="['/work', 'month', f(today, 'yyyy'), f(today, 'M')]">
+            <a *ngIf="!IsToday" class="breadcrumb-item"
+              [routerLink]="['/work', 'month', f(today, 'yyyy'), f(today, 'M')]">
               <button type="button" class="btn btn-sm btn-primary">
                 <i [class]="config.icons['today'] + ' me-1'"></i>
                 {{ f(today, 'MMM yy') }}
@@ -40,9 +40,11 @@
 
     <div class="container pt-md-2 mb-2">
 
-      <div class="row g-2"><!-- container with info cards -->
+      <div class="row g-2">
+        <!-- container with info cards -->
 
-        <div class="col-12 col-md-4"><!-- card 1: container month info -->
+        <div class="col-12 col-md-4">
+          <!-- card 1: container month info -->
           <div class="card">
             <div class="card-header">
               <h5 class="mb-0">
@@ -73,7 +75,8 @@
           </div>
         </div><!-- card 1: container month info -->
 
-        <div class="col-12 col-md-4"><!-- card 2: time booked -->
+        <div class="col-12 col-md-4">
+          <!-- card 2: time booked -->
           <div class="card">
             <div class="card-header">
               <h5 class="mb-0">
@@ -124,7 +127,8 @@
                 <button type="button" class="btn btn-sm btn-secondary"
                   (click)="usersettingsObj.view.calendar.showWeekend = !usersettingsObj.view.calendar.showWeekend; pushUserSettings();"
                   [title]="i18n('calendar.showWeekendTitle')">
-                  <i [class]="config.icons[usersettingsObj.view.calendar.showWeekend ? 'toggle-on' : 'toggle-off'] + ' me-1'"></i>
+                  <i
+                    [class]="config.icons[usersettingsObj.view.calendar.showWeekend ? 'toggle-on' : 'toggle-off'] + ' me-1'"></i>
                   {{ i18n('calendar.showWeekend') }}
                 </button>
               </li>
@@ -141,13 +145,11 @@
             <ol class="breadcrumb d-flex align-items-center h-100 mb-0">
               <ng-container *ngFor="let item of offdayDroppableEvents">
                 <li class="breadcrumb-item" *ngIf="item.meta.obj.quickselect">
-                  <button
-                        type="button"
-                        [ngClass]="['btn btn-sm btn-outline-dark py-0', item.meta.obj.rowcolor]"
-                        mwlDraggable [dropData]="{ event: item }"
-                        [touchStartLongPress]="{ delay: 300, delta: 30 }"
-                        dragActiveClass="drag-active">
-                    <i *ngIf="item.meta.obj.icon !== ''" [ngClass]="[config.icons[item.meta.obj.icon] + ' ' + item.meta.obj.iconcolor, 'me-1']"></i>
+                  <button type="button" [ngClass]="['btn btn-sm btn-outline-dark py-0', item.meta.obj.rowcolor]"
+                    mwlDraggable [dropData]="{ event: item }" [touchStartLongPress]="{ delay: 300, delta: 30 }"
+                    dragActiveClass="drag-active">
+                    <i *ngIf="item.meta.obj.icon !== ''"
+                      [ngClass]="[config.icons[item.meta.obj.icon] + ' ' + item.meta.obj.iconcolor, 'me-1']"></i>
                     {{ item.title }}
                   </button>
                 </li>
@@ -156,25 +158,17 @@
           </nav>
         </ng-container>
       </div>
-      <mwl-calendar-month-view
-        [activeDayIsOpen]="activeDayIsOpen"
-        [viewDate]="viewDate"
-        [events]="calendarEvents"
-        [excludeDays]="(usersettingsObj.view.calendar.showWeekend ? [] : [0,6])"
-        [refresh]="refresh"
-        [weekStartsOn]="usersettingsObj.view.calendar.firstDayOfWeek"
-        (beforeViewRender)="beforeMonthViewRender($event)"
-        (dayClicked)="dayClicked($event.day)"
-        (eventClicked)="handleEvent('Clicked', $event.event)"
-        (eventTimesChanged)="eventTimesChanged($event)"
-        [locale]="locale"
-      ></mwl-calendar-month-view>
+      <mwl-calendar-month-view [activeDayIsOpen]="activeDayIsOpen" [viewDate]="viewDate" [events]="calendarEvents"
+        [excludeDays]="(usersettingsObj.view.calendar.showWeekend ? [] : [0,6])" [refresh]="refresh"
+        [weekStartsOn]="usersettingsObj.view.calendar.firstDayOfWeek" (beforeViewRender)="beforeMonthViewRender($event)"
+        (dayClicked)="dayClicked($event.day)" (eventClicked)="handleEvent('Clicked', $event.event)"
+        (eventTimesChanged)="eventTimesChanged($event)" [locale]="locale"></mwl-calendar-month-view>
 
       <div class="mt-3">
         <h4>{{ i18n('workmonth.offtime.title') }}</h4>
         <p class="text-muted">{{ i18n('workmonth.offtime.subtitle') }}</p>
         <div class="row">
-          
+
         </div>
       </div>
 

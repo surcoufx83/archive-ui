@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { format, formatDistanceToNow } from 'date-fns';
-import * as _filesize from 'filesize';
 import { Currency } from '../account/account';
 import { I18nService } from '../i18n.service';
 
@@ -9,17 +8,21 @@ import { I18nService } from '../i18n.service';
 })
 export class FormatService {
 
+
+  private static fsunits = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
   constructor(private i18nService: I18nService) { }
 
-  filesize(size: number) : string {
-    return _filesize(size);
+  filesize(size: number, fd: number = 0, md: number | undefined = undefined): string {
+    let f = Math.floor(Math.log(size) / Math.log(1024));
+    return `${this.fnumber(size / Math.pow(1024, f), fd, md)} ${FormatService.fsunits[f]}`;
   }
 
-  fcur(n: number, c?: Currency) : string {
+  fcur(n: number, c?: Currency): string {
     return new Intl.NumberFormat(this.i18nService.Locale, { style: 'currency', currency: c?.shortname ?? 'EUR' }).format(n);
   }
 
-  fdur(duration: Duration|null) : string {
+  fdur(duration: Duration | null): string {
     if (duration == null)
       return '';
     let items = [];
@@ -66,32 +69,32 @@ export class FormatService {
     return items.join(' ');
   }
 
-  fdate(date: Date|string|null, form: string): string {
+  fdate(date: Date | string | null, form: string): string {
     if (date == null)
       return this.i18nService.i18n('common.novalue');
-    if (typeof(date) === 'string')
+    if (typeof (date) === 'string')
       date = new Date(date);
     return format(date, form, { locale: this.i18nService.DateLocale });
   }
 
-  fdist(date: Date|string|null): string {
+  fdist(date: Date | string | null): string {
     if (date == null)
       return this.i18nService.i18n('common.novalue');
-    if (typeof(date) === 'string')
+    if (typeof (date) === 'string')
       date = new Date(date);
     return formatDistanceToNow(date, { locale: this.i18nService.DateLocale });
   }
 
-  fnumber(n: number, fd: number = 0) : string {
+  fnumber(n: number, fd: number = 0, md: number | undefined = undefined): string {
     if (n == undefined)
       return '';
-    return (+n).toLocaleString(this.i18nService.Locale, {minimumFractionDigits: fd});
+    return (+n).toLocaleString(this.i18nService.Locale, { minimumFractionDigits: fd, maximumFractionDigits: md });
   }
 
-  fpercent(n: number, fd: number = 0) : string {
+  fpercent(n: number, fd: number = 0): string {
     if (n == undefined)
       return '';
-    return (+n).toLocaleString(this.i18nService.Locale, {minimumFractionDigits: fd}) + '%';
+    return (+n).toLocaleString(this.i18nService.Locale, { minimumFractionDigits: fd }) + '%';
   }
 
 }

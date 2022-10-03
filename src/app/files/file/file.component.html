@@ -1,6 +1,6 @@
-<ui-centered-busy-indicator *ngIf="usersettingsObj == undefined || file == undefined"></ui-centered-busy-indicator>
+<ui-centered-busy-indicator *ngIf="file == undefined"></ui-centered-busy-indicator>
 
-<ng-container *ngIf="usersettingsObj != undefined && file != undefined">
+<ng-container *ngIf="file != undefined">
   <div class="container pt-4 pt-md-2 mb-2">
     <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between align-items-center">
       <h2 class="text-nowrap text-truncate">{{ i18n('file.title', [file.name]) }}</h2>
@@ -106,7 +106,7 @@
                 <div class="form-group">
                   <label for="file-size" class="form-label">{{ i18n('file.main.size') }}</label>
                   <input type="text" class="form-control-plaintext form-control-px" id="file-size" name="file-size"
-                    [value]="formatService.filesize(file.size)" readonly>
+                    [value]="formatService.filesize(file.size, 0, 2)" readonly>
                 </div>
               </div>
               <div class="col-6 col-lg-3 mb-3" *ngIf="pages">
@@ -331,7 +331,8 @@
                 </div>
               </div>
               <folder-browser-dialog *ngIf="showMoveToFolderBrowser" [initialFolder]="file.directory"
-                (select)="moveTo($event); showMoveToFolderBrowser = false;" [showAddFolderBtn]="true"></folder-browser-dialog>
+                (select)="moveTo($event); showMoveToFolderBrowser = false;" [showAddFolderBtn]="true">
+              </folder-browser-dialog>
             </div>
             <div class="row py-2">
               <div class="col-12 d-flex justify-content-between">
