@@ -31,22 +31,14 @@ export class DbContactTypeComponent implements OnInit {
     private i18nService: I18nService,
     private userSettings: SettingsService,
     private toastService: ToastsService) {
-    let olddata: string | null | DbTypesStorage = localStorage.getItem(this.storagename);
-    if (olddata) {
-      this.ctypes = (<DbTypesStorage>JSON.parse(olddata)).items;
-      this.sort();
-    }
     this.userSettings.loadArchiveSettings();
     this.userSettings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
     });
-    this.userSettings.contacttypes$.subscribe((ctypes) => {/*
-      if (ctypes.length == 0)
-        return;
-      this.ctypes = ctypes;
+    this.userSettings.contacttypes$.subscribe((ctypes) => {
+      this.ctypes = Object.values(ctypes);
       this.ctypes.forEach((item) => { item.i18nname = this.i18n('contacttypes.' + item.name) });
       this.sort();
-      localStorage.setItem(this.storagename, JSON.stringify({ items: this.ctypes }));*/
     });
   }
 
@@ -90,7 +82,6 @@ export class DbContactTypeComponent implements OnInit {
 
   sort(): void {
     switch (this.sortBy) {
-
       case 'i18nname':
         this.ctypes.sort((a, b) => { return (a.i18nname > b.i18nname ? 1 : a.i18nname < b.i18nname ? -1 : 0) * (this.sortAsc ? 1 : -1) });
         break;
@@ -99,7 +90,6 @@ export class DbContactTypeComponent implements OnInit {
         this.sortBy = 'name';
         this.ctypes.sort((a, b) => { return (a.name > b.name ? 1 : a.name < b.name ? -1 : 0) * (this.sortAsc ? 1 : -1) });
     }
-    console.log(this.ctypes);
   }
 
   submit(form: NgForm): void {
