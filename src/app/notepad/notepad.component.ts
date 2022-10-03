@@ -19,13 +19,13 @@ export class NotepadComponent implements OnInit {
   busy: boolean = false;
   debounceFilter: any;
   debounceSave: any;
-  editId: number = 0;
+  editId: number = -1;
   editNote?: Note;
   filterphrase: string = '';
   notes: Note[] = [];
   saving: boolean = false;
-  sortasc: boolean = true;
-  sortby: string = 'name';
+  sortasc: boolean = false;
+  sortby: string = 'edit';
   usersettingsObj: Settings|null = null;
 
   constructor(private authService: AuthService,
@@ -41,7 +41,7 @@ export class NotepadComponent implements OnInit {
 
   close() : void {
     this.editNote = undefined;
-    this.editId = 0;
+    this.editId = -1;
   }
 
   get config(): AppConfig {
@@ -104,6 +104,21 @@ export class NotepadComponent implements OnInit {
     return this.i18nService.i18n(key, params);
   }
 
+  new() : void {
+    this.notes = [
+      {
+        id: 0,
+        title: '',
+        content: '',
+        variant: '',
+        updated: (new Date()).toISOString(),
+        deldate: null,
+        show: true,
+      }, ...this.notes
+    ];
+    this.edit(this.notes[0]);
+  }
+
   ngOnInit(): void {
     this.update();
   }
@@ -113,10 +128,15 @@ export class NotepadComponent implements OnInit {
       clearTimeout(this.debounceSave);
     this.debounceSave = setTimeout(() => {
       this.saving = true;
-      let url = this.config.api.baseUrl + '/note/' + n.id;
+      let fragment = n.id === 0 ? 'create' : n.id;
+      let url = `${this.config.api.baseUrl}/note/${fragment}`;
       this.authService.updateApi(url, {
         'note': n
       }).subscribe((reply) => {
+        if (fragment === 'create') {
+          this.notes.splice(0, 1);
+          this.update();
+        }
         this.saving = false;
       });
     }, 500);

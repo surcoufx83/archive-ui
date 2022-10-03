@@ -27,7 +27,7 @@
                         </button>
                     </div>
                     <div class="ms-2">
-                        <button type="button" class="btn btn-sm btn-outline-primary">
+                        <button type="button" class="btn btn-sm btn-outline-primary" (click)="new()">
                             <i [class]="config.icons['add'] + ' me-1'"></i>
                             {{ i18n('common.add') }}
                         </button>
@@ -55,7 +55,8 @@
                         <div class="flex-grow-1">
                             <div class="mb-2">
                                 <h4 class="mb-0" *ngIf="editId != note.id; else noteTitleEdit">{{ note.title }}</h4>
-                                <p class="fs-8 text-muted mb-0" *ngIf="editId != note.id">{{ f(note.updated, 'PPpp') }}</p>
+                                <p class="fs-8 text-muted mb-0" *ngIf="editId != note.id">{{ f(note.updated, 'PPpp') }}
+                                </p>
                             </div>
                             <div *ngIf="editId != note.id; else noteContentEdit">
                                 <p class="ws-pre-wrap">{{ note.content }}</p>
@@ -69,7 +70,7 @@
                             <span [ngClass]="{'fade ms-2': true, 'show': saving}" *ngIf="editId == note.id">
                                 <ui-busy-indicator></ui-busy-indicator>
                             </span>
-                            <button type="button" class="btn btn-sm btn-outline-primary ms-2" (click)="close()"
+                            <button type="button" class="btn btn-sm btn-outline-primary ms-2" (click)="save(editNote!); close()"
                                 *ngIf="editId == note.id">
                                 <i [class]="config.icons['close']"></i>
                             </button>
@@ -86,9 +87,10 @@
 
 <ng-template #noteTitleEdit>
     <input type="text" class="form-control form-control-sm mb-2" [(ngModel)]="editNote!.title"
-        (keyup)="save(editNote!)">
+        (keyup)="editNote!.id !== 0 ? save(editNote!) : null">
 </ng-template>
 
 <ng-template #noteContentEdit>
-    <textarea [(ngModel)]="editNote!.content" class="form-control note-edit" (keyup)="save(editNote!)"></textarea>
+    <textarea [(ngModel)]="editNote!.content" class="form-control note-edit"
+        (keyup)="editNote!.id !== 0 ? save(editNote!) : null"></textarea>
 </ng-template>
