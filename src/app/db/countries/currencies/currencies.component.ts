@@ -1,9 +1,9 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Currency } from 'src/app/account/account';
+import { Currency } from 'src/app/if';
 import { AppConfig, ConfigService } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
-import { Settings } from 'src/app/user/settings/settings';
+import { UserSettings } from 'src/app/if';
 import { SettingsService } from 'src/app/user/settings/settings.service';
 import { ToastsService } from 'src/app/utils/toasts.service';
 
@@ -20,7 +20,7 @@ export class DbCurrenciesComponent implements OnInit {
   saving: boolean = false;
   currencies: Currency[] = [];
   editcurrency?: Currency;
-  usersettingsObj: Settings | null = null;
+  usersettingsObj: UserSettings | null = null;
   sortAsc: boolean = true;
   sortBy: string = 'i18nname';
   storagename: string = this.config.storage.prefix + 'dbcurrenciesData';

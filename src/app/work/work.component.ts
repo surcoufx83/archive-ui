@@ -5,7 +5,7 @@ import { AuthService } from '../auth.service';
 import { ConfigService, AppConfig, NavbarItem } from '../config.service';
 import { I18nService } from '../i18n.service';
 import { SettingsService } from '../user/settings/settings.service';
-import { Settings } from '../user/settings/settings';
+import { UserSettings } from 'src/app/if';
 
 @Component({
   selector: 'app-work',
@@ -15,7 +15,7 @@ import { Settings } from '../user/settings/settings';
 export class WorkComponent implements OnInit {
 
   routeUrl: string = '';
-  settingsObj: Settings|null = null;
+  settingsObj: UserSettings|null = null;
 
   constructor(private authService: AuthService,
               private configService: ConfigService,

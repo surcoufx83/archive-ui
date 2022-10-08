@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Settings } from './settings';
+import { UserSettings } from 'src/app/if';
 import { AuthService } from '../../auth.service';
 import { AppConfig, ConfigService } from '../../config.service';
-import { WorkCustomer, WorkProperties } from '../../work/work';
-import { User } from '../user';
-import { Case, CaseFiletype, CaseStatus, CaseType } from 'src/app/cases/case';
-import { Class } from 'src/app/files/class';
-import { Address, ContactType, Country, Party, PartyContact, PartyRole } from 'src/app/common';
-import { Currency } from 'src/app/account/account';
-import { ToastsService } from 'src/app/utils/toasts.service';
+import { WorkCustomer, WorkProperties } from 'src/app/if';
+import { User } from 'src/app/if';
+import { Case, CaseFiletype, CaseStatus, CaseType } from 'src/app/if';
+import { Class } from 'src/app/if';
+import { Address, ContactType, Country, Party, PartyContact, PartyRole } from 'src/app/if';
+import { BankAccount, Currency } from 'src/app/if';
 
 @Injectable()
 export class SettingsService {
@@ -28,6 +27,8 @@ export class SettingsService {
 
   private casesstorage: string = this.config.storage.prefix + 'casesData';
   private casessync: number = 0;
+  private financestorage: string = this.config.storage.prefix + 'financeData';
+  private financesync: number = 0;
   private partiesstorage: string = this.config.storage.prefix + 'partiesData';
   private partiessync: number = 0;
   private workstorage: string = this.config.storage.prefix + 'workData';
@@ -36,6 +37,7 @@ export class SettingsService {
   constructor(private authService: AuthService,
     private configService: ConfigService) {
     this.loadCasesData();
+    this.loadFinanceData();
     this.loadPartiesData();
     this.loadUserSettings();
   }
@@ -57,6 +59,16 @@ export class SettingsService {
       this.casessync = olddata.ts;
     }
     this.syncCases();
+  }
+
+  private loadFinanceData(): void {
+    let olddata: string | null | FinanceStorage = localStorage.getItem(this.financestorage);
+    if (olddata) {
+      olddata = <FinanceStorage>JSON.parse(olddata);
+      
+      this.financesync = olddata.ts;
+    }
+    this.syncFinance();
   }
 
   private loadPartiesData(): void {
@@ -233,7 +245,7 @@ export class SettingsService {
   private roles: BehaviorSubject<{ [key: number]: PartyRole }> = new BehaviorSubject<{ [key: number]: PartyRole }>({});
   roles$ = this.roles.asObservable();
 
-  private settings: BehaviorSubject<Settings | null> = new BehaviorSubject<Settings | null>(null);
+  private settings: BehaviorSubject<UserSettings | null> = new BehaviorSubject<UserSettings | null>(null);
   settings$ = this.settings.asObservable();
 
   private user: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
@@ -362,6 +374,13 @@ export class SettingsService {
     localStorage.setItem(this.clientSettingsStorage, JSON.stringify(this.clientSettings.value));
   }
 
+  private saveFinance(): void {
+    localStorage.setItem(this.financestorage, JSON.stringify({
+      
+      ts: this.financesync,
+    }));
+  }
+
   private saveParties(): void {
     localStorage.setItem(this.partiesstorage, JSON.stringify({
       addresses: this.addresses.value,
@@ -418,6 +437,24 @@ export class SettingsService {
         this.saveCases();
       }
       this.casesynctimeout = setTimeout(() => { this.syncCases(); }, 30000);
+    });
+  }
+
+  private financesynctimeout: any = null;
+  private syncFinance(): void {
+    if (this.financesynctimeout != null) {
+      clearTimeout(this.financesynctimeout);
+      this.financesynctimeout = null;
+    }
+    let url: string = this.config.api.baseUrl + '/finance' + (this.financesync > 0 ? '/' + this.financesync : '');
+    this.financesync = Math.floor(Date.now() / 1000);
+    this.authService.queryApi(url).subscribe((reply) => {
+      if (reply.success && reply.payload != undefined) {
+        let response = <FinanceResponse>reply.payload;
+        
+        this.saveFinance();
+      }
+      this.financesynctimeout = setTimeout(() => { this.syncFinance(); }, 30000);
     });
   }
 
@@ -665,7 +702,7 @@ export class SettingsService {
     return subject;
   }
 
-  updateSettings(settings: Settings, push: boolean = false) {
+  updateSettings(settings: UserSettings, push: boolean = false) {
     this.settings.next(settings);
     if (push) {
       let url = this.configService.config.api.baseUrl + '/user/settings';
@@ -708,6 +745,18 @@ export interface CasesStorage {
 export interface CommonProperty {
   deleted: string | null;
   id: number;
+}
+
+export interface FinanceResponse {
+  accounts: BankAccount[];
+  countries: Country[];
+  currencies: Currency[];
+  // expenseCategories: 
+}
+
+export interface FinanceStorage {
+  
+  ts: number;
 }
 
 export interface PartiesResponse {

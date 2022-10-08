@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { format, formatDistanceToNow } from 'date-fns';
-import { Currency } from '../account/account';
+import { Currency } from 'src/app/if';
 import { I18nService } from '../i18n.service';
 
 @Injectable({

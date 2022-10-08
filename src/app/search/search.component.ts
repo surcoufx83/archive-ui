@@ -3,15 +3,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { format } from 'date-fns';
 import { saveAs } from 'file-saver';
 import { AuthService } from '../auth.service';
-import { Case } from '../cases/case';
 import { AppConfig, ConfigService } from '../config.service';
 import { I18nService } from '../i18n.service';
-import { Directory, File } from '../files/file';
-import { Note } from '../notepad/note';
-import { Settings } from '../user/settings/settings';
+import { UserSettings } from 'src/app/if';
 import { SettingsService } from '../user/settings/settings.service';
 import { SearchResultAccountItem, SearchResultCaseItem, SearchResultDirectoryItem, SearchResultFileItem, SearchResultNoteItem, SearchResultPageItem, SearchResults } from './searchresult';
-import { BankAccount, StandingOrder } from '../account/account';
 
 @Component({
   selector: 'app-search',
@@ -41,7 +37,7 @@ export class SearchComponent implements OnInit {
   showgroup: string = 'notes';
   showHistoric: boolean = false;
   urltoken: string = '';
-  usersettingsObj: Settings|null = null;
+  usersettingsObj: UserSettings|null = null;
 
   constructor(private authService: AuthService,
     private configService: ConfigService,

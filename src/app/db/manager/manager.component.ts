@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth.service';
 import { AppConfig, ConfigService } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
-import { Settings } from 'src/app/user/settings/settings';
+import { UserSettings } from 'src/app/if';
 import { SettingsService } from 'src/app/user/settings/settings.service';
 
 @Component({
@@ -16,7 +16,7 @@ export class DbManagerComponent implements OnInit {
   busy: boolean = false;
   cache: DbManagerStorage = { itemcount: {} };
   storagename: string = this.config.storage.prefix + 'dbmanagerData';
-  usersettingsObj: Settings|null = null;
+  usersettingsObj: UserSettings|null = null;
   when: number = 0;
   colFinished: string = ' text-success';
 

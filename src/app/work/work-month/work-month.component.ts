@@ -7,10 +7,10 @@ import { add, format, getDate, getMonth, getYear, isSameDay, isSameMonth, sub } 
 import { AuthService } from '../../auth.service';
 import { ConfigService, AppConfig } from '../../config.service';
 import { I18nService } from '../../i18n.service';
-import { WorkMonth, WorkDay, WorkDayBooking, WorkOffCategory, WorkProperties } from '../work';
+import { WorkMonth, WorkDay, WorkDayBooking, WorkOffCategory, WorkProperties } from 'src/app/if';
 import { SettingsService } from '../../user/settings/settings.service';
-import { Settings } from '../../user/settings/settings';
-import { ApiReply } from '../../api-reply';
+import { UserSettings } from 'src/app/if';
+import { ApiReply } from 'src/app/if';
 import { EventColor } from '../../../../node_modules/calendar-utils/calendar-utils';
 
 @Component({
@@ -34,7 +34,7 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
   monthLoading: boolean = false;
   dayObjs: WorkDay[] = [];
   monthObj?: WorkMonth;
-  usersettingsObj: Settings|null = null;
+  usersettingsObj: UserSettings|null = null;
   workprops: WorkProperties|null = null;
 
   offdayDroppableEvents: CalendarEvent[] = [];
@@ -205,7 +205,7 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
   }
 
   pushUserSettings(): void {
-    this.userSettings.updateSettings(<Settings>this.usersettingsObj, true);
+    this.userSettings.updateSettings(<UserSettings>this.usersettingsObj, true);
   }
 
   addEvent(id: string, title: string, start: Date, end: Date | undefined, allDay: boolean,

@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { I18nService } from 'src/app/i18n.service';
 import { AppConfig, ConfigService } from 'src/app/config.service';
-import { Case, CaseStatus, CaseType } from '../case';
+import { Case, CaseStatus, CaseType } from 'src/app/if';
 import { FormatService } from 'src/app/utils/format.service';
 import { SettingsService } from 'src/app/user/settings/settings.service';
 

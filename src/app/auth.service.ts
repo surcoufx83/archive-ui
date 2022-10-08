@@ -1,12 +1,11 @@
 import { Injectable, OnInit } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { Subject } from 'rxjs';
-import { ApiReply } from './api-reply';
+import { Subject } from 'rxjs'
 import { ConfigService, AppConfig } from './config.service';
-import { Session } from './session';
 import { Router } from '@angular/router';
 import { ToastsService } from './utils/toasts.service';
 import { I18nService } from './i18n.service';
+import { ApiReply, Session } from './if';
 
 @Injectable({
   providedIn: 'root'

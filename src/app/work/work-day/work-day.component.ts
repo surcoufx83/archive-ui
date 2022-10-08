@@ -6,11 +6,10 @@ import { SettingsService } from '../../user/settings/settings.service';
 
 import { AppConfig, ConfigService } from '../../config.service';
 import { I18nService } from '../../i18n.service';
-import { Settings } from '../../user/settings/settings';
-import { RecentBooking, WorkCustomer, WorkDay, WorkDayBooking, WorkProject, WorkProperties, WorkTimeCategory } from '../work';
+import { UserSettings } from 'src/app/if';
+import { RecentBooking, WorkCustomer, WorkDay, WorkDayBooking, WorkProject, WorkProperties, WorkTimeCategory } from 'src/app/if';
 import { ViewportScroller } from '@angular/common';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ApiReply } from 'src/app/api-reply';
 
 @Component({
   selector: 'app-work-day',
@@ -33,7 +32,7 @@ export class WorkDayComponent implements OnInit {
   recentEntries: RecentBooking[] = [];
   timepattern: RegExp = /^(?<hr>\d{1,2}):?(?<min>\d{2})$/;
   today: Date = new Date();
-  usersettingsObj: Settings | null = null;
+  usersettingsObj: UserSettings | null = null;
   workprops: WorkProperties | null = null;
 
   createCustomer = new FormGroup({
@@ -320,7 +319,7 @@ export class WorkDayComponent implements OnInit {
   }
 
   pushUserSettings(): void {
-    this.userSettings.updateSettings(<Settings>this.usersettingsObj, true);
+    this.userSettings.updateSettings(<UserSettings>this.usersettingsObj, true);
   }
 
   refreshRecentBookings(): void {

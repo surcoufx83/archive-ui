@@ -4,10 +4,10 @@ import { format } from 'date-fns';
 import { AuthService } from '../auth.service';
 import { AppConfig, ConfigService } from '../config.service';
 import { I18nService } from '../i18n.service';
-import { Settings } from '../user/settings/settings';
+import { UserSettings } from 'src/app/if';
 import { SettingsService } from '../user/settings/settings.service';
 import { FormatService } from '../utils/format.service';
-import { Case, CaseStatus } from './case';
+import { Case, CaseStatus } from 'src/app/if';
 
 @Component({
   selector: 'app-cases',
@@ -21,7 +21,7 @@ export class CasesComponent implements OnInit {
   rootcases: number[] = [];
   showDeleted: boolean = false;
   showInRetention: boolean = false;
-  usersettingsObj: Settings | null = null;
+  usersettingsObj: UserSettings | null = null;
 
   constructor(private authService: AuthService,
     private configService: ConfigService,

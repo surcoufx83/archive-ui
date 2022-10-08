@@ -3,8 +3,8 @@ import { AuthService } from '../../../auth.service';
 import { ConfigService, AppConfig } from '../../../config.service';
 import { I18nService } from '../../../i18n.service';
 import { SettingsService } from '../../../user/settings/settings.service';
-import { Settings } from '../../../user/settings/settings';
-import { WorkLead, WorkProperties } from '../../work';
+import { UserSettings } from 'src/app/if';
+import { WorkLead, WorkProperties } from 'src/app/if';
 import { format } from 'date-fns';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -18,7 +18,7 @@ export class WorkLeadComponent implements OnInit {
   busy: boolean = false;
   lead?: WorkLead;
   leadLoading: boolean = false;
-  usersettingsObj: Settings|null = null;
+  usersettingsObj: UserSettings|null = null;
   workpropsObj: WorkProperties|null = null;
 
   constructor(private authService: AuthService,

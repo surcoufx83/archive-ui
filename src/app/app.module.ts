@@ -55,7 +55,6 @@ import { ToastsService } from './utils/toasts.service';
 import { ToastComponent } from './utils/toast/toast.component';
 import { DbCountriesComponent } from './db/countries/countries.component';
 import { ShoppingComponent } from './finance/shopping/shopping.component';
-import { CacheService } from './svcs/cache.service';
 import { H2Component } from './utils/h2/h2.component';
 import { H3Component } from './utils/h3/h3.component';
 import { H4Component } from './utils/h4/h4.component';
@@ -156,7 +155,6 @@ registerLocaleData(localeDe);
     { provide: I18nService, multi: false, },
     { provide: ToastsService, multi: false, },
     { provide: AuthService, multi: false, },
-    { provide: CacheService, multi: false, },
   ],
   bootstrap: [
     AppComponent

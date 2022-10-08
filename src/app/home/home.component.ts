@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../auth.service';
-import { Case } from '../cases/case';
+import { Case } from 'src/app/if';
 import { AppConfig, ConfigService } from '../config.service';
-import { File } from '../files/file';
+import { File } from 'src/app/if';
 import { I18nService } from '../i18n.service';
-import { Settings } from '../user/settings/settings';
+import { UserSettings } from 'src/app/if';
 import { SettingsService } from '../user/settings/settings.service';
 import { FormatService } from '../utils/format.service';
 
@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   inactivecases: Case[] = [];
   newfiles: File[] = [];
   updatetimeout: any;
-  usersettingsObj: Settings | null = null;
+  usersettingsObj: UserSettings | null = null;
   stats?: HomeStats;
   storagename: string = this.config.storage.prefix + 'homeData';
   when: number = 0;

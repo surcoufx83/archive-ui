@@ -2,16 +2,16 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { format } from 'date-fns';
-import { Currency } from 'src/app/account/account';
+import { Currency } from 'src/app/if';
 import { AuthService } from 'src/app/auth.service';
-import { Country, Party } from 'src/app/common';
+import { Country, Party } from 'src/app/if';
 import { AppConfig, ConfigService } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
-import { Settings } from 'src/app/user/settings/settings';
+import { UserSettings } from 'src/app/if';
 import { SettingsService } from 'src/app/user/settings/settings.service';
 import { FormatService } from 'src/app/utils/format.service';
 import { ToastsService } from 'src/app/utils/toasts.service';
-import { Receipt, ReceiptArticle, ReceiptArticleCategory, TaxRate } from '../finance';
+import { Receipt, ReceiptArticle, ReceiptArticleCategory, TaxRate } from 'src/app/if';
 
 @Component({
   selector: 'app-receipts',
@@ -34,7 +34,7 @@ export class ReceiptsComponent implements OnInit, OnDestroy {
   receipts: Receipt[] = [];
   taxrates: TaxRate[] = [];
   updatetimeout: any;
-  usersettingsObj: Settings | null = null;
+  usersettingsObj: UserSettings | null = null;
   when: number = 0;
 
   defaultCurrency: Currency | null = null;

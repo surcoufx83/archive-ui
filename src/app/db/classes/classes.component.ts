@@ -1,8 +1,8 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AppConfig, ConfigService } from 'src/app/config.service';
-import { Class } from 'src/app/files/class';
+import { Class } from 'src/app/if';
 import { I18nService } from 'src/app/i18n.service';
-import { Settings } from 'src/app/user/settings/settings';
+import { UserSettings } from 'src/app/if';
 import { SettingsService } from 'src/app/user/settings/settings.service';
 import { ToastsService } from 'src/app/utils/toasts.service';
 
@@ -19,7 +19,7 @@ export class DbClassesComponent implements OnInit {
   saving: boolean = false;
   classes: Class[] = [];
   editclass?: Class;
-  usersettingsObj: Settings | null = null;
+  usersettingsObj: UserSettings | null = null;
   sortAsc: boolean = true;
   sortBy: string = 'name';
   storagename: string = this.config.storage.prefix + 'dbclassesData';

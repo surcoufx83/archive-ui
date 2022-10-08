@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { File, Page, Version } from '../files/file';
+import { File, Page, Version } from 'src/app/if';
 
 @Injectable({
   providedIn: 'root'

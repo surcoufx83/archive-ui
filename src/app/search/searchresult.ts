@@ -1,7 +1,7 @@
-import { BankAccount } from "../account/account";
-import { Case } from "../cases/case";
-import { Directory, File, Page, Version } from "../files/file";
-import { Note } from "../notepad/note";
+import { BankAccount } from "src/app/if";
+import { Case } from "src/app/if";
+import { Directory, File, Page, Version } from "src/app/if";
+import { Note } from "src/app/if";
 
 export interface SearchResults {
     accounts?: SearchResultAccountItem[];

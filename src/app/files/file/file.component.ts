@@ -6,15 +6,15 @@ import { PdfJsViewerComponent } from 'ng2-pdfjs-viewer';
 import { AuthService } from '../../auth.service';
 import { AppConfig, ConfigService } from '../../config.service';
 import { I18nService } from '../../i18n.service';
-import { Settings } from '../../user/settings/settings';
+import { UserSettings } from 'src/app/if';
 import { SettingsService } from '../../user/settings/settings.service';
-import { File, Page, Version } from '../file';
+import { File, Page, Version } from 'src/app/if';
 import { FormatService } from 'src/app/utils/format.service';
 import { FileService } from 'src/app/utils/file.service';
-import { Address, ButtonType, ContactType, Party, PartyContact } from 'src/app/common';
+import { Address, ButtonType, ContactType, Party, PartyContact } from 'src/app/if';
 import { ReplaySubject } from 'rxjs';
-import { Case, CaseFiletype } from 'src/app/cases/case';
-import { Class } from '../class';
+import { Case, CaseFiletype } from 'src/app/if';
+import { Class } from 'src/app/if';
 import { SelectedItem } from '../folder-browser-dialog/folder-browser-dialog.component';
 import { ToastsService } from 'src/app/utils/toasts.service';
 
@@ -40,7 +40,7 @@ export class FileComponent implements OnInit {
   recentVersion: Version | null | undefined;
   textcontent: string[] = [];
   updating: boolean = false;
-  usersettingsObj: Settings | null = null;
+  usersettingsObj: UserSettings | null = null;
   view: string = '';
 
   addresses: Address[] = [];
