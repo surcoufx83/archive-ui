@@ -504,6 +504,10 @@
     "inbox": {
       "title": "Neue Dokumente"
     },
+    "readings": {
+      "title": "Zähler",
+      "readingsLink": "Erfassung von Zählerständen"
+    },
     "stats": {
       "title": "Schnelle Statistiken...",
       "files1": "Das Archiv verwaltet aktuell {0} Dateien in {1} Verzeichnissen mit insgesamt {2}.",
@@ -563,6 +567,14 @@
       "title": "Benutzeranmeldung",
       "subtitle": "Diese Webseite erfordert eine Anmeldung via Nextcloud. Bitte klicke auf den Button um die Anmeldung vorzunehmen.",
       "button": "Anmelden"
+    }
+  },
+  "meter": {
+    "readings": {
+      "title": "Erfassung von Zählerständen",
+      "date": "Datum",
+      "meter": "Zähler",
+      "value": "Wert"
     }
   },
   "navbar": {

@@ -35,6 +35,7 @@ import { WorkCustomersComponent } from './work/settings/customers/customers.comp
 import { WorkDayComponent } from './work/work-day/work-day.component';
 import { WorkMonthComponent } from './work/work-month/work-month.component';
 import { WorkComponent } from './work/work.component';
+import { ReadingsComponent } from './meters/readings/readings.component';
 
 const routes: Routes = [
   { path: 'account', component: AccountComponent, canActivate: [SessionGuard] },
@@ -76,6 +77,7 @@ const routes: Routes = [
   { path: 'logout', component: LogoutComponent, canActivate: [SessionGuard] },
   { path: 'notepad', component: NotepadComponent, canActivate: [SessionGuard] },
   { path: 'price-comparison', component: PriceComparisonComponent, canActivate: [SessionGuard] },
+  { path: 'readings', component: ReadingsComponent, canActivate: [SessionGuard], pathMatch: 'full' },
   { path: 'receipts', component: ReceiptsComponent, canActivate: [SessionGuard] },
   { path: 'shopping', component: ShoppingComponent, canActivate: [SessionGuard] },
   { path: 'search/:phrase/:token/:tab', component: SearchComponent, canActivate: [SessionGuard] },

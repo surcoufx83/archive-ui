@@ -246,12 +246,17 @@ export interface File {
   versions: { [key: number]: Version };
 }
 
-export interface Page {
+export interface Meter {
   id: number;
-  versionid: number;
-  pageno: number;
-  pagetype: number;
-  pagedata: string;
+  caseid: number | null;
+  notify: boolean;
+  name: string;
+  number: string;
+  expectedinterval: Duration;
+  created: string;
+  deleted: string | null;
+  lastread: string | null;
+  updated: string;
 }
 
 export interface Note {
@@ -262,6 +267,14 @@ export interface Note {
   updated: string;
   deldate: string | null;
   show: boolean;
+}
+
+export interface Page {
+  id: number;
+  versionid: number;
+  pageno: number;
+  pagetype: number;
+  pagedata: string;
 }
 
 export interface Party {
