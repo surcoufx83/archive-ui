@@ -1,22 +1,16 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { format } from 'date-fns';
 import * as saveAs from 'file-saver';
 import { PdfJsViewerComponent } from 'ng2-pdfjs-viewer';
+import { Address, ButtonType, Case, CaseFiletype, Class, ContactType, File, Page, Party, PartyContact, UserSettings, Version } from 'src/app/if';
+import { FileService } from 'src/app/utils/file.service';
+import { FormatService } from 'src/app/utils/format.service';
+import { ToastsService } from 'src/app/utils/toasts.service';
 import { AuthService } from '../../auth.service';
 import { AppConfig, ConfigService } from '../../config.service';
 import { I18nService } from '../../i18n.service';
-import { Settings } from '../../user/settings/settings';
 import { SettingsService } from '../../user/settings/settings.service';
-import { File, Page, Version } from '../file';
-import { FormatService } from 'src/app/utils/format.service';
-import { FileService } from 'src/app/utils/file.service';
-import { Address, ButtonType, ContactType, Party, PartyContact } from 'src/app/common';
-import { ReplaySubject } from 'rxjs';
-import { Case, CaseFiletype } from 'src/app/cases/case';
-import { Class } from '../class';
 import { SelectedItem } from '../folder-browser-dialog/folder-browser-dialog.component';
-import { ToastsService } from 'src/app/utils/toasts.service';
 
 @Component({
   selector: 'app-file',
@@ -40,7 +34,7 @@ export class FileComponent implements OnInit {
   recentVersion: Version | null | undefined;
   textcontent: string[] = [];
   updating: boolean = false;
-  usersettingsObj: Settings | null = null;
+  usersettingsObj: UserSettings | null = null;
   view: string = '';
 
   addresses: Address[] = [];

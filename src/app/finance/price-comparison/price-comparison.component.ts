@@ -1,16 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { compareDesc, differenceInCalendarDays, parseISO, subMonths, subYears } from 'date-fns';
-import formatISO from 'date-fns/formatISO';
+import { compareDesc, differenceInCalendarDays, parseISO, subMonths } from 'date-fns';
 import { EChartsOption } from 'echarts';
-import { ApiReply } from 'src/app/api-reply';
 import { AuthService } from 'src/app/auth.service';
 import { AppConfig, ConfigService } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
-import { Settings } from 'src/app/user/settings/settings';
+import { ApiReply, ReceiptArticle, UserSettings } from 'src/app/if';
 import { SettingsService } from 'src/app/user/settings/settings.service';
 import { FormatService } from 'src/app/utils/format.service';
 import { ToastsService } from 'src/app/utils/toasts.service';
-import { ReceiptArticle } from '../finance';
 
 @Component({
   selector: 'app-price-comparison',
@@ -22,7 +19,7 @@ export class PriceComparisonComponent implements OnInit {
   articles: { [key: number]: ReceiptArticle } = {};
   articlecharts: { [key: number]: EChartsOption } = {};
   items: ComparisonItem[][] = [];
-  usersettingsObj: Settings | null = null;
+  usersettingsObj: UserSettings | null = null;
 
   constructor(private authService: AuthService,
     private configService: ConfigService,

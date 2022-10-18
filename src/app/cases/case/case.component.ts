@@ -2,13 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { format } from 'date-fns';
 import { AuthService } from 'src/app/auth.service';
-import { Party } from 'src/app/common';
 import { AppConfig, ConfigService } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
-import { Settings } from 'src/app/user/settings/settings';
+import { Case, CaseStatus, CaseType, Party, UserSettings } from 'src/app/if';
 import { SettingsService } from 'src/app/user/settings/settings.service';
 import { FormatService } from 'src/app/utils/format.service';
-import { Case, CaseStatus, CaseType } from '../case';
 
 @Component({
   selector: 'app-case',
@@ -26,7 +24,7 @@ export class CaseComponent implements OnInit {
   showDeleted: boolean = false;
   showInRetention: boolean = false;
   storagename: string = this.config.storage.prefix + 'casesData';
-  usersettingsObj: Settings | null = null;
+  usersettingsObj: UserSettings | null = null;
 
   listOfCases: Case[] = [];
   listOfCaseStatus: CaseStatus[] = [];

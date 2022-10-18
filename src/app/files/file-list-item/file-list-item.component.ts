@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { I18nService } from 'src/app/i18n.service';
-import { File, Version } from '../file';
 import { AppConfig, ConfigService } from 'src/app/config.service';
-import { FormatService } from 'src/app/utils/format.service';
+import { I18nService } from 'src/app/i18n.service';
+import { File, Version } from 'src/app/if';
 import { FileService } from 'src/app/utils/file.service';
+import { FormatService } from 'src/app/utils/format.service';
 
 @Component({
   selector: 'file-list-item',

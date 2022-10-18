@@ -1,11 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ContactType } from 'src/app/common';
 import { AppConfig, ConfigService } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
-import { Settings } from 'src/app/user/settings/settings';
 import { SettingsService } from 'src/app/user/settings/settings.service';
 import { ToastsService } from 'src/app/utils/toasts.service';
+import { ContactType, UserSettings } from 'src/app/if';
 
 @Component({
   selector: 'app-type',
@@ -20,7 +19,7 @@ export class DbContactTypeComponent implements OnInit {
   saving: boolean = false;
   ctypes: ContactType[] = [];
   editctype?: ContactType;
-  usersettingsObj: Settings | null = null;
+  usersettingsObj: UserSettings | null = null;
   sortAsc: boolean = true;
   sortBy: string = 'i18nname';
   storagename: string = this.config.storage.prefix + 'dbctypesData';
