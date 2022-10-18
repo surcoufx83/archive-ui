@@ -1,11 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Case, File, UserSettings } from 'src/app/if';
 import { AuthService } from '../auth.service';
-import { Case } from 'src/app/if';
 import { AppConfig, ConfigService } from '../config.service';
-import { File } from 'src/app/if';
 import { I18nService } from '../i18n.service';
-import { UserSettings } from 'src/app/if';
 import { SettingsService } from '../user/settings/settings.service';
 import { FormatService } from '../utils/format.service';
 

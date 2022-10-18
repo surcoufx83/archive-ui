@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { format } from 'date-fns';
+import { UserSettings, WorkLead, WorkProperties } from 'src/app/if';
 import { AuthService } from '../../../auth.service';
-import { ConfigService, AppConfig } from '../../../config.service';
+import { AppConfig, ConfigService } from '../../../config.service';
 import { I18nService } from '../../../i18n.service';
 import { SettingsService } from '../../../user/settings/settings.service';
-import { UserSettings } from 'src/app/if';
-import { WorkLead, WorkProperties } from 'src/app/if';
-import { format } from 'date-fns';
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-lead',

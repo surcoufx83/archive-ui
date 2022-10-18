@@ -4,12 +4,11 @@ import { differenceInMinutes, format, parseISO, set } from 'date-fns';
 import { AuthService } from '../../auth.service';
 import { SettingsService } from '../../user/settings/settings.service';
 
-import { AppConfig, ConfigService } from '../../config.service';
-import { I18nService } from '../../i18n.service';
-import { UserSettings } from 'src/app/if';
-import { RecentBooking, WorkCustomer, WorkDay, WorkDayBooking, WorkProject, WorkProperties, WorkTimeCategory } from 'src/app/if';
 import { ViewportScroller } from '@angular/common';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { RecentBooking, UserSettings, WorkCustomer, WorkDay, WorkDayBooking, WorkProject, WorkProperties, WorkTimeCategory } from 'src/app/if';
+import { AppConfig, ConfigService } from '../../config.service';
+import { I18nService } from '../../i18n.service';
 
 @Component({
   selector: 'app-work-day',

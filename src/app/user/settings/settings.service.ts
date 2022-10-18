@@ -1,14 +1,26 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { UserSettings } from 'src/app/if';
+import {
+  Address,
+  BankAccount,
+  Case,
+  CaseFiletype,
+  CaseStatus,
+  CaseType,
+  Class,
+  ContactType,
+  Country,
+  Currency,
+  Party,
+  PartyContact,
+  PartyRole,
+  User,
+  UserSettings,
+  WorkCustomer,
+  WorkProperties
+} from 'src/app/if';
 import { AuthService } from '../../auth.service';
 import { AppConfig, ConfigService } from '../../config.service';
-import { WorkCustomer, WorkProperties } from 'src/app/if';
-import { User } from 'src/app/if';
-import { Case, CaseFiletype, CaseStatus, CaseType } from 'src/app/if';
-import { Class } from 'src/app/if';
-import { Address, ContactType, Country, Party, PartyContact, PartyRole } from 'src/app/if';
-import { BankAccount, Currency } from 'src/app/if';
 
 @Injectable()
 export class SettingsService {
@@ -65,7 +77,7 @@ export class SettingsService {
     let olddata: string | null | FinanceStorage = localStorage.getItem(this.financestorage);
     if (olddata) {
       olddata = <FinanceStorage>JSON.parse(olddata);
-      
+
       this.financesync = olddata.ts;
     }
     this.syncFinance();
@@ -376,7 +388,7 @@ export class SettingsService {
 
   private saveFinance(): void {
     localStorage.setItem(this.financestorage, JSON.stringify({
-      
+
       ts: this.financesync,
     }));
   }
@@ -451,7 +463,7 @@ export class SettingsService {
     this.authService.queryApi(url).subscribe((reply) => {
       if (reply.success && reply.payload != undefined) {
         let response = <FinanceResponse>reply.payload;
-        
+
         this.saveFinance();
       }
       this.financesynctimeout = setTimeout(() => { this.syncFinance(); }, 30000);
@@ -755,7 +767,7 @@ export interface FinanceResponse {
 }
 
 export interface FinanceStorage {
-  
+
   ts: number;
 }
 

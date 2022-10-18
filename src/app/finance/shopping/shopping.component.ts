@@ -4,10 +4,9 @@ import { format } from 'date-fns';
 import { AuthService } from 'src/app/auth.service';
 import { AppConfig, ConfigService } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
-import { UserSettings } from 'src/app/if';
+import { ReceiptArticle, UserSettings } from 'src/app/if';
 import { SettingsService } from 'src/app/user/settings/settings.service';
 import { FormatService } from 'src/app/utils/format.service';
-import { ReceiptArticle } from 'src/app/if';
 
 @Component({
   selector: 'app-shopping',

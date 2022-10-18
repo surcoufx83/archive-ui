@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { format } from 'date-fns';
+import { Note, UserSettings } from 'src/app/if';
 import { AuthService } from '../auth.service';
 import { AppConfig, ConfigService } from '../config.service';
 import { I18nService } from '../i18n.service';
-import { UserSettings } from 'src/app/if';
 import { SettingsService } from '../user/settings/settings.service';
 import { FormatService } from '../utils/format.service';
-import { Note } from 'src/app/if';
 
 @Component({
   selector: 'app-notepad',

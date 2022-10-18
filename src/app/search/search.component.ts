@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { format } from 'date-fns';
 import { saveAs } from 'file-saver';
+import { UserSettings } from 'src/app/if';
 import { AuthService } from '../auth.service';
 import { AppConfig, ConfigService } from '../config.service';
 import { I18nService } from '../i18n.service';
-import { UserSettings } from 'src/app/if';
 import { SettingsService } from '../user/settings/settings.service';
 import { SearchResultAccountItem, SearchResultCaseItem, SearchResultDirectoryItem, SearchResultFileItem, SearchResultNoteItem, SearchResultPageItem, SearchResults } from './searchresult';
 

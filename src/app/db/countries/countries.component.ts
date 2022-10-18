@@ -1,13 +1,10 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Currency } from 'src/app/if';
-import { Country } from 'src/app/if';
 import { AppConfig, ConfigService } from 'src/app/config.service';
-import { TaxRate } from 'src/app/if';
 import { I18nService } from 'src/app/i18n.service';
-import { UserSettings } from 'src/app/if';
 import { SettingsService } from 'src/app/user/settings/settings.service';
 import { ToastsService } from 'src/app/utils/toasts.service';
+import { Country, Currency, TaxRate, UserSettings } from 'src/app/if';
 import { DbCurrenciesStorage } from './currencies/currencies.component';
 
 @Component({

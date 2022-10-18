@@ -1,7 +1,4 @@
-import { BankAccount } from "src/app/if";
-import { Case } from "src/app/if";
-import { Directory, File, Page, Version } from "src/app/if";
-import { Note } from "src/app/if";
+import { BankAccount, Case, Directory, File, Note, Page, Version } from "src/app/if";
 
 export interface SearchResults {
     accounts?: SearchResultAccountItem[];

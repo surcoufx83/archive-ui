@@ -1,9 +1,8 @@
-import { Component, OnInit, EventEmitter, Input, Output, ViewChild, ElementRef } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/auth.service';
-import { ButtonType } from 'src/app/if';
 import { AppConfig, ConfigService } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
-import { Directory, File } from 'src/app/if';
+import { ButtonType, Directory, File } from 'src/app/if';
 
 @Component({
   selector: 'folder-browser-dialog',

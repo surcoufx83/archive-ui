@@ -1,17 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { format } from 'date-fns';
-import { Currency } from 'src/app/if';
 import { AuthService } from 'src/app/auth.service';
-import { Country, Party } from 'src/app/if';
 import { AppConfig, ConfigService } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
-import { UserSettings } from 'src/app/if';
+import { Country, Currency, Party, Receipt, ReceiptArticle, ReceiptArticleCategory, TaxRate, UserSettings } from 'src/app/if';
 import { SettingsService } from 'src/app/user/settings/settings.service';
 import { FormatService } from 'src/app/utils/format.service';
 import { ToastsService } from 'src/app/utils/toasts.service';
-import { Receipt, ReceiptArticle, ReceiptArticleCategory, TaxRate } from 'src/app/if';
 
 @Component({
   selector: 'app-receipts',

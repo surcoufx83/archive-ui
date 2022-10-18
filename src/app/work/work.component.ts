@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
+import { UserSettings } from 'src/app/if';
 import { AuthService } from '../auth.service';
-import { ConfigService, AppConfig, NavbarItem } from '../config.service';
+import { AppConfig, ConfigService, NavbarItem } from '../config.service';
 import { I18nService } from '../i18n.service';
 import { SettingsService } from '../user/settings/settings.service';
-import { UserSettings } from 'src/app/if';
 
 @Component({
   selector: 'app-work',

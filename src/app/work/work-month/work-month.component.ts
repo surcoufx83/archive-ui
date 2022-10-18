@@ -1,17 +1,15 @@
 import { AfterViewInit, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { Subject } from 'rxjs';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarMonthViewDay } from 'angular-calendar';
 import { add, format, getDate, getMonth, getYear, isSameDay, isSameMonth, sub } from 'date-fns';
+import { Subject } from 'rxjs';
 
-import { AuthService } from '../../auth.service';
-import { ConfigService, AppConfig } from '../../config.service';
-import { I18nService } from '../../i18n.service';
-import { WorkMonth, WorkDay, WorkDayBooking, WorkOffCategory, WorkProperties } from 'src/app/if';
-import { SettingsService } from '../../user/settings/settings.service';
-import { UserSettings } from 'src/app/if';
-import { ApiReply } from 'src/app/if';
+import { ApiReply, UserSettings, WorkDay, WorkDayBooking, WorkMonth, WorkOffCategory, WorkProperties } from 'src/app/if';
 import { EventColor } from '../../../../node_modules/calendar-utils/calendar-utils';
+import { AuthService } from '../../auth.service';
+import { AppConfig, ConfigService } from '../../config.service';
+import { I18nService } from '../../i18n.service';
+import { SettingsService } from '../../user/settings/settings.service';
 
 @Component({
   selector: 'app-work-month',

@@ -2,13 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { format } from 'date-fns';
 import { AuthService } from 'src/app/auth.service';
-import { Party } from 'src/app/if';
 import { AppConfig, ConfigService } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
-import { UserSettings } from 'src/app/if';
+import { Case, CaseStatus, CaseType, Party, UserSettings } from 'src/app/if';
 import { SettingsService } from 'src/app/user/settings/settings.service';
 import { FormatService } from 'src/app/utils/format.service';
-import { Case, CaseStatus, CaseType } from 'src/app/if';
 
 @Component({
   selector: 'app-case',
