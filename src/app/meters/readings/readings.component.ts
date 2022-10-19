@@ -16,6 +16,8 @@ export class ReadingsComponent implements OnInit {
 
   busy: boolean = true;
   meter: Meter[] = [];
+  readings: ReadingDate[] = [];
+  showmeter: { [key: number]: boolean } = {};
 
   constructor(private authService: AuthService,
     private configService: ConfigService,
@@ -31,17 +33,57 @@ export class ReadingsComponent implements OnInit {
     return this.configService.config;
   }
 
+  date(date: Date | string, form: string): string {
+    return this.formatService.fdate(date, form);
+  }
+
   i18n(key: string, params: string[] = []): string {
     return this.i18nService.i18n(key, params);
   }
 
+  getMeter(id: number): Meter|null {
+    for (let i = 0; i < this.meter.length; i++) {
+      if (this.meter[i].id === id)
+        return this.meter[i];
+    }
+    return null;
+  }
+
   ngOnInit(): void {
-    this.authService.queryApi(this.configService.config.api.baseUrl + '/meter').subscribe((reply: ApiReply) => {
+    this.authService.queryApi(this.configService.config.api.baseUrl + '/meter+readings').subscribe((reply: ApiReply) => {
       if (reply.payload && reply.payload['meter']) {
-        this.meter = (<Meter[]>(reply.payload['meter'])).sort((a, b) => this.sortMeter(a, b));
-        
+        let items = (<Meter[]>(reply.payload['meter'])).sort((a, b) => this.sortMeter(a, b));
+        let readings: ReadingDate[] = [];
+        let dates: { [key: string]: number } = {};
+        items.forEach((m) => {
+          m.readings.forEach((r) => {
+            if (!dates[r.date]) {
+              dates[r.date] = readings.length;
+              readings.push({ date: r.date, values: [] });
+            }
+            readings[dates[r.date]].values.push({ meterid: m.id, value: r.value });
+          });
+          this.showmeter[m.id] = true;
+        });
+        this.meter = items;
+        this.readings = readings.sort((a, b) => a.date > b.date ? -1 : 1);
+        this.busy = false;
+        console.log(this.meter);
+        console.log(this.readings);
       }
     });
+  }
+
+  number(n: number, fd: number = 0, md: number | undefined = undefined): string {
+    return this.formatService.fnumber(n, fd, md);
+  }
+
+  showRecord(record: ReadingDate): boolean {
+    for (let i = 0; i < record.values.length; i++) {
+      if (this.showmeter[record.values[i].meterid])
+        return true;
+    }
+    return false;
   }
 
   sortMeter(a: Meter, b: Meter): number {
@@ -54,4 +96,14 @@ export class ReadingsComponent implements OnInit {
     }
   }
 
+}
+
+export interface ReadingDate {
+  date: string;
+  values: ReadingItem[];
+}
+
+export interface ReadingItem {
+  meterid: number;
+  value: number;
 }

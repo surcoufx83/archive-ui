@@ -252,11 +252,20 @@ export interface Meter {
   notify: boolean;
   name: string;
   number: string;
+  decimals: number;
   expectedinterval: Duration;
   created: string;
   deleted: string | null;
   lastread: string | null;
   updated: string;
+  readings: MeterReading[];
+}
+
+export interface MeterReading {
+  id: number;
+  meterid: number;
+  value: number;
+  date: string;
 }
 
 export interface Note {

@@ -64,9 +64,16 @@
 
   &.flex-table-sm .row {
     >div {
-      padding: .25rem .25rem !important;
+      padding: .25rem .25rem;
     }
   }
+
+  &.hover {
+    .flex-table-body.row:hover {
+      background-color: #dee2e6;
+    }
+  }
+
 }
 
 form {
