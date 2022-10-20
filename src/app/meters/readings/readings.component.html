@@ -30,7 +30,7 @@
   <div class="container">
     <div class="flex-table hover flex-table-sm mb-3">
       <div class="flex-table-head row">
-        <div class="col-4">{{ i18n('meter.readings.date') }}</div>
+        <div class="col-4">{{ i18n('common.date') }}</div>
         <div class="col-4">{{ i18n('meter.readings.meter') }}</div>
         <div class="col-4 text-end">{{ i18n('meter.readings.value') }}</div>
       </div>
@@ -91,6 +91,16 @@
           {{ i18n('meter.readings.modal.description') }}
         </p>
         <ul *ngIf="editRecord != null" class="list-group list-group-flush">
+          <li class="list-group-item">
+            <div class="d-flex justify-content-between">
+              <div>
+                <strong>{{ i18n('common.date') }}</strong>
+              </div>
+              <div class="text-end">
+                <input type="date" [(ngModel)]="editRecord.date" class="form-control form-control-sm">
+              </div>
+            </div>
+          </li>
           <li class="list-group-item" *ngFor="let value of editRecord.values">
             <div class="d-flex justify-content-between">
               <div>

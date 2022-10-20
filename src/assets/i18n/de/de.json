@@ -209,6 +209,7 @@
         "message": "Die Änderungen wurden erfolgreich gespeichert."
       }
     },
+    "date": "Datum",
     "day": "Tag",
     "days": "Tage",
     "delete": "Löschen",
@@ -572,7 +573,6 @@
   "meter": {
     "readings": {
       "title": "Erfassung von Zählerständen",
-      "date": "Datum",
       "meter": "Zähler",
       "value": "Wert",
       "modal": {
