@@ -574,8 +574,13 @@
       "title": "Erfassung von Zählerständen",
       "date": "Datum",
       "meter": "Zähler",
-      "value": "Wert"
-    }
+      "value": "Wert",
+      "modal": {
+        "title": "Zählerablesung",
+        "description": "In den folgenden Feldern kannst du die Werte für die Zähler eingeben. Nur ausgefüllte Felder werden gespeichert."
+      }
+    },
+    "title": "Zähler"
   },
   "navbar": {
     "brand": {

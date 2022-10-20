@@ -4,6 +4,11 @@
 
 @import "../node_modules/angular-calendar/css/angular-calendar.css";
 
+@font-face {
+  font-family: "PlayfairDisplay";
+  src: url("/assets/PlayfairDisplay-VariableFont_wght.ttf");
+}
+
 .bg-dark {
   .form-control {
     background-color: $secondary;
@@ -237,6 +242,10 @@ pre {
 
 .rounded-0 {
   border-radius: 0 !important;
+}
+
+.text-serif {
+  font-family: "PlayfairDisplay";
 }
 
 .ws-pre-wrap {

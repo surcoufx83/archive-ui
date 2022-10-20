@@ -253,6 +253,7 @@ export interface Meter {
   name: string;
   number: string;
   decimals: number;
+  uom: string;
   expectedinterval: Duration;
   created: string;
   deleted: string | null;

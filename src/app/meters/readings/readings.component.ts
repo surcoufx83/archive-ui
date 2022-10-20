@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { format } from 'date-fns';
 import { AuthService } from 'src/app/auth.service';
 import { AppConfig, ConfigService } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
@@ -16,6 +17,7 @@ export class ReadingsComponent implements OnInit {
 
   busy: boolean = true;
   meter: Meter[] = [];
+  editRecord: ReadingDate|null = null;
   readings: ReadingDate[] = [];
   showmeter: { [key: number]: boolean } = {};
 
@@ -47,6 +49,21 @@ export class ReadingsComponent implements OnInit {
         return this.meter[i];
     }
     return null;
+  }
+
+  getStep(meter: Meter): string {
+    if (meter.decimals === 0)
+      return '1';
+    else return '.' + '1'.padStart(meter.decimals, '0');
+  }
+
+  newRecord(): void {
+    let record: ReadingDate = {
+      date: format(new Date(), 'y-M-d'),
+      values: [],
+    };
+    this.meter.forEach((m) => record.values.push({ meterid: m.id, value: '' }));
+    this.editRecord = record;
   }
 
   ngOnInit(): void {
@@ -105,5 +122,5 @@ export interface ReadingDate {
 
 export interface ReadingItem {
   meterid: number;
-  value: number;
+  value: number|string;
 }
