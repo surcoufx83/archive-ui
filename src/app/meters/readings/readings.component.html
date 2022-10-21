@@ -1,0 +1,133 @@
+<div class="container pt-4 pt-md-2 mb-2">
+  <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between align-items-center">
+    <h2 class="px-2 mb-0">{{ i18n('meter.readings.title') }}</h2>
+    <div>
+      <nav class="h-100" style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
+        <ol class="breadcrumb d-flex align-items-center h-100 mb-0 flex-fill flex-nowrap">
+          <li [ngClass]="{'breadcrumb-item fade me-1 me-lg-2': true, 'show': busy}">
+            <ui-busy-indicator></ui-busy-indicator>
+          </li>
+          <app-button [title]="i18n('meter.title')" [css]="'btn btn-sm btn-outline-secondary'"
+            [icon]="config.icons['meter']" [link]="'/meter'"></app-button>
+          <button type="button" class="btn btn-sm btn-outline-primary" (click)="newRecord()" data-bs-toggle="modal"
+            data-bs-target="#exampleModal">
+            <i [ngClass]="config.icons['add']"></i>
+            {{ i18n('common.add') }}
+          </button>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <div class="container mt-2">
+    <div class="row g-2">
+      <ng-container *ngFor="let meteritem of meter; let i = index;">
+        <ng-container *ngTemplateOutlet="meterFilterItem; context: { 'meteritem': meteritem }"></ng-container>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="flex-table hover flex-table-sm mb-3">
+      <div class="flex-table-head row">
+        <div class="col-4">{{ i18n('common.date') }}</div>
+        <div class="col-4">{{ i18n('meter.readings.meter') }}</div>
+        <div class="col-4 text-end">{{ i18n('meter.readings.value') }}</div>
+      </div>
+      <ng-container *ngFor="let reading of readings; let i = index;">
+        <ng-container *ngTemplateOutlet="readingRow; context: { 'reading': reading }"></ng-container>
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+<ng-template #meterFilterItem let-meteritem="meteritem">
+  <div class="col-6 col-md-4 col-lg-3 col-xl-2">
+    <div class="card pointer" (click)="showmeter[meteritem.id] = !showmeter[meteritem.id]">
+      <div class="card-header text-truncate px-2 py-1 border-bottom-0">
+        <h6 class="mb-0 user-select-none">
+          <i [class]="config.icons[showmeter[meteritem.id] ? 'check' : 'check-no']"></i>
+          <strong class="ms-1">{{ meteritem?.name }}</strong>
+          <span class="fs-8 ms-2" *ngIf="meteritem?.number != ''">{{ meteritem?.number }}</span>
+        </h6>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #readingRow let-readingitem="reading">
+  <div class="flex-table-body row" *ngIf="showRecord(readingitem)">
+    <div class="col-4">{{ date(readingitem.date, 'PP') }}</div>
+    <div class="col-8 flex-table flex-table-sm">
+      <ng-container *ngFor="let value of readingitem.values;">
+        <ng-container *ngTemplateOutlet="readingRowItem; context: { 'meter': getMeter(value.meterid), value: value }">
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #readingRowItem let-meteritem="meter" let-valueitem="value">
+  <div class="flex-table-body row mx-0" *ngIf="showmeter[meteritem.id]">
+    <div class="col-7 py-0">
+      <strong>{{ meteritem?.name }}</strong>
+      <span class="fs-8 ms-2" *ngIf="meteritem?.number != ''">{{ meteritem?.number }}</span>
+    </div>
+    <div class="col-5 text-end py-0">
+      <strong>{{ number(valueitem.value, meteritem.decimals, meteritem.decimals) }}</strong>
+    </div>
+  </div>
+</ng-template>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form (submit)="saveRecord(editRecord); newRecord(true);">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">{{ i18n('meter.readings.modal.title') }}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p class="fs-8">
+            {{ i18n('meter.readings.modal.description') }}
+          </p>
+          <ul *ngIf="editRecord != null" class="list-group list-group-flush">
+            <li class="list-group-item">
+              <div class="d-flex justify-content-between">
+                <div>
+                  <strong>{{ i18n('common.date') }}</strong>
+                </div>
+                <div class="text-end">
+                  <input type="date" [(ngModel)]="editRecord.date" name="input-date" class="form-control form-control-sm">
+                </div>
+              </div>
+            </li>
+            <li class="list-group-item" *ngFor="let value of editRecord.values">
+              <div class="d-flex justify-content-between">
+                <div>
+                  <strong>{{ getMeter(value.meterid)!.name }}</strong>
+                  <span class="fs-8 ms-2" *ngIf="getMeter(value.meterid)!.number != ''">{{ getMeter(value.meterid)!.number
+                    }}</span>
+                </div>
+                <div class="text-end">
+                  <div class="input-group" style="width: 160px;">
+                    <input type="number" min="0" max="99999999" [step]="getStep(getMeter(value.meterid)!)"
+                      [(ngModel)]="value.value" [name]="'input-value-' + value.meterid" class="form-control form-control-sm text-end">
+                    <span class="input-group-text fs-8 text-serif fw-bold px-2" style="width: 52px;">{{ getMeter(value.meterid)!.uom }}</span>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ i18n('common.cancel') }}</button>
+            <button type="submit" class="btn btn-success" [disabled]="saving">
+              <i [class]="config.icons[saving ? 'busy' : 'save']"></i>
+              {{ i18n('common.save') }}
+            </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

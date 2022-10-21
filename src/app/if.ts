@@ -1,9 +1,8 @@
-
 export interface Address {
   id: number;
   city: string;
   created: string;
-  deleted: string|null;
+  deleted: string | null;
   department: string;
   firstnames: string;
   houseno: string
@@ -23,27 +22,27 @@ export interface ApiReply {
   success: boolean;
   errno?: number;
   error?: string;
-  payload?: { [key: string]: string|any; };
+  payload?: { [key: string]: string | any; };
   redirect?: boolean;
   redirectTo?: string;
 }
 
 export interface BankAccount {
-    id: number;
-    accountno: string;
-    bank: Party;
-    bankid: number;
-    bic: string;
-    case: Case;
-    caseid: number;
-    client: Party;
-    clientid: number;
-    created: string;
-    currency: Currency;
-    currencyid: number;
-    iban: string;
-    title: string;
-    updated: string;
+  id: number;
+  accountno: string;
+  bank: Party;
+  bankid: number;
+  bic: string;
+  case: Case;
+  caseid: number;
+  client: Party;
+  clientid: number;
+  created: string;
+  currency: Currency;
+  currencyid: number;
+  iban: string;
+  title: string;
+  updated: string;
 }
 
 export enum ButtonType {
@@ -51,102 +50,102 @@ export enum ButtonType {
   Cancel
 }
 export interface Case {
-    id: number;
-    casepath: string;
-    childs: Case[];
-    clientid: number|null;
-    comment: string;
-    created: string;
-    deleted: string|null;
-    directoryid: number|null;
-    extid: string;
-    files: File[];
-    filescount: number;
-    followupcaseid: number|null;
-    issub: boolean;
-    modified: string;
-    notification: CaseNotification;
-    parentid: number|null;
-    partyid: number|null;
-    period: CasePeriod;
-    search1: string;
-    search2: string;
-    search3: string;
-    statusid: number;
-    taxyear: number|null;
-    title: string;
-    typeid: number
+  id: number;
+  casepath: string;
+  childs: Case[];
+  clientid: number | null;
+  comment: string;
+  created: string;
+  deleted: string | null;
+  directoryid: number | null;
+  extid: string;
+  files: File[];
+  filescount: number;
+  followupcaseid: number | null;
+  issub: boolean;
+  modified: string;
+  notification: CaseNotification;
+  parentid: number | null;
+  partyid: number | null;
+  period: CasePeriod;
+  search1: string;
+  search2: string;
+  search3: string;
+  statusid: number;
+  taxyear: number | null;
+  title: string;
+  typeid: number
 }
 
 export interface CaseFiletype {
-    id: number;
-    created: string;
-    deleted: string|null;
-    icon: string;
-    iconcolor: string;
-    modified: string;
-    name: string;
-    i18nname: string;
+  id: number;
+  created: string;
+  deleted: string | null;
+  icon: string;
+  iconcolor: string;
+  modified: string;
+  name: string;
+  i18nname: string;
 }
 
 export interface CaseNotification {
-    forecast: boolean;
-    upcoming: boolean;
+  forecast: boolean;
+  upcoming: boolean;
 }
 
 export interface CasePeriod {
-    end: string|null;
-    minperiod: Duration|null;
-    minperiodFullfilled: boolean;
-    period: Duration|null;
-    renewal: CasePeriodRenewal;
-    start: string|null;
-    terminationperiod: Duration|null;
+  end: string | null;
+  minperiod: Duration | null;
+  minperiodFullfilled: boolean;
+  period: Duration | null;
+  renewal: CasePeriodRenewal;
+  start: string | null;
+  terminationperiod: Duration | null;
 }
 
 export interface CasePeriodRenewal {
-    after: Duration|null;
-    enabled: boolean;
-    nextdate: string|null;
-    period: Duration|null;
+  after: Duration | null;
+  enabled: boolean;
+  nextdate: string | null;
+  period: Duration | null;
 }
 
 export interface CaseStatus {
-    created: string;
-    deleted: string|null;
-    flag: string;
-    flags: CaseStatusFlags;
-    followup: CaseStatusFollowUp;
-    icon: string;
-    iconcolor: string;
-    id: number;
-    modified: string;
-    name: string;
+  created: string;
+  deleted: string | null;
+  flag: string;
+  flags: CaseStatusFlags;
+  followup: CaseStatusFollowUp;
+  icon: string;
+  iconcolor: string;
+  id: number;
+  modified: string;
+  name: string;
 }
 
 export interface CaseStatusFlags {
-    active: boolean;
-    cancelled: boolean;
-    created: boolean;
-    deleted: boolean;
-    deletion: boolean;
-    expired: boolean;
-    hidden: boolean;
+  active: boolean;
+  cancelled: boolean;
+  created: boolean;
+  deleted: boolean;
+  deletion: boolean;
+  expired: boolean;
+  hidden: boolean;
 }
 
 export interface CaseStatusFollowUp {
-    status: number|null;
-    autoswitch: boolean;
-    period: Duration|null;
+  status: number | null;
+  autoswitch: boolean;
+  period: Duration | null;
 }
 
 export interface CaseType {
-    created: string;
-    deleted: string|null;
-    icon: string;
-    id: number;
-    modified: string;
-    name: string;
+  created: string;
+  deleted: string | null;
+  icon: string;
+  id: number;
+  modified: string;
+  name: string;
 }
 
 export interface Class {
@@ -162,7 +161,7 @@ export interface Class {
 export interface ContactType {
   id: number;
   created: string;
-  deleted: string|null;
+  deleted: string | null;
   i18nname: string;
   icon: string;
   modified: string;
@@ -171,8 +170,8 @@ export interface ContactType {
 
 export interface Country {
   id: number;
-  currency: Currency|null;
-  currencyid: number|null;
+  currency: Currency | null;
+  currencyid: number | null;
   i18nname: string;
   name: string;
   key2: string;
@@ -182,77 +181,92 @@ export interface Country {
 }
 
 export interface Currency {
-    id: number;
-    isdefault: boolean;
-    name: string;
-    shortname: string;
-    sign: string;
+  id: number;
+  isdefault: boolean;
+  name: string;
+  shortname: string;
+  sign: string;
 }
 
 export interface Directory {
-    id: number;
-    parent: Directory|null;
-    parentid: number|null;
-    name: string;
-    relpath: string;
-    isroot: boolean;
-    islink: boolean;
-    mtime: string;
-    deldate: string|null;
+  id: number;
+  parent: Directory | null;
+  parentid: number | null;
+  name: string;
+  relpath: string;
+  isroot: boolean;
+  islink: boolean;
+  mtime: string;
+  deldate: string | null;
 }
 
 export interface Extension {
-    id: number;
-    displayable: boolean;
-    downloadable: boolean;
-    ext: string;
-    indexable: boolean;
-    mimetype: string;
+  id: number;
+  displayable: boolean;
+  downloadable: boolean;
+  ext: string;
+  indexable: boolean;
+  mimetype: string;
 }
 
 export interface File {
-    id: number;
-    directory: Directory|null;
-    directoryid: number|null;
-    class: Class|null;
-    classid: number|null;
-    classifyDisabled: boolean;
-    case: Case|null;
-    caseid: number|null;
-    case_filetype: CaseFiletype|null;
-    case_filetypeid: number|null;
-    client: Party|null;
-    clientid: number|null;
-    fileexists: boolean;
-    partyaddress: Address|null;
-    partyaddressid: number|null;
-    contact: PartyContact|null;
-    contactid: number|null;
-    name: string;
-    date: string;
-    islink: boolean;
-    mtime: string;
-    size: number;
-    hash: string;
-    deldate: string|null;
-    case_filename: string|null;
-    case_filedescription: string|null;
-    case_filestatus: string|null;
-    case_pintop: boolean;
-    fileclass_meta: any;
-    relpath: string;
-    attributes: any;
-    istaxreceipt: boolean|null;
-    taxyear: number|null;
-    versions: { [key: number]: Version };
+  id: number;
+  directory: Directory | null;
+  directoryid: number | null;
+  class: Class | null;
+  classid: number | null;
+  classifyDisabled: boolean;
+  case: Case | null;
+  caseid: number | null;
+  case_filetype: CaseFiletype | null;
+  case_filetypeid: number | null;
+  client: Party | null;
+  clientid: number | null;
+  fileexists: boolean;
+  partyaddress: Address | null;
+  partyaddressid: number | null;
+  contact: PartyContact | null;
+  contactid: number | null;
+  name: string;
+  date: string;
+  islink: boolean;
+  mtime: string;
+  size: number;
+  hash: string;
+  deldate: string | null;
+  case_filename: string | null;
+  case_filedescription: string | null;
+  case_filestatus: string | null;
+  case_pintop: boolean;
+  fileclass_meta: any;
+  relpath: string;
+  attributes: any;
+  istaxreceipt: boolean | null;
+  taxyear: number | null;
+  versions: { [key: number]: Version };
 }
 
-export interface Page {
-    id: number;
-    versionid: number;
-    pageno: number;
-    pagetype: number;
-    pagedata: string;
+export interface Meter {
+  id: number;
+  caseid: number | null;
+  notify: boolean;
+  name: string;
+  number: string;
+  decimals: number;
+  uom: string;
+  expectedinterval: Duration;
+  created: string;
+  deleted: string | null;
+  lastread: string | null;
+  updated: string;
+  readings: MeterReading[];
+}
+
+export interface MeterReading {
+  id: number;
+  meterid: number;
+  value: number;
+  date: string;
 }
 
 export interface Note {
@@ -261,15 +275,23 @@ export interface Note {
   content: string;
   variant: string;
   updated: string;
-  deldate: string|null;
+  deldate: string | null;
   show: boolean;
+}
+
+export interface Page {
+  id: number;
+  versionid: number;
+  pageno: number;
+  pagetype: number;
+  pagedata: string;
 }
 
 export interface Party {
   id: number;
   city: string;
   created: string;
-  deleted: string|null;
+  deleted: string | null;
   department: string;
   iban: string;
   isbank: boolean;
@@ -289,7 +311,7 @@ export interface Party {
 export interface PartyContact {
   id: number;
   created: string;
-  deleted: string|null;
+  deleted: string | null;
   modified: string;
   partyid: number;
   typeid: number;
@@ -299,7 +321,7 @@ export interface PartyContact {
 export interface PartyRole {
   id: number;
   created: string;
-  deleted: string|null;
+  deleted: string | null;
   modified: string;
   name: string;
   i18nname: string;
@@ -312,69 +334,69 @@ export interface PhpDateTime {
 }
 
 export interface Receipt {
-    id: number;
-    currency: Currency
-    currencyid: number;
-    client: Party|null;
-    clientid: number|null;
-    party: Party|null;
-    partyid: number|null;
-    date: string;
-    net: number;
-    tax1: number;
-    tax2: number;
-    tax3: number;
-    tax1_net: number;
-    tax2_net: number;
-    tax3_net: number;
-    tax1_amount: number;
-    tax2_amount: number;
-    tax3_amount: number;
-    gross1: number;
-    gross2: number;
-    gross3: number;
-    gross_total: number;
-    items: ReceiptItem[];
+  id: number;
+  currency: Currency
+  currencyid: number;
+  client: Party | null;
+  clientid: number | null;
+  party: Party | null;
+  partyid: number | null;
+  date: string;
+  net: number;
+  tax1: number;
+  tax2: number;
+  tax3: number;
+  tax1_net: number;
+  tax2_net: number;
+  tax3_net: number;
+  tax1_amount: number;
+  tax2_amount: number;
+  tax3_amount: number;
+  gross1: number;
+  gross2: number;
+  gross3: number;
+  gross_total: number;
+  items: ReceiptItem[];
 }
 
 export interface ReceiptArticle {
-    id: number;
-    category: ReceiptArticleCategory;
-    categoryid: number;
-    taxrateid: number|null;
-    name: string;
-    search: string;
-    ean: string;
-    organic: boolean;
-    sort: string;
-    icon: string|null;
+  id: number;
+  category: ReceiptArticleCategory;
+  categoryid: number;
+  taxrateid: number | null;
+  name: string;
+  search: string;
+  ean: string;
+  organic: boolean;
+  sort: string;
+  icon: string | null;
 }
 
 export interface ReceiptArticleCategory {
-    id: number;
-    parent: ReceiptArticleCategory|null;
-    parentid: number|null;
-    name: string;
-    sort: string;
-    icon: string|null;
+  id: number;
+  parent: ReceiptArticleCategory | null;
+  parentid: number | null;
+  name: string;
+  sort: string;
+  icon: string | null;
 }
 
 export interface ReceiptItem {
-    id: number;
-    receiptid: number;
-    articleid: number|null;
-    singleprice: number;
-    quantity: number;
-    discount: number;
-    deposit: number;
-    totalnet: number;
+  id: number;
+  receiptid: number;
+  articleid: number | null;
+  singleprice: number;
+  quantity: number;
+  discount: number;
+  deposit: number;
+  totalnet: number;
 }
 
 export interface RecentBooking {
   count: number;
   customerid: number;
   description: string;
-  projectid: number|null;
+  projectid: number | null;
   projectstage: string;
   timecategoryid: number;
 }
@@ -385,14 +407,14 @@ export interface Session {
 }
 
 export interface StandingOrder {
-    
+
 }
 
 export interface TaxRate {
-    id: number;
-    rate: number;
-    validfrom: string|null;
-    validuntil: string|null;
+  id: number;
+  rate: number;
+  validfrom: string | null;
+  validuntil: string | null;
 }
 
 export interface User {
@@ -445,7 +467,7 @@ export interface UserWorkTimeSettings {
 export interface UserLiveTrackingSettings {
   enabled: boolean;
   rounding: number;
-  roundmode: any|null;
+  roundmode: any | null;
 }
 
 export interface UserTrackingSettings {
@@ -456,22 +478,22 @@ export interface UserTrackingSettings {
 }
 
 export interface Version {
-    id: number;
-    fileid: number;
-    num: number;
-    created: string;
-    indexed: string|null;
-    hasocr: boolean;
-    ext: Extension|null;
-    extid: number|null;
-    pages: {[key: number]: Page}|null;
-    words: {[key: string]: number}|null;
-    stats: VersionStats|null;
+  id: number;
+  fileid: number;
+  num: number;
+  created: string;
+  indexed: string | null;
+  hasocr: boolean;
+  ext: Extension | null;
+  extid: number | null;
+  pages: { [key: number]: Page } | null;
+  words: { [key: string]: number } | null;
+  stats: VersionStats | null;
 }
 
 export interface VersionStats {
-    wordcount: number;
-    votedWordcount: number;
+  wordcount: number;
+  votedWordcount: number;
 }
 
 export interface WorkCalendarColor {
@@ -481,40 +503,40 @@ export interface WorkCalendarColor {
 
 export interface WorkCustomer {
   created: string;
-  deleted: string|null;
+  deleted: string | null;
   disabled: boolean;
   id: number;
-  lastusage: string|null;
+  lastusage: string | null;
   modified: string;
   name: string;
   userid: number;
 }
 
 export interface WorkDay {
-  bookings: {[key: number]: WorkDayBooking};
+  bookings: { [key: number]: WorkDayBooking };
   date: string;
   day: number;
-  holiday: WorkHoliday|null;
-  holidayid: number|null;
+  holiday: WorkHoliday | null;
+  holidayid: number | null;
   id: number;
   month: WorkMonth;
   monthid: number;
   note: string;
-  offcategory: WorkOffCategory|null;
-  offcategoryid: number|null;
-  stats: WorkDayStats|null;
+  offcategory: WorkOffCategory | null;
+  offcategoryid: number | null;
+  stats: WorkDayStats | null;
 }
 
 export interface WorkDayBooking {
   break: number;
-  customer: WorkCustomer|null;
-  customerid: number|null;
+  customer: WorkCustomer | null;
+  customerid: number | null;
   dayid: number;
   description: string;
   duration: number;
   id: number;
-  project: WorkProject|null;
-  projectid: number|null;
+  project: WorkProject | null;
+  projectid: number | null;
   projectstage: string;
   timecategory: WorkTimeCategory;
   timecategoryid: number;
@@ -539,9 +561,9 @@ export interface WorkDayStats {
 }
 
 export interface WorkHoliday {
-  daysAfterEaster: number|null;
-  fixdate: string|null;
-  fixmd: string|null;
+  daysAfterEaster: number | null;
+  fixdate: string | null;
+  fixmd: string | null;
   id: number;
   name: string;
   userid: number;
@@ -550,18 +572,18 @@ export interface WorkHoliday {
 export interface WorkLead {
   id: number;
   completed: boolean;
-  date_accepted: null|string;
-  date_completed: null|string;
+  date_accepted: null | string;
+  date_completed: null | string;
   date_reported: string;
   cpo: WorkLeadCpo;
-  customer: null|WorkCustomer;
-  customerid: null|number;
+  customer: null | WorkCustomer;
+  customerid: null | number;
   customer_name: string;
   incentive: WorkLeadIncentive;
   lead: WorkLeadLead;
   paid: boolean;
-  party: null|Party;
-  partyid: null|number;
+  party: null | Party;
+  partyid: null | number;
   products: string;
   project_name: string;
   project_description: string;
@@ -579,7 +601,7 @@ export interface WorkLeadIncentive {
   incentive_completed: boolean;
   incentive_gross_value: number;
   incentive_net_value: number;
-  incentive_paid: null|string;
+  incentive_paid: null | string;
   incentive_splitfactor: number;
   incentive_value: number;
 }
@@ -593,7 +615,7 @@ export interface WorkLeadLead {
   contract_value: number;
   lead_gross_value: number;
   lead_net_value: number;
-  lead_paid: null|string;
+  lead_paid: null | string;
   lead_completed: boolean;
 }
 
@@ -630,7 +652,7 @@ export interface WorkProject {
   customerid: number;
   disabled: boolean;
   id: number;
-  lastusage: string|null;
+  lastusage: string | null;
   name: string;
   userid: number;
 }

@@ -69,6 +69,7 @@ import { WorkDayComponent } from './work/work-day/work-day.component';
 import { WorkMonthComponent } from './work/work-month/work-month.component';
 import { WorkYearComponent } from './work/work-year/work-year.component';
 import { WorkComponent } from './work/work.component';
+import { ReadingsComponent } from './meters/readings/readings.component';
 
 registerLocaleData(localeDe);
 
@@ -127,6 +128,7 @@ registerLocaleData(localeDe);
     PeriodDropdownMenuComponent,
     StocksComponent,
     AccountsComponent,
+    ReadingsComponent,
   ],
   imports: [
     AppRoutingModule,
