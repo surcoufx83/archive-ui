@@ -6,7 +6,8 @@
     "start": "ng serve --ssl",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
+    "test": "ng test --browsers=Chrome",
+    "test-github": "ng test --no-watch --no-progress --code-coverage --browsers=ChromeHeadlessCI",
     "make-bom": "cyclonedx-node --include-dev --include-license-text --type application --output bom.json"
   },
   "private": true,
