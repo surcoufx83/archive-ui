@@ -1,145 +1,157 @@
-<ui-centered-busy-indicator *ngIf="usersettingsObj == undefined"></ui-centered-busy-indicator>
+<div class="container pt-4 pt-md-2 mb-2">
+  <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between align-items-center">
+    <h2 class="text-nowrap text-truncate">{{ i18n('home.title') }}</h2>
+  </div>
 
-<ng-container *ngIf="usersettingsObj != undefined">
-  <div class="container pt-4 pt-md-2 mb-2">
-    <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between align-items-center">
-      <h2 class="text-nowrap text-truncate">{{ i18n('home.title') }}</h2>
-    </div>
-    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-top pt-4 pt-md-2 mb-2">
+  <div class="d-flex flex-column flex-lg-row justify-content-between align-items-top pt-4 pt-md-2 mb-2">
+    <div class="flex-grow-1">
 
-      <div class="flex-grow-1">
+      <div class="card mb-3" *ngIf="newfiles.length > 0">
+        <div class="card-header">
+          <h5 class="mb-0">
+            <i [class]="config.icons['star']"></i>
+            {{ i18n('home.inbox.title') }}
+          </h5>
+        </div>
+        <div class="card-body">
+          <ul class="list-group flush hover rounded" *ngIf="newfiles.length > 0">
+            <file-list-item *ngFor="let file of newfiles;" [file]="file" [showButtons]="false"
+              (clicked)="router.navigate(['/file', file.id])"></file-list-item>
+          </ul>
+        </div>
+      </div>
 
-        <div class="card mb-3">
-          <div class="card-header">
-            <h5 class="mb-0">
-              <i [class]="config.icons['star']"></i>
-              {{ i18n('home.inbox.title') }}
-            </h5>
-          </div>
-          <div class="card-body">
-            <ul class="list-group flush hover rounded" *ngIf="newfiles.length > 0">
-              <file-list-item *ngFor="let file of newfiles;" [file]="file" [showButtons]="false"
-                (clicked)="router.navigate(['/file', file.id])"></file-list-item>
-            </ul>
-            <ui-busy-indicator *ngIf="newfiles.length == 0"></ui-busy-indicator>
-          </div>
+      <div class="card mb-3" *ngIf="inactivecases.length > 0">
+        <div class="card-header">
+          <h5 class="mb-0">
+            <i [class]="config.icons['cases']"></i>
+            {{ i18n('home.cases.title') }}
+          </h5>
+        </div>
+        <div class="card-body">
+          <ul class="list-group flush hover rounded" *ngIf="inactivecases.length > 0">
+            <a class="list-group-item" *ngFor="let case of inactivecases;" [routerLink]="['/case', case.id ]">
+              <case-list-item [case]="case"></case-list-item>
+            </a>
+          </ul>
         </div>
 
-        <div class="card mb-3">
+      </div>
+    </div>
+
+    <div class="ms-lg-3 stats-box">
+
+      <div class="mb-3">
+        <div class="card">
           <div class="card-header">
             <h5 class="mb-0">
-              <i [class]="config.icons['cases']"></i>
-              {{ i18n('home.cases.title') }}
+              {{ i18n('home.supermarket.title') }}
             </h5>
           </div>
-          <div class="card-body">
-            <ul class="list-group flush hover rounded" *ngIf="inactivecases.length > 0">
-              <a class="list-group-item" *ngFor="let case of inactivecases;" [routerLink]="['/case', case.id ]">
-                <case-list-item [case]="case"></case-list-item>
+          <div class="card-body p-0">
+            <ul class="list-group list-group-flush rounded">
+              <a class="list-group-item" routerLink="/shopping">
+                <i [ngClass]="[config.icons['shopping'], 'me-1']"></i>
+                {{ i18n('home.supermarket.shoppingLink') }}
+              </a>
+              <a class="list-group-item" routerLink="/price-comparison">
+                <i [ngClass]="[config.icons['filter-price'], 'me-1']"></i>
+                {{ i18n('home.supermarket.priceComparison') }}
+              </a>
+              <a class="list-group-item" [routerLink]="'/receipts'">
+                <i [class]="config.icons['receipt'] + ' me-1'"></i>
+                {{ i18n('home.supermarket.receiptsLink') }}
               </a>
             </ul>
-            <ui-busy-indicator *ngIf="inactivecases.length == 0"></ui-busy-indicator>
           </div>
         </div>
-
       </div>
 
-      <div class="ms-lg-3 stats-box">
-
-        <div class="mb-3">
-          <div class="card">
-            <div class="card-header">
-              <h5 class="mb-0">
-                {{ i18n('home.supermarket.title') }}
-              </h5>
-            </div>
-            <div class="card-body p-0">
-              <ul class="list-group list-group-flush rounded">
-                <a class="list-group-item" routerLink="/shopping">
-                  <i [ngClass]="[config.icons['shopping'], 'me-1']"></i>
-                  {{ i18n('home.supermarket.shoppingLink') }}
-                </a>
-                <a class="list-group-item" routerLink="/price-comparison">
-                  <i [ngClass]="[config.icons['filter-price'], 'me-1']"></i>
-                  {{ i18n('home.supermarket.priceComparison') }}
-                </a>
-                <a class="list-group-item" [routerLink]="'/receipts'">
-                  <i [class]="config.icons['receipt'] + ' me-1'"></i>
-                  {{ i18n('home.supermarket.receiptsLink') }}
-                </a>
-              </ul>
-            </div>
+      <div class="mb-3">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">
+              {{ i18n('home.readings.title') }}
+            </h5>
+          </div>
+          <div class="card-body p-0">
+            <ul class="list-group list-group-flush rounded">
+              <a class="list-group-item" [routerLink]="'/readings'">
+                <i [class]="config.icons['meter-reading'] + ' me-1'"></i>
+                {{ i18n('home.readings.readingsLink') }}
+              </a>
+            </ul>
           </div>
         </div>
-
-        <div class="mb-3">
-          <div class="card">
-            <div class="card-header">
-              <h5 class="mb-0">
-                {{ i18n('home.database.title') }}
-              </h5>
-            </div>
-            <div class="card-body p-0">
-              <ul class="list-group list-group-flush rounded">
-                <a class="list-group-item" [routerLink]="'/db'">
-                  <i [class]="config.icons['database'] + ' me-1'"></i>
-                  {{ i18n('home.database.dbmanager') }}
-                </a>
-              </ul>
-            </div>
-          </div>
-        </div>
-  
-        <div class="mb-3" *ngIf="stats">
-          <div class="card">
-            <div class="card-header">
-              <h5 class="mb-0">
-                {{ i18n('home.stats.title') }}
-              </h5>
-            </div>
-            <div class="card-body p-0">
-              <ul class="list-group list-group-flush sm rounded">
-                <li class="list-group-item px-0 pb-0">
-                  <div class="px-2">
-                    {{ i18n('home.stats.files1', [ formatService.fnumber(stats.general.file_count),
-                    formatService.fnumber(stats.general.dir_count),
-                    formatService.filesize(stats.general.file_size_total) ]) }}
-                    {{ i18n('home.stats.files3', [ formatService.fnumber(stats.newfiles.count) ]) }}
-                  </div>
-                  <div class="card-footer px-2 py-1 fs-7">
-                    <a [routerLink]="['/files']">
-                      <i [class]="config.icons['go-right']"></i>
-                      {{ i18n('home.stats.filesLink') }}</a>
-                    <a [routerLink]="['/dashboard']" class="ms-2">
-                      <i [class]="config.icons['go-right']"></i>
-                      {{ i18n('home.stats.storageLink') }}</a>
-                  </div>
-                </li>
-                <li class="list-group-item px-0 pb-0">
-                  <div class="px-2">
-                    {{ i18n('home.stats.files2', [ formatService.fnumber(stats.general.file_with_classid),
-                    formatService.fnumber(stats.general.file_with_caseid), formatService.fnumber(stats.general.file_count
-                    - stats.general.file_withocr_count) ])
-                    }}
-                  </div>
-                  <div class="card-footer px-2 py-1 fs-7">
-                    <a [routerLink]="['/files/noclass']">
-                      <i [class]="config.icons['go-right']"></i>
-                      {{ i18n('home.stats.noclassFilesLink') }}</a>
-                    <a [routerLink]="['/cases']" class="ms-2">
-                      <i [class]="config.icons['go-right']"></i>
-                      {{ i18n('home.stats.casesLink') }}</a>
-                    <a [routerLink]="['/files/noocr']" class="ms-2">
-                      <i [class]="config.icons['go-right']"></i>
-                      {{ i18n('home.stats.noocrFilesLink') }}</a>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
       </div>
+
+      <div class="mb-3">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">
+              {{ i18n('home.database.title') }}
+            </h5>
+          </div>
+          <div class="card-body p-0">
+            <ul class="list-group list-group-flush rounded">
+              <a class="list-group-item" [routerLink]="'/db'">
+                <i [class]="config.icons['database'] + ' me-1'"></i>
+                {{ i18n('home.database.dbmanager') }}
+              </a>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-3" *ngIf="stats">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">
+              {{ i18n('home.stats.title') }}
+            </h5>
+          </div>
+          <div class="card-body p-0">
+            <ul class="list-group list-group-flush sm rounded">
+              <li class="list-group-item px-0 pb-0">
+                <div class="px-2">
+                  {{ i18n('home.stats.files1', [ formatService.fnumber(stats.general.file_count),
+                  formatService.fnumber(stats.general.dir_count),
+                  formatService.filesize(stats.general.file_size_total, 0, 2) ]) }}
+                  {{ i18n('home.stats.files3', [ formatService.fnumber(stats.newfiles.count) ]) }}
+                </div>
+                <div class="card-footer px-2 py-1 fs-7">
+                  <a [routerLink]="['/files']">
+                    <i [class]="config.icons['go-right']"></i>
+                    {{ i18n('home.stats.filesLink') }}</a>
+                  <a [routerLink]="['/dashboard']" class="ms-2">
+                    <i [class]="config.icons['go-right']"></i>
+                    {{ i18n('home.stats.storageLink') }}</a>
+                </div>
+              </li>
+              <li class="list-group-item px-0 pb-0">
+                <div class="px-2">
+                  {{ i18n('home.stats.files2', [ formatService.fnumber(stats.general.file_with_classid),
+                  formatService.fnumber(stats.general.file_with_caseid), formatService.fnumber(stats.general.file_count
+                  - stats.general.file_withocr_count) ])
+                  }}
+                </div>
+                <div class="card-footer px-2 py-1 fs-7">
+                  <a [routerLink]="['/files/noclass']">
+                    <i [class]="config.icons['go-right']"></i>
+                    {{ i18n('home.stats.noclassFilesLink') }}</a>
+                  <a [routerLink]="['/cases']" class="ms-2">
+                    <i [class]="config.icons['go-right']"></i>
+                    {{ i18n('home.stats.casesLink') }}</a>
+                  <a [routerLink]="['/files/noocr']" class="ms-2">
+                    <i [class]="config.icons['go-right']"></i>
+                    {{ i18n('home.stats.noocrFilesLink') }}</a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
-</ng-container>
+</div>

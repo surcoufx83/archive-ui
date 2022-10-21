@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-
-import { ApiReply } from '../../api-reply';
 import { AuthService } from '../../auth.service';
-import { ConfigService, AppConfig } from '../../config.service';
+import { AppConfig, ConfigService } from '../../config.service';
 
 @Component({
   selector: 'app-oauth2-callback',
@@ -23,13 +21,14 @@ export class Oauth2CallbackComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('Oauth2CallbackComponent', this.route.queryParamMap);
     this.route.queryParamMap.subscribe((parms: ParamMap) => {
-      console.log(parms);
-      if (parms.has('state') && parms.has('code') && <string>parms.get('state') === this.config.auth.oauth2.state) {
-        this.authService.processOauth2Redirect(<string>parms.get('state'), <string>parms.get('code')).subscribe((reply: ApiReply) => {
-          console.log(reply);
-        });
+      let hostconfig = this.config.auth.oauth2.items[window.location.host];
+      if (!hostconfig) {
+        this.router.navigate(['login']);
+        return;
+      }
+      if (parms.has('state') && parms.has('code') && <string>parms.get('state') === hostconfig.state) {
+        this.authService.processOauth2Redirect(<string>parms.get('state'), <string>parms.get('code'));
       } else {
         this.router.navigate(['login']);
       }

@@ -1,4 +1,4 @@
-<div [ngClass]="['toast', show ? 'show' : 'hide', 'toast-'+toast.type ]" role="alert" aria-live="assertive" aria-atomic="true">
+<div [ngClass]="['toast mb-2', show ? 'show' : 'hide', 'toast-'+toast.type ]" role="alert" aria-live="assertive" aria-atomic="true">
     <div class="toast-header">
         <i [ngClass]="['me-2', 'toast-icon', toast.icon]" *ngIf="toast.icon"></i>
         <strong class="me-auto toast-title">{{ toast.title }}</strong>

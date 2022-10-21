@@ -24,7 +24,7 @@
         <span class="text-primary" *ngIf="file.class">
             {{ i18n('classify.classes.' + file.class.techname) }} •
         </span>
-        {{ formatService.filesize(file.size) }} •
+        {{ formatService.filesize(file.size, 0, 2) }} •
         {{ file.relpath }}
     </div>
 </li>

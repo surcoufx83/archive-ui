@@ -4,31 +4,38 @@ import { RouterModule, Routes } from '@angular/router';
 import { SessionGuard } from './session-guard.guard';
 
 import { AccountComponent } from './account/account.component';
+import { CaseComponent } from './cases/case/case.component';
 import { CasesComponent } from './cases/cases.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { FinanceComponent } from './finance/finance.component';
-import { HomeComponent } from './home/home.component';
-import { LoginComponent } from './login/login.component';
-import { LogoutComponent } from './logout/logout.component';
-import { NotepadComponent } from './notepad/notepad.component';
-import { Oauth2CallbackComponent } from './login/oauth2-callback/oauth2-callback.component';
-import { WorkCustomerComponent } from './work/settings/customers/customer/customer.component';
-import { WorkCustomersComponent } from './work/settings/customers/customers.component';
-import { WorkComponent } from './work/work.component';
-import { WorkDayComponent } from './work/work-day/work-day.component';
-import { WorkLeadComponent } from './work/leads/lead/lead.component';
-import { WorkLeadsComponent } from './work/leads/leads.component';
-import { WorkMonthComponent } from './work/work-month/work-month.component';
-import { SearchComponent } from './search/search.component';
+import { DbClassesComponent } from './db/classes/classes.component';
+import { DbCountriesComponent } from './db/countries/countries.component';
+import { DbCurrenciesComponent } from './db/countries/currencies/currencies.component';
+import { DbManagerComponent } from './db/manager/manager.component';
+import { DbContactTypeComponent } from './db/parties/contacts/type/type.component';
+import { DbPartyComponent } from './db/parties/party/party.component';
+import { DbRoleComponent } from './db/parties/role/role.component';
 import { FileComponent } from './files/file/file.component';
 import { FilesComponent } from './files/files/files.component';
-import { CaseComponent } from './cases/case/case.component';
-import { ReceiptsComponent } from './finance/receipts/receipts.component';
-import { DbClassesComponent } from './db/classes/classes.component';
-import { DbManagerComponent } from './db/manager/manager.component';
-import { DbCountriesComponent } from './db/countries/countries.component';
-import { ShoppingComponent } from './finance/shopping/shopping.component';
+import { AccountsComponent } from './finance/accounts/accounts.component';
+import { FinanceComponent } from './finance/finance.component';
 import { PriceComparisonComponent } from './finance/price-comparison/price-comparison.component';
+import { ReceiptsComponent } from './finance/receipts/receipts.component';
+import { ShoppingComponent } from './finance/shopping/shopping.component';
+import { StocksComponent } from './finance/stocks/stocks.component';
+import { HomeComponent } from './home/home.component';
+import { LoginComponent } from './login/login.component';
+import { Oauth2CallbackComponent } from './login/oauth2-callback/oauth2-callback.component';
+import { LogoutComponent } from './logout/logout.component';
+import { NotepadComponent } from './notepad/notepad.component';
+import { SearchComponent } from './search/search.component';
+import { WorkLeadComponent } from './work/leads/lead/lead.component';
+import { WorkLeadsComponent } from './work/leads/leads.component';
+import { WorkCustomerComponent } from './work/settings/customers/customer/customer.component';
+import { WorkCustomersComponent } from './work/settings/customers/customers.component';
+import { WorkDayComponent } from './work/work-day/work-day.component';
+import { WorkMonthComponent } from './work/work-month/work-month.component';
+import { WorkComponent } from './work/work.component';
+import { ReadingsComponent } from './meters/readings/readings.component';
 
 const routes: Routes = [
   { path: 'account', component: AccountComponent, canActivate: [SessionGuard] },
@@ -38,10 +45,19 @@ const routes: Routes = [
   {
     path: 'db', children: [
       { path: 'classes', component: DbClassesComponent, canActivate: [SessionGuard] },
+      { path: 'countries', component: DbCountriesComponent, canActivate: [SessionGuard] },
+      { path: 'currencies', component: DbCurrenciesComponent, canActivate: [SessionGuard] },
       {
-        path: 'countries', canActivate: [SessionGuard], children:
+        path: 'parties', canActivate: [SessionGuard], children:
           [
-            { path: '', component: DbCountriesComponent, canActivate: [SessionGuard], pathMatch: 'full' },
+            { path: '', component: DbPartyComponent, canActivate: [SessionGuard], pathMatch: 'full' },
+            {
+              path: 'contacts', canActivate: [SessionGuard], children:
+                [
+                  { path: 'types', component: DbContactTypeComponent, canActivate: [SessionGuard] },
+                ]
+            },
+            { path: 'roles', component: DbRoleComponent, canActivate: [SessionGuard] },
           ]
       },
       { path: '', component: DbManagerComponent, canActivate: [SessionGuard], pathMatch: 'full' },
@@ -52,16 +68,16 @@ const routes: Routes = [
   { path: 'file/:id', component: FileComponent, canActivate: [SessionGuard] },
   { path: 'files/:id', component: FilesComponent, canActivate: [SessionGuard] },
   { path: 'files', component: FilesComponent, canActivate: [SessionGuard], pathMatch: 'full' },
-  { path: 'finance', component: FinanceComponent, canActivate: [SessionGuard] },
-  {
-    path: 'login', children: [
-      { path: 'oauth2', component: Oauth2CallbackComponent, canActivate: [SessionGuard] },
-      { path: '', component: LoginComponent, canActivate: [SessionGuard], pathMatch: 'full' },
-    ]
-  },
+  { path: 'finance', component: FinanceComponent, canActivate: [SessionGuard], children: [
+    { path: 'accounts', component: AccountsComponent, canActivate: [SessionGuard] },
+    { path: 'stocks', component: StocksComponent, canActivate: [SessionGuard] },
+  ] },
+  { path: 'login', component: LoginComponent, canActivate: [SessionGuard], pathMatch: 'full' },
+  { path: 'login/oauth2', component: Oauth2CallbackComponent, canActivate: [SessionGuard] },
   { path: 'logout', component: LogoutComponent, canActivate: [SessionGuard] },
   { path: 'notepad', component: NotepadComponent, canActivate: [SessionGuard] },
   { path: 'price-comparison', component: PriceComparisonComponent, canActivate: [SessionGuard] },
+  { path: 'readings', component: ReadingsComponent, canActivate: [SessionGuard], pathMatch: 'full' },
   { path: 'receipts', component: ReceiptsComponent, canActivate: [SessionGuard] },
   { path: 'shopping', component: ShoppingComponent, canActivate: [SessionGuard] },
   { path: 'search/:phrase/:token/:tab', component: SearchComponent, canActivate: [SessionGuard] },

@@ -1,5 +1,5 @@
-<div class="toast-body position-absolute top-0 end-0">
-    <div class="toast-container p-3" aria-live="polite" aria-atomic="true">
+<div class="toast-body position-relative" aria-live="polite" aria-atomic="true">
+    <div class="toast-container position-absolute end-0 p-3">
         <toast *ngFor="let toast of toasts" [toast]="toast"></toast>
     </div>
 </div>

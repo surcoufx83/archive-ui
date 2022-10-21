@@ -1,20 +1,15 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { format } from 'date-fns';
 import * as saveAs from 'file-saver';
 import { PdfJsViewerComponent } from 'ng2-pdfjs-viewer';
+import { Address, ButtonType, Case, CaseFiletype, Class, ContactType, File, Page, Party, PartyContact, UserSettings, Version } from 'src/app/if';
+import { FileService } from 'src/app/utils/file.service';
+import { FormatService } from 'src/app/utils/format.service';
+import { ToastsService } from 'src/app/utils/toasts.service';
 import { AuthService } from '../../auth.service';
 import { AppConfig, ConfigService } from '../../config.service';
 import { I18nService } from '../../i18n.service';
-import { Settings } from '../../user/settings/settings';
 import { SettingsService } from '../../user/settings/settings.service';
-import { File, Page, Version } from '../file';
-import { FormatService } from 'src/app/utils/format.service';
-import { FileService } from 'src/app/utils/file.service';
-import { Address, ButtonType, ContactType, Party, PartyContact } from 'src/app/common';
-import { ReplaySubject } from 'rxjs';
-import { Case, CaseFiletype } from 'src/app/cases/case';
-import { Class } from '../class';
 import { SelectedItem } from '../folder-browser-dialog/folder-browser-dialog.component';
 
 @Component({
@@ -39,7 +34,7 @@ export class FileComponent implements OnInit {
   recentVersion: Version | null | undefined;
   textcontent: string[] = [];
   updating: boolean = false;
-  usersettingsObj: Settings|null = null;
+  usersettingsObj: UserSettings | null = null;
   view: string = '';
 
   addresses: Address[] = [];
@@ -69,15 +64,16 @@ export class FileComponent implements OnInit {
     private router: Router,
     private userSettings: SettingsService,
     public formatService: FormatService,
-    private fileService: FileService) {
+    private fileService: FileService,
+    private toastService: ToastsService) {
     this.userSettings.loadArchiveSettings();
     this.userSettings.settings$.subscribe((settings) => { this.usersettingsObj = settings; });
     this.userSettings.addresses$.subscribe((addresses) => {
-      this.addresses = addresses;
+      this.addresses = Object.values(addresses);
       this.addresses.sort((a, b) => { return (a.name1 + a.street + a.zip + a.city).toLowerCase() > (b.name1 + b.street + b.zip + b.city).toLowerCase() ? 1 : (a.name1 + a.street + a.zip + a.city).toLowerCase() < (b.name1 + b.street + b.zip + b.city).toLowerCase() ? -1 : 0 });
     });
     this.userSettings.cases$.subscribe((cases) => {
-      this.cases = cases;
+      this.cases = Object.values(cases);
       this.cases.sort((a, b) => { return a.casepath > b.casepath ? 1 : a.casepath < b.casepath ? -1 : 0 });
     });
     this.userSettings.caseFileStatus$.subscribe((status) => { this.casefilestatus = status; });
@@ -87,18 +83,22 @@ export class FileComponent implements OnInit {
       this.classes.sort((a, b) => { return a.name > b.name ? 1 : a.name < b.name ? -1 : 0 });
     });
     this.userSettings.clients$.subscribe((clients) => {
-      this.clients = clients;
+      this.clients = Object.values(clients);
       this.clients.sort((a, b) => { return a.name1 > b.name1 ? 1 : a.name1 < b.name1 ? -1 : 0 });
     });
-    this.userSettings.contacts$.subscribe((contacts) => { this.contacts = contacts; });
-    this.userSettings.contacttypes$.subscribe((contacttypes) => { this.contacttypes = contacttypes; });
-    this.userSettings.filetypes$.subscribe((filetypes) => {
-      this.filetypes = filetypes;
-      this.filetypes.forEach((item) => { item.i18nname = this.i18n('casefiletypes.' + item.name) });
+    this.userSettings.contacts$.subscribe((contacts) => { this.contacts = Object.values(contacts); });
+    this.userSettings.contacttypes$.subscribe((contacttypes) => { this.contacttypes = Object.values(contacttypes); });
+    this.userSettings.casefiletypes$.subscribe((filetypes) => {
+      this.filetypes = [];
+      for (let key in filetypes) {
+        let item = filetypes[key];
+        item.i18nname = this.i18n('casefiletypes.' + item.name);
+        this.filetypes.push(item);
+      }
       this.filetypes.sort((a, b) => { return a.i18nname > b.i18nname ? 1 : a.i18nname < b.i18nname ? -1 : 0 });
     });
     this.userSettings.parties$.subscribe((parties) => {
-      this.parties = parties;
+      this.parties = Object.values(parties);
       this.parties.sort((a, b) => { return a.name1 > b.name1 ? 1 : a.name1 < b.name1 ? -1 : 0 });
     });
   }
@@ -141,7 +141,6 @@ export class FileComponent implements OnInit {
   private downloadFile(id: number): void {
     if (this.file == undefined)
       return;
-    this.guess();
     if (Object.keys(this.file.versions).length > 0) {
       this.recentVersion = this.version;
       if (this.recentVersion && !this.recentVersion.ext?.displayable) {
@@ -268,8 +267,6 @@ export class FileComponent implements OnInit {
         this.configService.setCacheItem(key, this.file);
         this.downloadFile(this.file.id);
       }
-      else
-        alert("Error calling API :(");
       this.busy = false;
     });
   }
@@ -292,8 +289,6 @@ export class FileComponent implements OnInit {
           this.configService.setCacheItem(key, this.file);
           this.downloadFile(this.file.id);
         }
-        else
-          alert("Error calling API :(");
       });
     }
   }
@@ -301,19 +296,22 @@ export class FileComponent implements OnInit {
   nextFile(): void {
     let url = this.config.api.baseUrl + '/file/next';
     this.authService.queryApi(url).subscribe((reply) => {
-      if (reply.success && reply.payload != undefined) {
-        let id = <number>reply.payload['file'];
-        if (id == this.file?.id)
-          return;
-        this.file = undefined;
-        this.recentVersion = undefined;
-        this.filecontent = undefined;
-        this.ai_classifiedAs = null;
-        this.ai_classifiedConfidence = 0.0;
-        this.router.navigate(['/file', id]);
+      if (reply.errno === 204) {
+        this.toastService.warn(this.i18nService.i18n('file.errors.noNextFile.title'),
+        this.i18nService.i18n('file.errors.noNextFile.message'));
+      } else {
+        if (reply.success && reply.payload != undefined) {
+          let id = <number>reply.payload['file'];
+          if (id == this.file?.id)
+            return;
+          this.file = undefined;
+          this.recentVersion = undefined;
+          this.filecontent = undefined;
+          this.ai_classifiedAs = null;
+          this.ai_classifiedConfidence = 0.0;
+          this.router.navigate(['/file', id]);
+        }
       }
-      else
-        alert("Error calling API :(");
     });
   }
 

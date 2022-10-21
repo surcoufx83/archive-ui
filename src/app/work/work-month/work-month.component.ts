@@ -1,17 +1,15 @@
 import { AfterViewInit, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { Subject } from 'rxjs';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarMonthViewDay } from 'angular-calendar';
 import { add, format, getDate, getMonth, getYear, isSameDay, isSameMonth, sub } from 'date-fns';
+import { Subject } from 'rxjs';
 
-import { AuthService } from '../../auth.service';
-import { ConfigService, AppConfig } from '../../config.service';
-import { I18nService } from '../../i18n.service';
-import { WorkMonth, WorkDay, WorkDayBooking, WorkOffCategory, WorkProperties } from '../work';
-import { SettingsService } from '../../user/settings/settings.service';
-import { Settings } from '../../user/settings/settings';
-import { ApiReply } from '../../api-reply';
+import { ApiReply, UserSettings, WorkDay, WorkDayBooking, WorkMonth, WorkOffCategory, WorkProperties } from 'src/app/if';
 import { EventColor } from '../../../../node_modules/calendar-utils/calendar-utils';
+import { AuthService } from '../../auth.service';
+import { AppConfig, ConfigService } from '../../config.service';
+import { I18nService } from '../../i18n.service';
+import { SettingsService } from '../../user/settings/settings.service';
 
 @Component({
   selector: 'app-work-month',
@@ -34,7 +32,7 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
   monthLoading: boolean = false;
   dayObjs: WorkDay[] = [];
   monthObj?: WorkMonth;
-  usersettingsObj: Settings|null = null;
+  usersettingsObj: UserSettings|null = null;
   workprops: WorkProperties|null = null;
 
   offdayDroppableEvents: CalendarEvent[] = [];
@@ -205,7 +203,7 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
   }
 
   pushUserSettings(): void {
-    this.userSettings.updateSettings(<Settings>this.usersettingsObj, true);
+    this.userSettings.updateSettings(<UserSettings>this.usersettingsObj, true);
   }
 
   addEvent(id: string, title: string, start: Date, end: Date | undefined, allDay: boolean,

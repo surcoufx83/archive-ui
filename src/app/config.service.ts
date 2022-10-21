@@ -1,9 +1,6 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
-import { Case } from './cases/case';
-import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -72,6 +69,7 @@ export interface BasicAuthConfig {
 
 export interface NavbarConfig {
   items: NavbarItem[];
+  financeitems: NavbarItem[];
   workitems: NavbarItem[];
 }
 
@@ -83,6 +81,10 @@ export interface NavbarItem {
 
 export interface OAuth2Config {
   enabled: boolean;
+  items: {[key: string]: OAuth2Item};
+}
+
+export interface OAuth2Item {
   endpoint: string;
   tokenEndpoint: string;
   clientId: string;

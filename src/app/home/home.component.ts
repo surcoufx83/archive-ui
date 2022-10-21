@@ -1,12 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as _filesize from 'filesize';
+import { Case, File, UserSettings } from 'src/app/if';
 import { AuthService } from '../auth.service';
-import { Case } from '../cases/case';
 import { AppConfig, ConfigService } from '../config.service';
-import { File } from '../files/file';
 import { I18nService } from '../i18n.service';
-import { Settings } from '../user/settings/settings';
 import { SettingsService } from '../user/settings/settings.service';
 import { FormatService } from '../utils/format.service';
 
@@ -15,13 +12,15 @@ import { FormatService } from '../utils/format.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
 
   busy: boolean = false;
   inactivecases: Case[] = [];
   newfiles: File[] = [];
-  usersettingsObj: Settings | null = null;
+  updatetimeout: any;
+  usersettingsObj: UserSettings | null = null;
   stats?: HomeStats;
+  storagename: string = this.config.storage.prefix + 'homeData';
   when: number = 0;
 
   constructor(private authService: AuthService,
@@ -34,6 +33,13 @@ export class HomeComponent implements OnInit {
     this.userSettings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
     });
+    let olddata: string|null|HomeStorage = localStorage.getItem(this.storagename);
+    if (olddata) {
+      olddata = <HomeStorage>JSON.parse(olddata);
+      this.inactivecases = olddata.inactivecases;
+      this.newfiles = olddata.inboxfiles;
+      this.stats = olddata.stats;
+    }
   }
 
   get config(): AppConfig {
@@ -42,6 +48,11 @@ export class HomeComponent implements OnInit {
 
   i18n(key: string, params: string[] = []): string {
     return this.i18nService.i18n(key, params);
+  }
+  
+  ngOnDestroy(): void {
+    if (this.updatetimeout)
+      clearTimeout(this.updatetimeout);
   }
 
   ngOnInit(): void {
@@ -68,9 +79,14 @@ export class HomeComponent implements OnInit {
 
         }
         this.stats = response.stats;
+        localStorage.setItem(this.storagename, JSON.stringify({
+          inactivecases: this.inactivecases,
+          inboxfiles: this.newfiles,
+          stats: this.stats
+        }));
       }
       this.busy = false;
-      this.userSettings.setTimeout(setTimeout(() => { this.update(); }, 10000));
+      this.updatetimeout = setTimeout(() => { this.update(); }, 60000);
     });
   }
 
@@ -149,4 +165,10 @@ export interface HomeNewFilesStats {
   newest: string;
   oldest: string;
   year: number;
+}
+
+export interface HomeStorage {
+  inactivecases: Case[];
+  inboxfiles: File[];
+  stats: HomeStats;
 }

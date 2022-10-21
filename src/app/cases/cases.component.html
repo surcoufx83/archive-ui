@@ -1,47 +1,32 @@
-<ui-centered-busy-indicator *ngIf="usersettingsObj == undefined"></ui-centered-busy-indicator>
+<div class="container pt-4 pt-md-2 mb-2">
+    <app-h2 [title]="i18n('cases.title')" [btn1]="i18n('cases.showDeleted')"
+        [btn1icon]="showDeleted ? 'fa-solid fa-toggle-on' : 'fa-solid fa-toggle-off'"
+        [btn1css]="'btn btn-sm btn-secondary'" (btn1Clicked)="changeShowDeleted(!showDeleted)"
+        [btn2]="i18n('cases.showInRetention')"
+        [btn2icon]="showInRetention ? 'fa-solid fa-toggle-on' : 'fa-solid fa-toggle-off'"
+        [btn2css]="'btn btn-sm btn-secondary'" (btn2Clicked)="changeShowRetention(!showInRetention)"></app-h2>
+</div>
 
 <div class="container pt-4 pt-md-2 mb-2">
-    <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between">
-        <h2>{{ i18n('cases.title') }}</h2>
-        <div>
-            <nav class="h-100" style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
-                <ol class="breadcrumb d-flex align-items-center h-100 mb-0">
-                    <li [ngClass]="{'breadcrumb-item fade': true, 'show': busy}">
-                        <ui-busy-indicator></ui-busy-indicator>
-                    </li>
-                </ol>
-            </nav>
-        </div>
-    </div>
+    <ul class="list-group">
+        <ng-container *ngFor="let id of rootcases">
+            <ng-container *ngTemplateOutlet="caseTemplate;context: { caseid: id, level: 0 }"></ng-container>
+        </ng-container>
+    </ul>
 </div>
 
-<div class="container">
-    <div class="card">
-        <div class="card-header">
-            <h5 class="mb-0">
-                <i [class]="config.icons['cases']"></i>
-                {{ i18n('cases.card.title') }}
-            </h5>
-        </div>
-        <div class="card-body">
-            <ul class="list-group list-group-flush">
-                <ng-container *ngFor="let id of rootcases">
-                    <ng-container *ngTemplateOutlet="caseTemplate;context: { caseid: id }"></ng-container>
-                </ng-container>
-            </ul>
-        </div>
-    </div>
-</div>
-
-<ng-template #caseTemplate let-caseid="caseid">
-    <a class="list-group-item" [routerLink]="['/case', case(caseid).id]">
-        <case-list-item [case]="case(caseid)"></case-list-item>
-    </a>
-    <li class="list-group-item py-0 pe-0" *ngIf="casechilds[caseid] != undefined">
-        <ul class="list-group list-group-flush">
+<ng-template #caseTemplate let-caseid="caseid" let-level="level">
+    <ng-container *ngIf="case(caseid) != null">
+        <ng-container *ngIf="showCase(case(caseid))">
+            <a [ngClass]="['list-group-item', 'py-2', 'pe-2', 'intend-level-' + level]"
+                [routerLink]="['/case', case(caseid).id]">
+                <case-list-item [case]="case(caseid)"></case-list-item>
+            </a>
+        </ng-container>
+        <ng-container *ngIf="haschilds(caseid)">
             <ng-container *ngFor="let id of childs(caseid)">
-                <ng-container *ngTemplateOutlet="caseTemplate;context: { caseid: id }"></ng-container>
+                <ng-container *ngTemplateOutlet="caseTemplate;context: { caseid: id, level: level + 1 }"></ng-container>
             </ng-container>
-        </ul>
-    </li>
+        </ng-container>
+    </ng-container>
 </ng-template>

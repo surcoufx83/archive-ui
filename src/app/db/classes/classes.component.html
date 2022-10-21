@@ -1,43 +1,20 @@
 <div class="container pt-4 pt-md-2 mb-2">
-    <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between">
-        <h2>{{ i18n('db.classes.title') }}</h2>
-        <div>
-            <nav class="h-100" style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
-                <ol class="breadcrumb d-flex align-items-center h-100 mb-0">
-                    <li class="breadcrumb-item" *ngIf="busy">
-                        <ui-busy-indicator></ui-busy-indicator>
-                    </li>
-                    <li class="breadcrumb-item">
-                        <a routerLink="/db">
-                            <button type="button" class="btn btn-sm btn-outline-primary">
-                                <i [class]="config.icons['go-left'] + ' me-1'"></i>
-                                {{ i18n('common.back') }}
-                            </button>
-                        </a>
-                    </li>
-                    <li class="breadcrumb-item">
-                        <button type="button" class="btn btn-sm btn-outline-primary" (click)="edit()">
-                            <i [class]="config.icons['add'] + ' me-1'"></i>
-                            {{ i18n('common.add') }}
-                        </button>
-                    </li>
-                </ol>
-            </nav>
-        </div>
-    </div>
+    <app-h2 [title]="i18n('db.classes.title')" [busy]="busy" [btn1]="i18n('common.back')"
+        [btn1css]="'btn btn-sm btn-outline-primary'" [btn1icon]="config.icons['go-left']" [btn1link]="'/db'"
+        [btn2]="i18n('common.add')" [btn2css]="'btn btn-sm btn-outline-primary'" [btn2icon]="config.icons['add']"
+        (btn2Clicked)="edit()">
+
+    </app-h2>
 </div>
 
 <div #editor>
     <div class="container pt-4 pt-md-2 mb-2" *ngIf="editclass">
         <div class="card">
-            <div class="card-header d-flex justify-content-between">
-                <h5>{{ i18n('db.classes.editor.title') }}</h5>
-                <button type="button" class="btn btn-sm btn-success" (click)="submit()">
-                    <i [class]="config.icons['save']" *ngIf="!saving"></i>
-                    <i [class]="config.icons['busy']" *ngIf="saving"></i>
-                    <span class="d-none d-lg-inline ms-1">{{ i18n('common.save') }}</span>
-                </button>
-            </div>
+            <app-h4 [containercss]="'card-header'" [title]="i18n('db.classes.editor.title')" [busy]="saving"
+                [btn1]="i18n('common.save')" [btn1css]="'btn btn-sm btn-success'" [btn1icon]="config.icons['save']"
+                (btn1Clicked)="submit()" [btn2css]="editclass.id > 0 ? 'btn btn-sm btn-outline-danger' : ''"
+                [btn2icon]="editclass.id > 0 ? config.icons['delete'] : ''"
+                (btn2Clicked)="delete(editclass)"  [xshow]="true" (xClicked)="this.editclass = undefined"></app-h4>
             <div class="card-body">
                 <form #f (submit)="submit()" ngNativeValidate>
 
@@ -48,7 +25,7 @@
                                     i18n('db.classes.techname') }}</label>
                                 <input type="text" class="form-control" id="class-techname" name="class-techname"
                                     [(ngModel)]="editclass.techname" [placeholder]="i18n('db.classes.techname')"
-                                    (change)="true" required>
+                                    (change)="submit()" required>
                             </div>
                         </div>
                         <div class="col-12 col-lg-6 mb-3">
@@ -57,7 +34,7 @@
                                     i18n('db.classes.default') }}</label>
                                 <div class="form-check">
                                     <input type="checkbox" class="form-check-input" id="class-default"
-                                        name="class-default" [(ngModel)]="editclass.isdefault" (change)="true">
+                                        name="class-default" [(ngModel)]="editclass.isdefault" (change)="submit()">
                                     <label for="class-default" class="form-check-label" *ngIf="editclass.isdefault">{{
                                         i18n('common.yes') }}</label>
                                     <label for="class-default" class="form-check-label" *ngIf="!editclass.isdefault">{{
@@ -86,7 +63,8 @@
                                     i18n('db.classes.editor.description') }}</label>
                                 <input type="text" class="form-control" id="class-description" name="class-description"
                                     [(ngModel)]="editclass.description"
-                                    [placeholder]="i18n('db.classes.editor.descriptionPlaceholder')" (change)="true">
+                                    [placeholder]="i18n('db.classes.editor.descriptionPlaceholder')"
+                                    (change)="submit()">
                             </div>
                         </div>
                     </div>
@@ -98,7 +76,8 @@
                                     i18n('db.classes.editor.namepattern') }}</label>
                                 <input type="text" class="form-control" id="class-namepattern" name="class-namepattern"
                                     [(ngModel)]="editclass.namepattern"
-                                    [placeholder]="i18n('db.classes.editor.namepatternPlaceholder')" (change)="true">
+                                    [placeholder]="i18n('db.classes.editor.namepatternPlaceholder')"
+                                    (change)="submit()">
                             </div>
                         </div>
                     </div>
@@ -135,7 +114,7 @@
                 <div class="col-6 col-lg-3 text-truncate">
                     {{ i18n('classify.classes.' + item.techname) }}
                 </div>
-                <div class="col-lg-6 d-none d-lg-block fs-7 font-monospace text-truncate">
+                <div class="col-lg-6 d-none d-lg-block fs-7 text-truncate">
                     {{ item.namepattern }}
                 </div>
             </div>

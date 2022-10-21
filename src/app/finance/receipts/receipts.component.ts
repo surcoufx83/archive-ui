@@ -1,30 +1,27 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { format } from 'date-fns';
-import { Currency } from 'src/app/account/account';
 import { AuthService } from 'src/app/auth.service';
-import { Country, Party } from 'src/app/common';
 import { AppConfig, ConfigService } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
-import { Settings } from 'src/app/user/settings/settings';
+import { Country, Currency, Party, Receipt, ReceiptArticle, ReceiptArticleCategory, TaxRate, UserSettings } from 'src/app/if';
 import { SettingsService } from 'src/app/user/settings/settings.service';
 import { FormatService } from 'src/app/utils/format.service';
 import { ToastsService } from 'src/app/utils/toasts.service';
-import { Receipt, ReceiptArticle, ReceiptArticleCategory, TaxRate } from '../finance';
 
 @Component({
   selector: 'app-receipts',
   templateUrl: './receipts.component.html',
   styleUrls: ['./receipts.component.scss']
 })
-export class ReceiptsComponent implements OnInit {
+export class ReceiptsComponent implements OnInit, OnDestroy {
 
   activeArticleIndex: number = -1;
   activeArticleDropdownItems: ReceiptArticle[] = [];
   activeArticleDropdownPickIndex = -1;
   articles: ReceiptArticle[] = [];
   busy: boolean = false;
+  storagename: string = this.config.storage.prefix + 'receiptsData';
   categories: ReceiptArticleCategory[] = [];
   clients: Party[] = [];
   countries: Country[] = [];
@@ -32,7 +29,8 @@ export class ReceiptsComponent implements OnInit {
   parties: Party[] = [];
   receipts: Receipt[] = [];
   taxrates: TaxRate[] = [];
-  usersettingsObj: Settings | null = null;
+  updatetimeout: any;
+  usersettingsObj: UserSettings | null = null;
   when: number = 0;
 
   defaultCurrency: Currency | null = null;
@@ -49,6 +47,18 @@ export class ReceiptsComponent implements OnInit {
     this.userSettings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
     });
+    let olddata: string | null | ReceiptsStorage = localStorage.getItem(this.storagename);
+    if (olddata) {
+      olddata = <ReceiptsStorage>JSON.parse(olddata);
+      this.articles = olddata.articles;
+      this.categories = olddata.categories;
+      this.clients = olddata.clients;
+      this.countries = olddata.countries;
+      this.currencies = olddata.currencies;
+      this.parties = olddata.parties;
+      this.receipts = olddata.receipts;
+      this.taxrates = olddata.taxrates;
+    }
   }
 
   article(id: number): ReceiptArticle | null {
@@ -119,6 +129,11 @@ export class ReceiptsComponent implements OnInit {
         totalnet: 0.0,
       });
     }
+  }
+  
+  ngOnDestroy(): void {
+    if (this.updatetimeout)
+      clearTimeout(this.updatetimeout);
   }
 
   ngOnInit(): void {
@@ -200,12 +215,25 @@ export class ReceiptsComponent implements OnInit {
     document.getElementById('receipt-quantity-' + i)?.focus();
   }
 
-  onKeydownValue(i: number, e: KeyboardEvent) : void {
+  onKeydownValue(i: number, e: KeyboardEvent): void {
     if (e.code === 'NumpadAdd') {
       document.getElementById('receipt-article-' + (i + 1))?.focus();
       e.preventDefault();
       return;
     }
+  }
+
+  saveLocalStorage() : void {
+    localStorage.setItem(this.storagename, JSON.stringify({
+      articles: this.articles,
+      categories: this.categories,
+      clients: this.clients,
+      countries: this.countries,
+      currencies: this.currencies,
+      parties: this.parties,
+      receipts: this.receipts,
+      taxrates: this.taxrates,
+    }));
   }
 
   saveSelected(form: any, e: any): void {
@@ -243,6 +271,7 @@ export class ReceiptsComponent implements OnInit {
         let newreceipt: Receipt = <Receipt>reply.payload['receipt'];
         this.update_addReceipt(newreceipt);
         this.receipts.sort((a, b) => { return a.date < b.date ? 1 : a.date > b.date ? -1 : 0 });
+        this.saveLocalStorage();
         this.new();
         this.newItem();
       }
@@ -266,6 +295,7 @@ export class ReceiptsComponent implements OnInit {
     this.authService.queryApi(url).subscribe((reply) => {
       if (reply.success && reply.payload != undefined && reply.payload['items']) {
         receipt.items = reply.payload['items'];
+        this.saveLocalStorage();
         receipt.items.forEach(i => {
           this.selectedTotals.items++;
           this.selectedTotals.deposit += i.deposit;
@@ -344,9 +374,10 @@ export class ReceiptsComponent implements OnInit {
           if (c.isdefault && (!this.defaultCurrency || c.id != this.defaultCurrency.id))
             this.defaultCurrency = c;
         });
+        this.saveLocalStorage();
       }
       this.busy = false;
-      this.userSettings.setTimeout(setTimeout(() => { this.update(); }, 1500));
+      this.updatetimeout = setTimeout(() => { this.update(); }, 1500);
     });
   }
 
@@ -481,4 +512,15 @@ export interface ReceiptTotals {
   deposit: number;
   singleprice: number;
   gross: number;
+}
+
+export interface ReceiptsStorage {
+  articles: ReceiptArticle[];
+  categories: ReceiptArticleCategory[];
+  clients: Party[];
+  countries: Country[];
+  currencies: Currency[];
+  parties: Party[];
+  receipts: Receipt[];
+  taxrates: TaxRate[];
 }

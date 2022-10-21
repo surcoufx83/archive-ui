@@ -1,9 +1,9 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AppConfig, ConfigService } from 'src/app/config.service';
-import { Class } from 'src/app/files/class';
 import { I18nService } from 'src/app/i18n.service';
-import { Settings } from 'src/app/user/settings/settings';
 import { SettingsService } from 'src/app/user/settings/settings.service';
+import { ToastsService } from 'src/app/utils/toasts.service';
+import { Class, UserSettings } from 'src/app/if';
 
 @Component({
   selector: 'app-classes',
@@ -18,22 +18,33 @@ export class DbClassesComponent implements OnInit {
   saving: boolean = false;
   classes: Class[] = [];
   editclass?: Class;
-  usersettingsObj: Settings|null = null;
+  usersettingsObj: UserSettings | null = null;
   sortAsc: boolean = true;
   sortBy: string = 'name';
-  timeout: any;
+  storagename: string = this.config.storage.prefix + 'dbclassesData';
+  timeout?: any = undefined;
+  when: number = 0;
 
   constructor(private configService: ConfigService,
     private i18nService: I18nService,
-    private userSettings: SettingsService) {
+    private userSettings: SettingsService,
+    private toastService: ToastsService) {
+    let olddata: string | null | DbClassesStorage = localStorage.getItem(this.storagename);
+    if (olddata) {
+      this.classes = (<DbClassesStorage>JSON.parse(olddata)).items;
+      this.sort();
+    }
     this.userSettings.loadArchiveSettings();
     this.userSettings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
     });
     this.userSettings.classes$.subscribe((classes) => {
+      if (classes.length == 0)
+        return;
       this.classes = classes;
       this.classes.forEach((item) => { item.name = this.i18n('classify.classes.' + item.techname) });
       this.sort();
+      localStorage.setItem(this.storagename, JSON.stringify({ items: this.classes }));
     });
   }
 
@@ -41,9 +52,23 @@ export class DbClassesComponent implements OnInit {
     return this.configService.config;
   }
 
+  delete(item: Class) {
+    if (confirm(this.i18n('common.confirm.askDeletion', [item.name]))) {
+      this.saving = true;
+      this.userSettings.deleteClass(item).subscribe((e) => {
+        if (e) {
+          this.toastService.confirm(this.i18nService.i18n('common.confirm.delete.title'),
+            this.i18nService.i18n('common.confirm.delete.message'));
+          this.editclass = undefined;
+        }
+        this.saving = false;
+      });
+    }
+  }
+
   edit(item?: Class): void {
     if (item)
-      this.editclass = item;
+      this.editclass = { ...item };
     else
       this.editclass = {
         description: '', email: '', id: 0, isdefault: false,
@@ -76,8 +101,8 @@ export class DbClassesComponent implements OnInit {
 
   submit(): void {
     if (!this.timeout)
-      window.clearTimeout(this.timeout);
-    this.timeout = window.setTimeout(() => this.sendUpdate(), 500);
+      clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => this.sendUpdate(), 500);
   }
 
   private sendUpdate(): void {
@@ -86,8 +111,13 @@ export class DbClassesComponent implements OnInit {
     this.saving = true;
     this.userSettings.updateClass(this.editclass).subscribe((reply) => {
       if (reply != null)
-        this.saving = false;
+        this.editclass!.id = reply.id;
+      this.saving = false;
     });
   }
 
+}
+
+export interface DbClassesStorage {
+  items: Class[]
 }

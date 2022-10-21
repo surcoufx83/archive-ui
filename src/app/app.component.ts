@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
-import { ConfigService, AppConfig } from './config.service';
+import { AppConfig, ConfigService } from './config.service';
 import { I18nService } from './i18n.service';
 import { SettingsService } from './user/settings/settings.service';
 

@@ -1,9 +1,8 @@
-import { Component, OnInit, EventEmitter, Input, Output, ViewChild, ElementRef } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/auth.service';
-import { ButtonType } from 'src/app/common';
 import { AppConfig, ConfigService } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
-import { Directory, File } from '../file';
+import { ButtonType, Directory, File } from 'src/app/if';
 
 @Component({
   selector: 'folder-browser-dialog',
@@ -14,28 +13,37 @@ export class FolderBrowserDialogComponent implements OnInit {
 
   busy: boolean = false;
   dir!: Directory;
-  file: File|null = null;
+  file: File | null = null;
   files: File[] = [];
   folders: Directory[] = [];
-  @Input() initialFolder: Directory|null = null;
+  @Input() initialFolder: Directory | null = null;
   @Input() showDirectories: boolean = true;
   @Input() showFiles: boolean = false;
+  @Input() showAddFolderBtn: boolean = false;
   @Input() cancelBtnTitle: string = this.i18nService.i18n('common.cancel');
   @Input() okBtnTitle: string = this.i18nService.i18n('common.save');
   @Input() title: string = this.i18nService.i18n('folderbrowser.title');
   @Output() select = new EventEmitter<SelectedItem>();
   @ViewChild('modal') modal?: ElementRef;
 
+  newfolderClicked: boolean = false;
+  newfolderName: string = '';
+
   constructor(private authService: AuthService,
     private configService: ConfigService,
     private i18nService: I18nService) { }
-  
-  cancel() : void {
+
+  cancel(): void {
     this.select.emit({
       clickedButton: ButtonType.Cancel,
       selectedFile: null,
       selectedFolder: null,
     });
+  }
+
+  cancelNewFolder() : void {
+    this.newfolderClicked = false;
+    this.newfolderName = '';
   }
 
   get config(): AppConfig {
@@ -46,7 +54,7 @@ export class FolderBrowserDialogComponent implements OnInit {
     return this.i18nService.i18n(key, params);
   }
 
-  ngOnInit() : void {
+  ngOnInit(): void {
     if (this.initialFolder == null) {
       this.cancel();
       return;
@@ -55,7 +63,8 @@ export class FolderBrowserDialogComponent implements OnInit {
     this.reload();
   }
 
-  reload() : void {
+  reload(): void {
+    this.cancelNewFolder();
     this.files = [];
     this.folders = [];
     this.busy = true;
@@ -73,8 +82,26 @@ export class FolderBrowserDialogComponent implements OnInit {
       this.busy = false;
     });
   }
-  
-  submit() : void {
+
+  saveNewFolder(): void {
+    if (this.newfolderName == '')
+      return;
+    let url = this.configService.config.api.baseUrl + '/directories/' + this.dir.id + '/mkdir';
+    this.busy = true;
+    this.authService.updateApi(url, {
+      name: this.newfolderName
+    }).subscribe((reply) => {
+      if (reply.success && reply.payload && reply.payload['dir']) {
+        this.dir = <Directory>reply.payload['dir'];
+        this.reload();
+      }
+      else
+        alert("Error calling API :(");
+      this.busy = false;
+    });
+  }
+
+  submit(): void {
     this.select.emit({
       clickedButton: ButtonType.Ok,
       selectedFile: this.file ?? null,
@@ -85,7 +112,7 @@ export class FolderBrowserDialogComponent implements OnInit {
 }
 
 export interface SelectedItem {
-  selectedFile: File|null;
-  selectedFolder: Directory|null;
+  selectedFile: File | null;
+  selectedFolder: Directory | null;
   clickedButton: ButtonType;
 }
