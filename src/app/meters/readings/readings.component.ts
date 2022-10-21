@@ -16,8 +16,10 @@ import { FormatService } from 'src/app/utils/format.service';
 export class ReadingsComponent implements OnInit {
 
   busy: boolean = true;
+  saving: boolean = false;
   meter: Meter[] = [];
   editRecord: ReadingDate|null = null;
+  dates: { [key: string]: number } = {};
   readings: ReadingDate[] = [];
   showmeter: { [key: number]: boolean } = {};
 
@@ -57,9 +59,9 @@ export class ReadingsComponent implements OnInit {
     else return '.' + '1'.padStart(meter.decimals, '0');
   }
 
-  newRecord(): void {
+  newRecord(keepdate?: boolean): void {
     let record: ReadingDate = {
-      date: format(new Date(), 'y-M-d'),
+      date: keepdate && this.editRecord ? this.editRecord.date : format(new Date(), 'y-M-d'),
       values: [],
     };
     this.meter.forEach((m) => record.values.push({ meterid: m.id, value: '' }));
@@ -67,7 +69,7 @@ export class ReadingsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authService.queryApi(this.configService.config.api.baseUrl + '/meter+readings').subscribe((reply: ApiReply) => {
+    this.authService.queryApi(this.configService.config.api.baseUrl + '/meter/readings').subscribe((reply: ApiReply) => {
       if (reply.payload && reply.payload['meter']) {
         let items = (<Meter[]>(reply.payload['meter'])).sort((a, b) => this.sortMeter(a, b));
         let readings: ReadingDate[] = [];
@@ -84,15 +86,43 @@ export class ReadingsComponent implements OnInit {
         });
         this.meter = items;
         this.readings = readings.sort((a, b) => a.date > b.date ? -1 : 1);
+        this.dates = dates;
         this.busy = false;
-        console.log(this.meter);
-        console.log(this.readings);
       }
     });
   }
 
   number(n: number, fd: number = 0, md: number | undefined = undefined): string {
     return this.formatService.fnumber(n, fd, md);
+  }
+
+  saveRecord(record: ReadingDate|null): void {
+    if (this.saving || !record)
+      return;
+    this.saving = true;
+    this.authService.updateApi(this.configService.config.api.baseUrl + '/meter/readings/create', record).subscribe((reply: ApiReply) => {
+      if (reply.success && reply.payload && reply.payload['count'] && reply.payload['meter']) {
+        let linecount = +reply.payload['count'];
+        if (linecount > 0) {
+          let newitems = (<Meter[]>(reply.payload['meter'])).sort((a, b) => this.sortMeter(a, b));
+          newitems.forEach((m) => {
+            m.readings.forEach((r) => {
+              if (!this.dates[r.date]) {
+                this.dates[r.date] = this.readings.length;
+                this.readings.push({ date: r.date, values: [] });
+              }
+              this.readings[this.dates[r.date]].values.push({ meterid: m.id, value: r.value });
+            });
+            if (!this.getMeter(m.id)) {
+              this.meter.push(m);
+              this.showmeter[m.id] = true;
+            }
+          });
+          this.readings = this.readings.sort((a, b) => a.date > b.date ? -1 : 1);
+        }
+      }
+      this.saving = false;
+    });
   }
 
   showRecord(record: ReadingDate): boolean {
