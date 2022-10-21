@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
 import { AppConfig, ConfigService } from './config.service';
 import { I18nService } from './i18n.service';
@@ -19,9 +19,7 @@ export class AppComponent {
   constructor(private authService: AuthService,
               private configService: ConfigService,
               private i18nService: I18nService,
-              private route: ActivatedRoute,
-              private router: Router,
-              private settings: SettingsService)
+              private router: Router)
   { }
 
   get config() : AppConfig {
