@@ -212,6 +212,7 @@
         "message": "Changes have been saved successfully."
       }
     },
+    "date": "Date",
     "day": "Day",
     "days": "Days",
     "delete": "Delete",
@@ -507,6 +508,10 @@
     "inbox": {
       "title": "New Documents"
     },
+    "readings": {
+      "title": "Counters",
+      "readingsLink": "Erfassung von Zählerständen"
+    },
     "stats": {
       "title": "Quick Stats...",
       "files1": "The archive currently manages {0} files in {1} directories with a total of {2}.",
@@ -567,6 +572,18 @@
       "subtitle": "This website requires a login via Nextcloud. Please click on the button to proceed.",
       "button": "Login"
     }
+  },
+  "meter": {
+    "readings": {
+      "title": "Erfassung von Zählerständen",
+      "meter": "Counters",
+      "value": "Wert",
+      "modal": {
+        "title": "Meter reading",
+        "description": "In den folgenden Feldern kannst du die Werte für die Zähler eingeben. Nur ausgefüllte Felder werden gespeichert."
+      }
+    },
+    "title": "Counters"
   },
   "navbar": {
     "brand": {
