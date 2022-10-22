@@ -510,7 +510,7 @@
     },
     "readings": {
       "title": "Counters",
-      "readingsLink": "Erfassung von Zählerständen"
+      "readingsLink": "Meter reading capture"
     },
     "stats": {
       "title": "Quick Stats...",
@@ -575,12 +575,12 @@
   },
   "meter": {
     "readings": {
-      "title": "Erfassung von Zählerständen",
+      "title": "Meter reading capture",
       "meter": "Counters",
-      "value": "Wert",
+      "value": "Value",
       "modal": {
         "title": "Meter reading",
-        "description": "In den folgenden Feldern kannst du die Werte für die Zähler eingeben. Nur ausgefüllte Felder werden gespeichert."
+        "description": "In the following fields you can enter the values for the counters. Only filled fields will be saved."
       }
     },
     "title": "Counters"
