@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { format } from 'date-fns';
 import { AuthService } from 'src/app/auth.service';
 import { AppConfig, ConfigService } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
-import { Case, CaseStatus, CaseType, Party, UserSettings } from 'src/app/if';
+import { Case, CaseStatus, CaseType, File, Party, UserSettings } from 'src/app/if';
 import { SettingsService } from 'src/app/user/settings/settings.service';
 import { FormatService } from 'src/app/utils/format.service';
 
@@ -15,9 +15,11 @@ import { FormatService } from 'src/app/utils/format.service';
 })
 export class CaseComponent implements OnInit {
 
+  activeRouteChild: string = '';
   busy: boolean = false;
   case: Case | null = null;
   cases: { [key: number]: Case } = {};
+  casefiles: File[] = [];
   caseid: number | null = null;
   childs: number[] = [];
   changes: { [key: string]: any } = {};
@@ -37,7 +39,8 @@ export class CaseComponent implements OnInit {
     private i18nService: I18nService,
     private route: ActivatedRoute,
     private userSettings: SettingsService,
-    public formatService: FormatService) {
+    public formatService: FormatService,
+    public router: Router) {
     this.userSettings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
     });
@@ -46,14 +49,18 @@ export class CaseComponent implements OnInit {
         this.listOfCaseStatus = this.listOfCaseStatus.sort((a, b) => this.i18n('casestatus.' + a.name) > this.i18n('casestatus.' + b.name) ? 1 : -1);
         this.listOfCaseTypes = this.listOfCaseTypes.sort((a, b) => this.i18n('casetype.' + a.name) > this.i18n('casetype.' + b.name) ? 1 : -1);
       }
-    })
+    });
+    this.route.url.subscribe((url) => {
+      this.activeRouteChild = this.route.firstChild && this.route.firstChild.routeConfig && this.route.firstChild.routeConfig.path ? this.route.firstChild.routeConfig.path : '';
+    });
+
   }
 
-  changeShowDeleted(switchvalue: boolean) : void {
+  changeShowDeleted(switchvalue: boolean): void {
     this.userSettings.showCasesInDeletion(switchvalue);
   }
 
-  changeShowRetention(switchvalue: boolean) : void {
+  changeShowRetention(switchvalue: boolean): void {
     this.userSettings.showCasesInRetention(switchvalue);
   }
 
@@ -61,7 +68,7 @@ export class CaseComponent implements OnInit {
     return this.configService.config;
   }
 
-  duration(duration: Duration|null) : string {
+  duration(duration: Duration | null): string {
     return this.formatService.fdur(duration);
   }
 
@@ -97,6 +104,7 @@ export class CaseComponent implements OnInit {
 
   private loadCase(id: number | null, obj: Case | null = null): void {
     this.caseid = id;
+    this.casefiles = [];
     if (this.caseid != null) {
       if (obj != null)
         this.case = obj;
@@ -110,6 +118,13 @@ export class CaseComponent implements OnInit {
         this.case.period.period = this.case.period.period ?? {};
         this.case.period.minperiod = this.case.period.minperiod ?? {};
         this.case.period.terminationperiod = this.case.period.terminationperiod ?? {};
+        let url = `${this.config.api.baseUrl}/case/${this.case.id}/files`;
+        this.authService.queryApi(url).subscribe((reply) => {
+          console.log(reply)
+          if (reply.success && reply.payload && reply.payload['files']) {
+            this.casefiles = <File[]>reply.payload['files'];
+          }
+        });
       }
     }
   }

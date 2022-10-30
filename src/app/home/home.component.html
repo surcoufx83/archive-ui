@@ -13,12 +13,14 @@
             {{ i18n('home.inbox.title') }}
           </h5>
         </div>
-        <div class="card-body">
-          <ul class="list-group flush hover rounded" *ngIf="newfiles.length > 0">
-            <file-list-item *ngFor="let file of newfiles;" [file]="file" [showButtons]="false"
-              (clicked)="router.navigate(['/file', file.id])"></file-list-item>
-          </ul>
-        </div>
+        <ul class="list-group flush hover rounded-0 " *ngIf="newfiles.length > 0">
+          <ng-container *ngFor="let file of newfiles;">
+            <a [ngClass]="['fix-border list-group-item', 'py-2', 'pe-2', 'border-start-0 border-end-0']" [routerLink]="['/file', file.id]">
+              <file-list-item [file]="file" [showButtons]="false">
+              </file-list-item>
+            </a>
+          </ng-container>
+        </ul>
       </div>
 
       <div class="card mb-3" *ngIf="inactivecases.length > 0">

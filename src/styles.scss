@@ -144,6 +144,13 @@ form {
   }
 }
 
+.fix-border.list-group-item:first-child {
+    border-top-width: 0!important;
+}
+.fix-border.list-group-item:last-child {
+    border-bottom-width: 0!important;
+}
+
 .fs-7 {
   font-size: $font-size-base * .9 !important;
 }
