@@ -35,7 +35,7 @@
     "title": "{0} (Case)",
     "metacard": {
       "title": "General information",
-      "shorttitle": "Allgemeines",
+      "shorttitle": "General",
       "name": "Name of case",
       "parent": "Parent case",
       "noparent": "None",
