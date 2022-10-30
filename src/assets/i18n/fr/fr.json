@@ -35,6 +35,7 @@
     "title": "{0} (Akte)",
     "metacard": {
       "title": "Allgemeine Informationen",
+      "shorttitle": "Allgemeines",
       "name": "Name der Akte",
       "parent": "Übergeordnete Akte",
       "noparent": "Keine",
@@ -51,6 +52,9 @@
     },
     "childscard": {
       "title": "Zugehörige Akten"
+    },
+    "filescard": {
+      "title": "Dateien"
     },
     "timecard": {
       "title": "Zeiträume",
