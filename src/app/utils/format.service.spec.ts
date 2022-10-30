@@ -95,4 +95,23 @@ describe('FormatService', () => {
         });
     });
 
+    it('should return the correct percent string', () => {
+        let tests = [
+            { value: 0, fd: 0, exp: '0%' },
+            { value: 1, fd: 0, exp: '1%' },
+            { value: 1, fd: 1, exp: '1.0%' },
+            { value: 1, fd: 2, exp: '1.00%' },
+            { value: -1, fd: 0, exp: '-1%' },
+            { value: -1, fd: 1, exp: '-1.0%' },
+            { value: -1, fd: 2, exp: '-1.00%' },
+            { value: .99, fd: 0, exp: '0.99%' },
+            { value: .99, fd: 1, exp: '0.99%' },
+            { value: .99, fd: 2, exp: '0.99%' },
+            { value: .99, fd: 3, exp: '0.990%' },
+        ];
+        tests.forEach((test) => {
+            expect(formatServiceEnUs.fpercent(test.value, test.fd).replace(String.fromCharCode(160), ' ')).toBe(test.exp);
+        });
+    });
+
 });
