@@ -354,13 +354,11 @@
                         </app-h3>
                     </div>
                     <ul class="list-group">
-                        <div class="card-body">
-                            <ng-container *ngFor="let id of childs">
-                                <ng-container
-                                    *ngTemplateOutlet="caseTemplate;context: { caseid: id, case: getCase(id), level: 0 }">
-                                </ng-container>
+                        <ng-container *ngFor="let id of childs">
+                            <ng-container
+                                *ngTemplateOutlet="caseTemplate;context: { caseid: id, case: getCase(id), level: 0 }">
                             </ng-container>
-                        </div>
+                        </ng-container>
                     </ul>
                 </div><!-- case childs card -->
 
@@ -370,11 +368,14 @@
                         <app-h3 [title]="i18n('case.filescard.title')">
                         </app-h3>
                     </div>
-                    <ul class="list-group">
-                        <div class="card-body">
-                            <ng-container *ngFor="let file of casefiles">
-                            </ng-container>
-                        </div>
+                    <ul class="list-group flush hover rounded-0 " *ngIf="casefiles.length > 0">
+                        <ng-container *ngFor="let file of casefiles;">
+                            <a [ngClass]="['fix-border list-group-item', 'py-2', 'pe-2', 'border-start-0 border-end-0']"
+                                [routerLink]="['/file', file.id]">
+                                <file-list-item [file]="file" [showButtons]="false">
+                                </file-list-item>
+                            </a>
+                        </ng-container>
                     </ul>
                 </div><!-- case files card -->
 
@@ -388,7 +389,7 @@
 <ng-template #caseTemplate let-caseid="caseid" let-case="case" let-level="level">
     <ng-container *ngIf="case != null">
         <ng-container *ngIf="showCase(case)">
-            <a [ngClass]="['list-group-item', 'py-2', 'pe-2', 'intend-level-' + level]"
+            <a [ngClass]="['fix-border list-group-item', 'py-2', 'pe-2', 'border-start-0 border-end-0', 'intend-level-' + level]"
                 [routerLink]="['/case', case.id]">
                 <case-list-item [case]="case"></case-list-item>
             </a>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { format } from 'date-fns';
 import { AuthService } from 'src/app/auth.service';
 import { AppConfig, ConfigService } from 'src/app/config.service';
@@ -39,7 +39,8 @@ export class CaseComponent implements OnInit {
     private i18nService: I18nService,
     private route: ActivatedRoute,
     private userSettings: SettingsService,
-    public formatService: FormatService) {
+    public formatService: FormatService,
+    public router: Router) {
     this.userSettings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
     });
@@ -117,6 +118,13 @@ export class CaseComponent implements OnInit {
         this.case.period.period = this.case.period.period ?? {};
         this.case.period.minperiod = this.case.period.minperiod ?? {};
         this.case.period.terminationperiod = this.case.period.terminationperiod ?? {};
+        let url = `${this.config.api.baseUrl}/case/${this.case.id}/files`;
+        this.authService.queryApi(url).subscribe((reply) => {
+          console.log(reply)
+          if (reply.success && reply.payload && reply.payload['files']) {
+            this.casefiles = <File[]>reply.payload['files'];
+          }
+        });
       }
     }
   }
