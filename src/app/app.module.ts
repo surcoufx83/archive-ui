@@ -43,6 +43,7 @@ import { I18nService } from './i18n.service';
 import { LoginComponent } from './login/login.component';
 import { Oauth2CallbackComponent } from './login/oauth2-callback/oauth2-callback.component';
 import { LogoutComponent } from './logout/logout.component';
+import { ReadingsComponent } from './meters/readings/readings.component';
 import { NotepadComponent } from './notepad/notepad.component';
 import { SearchComponent } from './search/search.component';
 import { ButtonComponent } from './utils/button/button.component';
@@ -69,7 +70,7 @@ import { WorkDayComponent } from './work/work-day/work-day.component';
 import { WorkMonthComponent } from './work/work-month/work-month.component';
 import { WorkYearComponent } from './work/work-year/work-year.component';
 import { WorkComponent } from './work/work.component';
-import { ReadingsComponent } from './meters/readings/readings.component';
+import { DummyComponent } from './utils/dummy/dummy.component';
 
 registerLocaleData(localeDe);
 
@@ -129,6 +130,7 @@ registerLocaleData(localeDe);
     StocksComponent,
     AccountsComponent,
     ReadingsComponent,
+    DummyComponent,
   ],
   imports: [
     AppRoutingModule,

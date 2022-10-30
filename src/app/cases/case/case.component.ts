@@ -15,6 +15,7 @@ import { FormatService } from 'src/app/utils/format.service';
 })
 export class CaseComponent implements OnInit {
 
+  activeRouteChild: string = '';
   busy: boolean = false;
   case: Case | null = null;
   cases: { [key: number]: Case } = {};
@@ -46,14 +47,18 @@ export class CaseComponent implements OnInit {
         this.listOfCaseStatus = this.listOfCaseStatus.sort((a, b) => this.i18n('casestatus.' + a.name) > this.i18n('casestatus.' + b.name) ? 1 : -1);
         this.listOfCaseTypes = this.listOfCaseTypes.sort((a, b) => this.i18n('casetype.' + a.name) > this.i18n('casetype.' + b.name) ? 1 : -1);
       }
-    })
+    });
+    this.route.url.subscribe((url) => {
+      this.activeRouteChild = this.route.firstChild && this.route.firstChild.routeConfig && this.route.firstChild.routeConfig.path ? this.route.firstChild.routeConfig.path : '';
+    });
+
   }
 
-  changeShowDeleted(switchvalue: boolean) : void {
+  changeShowDeleted(switchvalue: boolean): void {
     this.userSettings.showCasesInDeletion(switchvalue);
   }
 
-  changeShowRetention(switchvalue: boolean) : void {
+  changeShowRetention(switchvalue: boolean): void {
     this.userSettings.showCasesInRetention(switchvalue);
   }
 
@@ -61,7 +66,7 @@ export class CaseComponent implements OnInit {
     return this.configService.config;
   }
 
-  duration(duration: Duration|null) : string {
+  duration(duration: Duration | null): string {
     return this.formatService.fdur(duration);
   }
 
