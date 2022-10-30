@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 import { AuthService } from 'src/app/auth.service';
 import { AppConfig, ConfigService } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
-import { Case, CaseStatus, CaseType, Party, UserSettings } from 'src/app/if';
+import { Case, CaseStatus, CaseType, File, Party, UserSettings } from 'src/app/if';
 import { SettingsService } from 'src/app/user/settings/settings.service';
 import { FormatService } from 'src/app/utils/format.service';
 
@@ -19,6 +19,7 @@ export class CaseComponent implements OnInit {
   busy: boolean = false;
   case: Case | null = null;
   cases: { [key: number]: Case } = {};
+  casefiles: File[] = [];
   caseid: number | null = null;
   childs: number[] = [];
   changes: { [key: string]: any } = {};
@@ -102,6 +103,7 @@ export class CaseComponent implements OnInit {
 
   private loadCase(id: number | null, obj: Case | null = null): void {
     this.caseid = id;
+    this.casefiles = [];
     if (this.caseid != null) {
       if (obj != null)
         this.case = obj;

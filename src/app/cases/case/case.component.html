@@ -5,26 +5,38 @@
     </div>
 
     <div class="container pt-4 pt-md-2 mb-2">
-        <ul class="nav nav-tabs">
+        <ul class="nav nav-tabs case-nav-group">
             <li class="nav-item">
-                <a [ngClass]="[activeRouteChild == '' ? 'nav-link active' : 'nav-link']"
-                    [routerLink]="['/case', case.id]">{{ i18n('case.metacard.shorttitle') }}</a>
+                <a [ngClass]="[activeRouteChild == '' ? 'nav-link active text-primary' : 'nav-link text-muted']"
+                    [routerLink]="['/case', case.id]">
+                    <i [ngClass]="[ config.icons['info'], 'me-1', 'd-none d-md-inline-block' ]"></i>
+                    {{ i18n('case.metacard.shorttitle') }}
+                </a>
             </li>
-            <li class="nav-item" *ngIf="haschilds(case.id)">
-                <a [ngClass]="[activeRouteChild == 'childs' ? 'nav-link active' : 'nav-link']"
-                    [routerLink]="['/case', case.id, 'childs']">{{ i18n('case.childscard.title') }}</a>
+            <li class="nav-item ms-1" *ngIf="haschilds(case.id)">
+                <a [ngClass]="[activeRouteChild == 'childs' ? 'nav-link active text-primary' : 'nav-link text-muted']"
+                    [routerLink]="['/case', case.id, 'childs']">
+                    <i [ngClass]="[ config.icons['cases'], 'me-1', 'd-none d-md-inline-block' ]"></i>
+                    {{ i18n('case.childscard.title') }}
+                </a>
             </li>
-            <li class="nav-item">
-                <a [ngClass]="[activeRouteChild == 'times' ? 'nav-link active' : 'nav-link']"
-                    [routerLink]="['/case', case.id, 'times']">{{ i18n('case.timecard.title') }}</a>
+            <li class="nav-item ms-1">
+                <a [ngClass]="[activeRouteChild == 'times' ? 'nav-link active text-primary' : 'nav-link text-muted']"
+                    [routerLink]="['/case', case.id, 'times']">
+                    <i [ngClass]="[ config.icons['stopwatch'], 'me-1', 'd-none d-md-inline-block' ]"></i>
+                    {{ i18n('case.timecard.title') }}
+                </a>
             </li>
-            <li class="nav-item">
-                <a [ngClass]="[activeRouteChild == 'files' ? 'nav-link active' : 'nav-link']"
-                    [routerLink]="['/case', case.id, 'files']">{{ i18n('case.filescard.title') }}</a>
+            <li class="nav-item ms-1">
+                <a [ngClass]="[activeRouteChild == 'files' ? 'nav-link active text-primary' : 'nav-link text-muted']"
+                    [routerLink]="['/case', case.id, 'files']">
+                    <i [ngClass]="[ config.icons['folder'], 'me-1', 'd-none d-md-inline-block' ]"></i>
+                    {{ i18n('case.filescard.title') }}
+                </a>
             </li>
         </ul>
         <form #f (submit)="updateCase()" ngNativeValidate>
-            <div class="card rounded-top-0">
+            <div class="card rounded-top-0 border-top-0">
 
                 <div [ngClass]="[ activeRouteChild == '' ? 'd-block' : 'd-none' ]">
                     <!-- case meta card -->
@@ -351,6 +363,20 @@
                         </div>
                     </ul>
                 </div><!-- case childs card -->
+
+                <div [ngClass]="[ activeRouteChild == 'files' ? 'd-block' : 'd-none' ]">
+                    <!-- case files card -->
+                    <div class="card-header">
+                        <app-h3 [title]="i18n('case.filescard.title')">
+                        </app-h3>
+                    </div>
+                    <ul class="list-group">
+                        <div class="card-body">
+                            <ng-container *ngFor="let file of casefiles">
+                            </ng-container>
+                        </div>
+                    </ul>
+                </div><!-- case files card -->
 
             </div>
 
