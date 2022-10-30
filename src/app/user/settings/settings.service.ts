@@ -59,7 +59,6 @@ export class SettingsService {
   }
 
   private loadCasesData(): void {
-    localStorage.removeItem(this.casesstorage)
     let olddata: string | null | CasesStorage = localStorage.getItem(this.casesstorage);
     if (olddata) {
       olddata = <CasesStorage>JSON.parse(olddata);
