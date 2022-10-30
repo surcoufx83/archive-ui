@@ -14,6 +14,8 @@ export class FormatService {
   constructor(private i18nService: I18nService) { }
 
   filesize(size: number, fd: number = 0, md: number | undefined = undefined): string {
+    if (size <= 0)
+      return '0 B';
     let f = Math.floor(Math.log(size) / Math.log(1024));
     return `${this.fnumber(size / Math.pow(1024, f), fd, md)} ${FormatService.fsunits[f]}`;
   }
@@ -86,14 +88,10 @@ export class FormatService {
   }
 
   fnumber(n: number, fd: number = 0, md: number | undefined = undefined): string {
-    if (n == undefined)
-      return '';
     return (+n).toLocaleString(this.i18nService.Locale, { minimumFractionDigits: fd, maximumFractionDigits: md });
   }
 
   fpercent(n: number, fd: number = 0): string {
-    if (n == undefined)
-      return '';
     return (+n).toLocaleString(this.i18nService.Locale, { minimumFractionDigits: fd }) + '%';
   }
 
