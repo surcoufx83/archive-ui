@@ -552,7 +552,7 @@ export class SettingsService {
     cases.forEach((c) => { if (this._updateCase(tempcases, c)) needsrefresh = true; });
     this.cases.next(tempcases);
     if (needsrefresh)
-      this._updateCasesEvaluation(tempcases);
+      this._updateCasesEvaluation(cases, tempcases);
   }
 
   private _updateCase(cases: { [key: number]: Case }, c: Case): boolean {
@@ -572,11 +572,10 @@ export class SettingsService {
     return needsrefresh;
   }
 
-  private _updateCasesEvaluation(cases: { [key: number]: Case }): void {
+  private _updateCasesEvaluation(casesarray: Case[], cases: { [key: number]: Case }): void {
     let rootcases: number[] = [];
     let casechilds: { [key: number]: number[] } = {};
-    for (let key in cases) {
-      let c = cases[key];
+    casesarray.forEach((c) => {
       if (c.parentid == null) {
         rootcases.push(c.id);
         casechilds[c.id] = [];
@@ -585,7 +584,7 @@ export class SettingsService {
           casechilds[c.parentid] = [];
         casechilds[c.parentid].push(c.id);
       }
-    }
+    });
     rootcases.sort((a, b) => cases[a].title > cases[b].title ? 1 : -1);
     this.casechilds.next(casechilds);
     this.caseroots.next(rootcases);
