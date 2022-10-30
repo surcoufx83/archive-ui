@@ -35,6 +35,7 @@
     "title": "{0} (Case)",
     "metacard": {
       "title": "General information",
+      "shorttitle": "Allgemeines",
       "name": "Name of case",
       "parent": "Parent case",
       "noparent": "None",
@@ -51,6 +52,9 @@
     },
     "childscard": {
       "title": "Related cases"
+    },
+    "filescard": {
+      "title": "Files"
     },
     "timecard": {
       "title": "Periods",
