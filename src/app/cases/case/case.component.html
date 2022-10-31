@@ -216,7 +216,7 @@
                                         <input type="text" class="form-control-plaintext form-control-px"
                                             id="case-filecount" name="case-filecount"
                                             [value]="formatService.fnumber(case.filescount)" readonly>
-                                        <a [routerLink]="['files']" class="btn btn-outline-secondary rounded"
+                                        <a [routerLink]="['/case', case.id, 'files']" class="btn btn-outline-secondary rounded"
                                             type="button"><i [class]="config.icons['goto']"></i></a>
                                     </div>
                                 </div>
