@@ -6,12 +6,6 @@ import { FormatService } from "./format.service";
 let mockcurrencyUSD: Currency = { id: 0, isdefault: false, name: 'US Dollar', shortname: 'USD', sign: '$' };
 let mockcurrencyEUR: Currency = { id: 0, isdefault: false, name: 'Euro', shortname: 'EUR', sign: '€' };
 
-function hash(s: string): string {
-    let a: number[] = [];
-    s.split('').forEach((l) => { a.push(l.charCodeAt(0)) });
-    return `[${a.join(', ')}]`;
-}
-
 describe('FormatService', () => {
 
     let i18nServiceMockEnUs: any = jasmine.createSpyObj('I18nService', ['i18n'], { Locale: 'en', DateLocale: enUS });
