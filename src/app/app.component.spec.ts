@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Ticks } from 'chart.js';
 import { AppComponent } from './app.component';
 import { AuthService } from './auth.service';
 import { AppConfig, ConfigService } from './config.service';
@@ -176,7 +175,7 @@ let mockAppConfig: AppConfig = {
         basic: { enabled: false, user: '', password: '' },
         oauth2: { enabled: false, items: {} }
     },
-    icons: { 
+    icons: {
         foo: 'bar',
         search: 'foo-search'
     },
