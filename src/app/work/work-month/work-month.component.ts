@@ -32,8 +32,8 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
   monthLoading: boolean = false;
   dayObjs: WorkDay[] = [];
   monthObj?: WorkMonth;
-  usersettingsObj: UserSettings|null = null;
-  workprops: WorkProperties|null = null;
+  usersettingsObj: UserSettings | null = null;
+  workprops: WorkProperties | null = null;
 
   offdayDroppableEvents: CalendarEvent[] = [];
 
@@ -43,9 +43,8 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private router: Router,
     private userSettings: SettingsService) {
-    this.userSettings.settings$.subscribe((settings) => {
-      this.usersettingsObj = settings;
-    });
+    this.userSettings.loadWorkEntities();
+    this.userSettings.settings$.subscribe((settings) => this.usersettingsObj = settings);
     this.userSettings.workprops$.subscribe((props) => {
       if (props == null)
         return;
@@ -83,7 +82,6 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
           type: 'WorkOffCategory'
         }
       });
-      console.log(props);
     });
   }
 
@@ -111,9 +109,7 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
     return add(this.selectedMonth, { months: 1 });
   }
 
-  ngOnInit(): void {
-
-  }
+  ngOnInit(): void { }
 
   ngAfterViewInit() {
     this.route.paramMap.subscribe((params: ParamMap) => {
