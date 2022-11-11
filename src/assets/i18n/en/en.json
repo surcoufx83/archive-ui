@@ -244,7 +244,7 @@
       "pickOne": " Please choose"
     },
     "switchTo": "Switch to",
-    "today": "Today",
+    "today": "Heute",
     "warn": {
       "formInvalid": {
         "title": "Warning",
@@ -516,12 +516,13 @@
     "readings": {
       "title": "Counters",
       "readingsLink": "Meter reading capture"
+    },
     "special": {
-      "title": "Additional functions",
-      "notepadLink": "Notepad",
-      "warehouseLink": "Storage",
-      "movingBoxesLink": "Moving boxes",
-      "wineCellarLink": "Wine cellar"
+      "title": "Zusatzfunktionen",
+      "notepadLink": "Notes",
+      "warehouseLink": "Lager",
+      "movingBoxesLink": "Umzugskartons",
+      "wineCellarLink": "Weinkeller"
     },
     "stats": {
       "title": "Quick Stats...",
