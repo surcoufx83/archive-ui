@@ -211,37 +211,38 @@ export interface Extension {
 
 export interface File {
   id: number;
-  directory: Directory | null;
-  directoryid: number | null;
+  attributes: any;
+  case: Case | null;
+  caseid: number | null;
+  case_filedescription: string | null;
+  case_filename: string | null;
+  case_filestatus: string | null;
+  case_filetype: CaseFiletype | null;
+  case_filetypeid: number | null;
+  case_pintop: boolean;
   class: Class | null;
   classid: number | null;
   classifyDisabled: boolean;
-  case: Case | null;
-  caseid: number | null;
-  case_filetype: CaseFiletype | null;
-  case_filetypeid: number | null;
   client: Party | null;
   clientid: number | null;
-  fileexists: boolean;
-  partyaddress: Address | null;
-  partyaddressid: number | null;
   contact: PartyContact | null;
   contactid: number | null;
-  name: string;
   date: string;
-  islink: boolean;
-  mtime: string;
-  size: number;
-  hash: string;
   deldate: string | null;
-  case_filename: string | null;
-  case_filedescription: string | null;
-  case_filestatus: string | null;
-  case_pintop: boolean;
+  directory: Directory | null;
+  directoryid: number | null;
   fileclass_meta: any;
-  relpath: string;
-  attributes: any;
+  fileexists: boolean;
+  hash: string;
+  islink: boolean;
   istaxreceipt: boolean | null;
+  mtime: string;
+  name: string;
+  partyaddress: Address | null;
+  partyaddressid: number | null;
+  relpath: string;
+  size: number;
+  tags: number[];
   taxyear: number | null;
   versions: { [key: number]: Version };
 }
@@ -408,6 +409,14 @@ export interface Session {
 
 export interface StandingOrder {
 
+}
+
+export interface Tag {
+  id: number;
+  created: string;
+  deleted: string | null;
+  modified: string;
+  value: string;
 }
 
 export interface TaxRate {

@@ -14,6 +14,7 @@ import {
   Party,
   PartyContact,
   PartyRole,
+  Tag,
   User,
   UserSettings,
   WorkCustomer,
@@ -43,19 +44,43 @@ export class SettingsService {
   private financesync: number = 0;
   private partiesstorage: string = this.config.storage.prefix + 'partiesData';
   private partiessync: number = 0;
+  private tagsstorage: string = this.config.storage.prefix + 'tagsData';
+  private tagssync: number = 0;
   private workstorage: string = this.config.storage.prefix + 'workData';
   private worksync: number = 0;
 
   constructor(private authService: AuthService,
     private configService: ConfigService) {
+    this.tags.subscribe((tags) => {
+      localStorage.setItem(this.tagsstorage, JSON.stringify({
+        tags: tags,
+        ts: this.tagssync,
+      }));
+    });
     this.loadCasesData();
     this.loadFinanceData();
     this.loadPartiesData();
+    this.loadTags();
     this.loadUserSettings();
   }
 
   get config(): AppConfig {
     return this.configService.config;
+  }
+
+  public loadArchiveSettings(): void {
+    if (this.archiveLoaded)
+      return;
+    this.archiveLoaded = true;
+    let url = this.configService.config.api.baseUrl + '/common/props';
+    this.authService.queryApi(url).subscribe((reply) => {
+      if (reply.success && reply.payload != null) {
+        this.updateClasses(reply.payload['classes']);
+        this.updateCountries(reply.payload['countries']);
+        this.updateCurrencies(reply.payload['currencies']);
+      }
+    });
+    this.caseFileStatus.next(['new', 'checked', 'approved']);
   }
 
   private loadCasesData(): void {
@@ -99,19 +124,14 @@ export class SettingsService {
     this.syncParties();
   }
 
-  public loadArchiveSettings(): void {
-    if (this.archiveLoaded)
-      return;
-    this.archiveLoaded = true;
-    let url = this.configService.config.api.baseUrl + '/common/props';
-    this.authService.queryApi(url).subscribe((reply) => {
-      if (reply.success && reply.payload != null) {
-        this.updateClasses(reply.payload['classes']);
-        this.updateCountries(reply.payload['countries']);
-        this.updateCurrencies(reply.payload['currencies']);
-      }
-    });
-    this.caseFileStatus.next(['new', 'checked', 'approved']);
+  private loadTags(): void {
+    let olddata: string | null | TagsStorage = localStorage.getItem(this.tagsstorage);
+    if (olddata) {
+      olddata = <TagsStorage>JSON.parse(olddata);
+      this.tags.next(olddata.tags);
+      this.tagssync = olddata.ts;
+    }
+    this.syncTags();
   }
 
   private loadUserSettings(): void {
@@ -259,6 +279,13 @@ export class SettingsService {
 
   private settings: BehaviorSubject<UserSettings | null> = new BehaviorSubject<UserSettings | null>(null);
   settings$ = this.settings.asObservable();
+
+  private tags: BehaviorSubject<{ [key: number]: Tag }> = new BehaviorSubject<{ [key: number]: Tag }>({});
+  tags$ = this.tags.asObservable();
+
+  getTag(id: number): Tag | null {
+    return this.tags.value[id] ?? null;
+  }
 
   private user: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
   user$ = this.user.asObservable();
@@ -494,6 +521,25 @@ export class SettingsService {
     });
   }
 
+  private tagssynctimeout: any = null;
+  public syncTags(): void {
+    if (this.tagssynctimeout != null) {
+      clearTimeout(this.tagssynctimeout);
+      this.tagssynctimeout = null;
+    }
+    let url: string = this.config.api.baseUrl + '/tags' + (this.tagssync > 0 ? '/' + this.tagssync : '');
+    this.tagssync = Math.floor(Date.now() / 1000);
+    this.authService.queryApi(url).subscribe((reply) => {
+      if (reply.success && reply.payload != undefined) {
+        let response = <TagsResponse>reply.payload;
+        if (response.tags.length > 0)
+          this.updateTags(response.tags);
+      }
+      this.tagssynctimeout = setTimeout(() => { this.syncTags(); }, 30000);
+    });
+  }
+
+
   private worksynctimeout: any = null;
   private syncWork(): void {
     if (this.worksynctimeout != null) {
@@ -663,6 +709,12 @@ export class SettingsService {
     this.roles.next(temp);
   }
 
+  private updateTags(tags: Tag[]) {
+    let temp = { ...this.tags.value };
+    tags.forEach((a) => this._updateCommon(temp, a));
+    this.tags.next(temp);
+  }
+
   updateCase(item: Case): BehaviorSubject<Case | null> {
     let subject = new BehaviorSubject<Case | null>(null);
     this.postObject(item.id == 0 ? 'create' : 'update', item,
@@ -721,6 +773,13 @@ export class SettingsService {
     }
   }
 
+  updateTag(tag: Tag): BehaviorSubject<Tag | null> {
+    let subject = new BehaviorSubject<Tag | null>(null);
+    this.postCommon(tag.id == 0 ? 'create' : 'update', tag,
+      'tags', Object.values(this.tags.value), subject, (c: Tag[]) => this.updateTags(c));
+    return subject;
+  }
+
   updateUser(user: User, push: boolean = false) {
     this.user.next(user);
     this.updateSettings(user.settings, push);
@@ -751,6 +810,15 @@ export interface CasesStorage {
   casestatus: { [key: number]: CaseStatus };
   casetypes: { [key: number]: CaseType };
   ts: number;
+}
+
+export interface ClientSettings {
+  casesettings: ClientCaseSettings
+}
+
+export interface ClientCaseSettings {
+  showCasesInDeletion: boolean;
+  showCasesInRetention: boolean;
 }
 
 export interface CommonProperty {
@@ -791,13 +859,13 @@ export interface PartiesStorage {
   ts: number;
 }
 
-export interface ClientSettings {
-  casesettings: ClientCaseSettings
+export interface TagsResponse {
+  tags: Tag[];
 }
 
-export interface ClientCaseSettings {
-  showCasesInDeletion: boolean;
-  showCasesInRetention: boolean;
+export interface TagsStorage {
+  tags: Tag[];
+  ts: number;
 }
 
 export interface WorkResponse {
