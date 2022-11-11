@@ -74,6 +74,7 @@ import { WorkMonthComponent } from './work/work-month/work-month.component';
 import { WorkYearComponent } from './work/work-year/work-year.component';
 import { WorkComponent } from './work/work.component';
 import { IconComponent } from './utils/icon/icon.component';
+import { SorterIconComponent } from './utils/sorter-icon/sorter-icon.component';
 
 registerLocaleData(localeDe);
 
@@ -137,6 +138,7 @@ registerLocaleData(localeDe);
     WarehouseComponent,
     StorageRoomComponent,
     IconComponent,
+    SorterIconComponent,
   ],
   imports: [
     AppRoutingModule,
