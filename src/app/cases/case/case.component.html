@@ -9,28 +9,32 @@
             <li class="nav-item">
                 <a [ngClass]="[activeRouteChild == '' ? 'nav-link active text-primary' : 'nav-link text-muted']"
                     [routerLink]="['/case', case.id]">
-                    <i [ngClass]="[ config.icons['info'], 'me-1', 'd-none d-md-inline-block' ]"></i>
+                    <app-icon [iconClass]="config.icons['info']" [marginEnd]="1"
+                        addCssClasses="d-none d-md-inline-block"></app-icon>
                     {{ i18n('case.metacard.shorttitle') }}
                 </a>
             </li>
             <li class="nav-item ms-1" *ngIf="haschilds(case.id)">
                 <a [ngClass]="[activeRouteChild == 'childs' ? 'nav-link active text-primary' : 'nav-link text-muted']"
                     [routerLink]="['/case', case.id, 'childs']">
-                    <i [ngClass]="[ config.icons['cases'], 'me-1', 'd-none d-md-inline-block' ]"></i>
+                    <app-icon [iconClass]="config.icons['cases']" [marginEnd]="1"
+                        addCssClasses="d-none d-md-inline-block"></app-icon>
                     {{ i18n('case.childscard.title') }}
                 </a>
             </li>
             <li class="nav-item ms-1">
                 <a [ngClass]="[activeRouteChild == 'times' ? 'nav-link active text-primary' : 'nav-link text-muted']"
                     [routerLink]="['/case', case.id, 'times']">
-                    <i [ngClass]="[ config.icons['stopwatch'], 'me-1', 'd-none d-md-inline-block' ]"></i>
+                    <app-icon [iconClass]="config.icons['stopwatch']" [marginEnd]="1"
+                        addCssClasses="d-none d-md-inline-block"></app-icon>
                     {{ i18n('case.timecard.title') }}
                 </a>
             </li>
             <li class="nav-item ms-1">
                 <a [ngClass]="[activeRouteChild == 'files' ? 'nav-link active text-primary' : 'nav-link text-muted']"
                     [routerLink]="['/case', case.id, 'files']">
-                    <i [ngClass]="[ config.icons['folder'], 'me-1', 'd-none d-md-inline-block' ]"></i>
+                    <app-icon [iconClass]="config.icons['folder']" [marginEnd]="1"
+                        addCssClasses="d-none d-md-inline-block"></app-icon>
                     {{ i18n('case.filescard.title') }}
                 </a>
             </li>
@@ -216,8 +220,9 @@
                                         <input type="text" class="form-control-plaintext form-control-px"
                                             id="case-filecount" name="case-filecount"
                                             [value]="formatService.fnumber(case.filescount)" readonly>
-                                        <a [routerLink]="['/case', case.id, 'files']" class="btn btn-outline-secondary rounded"
-                                            type="button"><i [class]="config.icons['goto']"></i></a>
+                                        <a [routerLink]="['/case', case.id, 'files']"
+                                            class="btn btn-outline-secondary rounded" type="button"><i
+                                                [class]="config.icons['goto']"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -255,7 +260,7 @@
                                         <button class="btn btn-outline-secondary rounded dropdown-toggle" type="button"
                                             data-bs-toggle="dropdown" data-bs-auto-close="outside"
                                             aria-expanded="false">
-                                            <i [ngClass]="config.icons['edit']"></i>
+                                            <app-icon [iconClass]="config.icons['edit']"></app-icon>
                                         </button>
                                         <app-period-dropdown-menu [period]="case.period.minperiod"
                                             (changed)="case.period.minperiod = $event;updateCase();">
@@ -275,7 +280,7 @@
                                         <button class="btn btn-outline-secondary rounded dropdown-toggle" type="button"
                                             data-bs-toggle="dropdown" data-bs-auto-close="outside"
                                             aria-expanded="false">
-                                            <i [ngClass]="config.icons['edit']"></i>
+                                            <app-icon [iconClass]="config.icons['edit']"></app-icon>
                                         </button>
                                         <app-period-dropdown-menu [period]="case.period.period"
                                             (changed)="case.period.period = $event;updateCase();">
@@ -296,7 +301,7 @@
                                         <button class="btn btn-outline-secondary rounded dropdown-toggle" type="button"
                                             data-bs-toggle="dropdown" data-bs-auto-close="outside"
                                             aria-expanded="false">
-                                            <i [ngClass]="config.icons['edit']"></i>
+                                            <app-icon [iconClass]="config.icons['edit']"></app-icon>
                                         </button>
                                         <app-period-dropdown-menu [period]="case.period.terminationperiod"
                                             (changed)="case.period.terminationperiod = $event;updateCase();">

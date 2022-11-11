@@ -28,12 +28,13 @@
             </div>
         </ng-container>
     </div>
-    
+
 </div>
 
 <ng-template #itemTemplate let-item="item">
-    <a [ngClass]="{ 'list-group-item': true, 'has-childs': item.children && item.children.length }" [routerLink]="item.link">
-        <i [ngClass]="[ item.icon, 'me-1' ]"></i>
+    <a [ngClass]="{ 'list-group-item': true, 'has-childs': item.children && item.children.length }"
+        [routerLink]="item.link">
+        <app-icon [iconClass]="item.icon" [marginEnd]="1"></app-icon>
         {{ i18n(item.title) }}
         <span class="fs-7 ms-1" *ngIf="cache.itemcount[item.link]">[{{ cache.itemcount[item.link] }}]</span>
     </a>

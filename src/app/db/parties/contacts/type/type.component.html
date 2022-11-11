@@ -3,7 +3,6 @@
         [btn1css]="'btn btn-sm btn-outline-primary'" [btn1icon]="config.icons['go-left']" [btn1link]="'/db'"
         [btn2]="i18n('common.add')" [btn2css]="'btn btn-sm btn-outline-primary'" [btn2icon]="config.icons['add']"
         (btn2Clicked)="edit()">
-
     </app-h2>
 </div>
 
@@ -65,7 +64,7 @@
         <ng-container *ngFor="let item of ctypes; let i = index;">
             <div (click)="edit(item);" class="flex-table-body row pointer">
                 <div class="col-1 text-truncate">
-                    <i [class]="item.icon"></i>
+                    <app-icon [iconClass]="item.icon"></app-icon>
                 </div>
                 <div class="col-5 text-truncate">
                     {{ item.name }}

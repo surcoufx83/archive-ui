@@ -13,21 +13,21 @@
             </li>
             <a class="breadcrumb-item" [routerLink]="['/work', 'month', f(LastMonth, 'yyyy'), f(LastMonth, 'M')]">
               <button type="button" class="btn btn-sm btn-outline-primary">
-                <i [class]="config.icons['go-left'] + ' me-1'"></i>
+                <app-icon [iconClass]="config.icons['go-left']" [marginEnd]="1"></app-icon>
                 {{ f(LastMonth, 'MMM') }}
               </button>
             </a>
             <a *ngIf="!IsToday" class="breadcrumb-item"
               [routerLink]="['/work', 'month', f(today, 'yyyy'), f(today, 'M')]">
               <button type="button" class="btn btn-sm btn-primary">
-                <i [class]="config.icons['today'] + ' me-1'"></i>
+                <app-icon [iconClass]="config.icons['today']" [marginEnd]="1"></app-icon>
                 {{ f(today, 'MMM yy') }}
               </button>
             </a>
             <a class="breadcrumb-item" [routerLink]="['/work', 'month', f(NextMonth, 'yyyy'), f(NextMonth, 'M')]">
               <button type="button" class="btn btn-sm btn-outline-primary">
                 {{ f(NextMonth, 'MMM') }}
-                <i [class]="config.icons['go-right'] + ' ms-1'"></i>
+                <app-icon [iconClass]="config.icons['go-right']" addCssClasses="ms-1"></app-icon>
               </button>
             </a>
           </ol>
@@ -48,7 +48,7 @@
           <div class="card">
             <div class="card-header">
               <h5 class="mb-0">
-                <i [class]="config.icons['info'] + ' me-1'"></i>
+                <app-icon [iconClass]="config.icons['info']" [marginEnd]="1"></app-icon>
                 {{ i18n('workmonth.cards.target.title') }}
               </h5>
             </div>
@@ -80,7 +80,7 @@
           <div class="card">
             <div class="card-header">
               <h5 class="mb-0">
-                <i [class]="config.icons['stopwatch'] + ' me-1'"></i>
+                <app-icon [iconClass]="config.icons['stopwatch']" [marginEnd]="1"></app-icon>
                 {{ i18n('workmonth.cards.time.title') }}
               </h5>
             </div>
@@ -127,8 +127,9 @@
                 <button type="button" class="btn btn-sm btn-secondary"
                   (click)="usersettingsObj.view.calendar.showWeekend = !usersettingsObj.view.calendar.showWeekend; pushUserSettings();"
                   [title]="i18n('calendar.showWeekendTitle')">
-                  <i
-                    [class]="config.icons[usersettingsObj.view.calendar.showWeekend ? 'toggle-on' : 'toggle-off'] + ' me-1'"></i>
+                  <app-icon
+                    [iconClass]="config.icons[usersettingsObj.view.calendar.showWeekend ? 'toggle-on' : 'toggle-off']"
+                    [marginEnd]="1"></app-icon>
                   {{ i18n('calendar.showWeekend') }}
                 </button>
               </li>
@@ -148,8 +149,8 @@
                   <button type="button" [ngClass]="['btn btn-sm btn-outline-dark py-0', item.meta.obj.rowcolor]"
                     mwlDraggable [dropData]="{ event: item }" [touchStartLongPress]="{ delay: 300, delta: 30 }"
                     dragActiveClass="drag-active">
-                    <i *ngIf="item.meta.obj.icon !== ''"
-                      [ngClass]="[config.icons[item.meta.obj.icon] + ' ' + item.meta.obj.iconcolor, 'me-1']"></i>
+                    <app-icon [iconClass]="config.icons[item.meta.obj.icon]" [addCssClasses]="item.meta.obj.iconcolor"
+                      [marginEnd]="1" *ngIf="item.meta.obj.icon !== ''"></app-icon>
                     {{ item.title }}
                   </button>
                 </li>

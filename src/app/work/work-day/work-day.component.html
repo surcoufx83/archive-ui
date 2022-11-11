@@ -26,7 +26,7 @@
         <div class="card">
           <div class="card-header">
             <h5 class="mb-0">
-              <i [class]="config.icons['info'] + ' me-1'"></i>
+              <app-icon [iconClass]="config.icons['info']" [marginEnd]="1"></app-icon>
               {{ i18n('workday.daycard.title') }}
             </h5>
           </div>
@@ -117,7 +117,7 @@
                       </div>
                       <div>
                         <button class="btn btn-outline-danger" (click)="deleteBooking(item); $event.stopPropagation();">
-                          <i [class]="config.icons['delete']"></i>
+                          <app-icon [iconClass]="config.icons['delete']"></app-icon>
                         </button>
                       </div>
                     </div>
@@ -218,7 +218,8 @@
                           i18n('work.timecategories.' + category.name) }}</option>
                       </select>
                       <label class="input-group-text" for="tracking-category" *ngIf="booking.timecategory.icon">
-                        <i [class]="booking.timecategory.icon + ' ' + booking.timecategory.iconcolor"></i>
+                        <app-icon [iconClass]="booking.timecategory.icon"
+                          [addCssClasses]="booking.timecategory.iconcolor"></app-icon>
                       </label>
                     </div>
                   </div>
@@ -275,8 +276,7 @@
                 <div class="col-12 mb-3">
                   <div class="form-group">
                     <button type="submit" class="btn btn-primary" [disabled]="busy">
-                      <i [class]="config.icons['busy'] + ' me-1'" *ngIf="busy"></i>
-                      <i [class]="config.icons['save'] + ' me-1'" *ngIf="!busy"></i>
+                      <app-icon [iconClass]="config.icons[busy ? 'busy' : 'save']" [marginEnd]="1"></app-icon>
                       {{ i18n('common.save') }}
                     </button>
                   </div>
@@ -355,7 +355,8 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" #createCustomerModalCloser data-bs-dismiss="modal">{{i18n('common.cancel')}}</button>
+          <button type="button" class="btn btn-secondary" #createCustomerModalCloser
+            data-bs-dismiss="modal">{{i18n('common.cancel')}}</button>
           <button type="submit" class="btn btn-success"
             [disabled]="!createCustomer.get('name')!.dirty || !createCustomer.get('name')!.valid || createCustomer.get('busy')?.value">{{i18n('common.save')}}</button>
         </div>

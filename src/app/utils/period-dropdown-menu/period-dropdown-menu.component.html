@@ -1,10 +1,9 @@
 <ul class="dropdown-menu dropdown-menu-end pb-0" style="min-width: 200px;">
     <li class="dropdown-item" *ngIf="period">
         <div class="d-flex align-items-center justify-content-between">
-            <input type="number" id="case-period-minperiod-years"
-                name="case-period-minperiod-years" class="form-control text-end"
-                [(ngModel)]="period!.years" min="0" max="99"
-                style="width: 84px;" (change)="change();">
+            <input type="number" id="case-period-minperiod-years" name="case-period-minperiod-years"
+                class="form-control text-end" [(ngModel)]="period!.years" min="0" max="99" style="width: 84px;"
+                (change)="change();">
             <span class="ms-2">{{ i18n(period.years == 1 ?
                 'common.year' : 'common.years')
                 }}</span>
@@ -12,10 +11,9 @@
     </li>
     <li class="dropdown-item" *ngIf="period">
         <div class="d-flex align-items-center justify-content-between">
-            <input type="number" id="case-period-minperiod-months"
-                name="case-period-minperiod-months" class="form-control text-end"
-                [(ngModel)]="period!.months" min="0" max="99"
-                style="width: 84px;" (change)="change();">
+            <input type="number" id="case-period-minperiod-months" name="case-period-minperiod-months"
+                class="form-control text-end" [(ngModel)]="period!.months" min="0" max="99" style="width: 84px;"
+                (change)="change();">
             <span class="ms-2">{{ i18n(period.months == 1 ?
                 'common.month' : 'common.months')
                 }}</span>
@@ -23,10 +21,9 @@
     </li>
     <li class="dropdown-item" *ngIf="period">
         <div class="d-flex align-items-center justify-content-between">
-            <input type="number" id="case-period-minperiod-days"
-                name="case-period-minperiod-days" class="form-control text-end"
-                [(ngModel)]="period!.days" min="0" max="99"
-                style="width: 84px;" (change)="change();">
+            <input type="number" id="case-period-minperiod-days" name="case-period-minperiod-days"
+                class="form-control text-end" [(ngModel)]="period!.days" min="0" max="99" style="width: 84px;"
+                (change)="change();">
             <span class="ms-2">{{ i18n(period.days == 1 ?
                 'common.day' : 'common.days')
                 }}</span>
@@ -37,10 +34,9 @@
     </li>
     <li class="dropdown-item" *ngIf="period">
         <div class="d-flex align-items-center justify-content-between">
-            <input type="number" id="case-period-minperiod-hours"
-                name="case-period-minperiod-hours" class="form-control text-end"
-                [(ngModel)]="period!.hours" min="0" max="99"
-                style="width: 84px;" (change)="change();">
+            <input type="number" id="case-period-minperiod-hours" name="case-period-minperiod-hours"
+                class="form-control text-end" [(ngModel)]="period!.hours" min="0" max="99" style="width: 84px;"
+                (change)="change();">
             <span class="ms-2">{{ i18n(period.hours == 1 ?
                 'common.hour' : 'common.hours')
                 }}</span>
@@ -48,10 +44,9 @@
     </li>
     <li class="dropdown-item" *ngIf="period">
         <div class="d-flex align-items-center justify-content-between">
-            <input type="number" id="case-period-minperiod-minutes"
-                name="case-period-minperiod-minutes" class="form-control text-end"
-                [(ngModel)]="period!.minutes" min="0" max="99"
-                style="width: 84px;" (change)="change();">
+            <input type="number" id="case-period-minperiod-minutes" name="case-period-minperiod-minutes"
+                class="form-control text-end" [(ngModel)]="period!.minutes" min="0" max="99" style="width: 84px;"
+                (change)="change();">
             <span class="ms-2">{{ i18n(period.minutes == 1 ?
                 'common.minute' : 'common.minutes')
                 }}</span>
@@ -59,10 +54,9 @@
     </li>
     <li class="dropdown-item" *ngIf="period">
         <div class="d-flex align-items-center justify-content-between">
-            <input type="number" id="case-period-minperiod-seconds"
-                name="case-period-minperiod-seconds" class="form-control text-end"
-                [(ngModel)]="period!.seconds" min="0" max="99"
-                style="width: 84px;" (change)="change();">
+            <input type="number" id="case-period-minperiod-seconds" name="case-period-minperiod-seconds"
+                class="form-control text-end" [(ngModel)]="period!.seconds" min="0" max="99" style="width: 84px;"
+                (change)="change();">
             <span class="ms-2">{{ i18n(period.seconds == 1 ?
                 'common.second' : 'common.seconds')
                 }}</span>
@@ -71,9 +65,9 @@
     <li *ngIf="period">
         <hr class="dropdown-divider mb-0">
     </li>
-    <li class="dropdown-item list-group-item-danger py-2 pointer text-center"
-        (click)="period = {}; change();" *ngIf="period">
-        <i [ngClass]="config.icons['x'] + ' me-1'"></i>
+    <li class="dropdown-item list-group-item-danger py-2 pointer text-center" (click)="period = {}; change();"
+        *ngIf="period">
+        <app-icon [iconClass]="config.icons['x']" [marginEnd]="1"></app-icon>
         {{ i18n('common.delete') }}
     </li>
 </ul>
