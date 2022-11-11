@@ -120,7 +120,6 @@ export class CaseComponent implements OnInit {
         this.case.period.terminationperiod = this.case.period.terminationperiod ?? {};
         let url = `${this.config.api.baseUrl}/case/${this.case.id}/files`;
         this.authService.queryApi(url).subscribe((reply) => {
-          console.log(reply)
           if (reply.success && reply.payload && reply.payload['files']) {
             this.casefiles = <File[]>reply.payload['files'];
           }
