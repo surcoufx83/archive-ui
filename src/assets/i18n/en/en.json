@@ -3,6 +3,10 @@
     "apiError": {
       "title": "Error",
       "message": "Error retrieving data: {0}"
+    },
+    "notModified": {
+      "title": "Info",
+      "message": "Keine Anderungen vorgenommen: {0}"
     }
   },
   "calendar": {
@@ -455,6 +459,8 @@
       "deleted": "Deleted",
       "size": "File size",
       "pages": "Page count",
+      "tags": "Tags",
+      "tagsInputPlaceholder": "Beliebigen Tag eingeben...",
       "words": "Word count"
     },
     "classify": {
