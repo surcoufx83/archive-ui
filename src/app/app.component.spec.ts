@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { AuthService } from './auth.service';
 import { AppConfig, ConfigService } from './config.service';
 import { I18nService } from './i18n.service';
+import { IconComponent } from './utils/icon/icon.component';
 import { ToastContainerComponent } from './utils/toast-container/toast-container.component';
 import { ToastComponent } from './utils/toast/toast.component';
 
@@ -34,6 +35,7 @@ describe('AppComponent', () => {
                 ToastContainerComponent,
                 ToastComponent,
                 AppComponent,
+                IconComponent,
             ]
         }).compileComponents();
         mockAuthService = TestBed.inject(AuthService);
@@ -107,7 +109,7 @@ describe('AppComponent', () => {
         let navitem1 = navitems[0].query(By.css('a'));
         expect(navitem1.nativeElement).toHaveClass('active');
         expect(navitem1.nativeElement.href).toEqual(`${document.baseURI}foo`);
-        expect(navitem1.query(By.css('i')).nativeElement).toHaveClass('bar');
+        expect(navitem1.query(By.css('app-icon > i')).nativeElement).toHaveClass('bar');
         expect(navitem1.query(By.css('span')).nativeElement.textContent.trim()).toEqual('Foo Bar!');
         component.routeUrl = '/foo';
         fixture.detectChanges();
@@ -115,14 +117,14 @@ describe('AppComponent', () => {
         let navitem2 = navitems[1].query(By.css('a'));
         expect(navitem2.nativeElement).toHaveClass('active');
         expect(navitem2.nativeElement.href).toEqual(`${document.baseURI}search`);
-        expect(navitem2.query(By.css('i')).nativeElement).toHaveClass('foo-search');
+        expect(navitem2.query(By.css('app-icon > i')).nativeElement).toHaveClass('foo-search');
         expect(navitem2.query(By.css('span')).nativeElement.textContent.trim()).toEqual('submit');
         component.routeUrl = '/search';
         fixture.detectChanges();
         expect(navitem2.nativeElement).not.toHaveClass('active');
         expect(fixture.debugElement.query(By.css('header > nav > div.container-fluid > div:nth-child(2) > form'))).toBeTruthy();
         let form = fixture.debugElement.query(By.css('header > nav > div.container-fluid > div:nth-child(2) > form'));
-        expect(form.query(By.css('div > label > i')).nativeElement).toHaveClass('foo-search');
+        expect(form.query(By.css('div > label > app-icon > i')).nativeElement).toHaveClass('foo-search');
         expect(form.query(By.css('div > input')).nativeElement.placeholder).toEqual('placeholder');
         expect(form.query(By.css('div > input')).nativeElement.value).toEqual('');
         expect(form.query(By.css('div > button')).nativeElement.textContent.trim()).toEqual('submit');

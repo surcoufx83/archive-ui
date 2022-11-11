@@ -6,11 +6,10 @@
       <div class="container-fluid d-flex justify-content-between">
         <div>
           <ul class="navbar-nav">
-            <li class="nav-item mx-1"
-                *ngFor="let item of config.navbar.items; let i = index">
+            <li class="nav-item mx-1" *ngFor="let item of config.navbar.items; let i = index">
               <a [class]="'nav-link d-flex flex-column align-items-center ' + (routeUrl != item.link ? 'active' : '')"
-                 [routerLink]="item.link">
-                <i [class]="config.icons[item.icon]"></i>
+                [routerLink]="item.link">
+                <app-icon [iconClass]="config.icons[item.icon]"></app-icon>
                 <span class="d-none d-md-inline">
                   {{ i18n(item.title) }}
                 </span>
@@ -18,8 +17,8 @@
             </li>
             <li class="nav-item mx-1 d-list-item d-lg-none">
               <a [class]="'nav-link d-flex flex-column align-items-center ' + (routeUrl != '/search' ? 'active' : '')"
-                 [routerLink]="'/search'">
-                <i [class]="config.icons['search']"></i>
+                [routerLink]="'/search'">
+                <app-icon [iconClass]="config.icons['search']"></app-icon>
                 <span class="d-none d-md-inline">
                   {{ i18n('navbar.search.submit') }}
                 </span>
@@ -31,11 +30,11 @@
           <form (submit)="submitSearch()">
             <div class="input-group">
               <label class="input-group-text" id="navbar-main-search-label" for="navbar-main-search-input">
-                <i [class]="config.icons['search']"></i>
+                <app-icon [iconClass]="config.icons['search']"></app-icon>
               </label>
               <input type="text" class="form-control form-control-sm" [placeholder]="i18n('navbar.search.placeholder')"
-                aria-describedby="navbar-main-search-label" id="navbar-main-search-input" name="navbar-main-search-input"
-                [(ngModel)]="searchphrase">
+                aria-describedby="navbar-main-search-label" id="navbar-main-search-input"
+                name="navbar-main-search-input" [(ngModel)]="searchphrase">
               <button class="btn btn-sm btn-secondary" type="submit">
                 {{ i18n('navbar.search.submit') }}
               </button>
