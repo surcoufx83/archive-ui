@@ -13,6 +13,7 @@ import { FormatService } from 'src/app/utils/format.service';
 export class FileListItemComponent {
 
   @Input() file!: File;
+  @Input() gotoButton: boolean = false;
   @Input() relevance: number|null = null;
   @Input() showButtons: boolean = true;
   @Output() downloadClicked = new EventEmitter();

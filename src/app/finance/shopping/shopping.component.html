@@ -25,7 +25,7 @@
     <div class="card">
         <div class="card-header text-truncate">
             <h6 class="mb-0">
-                <i [ngClass]="['me-1', item.article.icon]" *ngIf="item.article.icon"></i>
+                <app-icon [iconClass]="item.article.icon" [marginEnd]="1" *ngIf="item.article.icon"></app-icon>
                 {{ item.article.name }}
             </h6>
         </div>

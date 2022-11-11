@@ -244,6 +244,7 @@
       "pickOne": " Please choose"
     },
     "switchTo": "Switch to",
+    "today": "Today",
     "warn": {
       "formInvalid": {
         "title": "Warning",
@@ -515,6 +516,12 @@
     "readings": {
       "title": "Counters",
       "readingsLink": "Meter reading capture"
+    "special": {
+      "title": "Additional functions",
+      "notepadLink": "Notepad",
+      "warehouseLink": "Storage",
+      "movingBoxesLink": "Moving boxes",
+      "wineCellarLink": "Wine cellar"
     },
     "stats": {
       "title": "Quick Stats...",

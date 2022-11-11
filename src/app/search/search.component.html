@@ -34,12 +34,13 @@
           <div class="col-12 col-md-9 col-lg-6">
             <div class="form-group">
               <button type="submit" class="form-control btn btn-primary" [disabled]="busy">
-                <i [class]="config.icons['busy'] + ' me-1'" *ngIf="busy"></i>
+                <app-icon [iconClass]="config.icons['busy']" [marginEnd]="1" *ngIf="busy"></app-icon>
                 {{ i18n('search.setup.runSearch') }}
               </button>
             </div>
             <div class="form-group mt-3 text-center fs-8">
-              <a target="_blank" href="https://mariadb.com/kb/en/full-text-index-overview/#in-boolean-mode">{{ i18n('search.setup.helpSearching') }}</a>
+              <a target="_blank" href="https://mariadb.com/kb/en/full-text-index-overview/#in-boolean-mode">{{
+                i18n('search.setup.helpSearching') }}</a>
             </div>
           </div>
         </div>
@@ -58,7 +59,8 @@
             <ui-busy-indicator *ngIf="busy"></ui-busy-indicator>
             <button type="button" class="btn btn-sm btn-secondary" (click)="showHistoric = !showHistoric;"
               [title]="i18n('search.result.showHistoricTooltip')">
-              <i [class]="config.icons[showHistoric ? 'toggle-on' : 'toggle-off'] + ' me-1'"></i>
+              <app-icon [iconClass]="config.icons[showHistoric ? 'toggle-on' : 'toggle-off']" [marginEnd]="1">
+              </app-icon>
               {{ i18n('search.result.showHistoric') }}
             </button>
           </li>
@@ -126,7 +128,8 @@
       <ul class="list-group" *ngIf="searchresults.directories">
         <a class="list-group-item" *ngFor="let item of searchresults.directories;"
           [routerLink]="['/dir', item.directory.id]">
-          <span class="badge bg-light text-dark fw-lighter d-none d-lg-inline-block">{{ i18n('search.result.points', ['' + (item.relevance |
+          <span class="badge bg-light text-dark fw-lighter d-none d-lg-inline-block">{{ i18n('search.result.points', [''
+            + (item.relevance |
             number)]) }}</span>
           {{ item.directory.relpath }}
         </a>
@@ -139,10 +142,8 @@
         ''+resultgroupcount['files']), i18n('search.result.group.files')]) }}</h4>
       <ul class="list-group" *ngIf="searchresults.files">
         <file-list-item *ngFor="let item of searchresults.files;" [file]="item.file" [relevance]="item.relevance"
-          (clicked)="router.navigate(['/file', item.file.id])"
-          (downloadClicked)="download(item)"
-          (previewClicked)="router.navigate(['/file', item.file.id, 'preview'])"
-        ></file-list-item>
+          (clicked)="router.navigate(['/file', item.file.id])" (downloadClicked)="download(item)"
+          (previewClicked)="router.navigate(['/file', item.file.id, 'preview'])"></file-list-item>
       </ul>
     </div>
 
@@ -152,10 +153,8 @@
         ''+resultgroupcount['pages']), i18n('search.result.group.pages')]) }}</h4>
       <ul class="list-group" *ngIf="searchresults.pages">
         <file-list-item *ngFor="let item of searchresults.pages;" [file]="item.file" [relevance]="item.relevance"
-          (clicked)="router.navigate(['/file', item.file.id])"
-          (downloadClicked)="download(item)"
-          (previewClicked)="router.navigate(['/file', item.file.id, 'preview'])"
-        ></file-list-item>
+          (clicked)="router.navigate(['/file', item.file.id])" (downloadClicked)="download(item)"
+          (previewClicked)="router.navigate(['/file', item.file.id, 'preview'])"></file-list-item>
       </ul>
     </div>
 
@@ -165,7 +164,8 @@
         ''+resultgroupcount['notes']), i18n('search.result.group.notes')]) }}</h4>
       <ul class="list-group" *ngIf="searchresults.notes">
         <a class="list-group-item" *ngFor="let item of searchresults.notes;" [routerLink]="['/notepad', item.note.id]">
-          <span class="badge bg-light text-dark fw-lighter d-none d-lg-inline-block">{{ i18n('search.result.points', ['' + (item.relevance |
+          <span class="badge bg-light text-dark fw-lighter d-none d-lg-inline-block">{{ i18n('search.result.points', [''
+            + (item.relevance |
             number)]) }}</span>
           {{ item.note.title }}
         </a>

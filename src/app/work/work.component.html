@@ -4,9 +4,8 @@
       <ul class="navbar-nav">
         <ng-container *ngFor="let item of config.navbar.workitems; let i = index">
           <li class="nav-item mx-2" *ngIf="onShowLink(item)">
-            <a [class]="'nav-link ' + (routeUrl == item.link ? 'active' : '')"
-               [routerLink]="item.link">
-              <i [class]="config.icons[item.icon] + ' me-1'"></i>
+            <a [class]="'nav-link ' + (routeUrl == item.link ? 'active' : '')" [routerLink]="item.link">
+              <app-icon [iconClass]="config.icons[item.icon]" [marginEnd]="1"></app-icon>
               <span class="d-none d-md-inline">
                 {{ i18n(item.title) }}
               </span>

@@ -5,7 +5,7 @@ import { AuthService } from '../../auth.service';
 import { SettingsService } from '../../user/settings/settings.service';
 
 import { ViewportScroller } from '@angular/common';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { RecentBooking, UserSettings, WorkCustomer, WorkDay, WorkDayBooking, WorkProject, WorkProperties, WorkTimeCategory } from 'src/app/if';
 import { AppConfig, ConfigService } from '../../config.service';
 import { I18nService } from '../../i18n.service';
@@ -34,9 +34,9 @@ export class WorkDayComponent implements OnInit {
   usersettingsObj: UserSettings | null = null;
   workprops: WorkProperties | null = null;
 
-  createCustomer = new FormGroup({
-    'name': new FormControl('', { validators: Validators.required }),
-    'busy': new FormControl(false)
+  createCustomer = new UntypedFormGroup({
+    'name': new UntypedFormControl('', { validators: Validators.required }),
+    'busy': new UntypedFormControl(false)
   });
 
   constructor(private authService: AuthService,

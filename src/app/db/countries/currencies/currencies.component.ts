@@ -85,7 +85,11 @@ export class DbCurrenciesComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  sort(): void {
+  sort(field?: string, asc?: boolean): void {
+    if (field != undefined)
+      this.sortBy = field;
+    if (asc != undefined)
+      this.sortAsc = asc;
     switch (this.sortBy) {
 
       case 'shortname':

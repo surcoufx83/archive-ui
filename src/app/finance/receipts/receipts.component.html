@@ -170,7 +170,7 @@
                         <ng-container *ngIf="item.articleid && article(item.articleid)">
                             <button type="button" class="btn btn-sm btn-outline-secondary border-0 me-2"
                                 (click)="selectedReceipt.items.splice(i, 1);">
-                                <i [class]="config.icons['delete']"></i>
+                                <app-icon [iconClass]="config.icons['delete']"></app-icon>
                             </button>
                             <div>
                                 <ng-container *ngTemplateOutlet="receiptArticle; context: { 'item': item }">
@@ -312,7 +312,7 @@
             <ng-container *ngIf="article(receiptitem.articleid)!.ean">,
                 {{ article(receiptitem.articleid)!.ean }}</ng-container>
             <ng-container *ngIf="article(receiptitem.articleid)!.organic">,
-                <i [class]="config.icons['organic']"></i>
+                <app-icon [iconClass]="config.icons['organic']"></app-icon>
                 {{ i18n('receipts.items.organic') }}
             </ng-container>)
         </span>

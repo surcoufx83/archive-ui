@@ -79,7 +79,11 @@ export class DbContactTypeComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  sort(): void {
+  sort(field?: string, asc?: boolean): void {
+    if (field != undefined)
+      this.sortBy = field;
+    if (asc != undefined)
+      this.sortAsc = asc;
     switch (this.sortBy) {
       case 'i18nname':
         this.ctypes.sort((a, b) => { return (a.i18nname > b.i18nname ? 1 : a.i18nname < b.i18nname ? -1 : 0) * (this.sortAsc ? 1 : -1) });

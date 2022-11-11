@@ -11,7 +11,7 @@
             [icon]="config.icons['meter']" [link]="'/meter'"></app-button>
           <button type="button" class="btn btn-sm btn-outline-primary" (click)="newRecord()" data-bs-toggle="modal"
             data-bs-target="#exampleModal">
-            <i [ngClass]="config.icons['add']"></i>
+            <app-icon [iconClass]="config.icons['add']"></app-icon>
             {{ i18n('common.add') }}
           </button>
         </ol>
@@ -46,7 +46,7 @@
     <div class="card pointer" (click)="showmeter[meteritem.id] = !showmeter[meteritem.id]">
       <div class="card-header text-truncate px-2 py-1 border-bottom-0">
         <h6 class="mb-0 user-select-none">
-          <i [class]="config.icons[showmeter[meteritem.id] ? 'check' : 'check-no']"></i>
+          <app-icon [iconClass]="config.icons[showmeter[meteritem.id] ? 'check' : 'check-no']"></app-icon>
           <strong class="ms-1">{{ meteritem?.name }}</strong>
           <span class="fs-8 ms-2" *ngIf="meteritem?.number != ''">{{ meteritem?.number }}</span>
         </h6>
@@ -123,7 +123,7 @@
         <div class="modal-footer justify-content-between">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ i18n('common.cancel') }}</button>
             <button type="submit" class="btn btn-success" [disabled]="saving">
-              <i [class]="config.icons[saving ? 'busy' : 'save']"></i>
+              <app-icon [iconClass]="config.icons[saving ? 'busy' : 'save']"></app-icon>
               {{ i18n('common.save') }}
             </button>
         </div>
