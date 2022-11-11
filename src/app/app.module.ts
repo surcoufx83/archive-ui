@@ -73,6 +73,7 @@ import { WorkDayComponent } from './work/work-day/work-day.component';
 import { WorkMonthComponent } from './work/work-month/work-month.component';
 import { WorkYearComponent } from './work/work-year/work-year.component';
 import { WorkComponent } from './work/work.component';
+import { IconComponent } from './utils/icon/icon.component';
 
 registerLocaleData(localeDe);
 
@@ -135,6 +136,7 @@ registerLocaleData(localeDe);
     DummyComponent,
     WarehouseComponent,
     StorageRoomComponent,
+    IconComponent,
   ],
   imports: [
     AppRoutingModule,
