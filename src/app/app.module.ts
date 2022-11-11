@@ -47,6 +47,7 @@ import { ReadingsComponent } from './meters/readings/readings.component';
 import { NotepadComponent } from './notepad/notepad.component';
 import { SearchComponent } from './search/search.component';
 import { ButtonComponent } from './utils/button/button.component';
+import { DummyComponent } from './utils/dummy/dummy.component';
 import { H2Component } from './utils/h2/h2.component';
 import { H3Component } from './utils/h3/h3.component';
 import { H4Component } from './utils/h4/h4.component';
@@ -57,6 +58,8 @@ import { ToastComponent } from './utils/toast/toast.component';
 import { ToastsService } from './utils/toasts.service';
 import { UiBusyIndicatorComponent } from './utils/ui-busy-indicator/ui-busy-indicator.component';
 import { UiCenteredBusyIndicatorComponent } from './utils/ui-centered-busy-indicator/ui-centered-busy-indicator.component';
+import { StorageRoomComponent } from './warehouse/storage-room/storage-room.component';
+import { WarehouseComponent } from './warehouse/warehouse.component';
 import { WorkLeadComponent } from './work/leads/lead/lead.component';
 import { WorkLeadsComponent } from './work/leads/leads.component';
 import { WorkCalendarComponent } from './work/settings/calendar/calendar.component';
@@ -70,7 +73,6 @@ import { WorkDayComponent } from './work/work-day/work-day.component';
 import { WorkMonthComponent } from './work/work-month/work-month.component';
 import { WorkYearComponent } from './work/work-year/work-year.component';
 import { WorkComponent } from './work/work.component';
-import { DummyComponent } from './utils/dummy/dummy.component';
 
 registerLocaleData(localeDe);
 
@@ -131,6 +133,8 @@ registerLocaleData(localeDe);
     AccountsComponent,
     ReadingsComponent,
     DummyComponent,
+    WarehouseComponent,
+    StorageRoomComponent,
   ],
   imports: [
     AppRoutingModule,

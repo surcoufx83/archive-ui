@@ -513,6 +513,13 @@
       "title": "Zähler",
       "readingsLink": "Erfassung von Zählerständen"
     },
+    "special": {
+      "title": "Zusatzfunktionen",
+      "notepadLink": "Notepad",
+      "warehouseLink": "Lager",
+      "movingBoxesLink": "Umzugskartons",
+      "wineCellarLink": "Weinkeller"
+    },
     "stats": {
       "title": "Schnelle Statistiken...",
       "files1": "Das Archiv verwaltet aktuell {0} Dateien in {1} Verzeichnissen mit insgesamt {2}.",

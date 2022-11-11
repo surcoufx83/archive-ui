@@ -37,6 +37,8 @@ import { WorkDayComponent } from './work/work-day/work-day.component';
 import { WorkMonthComponent } from './work/work-month/work-month.component';
 import { WorkComponent } from './work/work.component';
 import { DummyComponent } from './utils/dummy/dummy.component';
+import { WarehouseComponent } from './warehouse/warehouse.component';
+import { StorageRoomComponent } from './warehouse/storage-room/storage-room.component';
 
 const routes: Routes = [
   { path: 'account', component: AccountComponent, canActivate: [SessionGuard] },
@@ -90,6 +92,8 @@ const routes: Routes = [
   { path: 'search/:phrase/:token', component: SearchComponent, canActivate: [SessionGuard], pathMatch: 'full' },
   { path: 'search/:phrase', component: SearchComponent, canActivate: [SessionGuard], pathMatch: 'full' },
   { path: 'search', component: SearchComponent, canActivate: [SessionGuard], pathMatch: 'full' },
+  { path: 'warehouse/:room', component: StorageRoomComponent, canActivate: [SessionGuard] },
+  { path: 'warehouse', component: WarehouseComponent, pathMatch: 'full', canActivate: [SessionGuard] },
   {
     path: 'work', component: WorkComponent, canActivate: [SessionGuard], children: [
       { path: '', redirectTo: 'today', pathMatch: 'full' },

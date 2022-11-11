@@ -91,6 +91,36 @@
         <div class="card">
           <div class="card-header">
             <h5 class="mb-0">
+              {{ i18n('home.special.title') }}
+            </h5>
+          </div>
+          <div class="card-body p-0">
+            <ul class="list-group list-group-flush rounded">
+              <a class="list-group-item" [routerLink]="'/notepad'">
+                <i [class]="config.icons['notepad'] + ' me-1'"></i>
+                {{ i18n('home.special.notepadLink') }}
+              </a>
+              <a class="list-group-item" [routerLink]="'/warehouse'">
+                <i [class]="config.icons['warehouse'] + ' me-1'"></i>
+                {{ i18n('home.special.warehouseLink') }}
+              </a>
+              <a class="list-group-item" [routerLink]="'/warehouse/moving'">
+                <i [class]="config.icons['moving-boxes'] + ' me-1'"></i>
+                {{ i18n('home.special.movingBoxesLink') }}
+              </a>
+              <a class="list-group-item" [routerLink]="'/warehouse/wine'">
+                <i [class]="config.icons['wine'] + ' me-1'"></i>
+                {{ i18n('home.special.wineCellarLink') }}
+              </a>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">
               {{ i18n('home.database.title') }}
             </h5>
           </div>

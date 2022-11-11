@@ -507,6 +507,13 @@
     "inbox": {
       "title": "New Documents"
     },
+    "special": {
+      "title": "Additional functions",
+      "notepadLink": "Notepad",
+      "warehouseLink": "Storage",
+      "movingBoxesLink": "Moving boxes",
+      "wineCellarLink": "Wine cellar"
+    },
     "stats": {
       "title": "Quick Stats...",
       "files1": "The archive currently manages {0} files in {1} directories with a total of {2}.",
