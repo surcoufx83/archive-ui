@@ -19,9 +19,9 @@
             </a>
             <a *ngIf="!IsToday" class="breadcrumb-item"
               [routerLink]="['/work', 'month', f(today, 'yyyy'), f(today, 'M')]">
-              <button type="button" class="btn btn-sm btn-primary">
-                <app-icon [iconClass]="config.icons['today']" [marginEnd]="1"></app-icon>
-                {{ f(today, 'MMM yy') }}
+              <button type="button" class="btn btn-sm btn-outline-primary">
+                <app-icon [iconClass]="config.icons['rotate-left']" [marginEnd]="1"></app-icon>
+                {{ i18n('common.today') }}
               </button>
             </a>
             <a class="breadcrumb-item" [routerLink]="['/work', 'month', f(NextMonth, 'yyyy'), f(NextMonth, 'M')]">

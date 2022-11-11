@@ -239,6 +239,7 @@
       "pickOne": " Please choose"
     },
     "switchTo": "Switch to",
+    "today": "Today",
     "warn": {
       "formInvalid": {
         "title": "Warning",

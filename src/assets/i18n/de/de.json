@@ -241,6 +241,7 @@
       "pickOne": " Bitte wählen "
     },
     "switchTo": "Wechseln zu",
+    "today": "Heute",
     "warn": {
       "formInvalid": {
         "title": "Warnung",
