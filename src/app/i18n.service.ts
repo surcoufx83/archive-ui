@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { de } from 'date-fns/locale';
+import { Injectable } from '@angular/core';
 import { Locale } from 'date-fns';
+import { de } from 'date-fns/locale';
+import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ToastsService } from './utils/toasts.service';
-import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'

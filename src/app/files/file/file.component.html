@@ -7,20 +7,20 @@
       <div class="ps-3 mb-2 d-flex" *ngIf="file.fileexists">
         <a [routerLink]="['/file', file.id]" *ngIf="view === 'preview'" class="text-decoration-none ms-3 ms-lg-1">
           <button type="button" class="form-control btn-sm btn-secondary text-nowrap">
-            <i [class]="config.icons['go-left']"></i>
+            <app-icon [iconClass]="config.icons['go-left']"></app-icon>
             <span class="d-none d-lg-inline ms-1">{{ i18n('common.back') }}</span>
           </button>
         </a>
         <a [routerLink]="['/file', file.id, 'preview']" *ngIf="view !== 'preview' && displayable"
           class="text-decoration-none ms-3 ms-lg-1">
           <button type="button" class="form-control btn-sm btn-secondary text-nowrap">
-            <i [class]="config.icons['preview']"></i>
+            <app-icon [iconClass]="config.icons['preview']"></app-icon>
             <span class="d-none d-lg-inline ms-1">{{ i18n('file.previewButton') }}</span>
           </button>
         </a>
         <a (click)="download()" *ngIf="downloadable" class="text-decoration-none ms-3 ms-lg-1">
           <button type="button" class="form-control btn-sm btn-secondary text-nowrap">
-            <i [class]="config.icons['download']"></i>
+            <app-icon [iconClass]="config.icons['download']"></app-icon>
             <span class="d-none d-lg-inline ms-1">{{ i18n('file.downloadButton') }}</span>
           </button>
         </a>
@@ -127,11 +127,11 @@
             <div class="d-flex">
               <button type="button" class="form-control btn-sm btn-secondary text-nowrap"
                 (click)="file.classifyDisabled = !file.classifyDisabled; changes['classifyDisabled'] = file.classifyDisabled; submitFile();">
-                <i [class]="config.icons[file.classifyDisabled ? 'toggle-on' : 'toggle-off']"></i>
+                <app-icon [iconClass]="config.icons[file.classifyDisabled ? 'toggle-on' : 'toggle-off']"></app-icon>
               </button>
               <button type="button" class="form-control btn-sm btn-primary text-nowrap ms-3 ms-lg-1"
                 (click)="nextFile()" [disabled]="busy">
-                <i [class]="config.icons[updating ? 'busy' : 'go-right']"></i>
+                <app-icon [iconClass]="config.icons[updating ? 'busy' : 'go-right']"></app-icon>
                 <span class="d-none d-lg-inline ms-1">{{ i18n('file.classify.nextFile') }}</span>
               </button>
             </div>
@@ -170,8 +170,7 @@
                         </select>
                         <button type="button" class="btn btn-sm btn-success text-nowrap" (click)="guess()"
                           [disabled]="guessing">
-                          <i class="fa-solid fa-fingerprint" *ngIf="!guessing"></i>
-                          <i [class]="config.icons['busy']" *ngIf="guessing"></i>
+                          <app-icon [iconClass]="config.icons[guessing ? 'busy' : 'fingerprint']"></app-icon>
                         </button>
                       </div>
                       <label class="form-label text-primary pointer mt-2 text-truncate" *ngIf="ai_classifiedAs"
@@ -325,7 +324,7 @@
                 <div class="ms-3 ms-lg-4">
                   <button type="button" class="form-control btn-sm btn-outline-danger text-nowrap"
                     (click)="showMoveToFolderBrowser = true;" [disabled]="busy">
-                    <i [class]="config.icons[updating ? 'busy' : 'copy']"></i>
+                    <app-icon [iconClass]="config.icons[updating ? 'busy' : 'copy']"></app-icon>
                     <span class="ms-1">{{ i18n('file.housekeeping.move.btn') }}</span>
                   </button>
                 </div>
@@ -343,7 +342,7 @@
                 <div class="ms-3 ms-lg-4">
                   <button type="button" class="form-control btn-sm btn-outline-danger text-nowrap"
                     (click)="delete(file)" [disabled]="busy">
-                    <i [class]="config.icons[updating ? 'busy' : 'delete']"></i>
+                    <app-icon [iconClass]="config.icons[updating ? 'busy' : 'delete']"></app-icon>
                     <span class="ms-1">{{ i18n('file.housekeeping.delete.btn') }}</span>
                   </button>
                 </div>

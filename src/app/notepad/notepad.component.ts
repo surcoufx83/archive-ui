@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { format } from 'date-fns';
+import { Note, UserSettings } from 'src/app/if';
 import { AuthService } from '../auth.service';
 import { AppConfig, ConfigService } from '../config.service';
 import { I18nService } from '../i18n.service';
-import { Settings } from '../user/settings/settings';
 import { SettingsService } from '../user/settings/settings.service';
 import { FormatService } from '../utils/format.service';
-import { Note } from './note';
 
 @Component({
   selector: 'app-notepad',
@@ -26,7 +25,7 @@ export class NotepadComponent implements OnInit {
   saving: boolean = false;
   sortasc: boolean = false;
   sortby: string = 'edit';
-  usersettingsObj: Settings|null = null;
+  usersettingsObj: UserSettings|null = null;
 
   constructor(private authService: AuthService,
     private configService: ConfigService,

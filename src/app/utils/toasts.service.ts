@@ -40,7 +40,8 @@ export class ToastsService {
       icon: 'fa-solid fa-triangle-exclamation',
       message: message,
       title: title,
-      type: 'error'
+      type: 'error',
+      when: new Date()
     });
   }
 

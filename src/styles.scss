@@ -4,6 +4,11 @@
 
 @import "../node_modules/angular-calendar/css/angular-calendar.css";
 
+@font-face {
+  font-family: "PlayfairDisplay";
+  src: url("/assets/PlayfairDisplay-VariableFont_wght.ttf");
+}
+
 .bg-dark {
   .form-control {
     background-color: $secondary;
@@ -64,9 +69,16 @@
 
   &.flex-table-sm .row {
     >div {
-      padding: .25rem .25rem !important;
+      padding: .25rem .25rem;
     }
   }
+
+  &.hover {
+    .flex-table-body.row:hover {
+      background-color: #dee2e6;
+    }
+  }
+
 }
 
 form {
@@ -130,6 +142,13 @@ form {
     width: 1%;
     min-width: 0;
   }
+}
+
+.fix-border.list-group-item:first-child {
+    border-top-width: 0!important;
+}
+.fix-border.list-group-item:last-child {
+    border-bottom-width: 0!important;
 }
 
 .fs-7 {
@@ -230,6 +249,10 @@ pre {
 
 .rounded-0 {
   border-radius: 0 !important;
+}
+
+.text-serif {
+  font-family: "PlayfairDisplay";
 }
 
 .ws-pre-wrap {

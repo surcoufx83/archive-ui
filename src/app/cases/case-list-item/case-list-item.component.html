@@ -12,19 +12,19 @@
         </div>
         <div class="fs-8 text-wrap text-break text-muted">
             <ng-container *ngIf="getCaseStatus(case.statusid)">
-                <i [class]="getCaseStatus(case.statusid)!.icon + ' fs-8'"></i>
+                <app-icon [iconClass]="getCaseStatus(case.statusid)!.icon" [fontSize]="8"></app-icon>
                 {{ i18n('casestatus.' + getCaseStatus(case.statusid)!.name ) }}
                 •
             </ng-container>
             <ng-container *ngIf="getCaseType(case.typeid)">
-                <i [class]="getCaseType(case.typeid)!.icon + ' fs-8'"></i>
+                <app-icon [iconClass]="getCaseType(case.typeid)!.icon" [fontSize]="8"></app-icon>
                 {{ i18n('casetype.' + getCaseType(case.typeid)!.name ) }}
             </ng-container>
             <ng-container *ngIf="case.extid != ''">
                 • {{ i18n('cases.reference', [case.extid]) }}
             </ng-container>
             <ng-container *ngIf="case.filescount > 0">
-                • <i [class]="config.icons['file'] + ' fs-8'"></i>
+                • <app-icon [iconClass]="config.icons['file']" [fontSize]="8"></app-icon>
                 {{ i18n('cases.filescount', [case.filescount], case.filescount === 1 ? 0 : 1) }}
             </ng-container>
         </div>
@@ -32,7 +32,7 @@
     <div class="ms-3" *ngIf="gotoButton">
         <a [routerLink]="['/case', case.id]">
             <button class="btn btn-sm btn-outline-primary" (click)="btnClick(); $event.stopPropagation();">
-                <i [ngClass]="[ config.icons['go-right'], 'mx-2' ]"></i>
+                <app-icon [iconClass]="config.icons['go-right']" addCssClasses="mx-2"></app-icon>
             </button>
         </a>
     </div>

@@ -239,6 +239,7 @@
       "pickOne": " Please choose"
     },
     "switchTo": "Switch to",
+    "today": "Today",
     "warn": {
       "formInvalid": {
         "title": "Warning",
@@ -506,6 +507,13 @@
     },
     "inbox": {
       "title": "New Documents"
+    },
+    "special": {
+      "title": "Additional functions",
+      "notepadLink": "Notepad",
+      "warehouseLink": "Storage",
+      "movingBoxesLink": "Moving boxes",
+      "wineCellarLink": "Wine cellar"
     },
     "stats": {
       "title": "Quick Stats...",

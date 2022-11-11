@@ -9,22 +9,25 @@
       <div class="card mb-3" *ngIf="newfiles.length > 0">
         <div class="card-header">
           <h5 class="mb-0">
-            <i [class]="config.icons['star']"></i>
+            <app-icon [iconClass]="config.icons['star']" [fixedWidth]="true"></app-icon>
             {{ i18n('home.inbox.title') }}
           </h5>
         </div>
-        <div class="card-body">
-          <ul class="list-group flush hover rounded" *ngIf="newfiles.length > 0">
-            <file-list-item *ngFor="let file of newfiles;" [file]="file" [showButtons]="false"
-              (clicked)="router.navigate(['/file', file.id])"></file-list-item>
-          </ul>
-        </div>
+        <ul class="list-group flush hover rounded-0 " *ngIf="newfiles.length > 0">
+          <ng-container *ngFor="let file of newfiles;">
+            <a [ngClass]="['fix-border list-group-item', 'py-2', 'pe-2', 'border-start-0 border-end-0']"
+              [routerLink]="['/file', file.id]">
+              <file-list-item [file]="file" [showButtons]="false">
+              </file-list-item>
+            </a>
+          </ng-container>
+        </ul>
       </div>
 
       <div class="card mb-3" *ngIf="inactivecases.length > 0">
         <div class="card-header">
           <h5 class="mb-0">
-            <i [class]="config.icons['cases']"></i>
+            <app-icon [iconClass]="config.icons['cases']" [fixedWidth]="true"></app-icon>
             {{ i18n('home.cases.title') }}
           </h5>
         </div>
@@ -51,16 +54,64 @@
           <div class="card-body p-0">
             <ul class="list-group list-group-flush rounded">
               <a class="list-group-item" routerLink="/shopping">
-                <i [ngClass]="[config.icons['shopping'], 'me-1']"></i>
+                <app-icon [iconClass]="config.icons['shopping']" [marginEnd]="1" [fixedWidth]="true"></app-icon>
                 {{ i18n('home.supermarket.shoppingLink') }}
               </a>
               <a class="list-group-item" routerLink="/price-comparison">
-                <i [ngClass]="[config.icons['filter-price'], 'me-1']"></i>
+                <app-icon [iconClass]="config.icons['filter-price']" [marginEnd]="1" [fixedWidth]="true"></app-icon>
                 {{ i18n('home.supermarket.priceComparison') }}
               </a>
               <a class="list-group-item" [routerLink]="'/receipts'">
-                <i [class]="config.icons['receipt'] + ' me-1'"></i>
+                <app-icon [iconClass]="config.icons['receipt']" [marginEnd]="1" [fixedWidth]="true"></app-icon>
                 {{ i18n('home.supermarket.receiptsLink') }}
+              </a>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">
+              {{ i18n('home.readings.title') }}
+            </h5>
+          </div>
+          <div class="card-body p-0">
+            <ul class="list-group list-group-flush rounded">
+              <a class="list-group-item" [routerLink]="'/readings'">
+                <app-icon [iconClass]="config.icons['meter-reading']" [marginEnd]="1" [fixedWidth]="true"></app-icon>
+                {{ i18n('home.readings.readingsLink') }}
+              </a>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">
+              {{ i18n('home.special.title') }}
+            </h5>
+          </div>
+          <div class="card-body p-0">
+            <ul class="list-group list-group-flush rounded">
+              <a class="list-group-item" [routerLink]="'/notepad'">
+                <app-icon [iconClass]="config.icons['notepad']" [marginEnd]="1" [fixedWidth]="true"></app-icon>
+                {{ i18n('home.special.notepadLink') }}
+              </a>
+              <a class="list-group-item" [routerLink]="'/warehouse'">
+                <app-icon [iconClass]="config.icons['warehouse']" [marginEnd]="1" [fixedWidth]="true"></app-icon>
+                {{ i18n('home.special.warehouseLink') }}
+              </a>
+              <a class="list-group-item" [routerLink]="'/warehouse/moving'">
+                <app-icon [iconClass]="config.icons['moving-boxes']" [marginEnd]="1" [fixedWidth]="true"></app-icon>
+                {{ i18n('home.special.movingBoxesLink') }}
+              </a>
+              <a class="list-group-item" [routerLink]="'/warehouse/wine'">
+                <app-icon [iconClass]="config.icons['wine']" [marginEnd]="1" [fixedWidth]="true"></app-icon>
+                {{ i18n('home.special.wineCellarLink') }}
               </a>
             </ul>
           </div>
@@ -77,7 +128,7 @@
           <div class="card-body p-0">
             <ul class="list-group list-group-flush rounded">
               <a class="list-group-item" [routerLink]="'/db'">
-                <i [class]="config.icons['database'] + ' me-1'"></i>
+                <app-icon [iconClass]="config.icons['database']" [marginEnd]="1" [fixedWidth]="true"></app-icon>
                 {{ i18n('home.database.dbmanager') }}
               </a>
             </ul>
@@ -103,11 +154,13 @@
                 </div>
                 <div class="card-footer px-2 py-1 fs-7">
                   <a [routerLink]="['/files']">
-                    <i [class]="config.icons['go-right']"></i>
-                    {{ i18n('home.stats.filesLink') }}</a>
+                    <app-icon [iconClass]="config.icons['go-right']"></app-icon>
+                    {{ i18n('home.stats.filesLink') }}
+                  </a>
                   <a [routerLink]="['/dashboard']" class="ms-2">
-                    <i [class]="config.icons['go-right']"></i>
-                    {{ i18n('home.stats.storageLink') }}</a>
+                    <app-icon [iconClass]="config.icons['go-right']"></app-icon>
+                    {{ i18n('home.stats.storageLink') }}
+                  </a>
                 </div>
               </li>
               <li class="list-group-item px-0 pb-0">
@@ -119,14 +172,17 @@
                 </div>
                 <div class="card-footer px-2 py-1 fs-7">
                   <a [routerLink]="['/files/noclass']">
-                    <i [class]="config.icons['go-right']"></i>
-                    {{ i18n('home.stats.noclassFilesLink') }}</a>
+                    <app-icon [iconClass]="config.icons['go-right']"></app-icon>
+                    {{ i18n('home.stats.noclassFilesLink') }}
+                  </a>
                   <a [routerLink]="['/cases']" class="ms-2">
-                    <i [class]="config.icons['go-right']"></i>
-                    {{ i18n('home.stats.casesLink') }}</a>
+                    <app-icon [iconClass]="config.icons['go-right']"></app-icon>
+                    {{ i18n('home.stats.casesLink') }}
+                  </a>
                   <a [routerLink]="['/files/noocr']" class="ms-2">
-                    <i [class]="config.icons['go-right']"></i>
-                    {{ i18n('home.stats.noocrFilesLink') }}</a>
+                    <app-icon [iconClass]="config.icons['go-right']"></app-icon>
+                    {{ i18n('home.stats.noocrFilesLink') }}
+                  </a>
                 </div>
               </li>
             </ul>

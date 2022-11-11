@@ -35,6 +35,7 @@
     "title": "{0} (Akte)",
     "metacard": {
       "title": "Allgemeine Informationen",
+      "shorttitle": "Allgemeines",
       "name": "Name der Akte",
       "parent": "Übergeordnete Akte",
       "noparent": "Keine",
@@ -51,6 +52,9 @@
     },
     "childscard": {
       "title": "Zugehörige Akten"
+    },
+    "filescard": {
+      "title": "Dateien"
     },
     "timecard": {
       "title": "Zeiträume",
@@ -209,6 +213,7 @@
         "message": "Die Änderungen wurden erfolgreich gespeichert."
       }
     },
+    "date": "Datum",
     "day": "Tag",
     "days": "Tage",
     "delete": "Löschen",
@@ -236,6 +241,7 @@
       "pickOne": " Bitte wählen "
     },
     "switchTo": "Wechseln zu",
+    "today": "Heute",
     "warn": {
       "formInvalid": {
         "title": "Warnung",
@@ -504,6 +510,17 @@
     "inbox": {
       "title": "Neue Dokumente"
     },
+    "readings": {
+      "title": "Zähler",
+      "readingsLink": "Erfassung von Zählerständen"
+    },
+    "special": {
+      "title": "Zusatzfunktionen",
+      "notepadLink": "Notepad",
+      "warehouseLink": "Lager",
+      "movingBoxesLink": "Umzugskartons",
+      "wineCellarLink": "Weinkeller"
+    },
     "stats": {
       "title": "Schnelle Statistiken...",
       "files1": "Das Archiv verwaltet aktuell {0} Dateien in {1} Verzeichnissen mit insgesamt {2}.",
@@ -564,6 +581,18 @@
       "subtitle": "Diese Webseite erfordert eine Anmeldung via Nextcloud. Bitte klicke auf den Button um die Anmeldung vorzunehmen.",
       "button": "Anmelden"
     }
+  },
+  "meter": {
+    "readings": {
+      "title": "Erfassung von Zählerständen",
+      "meter": "Zähler",
+      "value": "Wert",
+      "modal": {
+        "title": "Zählerablesung",
+        "description": "In den folgenden Feldern kannst du die Werte für die Zähler eingeben. Nur ausgefüllte Felder werden gespeichert."
+      }
+    },
+    "title": "Zähler"
   },
   "navbar": {
     "brand": {

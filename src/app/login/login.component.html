@@ -2,8 +2,8 @@
   <ng-container *ngIf="config.loaded">
     <div class="container pt-5 d-flex justify-content-center">
 
-      <div class="d-flex h-100 align-items-center text-center"
-        *ngIf="!config.auth.oauth2.enabled"><!-- username / password login -->
+      <div class="d-flex h-100 align-items-center text-center" *ngIf="!config.auth.oauth2.enabled">
+        <!-- username / password login -->
         <div class="card body bg-gradient border border-secondary shadow-sm rounded">
           <form #form="ngForm" (ngSubmit)="submit()">
             <div class="card-body">
@@ -14,17 +14,15 @@
               <div class="mb-3 d-flex g-1 text-start">
                 <label for="username" class="col-4 col-md-3 col-form-label">{{ i18n('login.username') }}</label>
                 <div class="col-8 col-md-9">
-                  <input type="text" class="form-control" id="username" name="username"
-                    [(ngModel)]="user" required
+                  <input type="text" class="form-control" id="username" name="username" [(ngModel)]="user" required
                     placeholder="{{ i18n('login.usernamePlaceholder') }}">
                 </div>
               </div>
               <div class="mb-3 d-flex g-1 text-start">
                 <label for="password" class="col-4 col-md-3 col-form-label">{{ i18n('login.password') }}:</label>
                 <div class="col-8 col-md-9">
-                  <input type="password" class="form-control" id="password" name="password"
-                    [(ngModel)]="password" required
-                    placeholder="{{ i18n('login.passwordPlaceholder') }}">
+                  <input type="password" class="form-control" id="password" name="password" [(ngModel)]="password"
+                    required placeholder="{{ i18n('login.passwordPlaceholder') }}">
                 </div>
               </div>
               <div class="my-3" *ngIf="failed != ''">
@@ -34,9 +32,8 @@
               </div>
             </div>
             <div class="card-footer">
-              <button type="submit" class="btn btn-primary"
-                [disabled]="busy">
-                <i [class]="config.icons[busy ? 'busy' : 'login'] + ' me-2'"></i>
+              <button type="submit" class="btn btn-primary" [disabled]="busy">
+                <app-icon [iconClass]="config.icons[busy ? 'busy' : 'login']" [marginEnd]="2"></app-icon>
                 {{ i18n('login.button') }}
               </button>
             </div>
@@ -44,18 +41,18 @@
         </div>
       </div><!-- username / password login -->
 
-      <div class="d-flex h-100 align-items-center text-center"
-        *ngIf="config.auth.oauth2.enabled"><!-- oauth2 login -->
+      <div class="d-flex h-100 align-items-center text-center" *ngIf="config.auth.oauth2.enabled">
+        <!-- oauth2 login -->
         <div class="card body bg-gradient border border-secondary shadow-sm rounded">
           <form #form="ngForm" (ngSubmit)="submitOauth2()">
             <div class="card-body">
-              <h5 class="card-title pb-2 mb-2 border-bottom border-2 border-secondary">{{ i18n('login.oauth2.title') }}</h5>
+              <h5 class="card-title pb-2 mb-2 border-bottom border-2 border-secondary">{{ i18n('login.oauth2.title') }}
+              </h5>
               <p class="">{{ i18n('login.oauth2.subtitle') }}</p>
             </div>
             <div class="card-footer">
-              <button type="submit" class="btn btn-primary"
-                [disabled]="busy">
-                <i [class]="config.icons['cloud'] + ' me-2'"></i>
+              <button type="submit" class="btn btn-primary" [disabled]="busy">
+                <app-icon [iconClass]="config.icons['cloud']" [marginEnd]="2"></app-icon>
                 {{ i18n('login.oauth2.button') }}
               </button>
             </div>

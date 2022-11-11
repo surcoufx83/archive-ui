@@ -9,7 +9,7 @@
           </li>
           <li class="breadcrumb-item">
             <button type="button" class="btn btn-sm btn-outline-primary" (click)="goto()">
-              <i [class]="config.icons['add'] + ' me-1'"></i>
+              <app-icon [iconClass]="config.icons['add']" [marginEnd]="1"></app-icon>
               {{ i18n('common.add') }}
             </button>
           </li>

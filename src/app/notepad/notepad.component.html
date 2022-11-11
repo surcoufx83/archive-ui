@@ -1,5 +1,4 @@
 <div>
-
     <div class="container pt-4 pt-md-2 mb-2">
         <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between">
             <h2>{{ i18n('notepad.title') }}</h2>
@@ -12,7 +11,7 @@
                         <button type="button"
                             [ngClass]="['btn btn-sm', sortby == 'name' ? 'btn-success' : 'btn-outline-secondary']"
                             (click)="sort('name', sortby !== 'name' ? null : !sortasc)">
-                            <i [class]="'fa-solid fa-a me-1'"></i>
+                            <app-icon [iconClass]="'fa-solid fa-a'" [marginEnd]="1"></app-icon>
                             <span class="fs-8" *ngIf="sortasc">▲</span>
                             <span class="fs-8" *ngIf="!sortasc">▼</span>
                         </button>
@@ -21,14 +20,14 @@
                         <button type="button"
                             [ngClass]="['btn btn-sm', sortby == 'edit' ? 'btn-success' : 'btn-outline-secondary']"
                             (click)="sort('edit', sortby !== 'edit' ? null : !sortasc)">
-                            <i [class]="'fa-solid fa-calendar-day me-1'"></i>
+                            <app-icon [iconClass]="'fa-solid fa-calendar-day'" [marginEnd]="1"></app-icon>
                             <span class="fs-8" *ngIf="sortasc">▲</span>
                             <span class="fs-8" *ngIf="!sortasc">▼</span>
                         </button>
                     </div>
                     <div class="ms-2">
                         <button type="button" class="btn btn-sm btn-outline-primary" (click)="new()">
-                            <i [class]="config.icons['add'] + ' me-1'"></i>
+                            <app-icon [iconClass]="config.icons['add']" [marginEnd]="1"></app-icon>
                             {{ i18n('common.add') }}
                         </button>
                     </div>
@@ -39,7 +38,7 @@
                             [placeholder]="i18n('notepad.filterPlaceholder')" aria-describedby="notes-filter-btn"
                             id="notes-filter" name="notes-filter" [(ngModel)]="filterphrase" (keyup)="filterKeyup();">
                         <button class="btn btn-sm btn-secondary" id="notes-filter-btn" for="notes-filter">
-                            <i [class]="config.icons['search']"></i>
+                            <app-icon [iconClass]="config.icons['search']"></app-icon>
                         </button>
                     </div>
                 </div>
@@ -65,17 +64,17 @@
                         <div class="overflow-visible text-nowrap">
                             <button type="button" class="btn btn-sm btn-outline-primary ms-2" (click)="edit(note)"
                                 *ngIf="editId != note.id">
-                                <i [class]="config.icons['edit']"></i>
+                                <app-icon [iconClass]="config.icons['edit']"></app-icon>
                             </button>
                             <span [ngClass]="{'fade ms-2': true, 'show': saving}" *ngIf="editId == note.id">
                                 <ui-busy-indicator></ui-busy-indicator>
                             </span>
-                            <button type="button" class="btn btn-sm btn-outline-primary ms-2" (click)="save(editNote!); close()"
-                                *ngIf="editId == note.id">
-                                <i [class]="config.icons['close']"></i>
+                            <button type="button" class="btn btn-sm btn-outline-primary ms-2"
+                                (click)="save(editNote!); close()" *ngIf="editId == note.id">
+                                <app-icon [iconClass]="config.icons['close']"></app-icon>
                             </button>
                             <button type="button" class="btn btn-sm btn-outline-danger ms-2" (click)="delete(note)">
-                                <i [class]="config.icons['delete']"></i>
+                                <app-icon [iconClass]="config.icons['delete']"></app-icon>
                             </button>
                         </div>
                     </div>

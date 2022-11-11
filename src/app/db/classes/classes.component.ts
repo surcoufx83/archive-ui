@@ -1,10 +1,9 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AppConfig, ConfigService } from 'src/app/config.service';
-import { Class } from 'src/app/files/class';
 import { I18nService } from 'src/app/i18n.service';
-import { Settings } from 'src/app/user/settings/settings';
 import { SettingsService } from 'src/app/user/settings/settings.service';
 import { ToastsService } from 'src/app/utils/toasts.service';
+import { Class, UserSettings } from 'src/app/if';
 
 @Component({
   selector: 'app-classes',
@@ -19,7 +18,7 @@ export class DbClassesComponent implements OnInit {
   saving: boolean = false;
   classes: Class[] = [];
   editclass?: Class;
-  usersettingsObj: Settings | null = null;
+  usersettingsObj: UserSettings | null = null;
   sortAsc: boolean = true;
   sortBy: string = 'name';
   storagename: string = this.config.storage.prefix + 'dbclassesData';
@@ -87,7 +86,11 @@ export class DbClassesComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  sort(): void {
+  sort(field?: string, asc?: boolean): void {
+    if (field != undefined)
+      this.sortBy = field;
+    if (asc != undefined)
+      this.sortAsc = asc;
     switch (this.sortBy) {
 
       case 'techname':

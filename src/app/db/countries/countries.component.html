@@ -91,7 +91,8 @@
                         </div>
                     </div>
 
-                    <ng-container [ngTemplateOutlet]="taxratesEditor" [ngTemplateOutletContext]="{ country: editcountry }"></ng-container>
+                    <ng-container [ngTemplateOutlet]="taxratesEditor"
+                        [ngTemplateOutletContext]="{ country: editcountry }"></ng-container>
 
                 </form>
             </div>
@@ -104,26 +105,26 @@
         <div class="flex-table-head row">
             <div class="col-6 col-lg-3">
                 {{ i18n('db.countries.name') }}
-                <ng-container [ngTemplateOutlet]="sorter" [ngTemplateOutletContext]="{ field: 'name' }">
-                </ng-container>
+                <app-sorter-icon columnName="name" [sortAsc]="sortAsc" [sortBy]="sortBy"
+                    (click)="sort('name', sortBy === 'name' ? !sortAsc : sortAsc);"></app-sorter-icon>
             </div>
             <div class="col-6 col-lg-3">
                 {{ i18n('db.countries.i18nname') }}
-                <ng-container [ngTemplateOutlet]="sorter" [ngTemplateOutletContext]="{ field: 'i18nname' }">
-                </ng-container>
+                <app-sorter-icon columnName="i18nname" [sortAsc]="sortAsc" [sortBy]="sortBy"
+                    (click)="sort('i18nname', sortBy === 'i18nname' ? !sortAsc : sortAsc);"></app-sorter-icon>
             </div>
             <div class="col-lg-2 d-none d-lg-block">
                 {{ i18n('db.countries.currency') }}
             </div>
             <div class="col-lg-2 d-none d-lg-block">
                 {{ i18n('db.countries.key2') }}
-                <ng-container [ngTemplateOutlet]="sorter" [ngTemplateOutletContext]="{ field: 'key2' }">
-                </ng-container>
+                <app-sorter-icon columnName="key2" [sortAsc]="sortAsc" [sortBy]="sortBy"
+                    (click)="sort('key2', sortBy === 'key2' ? !sortAsc : sortAsc);"></app-sorter-icon>
             </div>
             <div class="col-lg-2 d-none d-lg-block">
                 {{ i18n('db.countries.key3') }}
-                <ng-container [ngTemplateOutlet]="sorter" [ngTemplateOutletContext]="{ field: 'key3' }">
-                </ng-container>
+                <app-sorter-icon columnName="key3" [sortAsc]="sortAsc" [sortBy]="sortBy"
+                    (click)="sort('key3', sortBy === 'key3' ? !sortAsc : sortAsc);"></app-sorter-icon>
             </div>
         </div>
         <ng-container *ngFor="let item of countries; let i = index;">
@@ -150,17 +151,6 @@
         </ng-container>
     </div>
 </div>
-
-<ng-template #sorter let-field="field">
-    <span *ngIf="sortBy === field" (click)="sortAsc = !sortAsc; sort();">
-        <i [class]="config.icons['sortasc'] + ' text-primary me-1 fs-7 pointer'" *ngIf="sortAsc"></i>
-        <i [class]="config.icons['sortdesc'] + ' text-primary me-1 fs-7 pointer'" *ngIf="!sortAsc"></i>
-    </span>
-    <span *ngIf="sortBy !== field" (click)="sortBy = field; sort();">
-        <i [class]="config.icons['sortasc'] + ' text-muted me-1 fs-7 pointer'" *ngIf="sortAsc"></i>
-        <i [class]="config.icons['sortdesc'] + ' text-muted me-1 fs-7 pointer'" *ngIf="!sortAsc"></i>
-    </span>
-</ng-template>
 
 <ng-template #taxratesEditor let-country="country">
     <div class="container pt-4 pt-md-2 mb-2 px-0" *ngIf="editcountry">

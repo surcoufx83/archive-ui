@@ -2,7 +2,8 @@
 
     <div class="container pt-4 pt-md-2 mb-2">
         <app-h2 [title]="i18n('receipts.title')" [busy]="busy" [btn1]="i18n('common.add')"
-        [btn1css]="'btn btn-sm btn-outline-primary'" [btn1icon]="config.icons['add']" (btn1Clicked)="new(); newItem();"></app-h2>
+            [btn1css]="'btn btn-sm btn-outline-primary'" [btn1icon]="config.icons['add']"
+            (btn1Clicked)="new(); newItem();"></app-h2>
     </div>
 
     <div class="container">
@@ -72,9 +73,11 @@
                     {{ formatService.fcur(selectedReceipt.gross_total, selectedReceipt.currency) }}
                 </div>
                 <div class="col-12 container card p-1">
-                    <app-h4 [title]="i18n('receipts.edit.title')" [containercss]="'card-header'" [btn1]="i18n('common.save')"
-                        [btn1css]="'btn btn-sm btn-success'" [btn1icon]="config.icons['save']" (btn1Clicked)="saveSelected(form, $event)"
-                        [btn2css]="'btn btn-sm btn-outline-secondary'" [btn2icon]="config.icons['delete']" (btn2Clicked)="onCancelEdit()"></app-h4>
+                    <app-h4 [title]="i18n('receipts.edit.title')" [containercss]="'card-header'"
+                        [btn1]="i18n('common.save')" [btn1css]="'btn btn-sm btn-success'"
+                        [btn1icon]="config.icons['save']" (btn1Clicked)="saveSelected(form, $event)"
+                        [btn2css]="'btn btn-sm btn-outline-secondary'" [btn2icon]="config.icons['delete']"
+                        (btn2Clicked)="onCancelEdit()"></app-h4>
                     <div class="card-body p-1 px-3 fs-7 mb-3">
                         <div class="row">
                             <div class="col-6 col-lg-3 mb-3">
@@ -87,11 +90,13 @@
                             </div>
                             <div class="col-6 col-lg-3 mb-3">
                                 <div class="form-group">
-                                    <label for="receipt-currency" class="form-label required">{{ i18n('receipts.currency')
+                                    <label for="receipt-currency" class="form-label required">{{
+                                        i18n('receipts.currency')
                                         }}</label>
                                     <select class="form-select" id="receipt-currency" name="receipt-currency"
                                         [(ngModel)]="selectedReceipt.currencyid" required (change)="onChangeCurrency()">
-                                        <option *ngFor="let currency of currencies; let i = index" [value]="currency.id">
+                                        <option *ngFor="let currency of currencies; let i = index"
+                                            [value]="currency.id">
                                             {{ currency.shortname }} - {{ currency.name }}
                                         </option>
                                     </select>
@@ -126,7 +131,8 @@
                         </div>
                     </div>
                     <app-h4 [title]="i18n('receipts.items.title')" [containercss]="'card-header'"
-                        [btn1css]="'btn btn-sm btn-outline-primary'" [btn1icon]="config.icons['add']" (btn1Clicked)="newItem()"></app-h4>
+                        [btn1css]="'btn btn-sm btn-outline-primary'" [btn1icon]="config.icons['add']"
+                        (btn1Clicked)="newItem()"></app-h4>
                     <div class="card-body p-1 fs-7">
                         <div class="flex-table flex-table-sm">
                             <div class="flex-table-head row">
@@ -162,18 +168,21 @@
                     </ng-container>
                     <ng-container *ngIf="selectedReceipt.id == 0">
                         <ng-container *ngIf="item.articleid && article(item.articleid)">
-                            <button type="button" class="btn btn-sm btn-outline-secondary border-0 me-2" (click)="selectedReceipt.items.splice(i, 1);">
-                                <i [class]="config.icons['delete']"></i>
+                            <button type="button" class="btn btn-sm btn-outline-secondary border-0 me-2"
+                                (click)="selectedReceipt.items.splice(i, 1);">
+                                <app-icon [iconClass]="config.icons['delete']"></app-icon>
                             </button>
                             <div>
-                                <ng-container *ngTemplateOutlet="receiptArticle; context: { 'item': item }"></ng-container>
+                                <ng-container *ngTemplateOutlet="receiptArticle; context: { 'item': item }">
+                                </ng-container>
                             </div>
                         </ng-container>
                         <ng-container *ngIf="!item.articleid || !article(item.articleid)">
                             <div class="d-flex flex-column w-100">
                                 <input type="text" class="form-control form-control-sm" [id]="'receipt-article-' + i"
-                                    name="'receipt-article-' + i" required (keydown)="onBeforeChangeInput(i, $event)" (keyup)="onAfterChangeInput(i, $event)"
-                                    (focus)="activeArticleIndex = i" autocomplete="off">
+                                    name="'receipt-article-' + i" required (keydown)="onBeforeChangeInput(i, $event)"
+                                    (keyup)="onAfterChangeInput(i, $event)" (focus)="activeArticleIndex = i"
+                                    autocomplete="off">
                                 <ul
                                     [ngClass]="{'dropdown-menu position-relative mt-1 py-0': true, 'd-block show': activeArticleIndex == i && activeArticleDropdownItems.length > 0}">
                                     <li [ngClass]="{'dropdown-item pointer': true, 'active': activeArticleDropdownPickIndex == di}"
@@ -195,7 +204,8 @@
                     <ng-container *ngIf="selectedReceipt.id == 0">
                         <input type="number" min="0.000" step="0.001" class="form-control form-control-sm text-end"
                             [id]="'receipt-quantity-' + i" name="'receipt-quantity-' + i" required
-                            [(ngModel)]="item.quantity" (change)="onChangeValues(i)" (keydown)="onKeydownValue(i, $event)" onFocus="this.select()">
+                            [(ngModel)]="item.quantity" (change)="onChangeValues(i)"
+                            (keydown)="onKeydownValue(i, $event)" onFocus="this.select()">
                     </ng-container>
                 </div>
                 <div class="col-4 col-lg-2 text-end d-flex d-lg-block">
@@ -208,7 +218,8 @@
                     <ng-container *ngIf="selectedReceipt.id == 0">
                         <input type="number" step="0.01" class="form-control form-control-sm text-end"
                             [id]="'receipt-singleprice-' + i" name="'receipt-singleprice-' + i" required
-                            [(ngModel)]="item.singleprice" (change)="onChangeValues(i)" (keydown)="onKeydownValue(i, $event)" onFocus="this.select()">
+                            [(ngModel)]="item.singleprice" (change)="onChangeValues(i)"
+                            (keydown)="onKeydownValue(i, $event)" onFocus="this.select()">
                     </ng-container>
                 </div>
                 <div class="col-4 col-lg-2 text-end d-flex d-lg-block">
@@ -221,7 +232,8 @@
                     <ng-container *ngIf="selectedReceipt.id == 0">
                         <input type="number" step="0.01" class="form-control form-control-sm text-end"
                             [id]="'receipt-discount-' + i" name="'receipt-discount-' + i" required
-                            [(ngModel)]="item.discount" (change)="onChangeValues(i)" (keydown)="onKeydownValue(i, $event)" onFocus="this.select()">
+                            [(ngModel)]="item.discount" (change)="onChangeValues(i)"
+                            (keydown)="onKeydownValue(i, $event)" onFocus="this.select()">
                     </ng-container>
                 </div>
                 <div class="col-4 col-lg-2 text-end d-flex d-lg-block">
@@ -234,7 +246,8 @@
                     <ng-container *ngIf="selectedReceipt.id == 0">
                         <input type="number" step="0.01" class="form-control form-control-sm text-end"
                             [id]="'receipt-deposit-' + i" name="'receipt-deposit-' + i" required
-                            [(ngModel)]="item.deposit" (change)="onChangeValues(i)" (keydown)="onKeydownValue(i, $event)" onFocus="this.select()">
+                            [(ngModel)]="item.deposit" (change)="onChangeValues(i)"
+                            (keydown)="onKeydownValue(i, $event)" onFocus="this.select()">
                     </ng-container>
                 </div>
                 <div class="col-4 col-lg-2 text-end d-flex d-lg-block">
@@ -299,7 +312,7 @@
             <ng-container *ngIf="article(receiptitem.articleid)!.ean">,
                 {{ article(receiptitem.articleid)!.ean }}</ng-container>
             <ng-container *ngIf="article(receiptitem.articleid)!.organic">,
-                <i [class]="config.icons['organic']"></i>
+                <app-icon [iconClass]="config.icons['organic']"></app-icon>
                 {{ i18n('receipts.items.organic') }}
             </ng-container>)
         </span>
