@@ -13,8 +13,8 @@
             <app-h4 [containercss]="'card-header'" [title]="i18n('db.classes.editor.title')" [busy]="saving"
                 [btn1]="i18n('common.save')" [btn1css]="'btn btn-sm btn-success'" [btn1icon]="config.icons['save']"
                 (btn1Clicked)="submit()" [btn2css]="editclass.id > 0 ? 'btn btn-sm btn-outline-danger' : ''"
-                [btn2icon]="editclass.id > 0 ? config.icons['delete'] : ''"
-                (btn2Clicked)="delete(editclass)"  [xshow]="true" (xClicked)="this.editclass = undefined"></app-h4>
+                [btn2icon]="editclass.id > 0 ? config.icons['delete'] : ''" (btn2Clicked)="delete(editclass)"
+                [xshow]="true" (xClicked)="this.editclass = undefined"></app-h4>
             <div class="card-body">
                 <form #f (submit)="submit()" ngNativeValidate>
 
@@ -93,13 +93,13 @@
         <div class="flex-table-head row">
             <div class="col-6 col-lg-3">
                 {{ i18n('db.classes.techname') }}
-                <ng-container [ngTemplateOutlet]="sorter" [ngTemplateOutletContext]="{ field: 'techname' }">
-                </ng-container>
+                <app-sorter-icon columnName="techname" [sortAsc]="sortAsc" [sortBy]="sortBy"
+                    (click)="sort('techname', sortBy === 'techname' ? !sortAsc : sortAsc);"></app-sorter-icon>
             </div>
             <div class="col-6 col-lg-3">
                 {{ i18n('db.classes.localized') }}
-                <ng-container [ngTemplateOutlet]="sorter" [ngTemplateOutletContext]="{ field: 'name' }">
-                </ng-container>
+                <app-sorter-icon columnName="name" [sortAsc]="sortAsc" [sortBy]="sortBy"
+                    (click)="sort('name', sortBy === 'name' ? !sortAsc : sortAsc);"></app-sorter-icon>
             </div>
             <div class="col-lg-6 d-none d-lg-block">
                 {{ i18n('db.classes.pattern') }}
@@ -121,14 +121,3 @@
         </ng-container>
     </div>
 </div>
-
-<ng-template #sorter let-field="field">
-    <span *ngIf="sortBy === field" (click)="sortAsc = !sortAsc; sort();">
-        <i [class]="config.icons['sortasc'] + ' me-1 fs-7 pointer'" *ngIf="sortAsc"></i>
-        <i [class]="config.icons['sortdesc'] + ' me-1 fs-7 pointer'" *ngIf="!sortAsc"></i>
-    </span>
-    <span *ngIf="sortBy !== field" (click)="sortBy = field; sort();">
-        <i [class]="config.icons['sortasc'] + ' text-muted me-1 fs-7 pointer'" *ngIf="sortAsc"></i>
-        <i [class]="config.icons['sortdesc'] + ' text-muted me-1 fs-7 pointer'" *ngIf="!sortAsc"></i>
-    </span>
-</ng-template>

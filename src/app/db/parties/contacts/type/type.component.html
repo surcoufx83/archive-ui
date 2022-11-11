@@ -11,10 +11,10 @@
     <div class="container pt-4 pt-md-2 mb-2" *ngIf="editctype">
         <div class="card">
             <app-h4 [containercss]="'card-header'" [title]="i18n('db.contacts.types.editor.title')" [busy]="saving"
-            [btn1]="i18n('common.save')" [btn1css]="'btn btn-sm btn-success'" [btn1icon]="config.icons['save']"
-            (btn1Clicked)="submit(f)" [btn2css]="editctype.id > 0 ? 'btn btn-sm btn-outline-danger' : ''"
-            [btn2icon]="editctype.id > 0 ? config.icons['delete'] : ''"
-            (btn2Clicked)="delete(editctype)" [xshow]="true" (xClicked)="editctype = undefined"></app-h4>
+                [btn1]="i18n('common.save')" [btn1css]="'btn btn-sm btn-success'" [btn1icon]="config.icons['save']"
+                (btn1Clicked)="submit(f)" [btn2css]="editctype.id > 0 ? 'btn btn-sm btn-outline-danger' : ''"
+                [btn2icon]="editctype.id > 0 ? config.icons['delete'] : ''" (btn2Clicked)="delete(editctype)"
+                [xshow]="true" (xClicked)="editctype = undefined"></app-h4>
             <div class="card-body">
                 <form #f="ngForm" (submit)="submit(f)" ngNativeValidate>
 
@@ -24,7 +24,8 @@
                                 <label for="contacttype-name" class="form-label required">{{
                                     i18n('db.contacts.types.name') }}</label>
                                 <input type="text" class="form-control" id="contacttype-name" name="contacttype-name"
-                                    [(ngModel)]="editctype.name" [placeholder]="i18n('db.contacts.types.name')" required>
+                                    [(ngModel)]="editctype.name" [placeholder]="i18n('db.contacts.types.name')"
+                                    required>
                             </div>
                         </div>
                         <div class="col-9 col-lg-6 mb-3">
@@ -32,7 +33,8 @@
                                 <label for="contacttype-icon" class="form-label required">{{
                                     i18n('db.contacts.types.icon') }}</label>
                                 <input type="text" class="form-control" id="contacttype-icon" name="contacttype-icon"
-                                    [(ngModel)]="editctype.icon" [placeholder]="i18n('db.contacts.types.icon')" required>
+                                    [(ngModel)]="editctype.icon" [placeholder]="i18n('db.contacts.types.icon')"
+                                    required>
                             </div>
                         </div>
                     </div>
@@ -51,13 +53,13 @@
             </div>
             <div class="col-5">
                 {{ i18n('db.contacts.types.name') }}
-                <ng-container [ngTemplateOutlet]="sorter" [ngTemplateOutletContext]="{ field: 'name' }">
-                </ng-container>
+                <app-sorter-icon columnName="name" [sortAsc]="sortAsc" [sortBy]="sortBy"
+                    (click)="sort('name', sortBy === 'name' ? !sortAsc : sortAsc);"></app-sorter-icon>
             </div>
             <div class="col-6">
                 {{ i18n('db.contacts.types.i18nname') }}
-                <ng-container [ngTemplateOutlet]="sorter" [ngTemplateOutletContext]="{ field: 'i18nname' }">
-                </ng-container>
+                <app-sorter-icon columnName="i18nname" [sortAsc]="sortAsc" [sortBy]="sortBy"
+                    (click)="sort('i18nname', sortBy === 'i18nname' ? !sortAsc : sortAsc);"></app-sorter-icon>
             </div>
         </div>
         <ng-container *ngFor="let item of ctypes; let i = index;">
@@ -75,14 +77,3 @@
         </ng-container>
     </div>
 </div>
-
-<ng-template #sorter let-field="field">
-    <span *ngIf="sortBy === field" (click)="sortAsc = !sortAsc; sort();">
-        <i [class]="config.icons['sortasc'] + ' text-primary me-1 fs-7 pointer'" *ngIf="sortAsc"></i>
-        <i [class]="config.icons['sortdesc'] + ' text-primary me-1 fs-7 pointer'" *ngIf="!sortAsc"></i>
-    </span>
-    <span *ngIf="sortBy !== field" (click)="sortBy = field; sort();">
-        <i [class]="config.icons['sortasc'] + ' text-muted me-1 fs-7 pointer'" *ngIf="sortAsc"></i>
-        <i [class]="config.icons['sortdesc'] + ' text-muted me-1 fs-7 pointer'" *ngIf="!sortAsc"></i>
-    </span>
-</ng-template>
