@@ -7,7 +7,7 @@ import { Component, Input } from '@angular/core';
 export class IconComponent {
 
   @Input() iconClass!: string;
-  @Input() addCssClasses: string = '';
+  @Input() addCssClasses: string|string[] = '';
   @Input() beat: boolean = false;
   @Input() bounce: boolean = false;
   @Input() fade: boolean = false;
@@ -38,8 +38,12 @@ export class IconComponent {
     out[this.iconClass] = true;
     out['me-' + this.marginEnd] = this.marginEnd > 0 && this.marginEnd < 6;
     out['fs-' + this.fontSize] = this.fontSize > 0 && this.fontSize < 9;
-    if (this.addCssClasses != '')
-      out[this.addCssClasses] = true;
+    if (!(this.addCssClasses === '')) {
+      if (Array.isArray(this.addCssClasses))
+        this.addCssClasses.forEach((c) => out[c] = true);
+      else
+        out[this.addCssClasses] = true;
+    }
     return out;
   }
 
