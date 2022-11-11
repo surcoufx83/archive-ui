@@ -29,7 +29,7 @@ describe('IconComponent', () => {
     expect(i.className).toBe('foo');
   });
 
-  it('should show apply additional classes correct', () => {
+  it('should apply additional classes correct', () => {
     let i: HTMLElement = fixture.nativeElement.querySelector('i');
     component.iconClass = 'foo';
     component.addCssClasses = 'bar';
@@ -37,7 +37,23 @@ describe('IconComponent', () => {
     expect(i).toHaveClass('bar');
   });
 
-  it('should show apply fixedWidth correct', () => {
+  it('should apply font size correct', () => {
+    let i: HTMLElement = fixture.nativeElement.querySelector('i');
+    component.iconClass = 'foo';
+    component.fontSize = 0;
+    fixture.detectChanges();
+    expect(i.className).toBe('foo');
+    for (let j = 1; j < 8; j++) {
+      component.fontSize = j;
+      fixture.detectChanges();
+      expect(i).toHaveClass('fs-' + j);
+    }
+    component.fontSize = 9;
+    fixture.detectChanges();
+    expect(i.className).toBe('foo');
+  });
+
+  it('should apply fixedWidth correct', () => {
     let i: HTMLElement = fixture.nativeElement.querySelector('i');
     component.iconClass = 'foo';
     component.fixedWidth = true;
@@ -45,7 +61,7 @@ describe('IconComponent', () => {
     expect(i).toHaveClass('fa-fw');
   });
 
-  it('should show apply marginEnd correct', () => {
+  it('should apply marginEnd correct', () => {
     let i: HTMLElement = fixture.nativeElement.querySelector('i');
     component.iconClass = 'foo';
     component.marginEnd = 0;
@@ -61,7 +77,7 @@ describe('IconComponent', () => {
     expect(i.className).toBe('foo');
   });
 
-  it('should show apply beat animation correct', () => {
+  it('should apply beat animation correct', () => {
     let i: HTMLElement = fixture.nativeElement.querySelector('i');
     component.iconClass = 'foo';
     component.beat = true;
@@ -72,7 +88,7 @@ describe('IconComponent', () => {
     expect(i).not.toHaveClass('fa-beat');
   });
 
-  it('should show apply fade animation correct', () => {
+  it('should apply fade animation correct', () => {
     let i: HTMLElement = fixture.nativeElement.querySelector('i');
     component.iconClass = 'foo';
     component.fade = true;
@@ -83,7 +99,7 @@ describe('IconComponent', () => {
     expect(i).not.toHaveClass('fa-fade');
   });
 
-  it('should show apply beat-fade animation correct', () => {
+  it('should apply beat-fade animation correct', () => {
     let i: HTMLElement = fixture.nativeElement.querySelector('i');
     component.iconClass = 'foo';
     component.fade = true;
@@ -92,7 +108,7 @@ describe('IconComponent', () => {
     expect(i).toHaveClass('fa-beat-fade');
   });
 
-  it('should show apply bounce animation correct', () => {
+  it('should apply bounce animation correct', () => {
     let i: HTMLElement = fixture.nativeElement.querySelector('i');
     component.iconClass = 'foo';
     component.bounce = true;
@@ -100,7 +116,7 @@ describe('IconComponent', () => {
     expect(i).toHaveClass('fa-bounce');
   });
 
-  it('should show apply flip animation correct', () => {
+  it('should apply flip animation correct', () => {
     let i: HTMLElement = fixture.nativeElement.querySelector('i');
     component.iconClass = 'foo';
     component.flip = true;
@@ -108,7 +124,7 @@ describe('IconComponent', () => {
     expect(i).toHaveClass('fa-flip');
   });
 
-  it('should show apply shake animation correct', () => {
+  it('should apply shake animation correct', () => {
     let i: HTMLElement = fixture.nativeElement.querySelector('i');
     component.iconClass = 'foo';
     component.shake = true;
@@ -116,7 +132,7 @@ describe('IconComponent', () => {
     expect(i).toHaveClass('fa-shake');
   });
 
-  it('should show apply spin animation correct', () => {
+  it('should apply spin animation correct', () => {
     let i: HTMLElement = fixture.nativeElement.querySelector('i');
     component.iconClass = 'foo';
     component.spin = true;
@@ -131,7 +147,7 @@ describe('IconComponent', () => {
     expect(i).toHaveClass('fa-spin-reverse');
   });
 
-  it('should show apply pulse animation correct', () => {
+  it('should apply pulse animation correct', () => {
     let i: HTMLElement = fixture.nativeElement.querySelector('i');
     component.iconClass = 'foo';
     component.pulse = true;

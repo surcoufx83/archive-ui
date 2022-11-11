@@ -13,6 +13,7 @@ export class IconComponent {
   @Input() fade: boolean = false;
   @Input() fixedWidth: boolean = false;
   @Input() flip: boolean = false;
+  @Input() fontSize: number = 0;
   @Input() marginEnd: number = 0;
   @Input() pulse: boolean = false;
   @Input() reverse: boolean = false;
@@ -35,14 +36,11 @@ export class IconComponent {
       'fa-spin-pulse': this.pulse && !this.spin
     };
     out[this.iconClass] = true;
-    out[this.me] = this.marginEnd > 0 && this.marginEnd < 6;
+    out['me-' + this.marginEnd] = this.marginEnd > 0 && this.marginEnd < 6;
+    out['fs-' + this.fontSize] = this.fontSize > 0 && this.fontSize < 9;
     if (this.addCssClasses != '')
       out[this.addCssClasses] = true;
     return out;
-  }
-
-  get me(): string {
-    return 'me-' + this.marginEnd;
   }
 
 }
