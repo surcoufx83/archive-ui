@@ -29,6 +29,14 @@ describe('IconComponent', () => {
     expect(i.className).toBe('foo');
   });
 
+  it('should show apply additional classes correct', () => {
+    let i: HTMLElement = fixture.nativeElement.querySelector('i');
+    component.iconClass = 'foo';
+    component.addCssClasses = 'bar';
+    fixture.detectChanges();
+    expect(i).toHaveClass('bar');
+  });
+
   it('should show apply fixedWidth correct', () => {
     let i: HTMLElement = fixture.nativeElement.querySelector('i');
     component.iconClass = 'foo';

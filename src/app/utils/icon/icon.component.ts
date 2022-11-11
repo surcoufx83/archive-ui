@@ -2,22 +2,22 @@ import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-icon',
-  templateUrl: './icon.component.html',
-  styleUrls: ['./icon.component.scss']
+  templateUrl: './icon.component.html'
 })
 export class IconComponent {
 
   @Input() iconClass!: string;
-  @Input() fixedWidth: boolean = false;
-  @Input() marginEnd: number = 0;
+  @Input() addCssClasses: string = '';
   @Input() beat: boolean = false;
   @Input() bounce: boolean = false;
   @Input() fade: boolean = false;
+  @Input() fixedWidth: boolean = false;
   @Input() flip: boolean = false;
+  @Input() marginEnd: number = 0;
   @Input() pulse: boolean = false;
+  @Input() reverse: boolean = false;
   @Input() shake: boolean = false;
   @Input() spin: boolean = false;
-  @Input() reverse: boolean = false;
 
   constructor() { }
 
@@ -36,6 +36,8 @@ export class IconComponent {
     };
     out[this.iconClass] = true;
     out[this.me] = this.marginEnd > 0 && this.marginEnd < 6;
+    if (this.addCssClasses != '')
+      out[this.addCssClasses] = true;
     return out;
   }
 
