@@ -31,6 +31,7 @@ export class CasesComponent implements OnInit {
     this.userSettings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
     });
+    this.userSettings.loadArchiveSettings();
   }
 
   case(id: number): Case {
