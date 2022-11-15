@@ -268,7 +268,7 @@ export class SettingsService {
   private currencies: BehaviorSubject<Currency[]> = new BehaviorSubject<Currency[]>([]);
   currencies$ = this.currencies.asObservable();
 
-  private customers: BehaviorSubject<WorkCustomer[]> = new BehaviorSubject<WorkCustomer[]>([]);
+  private customers: BehaviorSubject<{ [key: number]: WorkCustomer }> = new BehaviorSubject<{ [key: number]: WorkCustomer }>({});
   customers$ = this.customers.asObservable();
 
   private parties: BehaviorSubject<{ [key: number]: Party }> = new BehaviorSubject<{ [key: number]: Party }>({});
@@ -694,7 +694,9 @@ export class SettingsService {
   }
 
   private updateCustomers(customers: WorkCustomer[]) {
-    this.customers.next(customers);
+    let temp = { ...this.customers.value };
+    customers.forEach((a) => this._updateCommon(temp, a));
+    this.customers.next(temp);
   }
 
   private updateParties(parties: Party[]) {
@@ -754,7 +756,7 @@ export class SettingsService {
   updateCustomer(customeritem: WorkCustomer): BehaviorSubject<WorkCustomer | null> {
     let subject = new BehaviorSubject<WorkCustomer | null>(null);
     this.postCommon(customeritem.id == 0 ? 'create' : 'update', customeritem,
-      'customer', this.customers.value, subject, (c: WorkCustomer[]) => this.updateCustomers(c));
+      'customer', Object.values(this.customers.value), subject, (c: WorkCustomer[]) => this.updateCustomers(c));
     return subject;
   }
 

@@ -57,7 +57,7 @@ export class WorkDayComponent implements OnInit {
       }
     });
     this.userSettings.customers$.subscribe((customers) => {
-      this.customers = customers.sort((a, b) => a.name.toLocaleLowerCase() > b.name.toLocaleLowerCase() ? 1 : -1);
+      this.customers = Object.values(customers).sort((a, b) => a.name.toLocaleLowerCase() > b.name.toLocaleLowerCase() ? 1 : -1);
     });
     setTimeout(() => { this.refreshRecentBookings(); }, 1000);
   }
@@ -261,7 +261,6 @@ export class WorkDayComponent implements OnInit {
       }
       this.createCustomer.patchValue({ 'busy': false });
     });
-    console.log('createCustomer', this.createCustomer);
   }
 
   onSubmitBooking(): void {
