@@ -6,7 +6,7 @@
     },
     "notModified": {
       "title": "Info",
-      "message": "Keine Anderungen vorgenommen: {0}"
+      "message": "No changes have been made: {0}"
     }
   },
   "calendar": {
@@ -234,7 +234,7 @@
     "no": "No",
     "none": "None",
     "novalue": "---",
-    "pcs": "St.",
+    "pcs": "pcs.",
     "period": {
       "placeholder": "0y 0m 0d 0:0:0",
       "patternYears": "{0}y",
@@ -249,7 +249,7 @@
       "pickOne": " Please choose"
     },
     "switchTo": "Switch to",
-    "today": "Heute",
+    "today": "Today",
     "warn": {
       "formInvalid": {
         "title": "Warning",
@@ -461,7 +461,7 @@
       "size": "File size",
       "pages": "Page count",
       "tags": "Tags",
-      "tagsInputPlaceholder": "Beliebigen Tag eingeben...",
+      "tagsInputPlaceholder": "Enter any tag...",
       "words": "Word count"
     },
     "classify": {
@@ -525,11 +525,11 @@
       "readingsLink": "Meter reading capture"
     },
     "special": {
-      "title": "Zusatzfunktionen",
+      "title": "Additional Features",
       "notepadLink": "Notes",
-      "warehouseLink": "Lager",
-      "movingBoxesLink": "Umzugskartons",
-      "wineCellarLink": "Weinkeller"
+      "warehouseLink": "Storage",
+      "movingBoxesLink": "Moving boxes",
+      "wineCellarLink": "Wine Cellar"
     },
     "stats": {
       "title": "Quick Stats...",
@@ -733,19 +733,19 @@
     }
   },
   "stocks": {
-    "title": "Aktien und Krypto",
+    "title": "Stocks and Crypto",
     "api": "API",
-    "bought": "Gekauft",
-    "boughtValue": "{0} {1} á {2}",
+    "bought": "Purchased",
+    "boughtValue": "{0} {1} each {2}",
     "currency": "Currency",
-    "dif": "Änd.",
+    "dif": "Dif.",
     "isin": "ISIN",
     "name": "Name",
-    "quantity": "Anzahl",
-    "rate": "Kurs",
-    "rate2": "Letzter Kurs",
+    "quantity": "Quantity",
+    "rate": "Price",
+    "rate2": "Last price",
     "symbol": "Symbol",
-    "total": "Gesamt",
+    "total": "Total",
     "value": "Value",
     "wkn": "WKN"
   },
