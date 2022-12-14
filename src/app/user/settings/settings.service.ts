@@ -11,9 +11,14 @@ import {
   ContactType,
   Country,
   Currency,
+  ExpenseCategory,
+  ExpenseType,
   Party,
   PartyContact,
   PartyRole,
+  SepaMandate,
+  Stock,
+  StockApi,
   Tag,
   User,
   UserSettings,
@@ -102,7 +107,14 @@ export class SettingsService {
     let olddata: string | null | FinanceStorage = localStorage.getItem(this.financestorage);
     if (olddata) {
       olddata = <FinanceStorage>JSON.parse(olddata);
-
+      this.bankAccounts.next(olddata.bankAccounts);
+      this.countries.next(olddata.countries);
+      this.currencies.next(olddata.currencies);
+      this.expenseCategories.next(olddata.expenseCategories);
+      this.expenseTypes.next(olddata.expenseTypes);
+      this.sepaMandates.next(olddata.sepaMandates);
+      this.stocks.next(olddata.stocks);
+      this.stocksApis.next(olddata.stocksApis);
       this.financesync = olddata.ts;
     }
     this.syncFinance();
@@ -170,6 +182,9 @@ export class SettingsService {
 
   private banks: BehaviorSubject<{ [key: number]: Party }> = new BehaviorSubject<{ [key: number]: Party }>({});
   banks$ = this.banks.asObservable();
+
+  private bankAccounts: BehaviorSubject<{ [key: number]: BankAccount }> = new BehaviorSubject<{ [key: number]: BankAccount }>({});
+  bankAccounts$ = this.bankAccounts.asObservable();
 
   private cases: BehaviorSubject<{ [key: number]: Case }> = new BehaviorSubject<{ [key: number]: Case }>({});
   cases$ = this.cases.asObservable();
@@ -268,8 +283,24 @@ export class SettingsService {
   private currencies: BehaviorSubject<Currency[]> = new BehaviorSubject<Currency[]>([]);
   currencies$ = this.currencies.asObservable();
 
+  getCurrency(id: number | null): Currency | null {
+    if (id == null)
+      return null;
+    for (let i = 0; i < this.currencies.value.length; i++) {
+      if (this.currencies.value[i].id === id)
+        return this.currencies.value[i];
+    }
+    return null;
+  }
+
   private customers: BehaviorSubject<{ [key: number]: WorkCustomer }> = new BehaviorSubject<{ [key: number]: WorkCustomer }>({});
   customers$ = this.customers.asObservable();
+
+  private expenseCategories: BehaviorSubject<{ [key: number]: ExpenseCategory }> = new BehaviorSubject<{ [key: number]: ExpenseCategory }>({});
+  expenseCategories$ = this.expenseCategories.asObservable();
+
+  private expenseTypes: BehaviorSubject<{ [key: number]: ExpenseType }> = new BehaviorSubject<{ [key: number]: ExpenseType }>({});
+  expenseTypes$ = this.expenseTypes.asObservable();
 
   private parties: BehaviorSubject<{ [key: number]: Party }> = new BehaviorSubject<{ [key: number]: Party }>({});
   parties$ = this.parties.asObservable();
@@ -277,8 +308,25 @@ export class SettingsService {
   private roles: BehaviorSubject<{ [key: number]: PartyRole }> = new BehaviorSubject<{ [key: number]: PartyRole }>({});
   roles$ = this.roles.asObservable();
 
+  private sepaMandates: BehaviorSubject<{ [key: number]: SepaMandate }> = new BehaviorSubject<{ [key: number]: SepaMandate }>({});
+  sepaMandates$ = this.sepaMandates.asObservable();
+
   private settings: BehaviorSubject<UserSettings | null> = new BehaviorSubject<UserSettings | null>(null);
   settings$ = this.settings.asObservable();
+
+  private stocks: BehaviorSubject<{ [key: number]: Stock }> = new BehaviorSubject<{ [key: number]: Stock }>({});
+  stocks$ = this.stocks.asObservable();
+
+  private stocksApis: BehaviorSubject<{ [key: number]: StockApi }> = new BehaviorSubject<{ [key: number]: StockApi }>({});
+  stocksApis$ = this.stocksApis.asObservable();
+
+  getStocksApi(id: number | null): StockApi | null {
+    if (id == null)
+      return null;
+    if (this.stocksApis.value[id])
+      return this.stocksApis.value[id];
+    return null;
+  }
 
   private tags: BehaviorSubject<{ [key: number]: Tag }> = new BehaviorSubject<{ [key: number]: Tag }>({});
   tags$ = this.tags.asObservable();
@@ -415,7 +463,14 @@ export class SettingsService {
 
   private saveFinance(): void {
     localStorage.setItem(this.financestorage, JSON.stringify({
-
+      bankAccounts: this.bankAccounts.value,
+      countries: this.countries.value,
+      currencies: this.currencies.value,
+      expenseCategories: this.expenseCategories.value,
+      expenseTypes: this.expenseTypes.value,
+      sepaMandates: this.sepaMandates.value,
+      stocks: this.stocks.value,
+      stocksApis: this.stocksApis.value,
       ts: this.financesync,
     }));
   }
@@ -490,7 +545,14 @@ export class SettingsService {
     this.authService.queryApi(url).subscribe((reply) => {
       if (reply.success && reply.payload != undefined) {
         let response = <FinanceResponse>reply.payload;
-
+        this.updateBankAccounts(response.accounts);
+        this.updateCountries(response.countries);
+        this.updateCurrencies(response.currencies);
+        this.updateExpenseCategories(response.expenseCategories);
+        this.updateExpenseTypes(response.expenseTypes);
+        this.updateSepaMandates(response.sepaMandates);
+        this.updateStocks(response.stocks);
+        this.updateStocksApis(response.stocksApis);
         this.saveFinance();
       }
       this.financesynctimeout = setTimeout(() => { this.syncFinance(); }, 30000);
@@ -717,6 +779,12 @@ export class SettingsService {
     this.tags.next(temp);
   }
 
+  updateBankAccounts(obj: BankAccount[]) {
+    let temp = { ...this.bankAccounts.value };
+    obj.forEach((a) => this._updateCommon(temp, a));
+    this.bankAccounts.next(temp);
+  }
+
   updateCase(item: Case): BehaviorSubject<Case | null> {
     let subject = new BehaviorSubject<Case | null>(null);
     this.postObject(item.id == 0 ? 'create' : 'update', item,
@@ -760,11 +828,29 @@ export class SettingsService {
     return subject;
   }
 
+  updateExpenseCategories(obj: ExpenseCategory[]) {
+    let temp = { ...this.expenseCategories.value };
+    obj.forEach((a) => this._updateCommon(temp, a));
+    this.expenseCategories.next(temp);
+  }
+
+  updateExpenseTypes(obj: ExpenseType[]) {
+    let temp = { ...this.expenseTypes.value };
+    obj.forEach((a) => this._updateCommon(temp, a));
+    this.expenseTypes.next(temp);
+  }
+
   updateRole(roleitem: PartyRole): BehaviorSubject<PartyRole | null> {
     let subject = new BehaviorSubject<PartyRole | null>(null);
     //this.postCommon(roleitem.id == 0 ? 'create' : 'update', roleitem,
     //  'role', this.roles.value, subject, (c: PartyRole[]) => this.updateRoles(c));
     return subject;
+  }
+
+  updateSepaMandates(mandates: SepaMandate[]) {
+    let temp = { ...this.sepaMandates.value };
+    mandates.forEach((a) => this._updateCommon(temp, a));
+    this.sepaMandates.next(temp);
   }
 
   updateSettings(settings: UserSettings, push: boolean = false) {
@@ -773,6 +859,18 @@ export class SettingsService {
       let url = this.configService.config.api.baseUrl + '/user/settings';
       this.authService.updateApi(url, { userSettings: settings });
     }
+  }
+
+  updateStocks(obj: Stock[]) {
+    let temp = { ...this.stocks.value };
+    obj.forEach((a) => this._updateCommon(temp, a));
+    this.stocks.next(temp);
+  }
+
+  updateStocksApis(obj: StockApi[]) {
+    let temp = { ...this.stocksApis.value };
+    obj.forEach((a) => this._updateCommon(temp, a));
+    this.stocksApis.next(temp);
   }
 
   updateTag(tag: Tag): BehaviorSubject<Tag | null> {
@@ -832,11 +930,22 @@ export interface FinanceResponse {
   accounts: BankAccount[];
   countries: Country[];
   currencies: Currency[];
-  // expenseCategories: 
+  expenseCategories: ExpenseCategory[];
+  expenseTypes: ExpenseType[];
+  sepaMandates: SepaMandate[];
+  stocks: Stock[];
+  stocksApis: StockApi[];
 }
 
 export interface FinanceStorage {
-
+  bankAccounts: BankAccount[];
+  countries: Country[];
+  currencies: Currency[];
+  expenseCategories: ExpenseCategory[];
+  expenseTypes: ExpenseType[];
+  sepaMandates: SepaMandate[];
+  stocks: Stock[];
+  stocksApis: StockApi[];
   ts: number;
 }
 

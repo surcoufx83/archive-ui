@@ -225,6 +225,7 @@
     "no": "No",
     "none": "None",
     "novalue": "---",
+    "pcs": "Pcs.",
     "period": {
       "placeholder": "0y 0m 0d 0:0:0",
       "patternYears": "{0}y",
@@ -703,6 +704,23 @@
     "cart": {
       "title": "Shopping list"
     }
+  },
+  "stocks": {
+    "title": "Shares and crypto",
+    "api": "API",
+    "bought": "Bought",
+    "boughtValue": "{0} {1} each {2}",
+    "currency": "Currency",
+    "dif": "Dif",
+    "isin": "ISIN",
+    "name": "Name",
+    "quantity": "Quantity",
+    "rate": "Price",
+    "rate2": "Last price",
+    "symbol": "Symbol",
+    "total": "Total",
+    "value": "Value",
+    "wkn": "WKN"
   },
   "work": {
     "offcategories": {

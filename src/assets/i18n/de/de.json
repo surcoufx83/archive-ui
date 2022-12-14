@@ -231,6 +231,7 @@
     "no": "Nein",
     "none": "Keine",
     "novalue": "---",
+    "pcs": "St.",
     "period": {
       "placeholder": "0j 0m 0t 0:0:0",
       "patternYears": "{0}j",
@@ -727,6 +728,23 @@
     "cart": {
       "title": "Einkaufsliste"
     }
+  },
+  "stocks": {
+    "title": "Aktien und Krypto",
+    "api": "API",
+    "bought": "Gekauft",
+    "boughtValue": "{0} {1} á {2}",
+    "currency": "Währung",
+    "dif": "Änd.",
+    "isin": "ISIN",
+    "name": "Name",
+    "quantity": "Anzahl",
+    "rate": "Kurs",
+    "rate2": "Letzter Kurs",
+    "symbol": "Symbol",
+    "total": "Gesamt",
+    "value": "Wert",
+    "wkn": "WKN"
   },
   "work": {
     "offcategories": {

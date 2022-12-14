@@ -40,6 +40,7 @@ export interface BankAccount {
   created: string;
   currency: Currency;
   currencyid: number;
+  deleted: string | null;
   iban: string;
   title: string;
   updated: string;
@@ -198,6 +199,27 @@ export interface Directory {
   islink: boolean;
   mtime: string;
   deldate: string | null;
+}
+
+export interface ExpenseCategory {
+  id: number;
+  created: string;
+  deleted: string | null;
+  icon: string;
+  name: string;
+  parentid: number | null;
+  search: Search5Phrases;
+  updated: string;
+  xtractname: string;
+}
+
+export interface ExpenseType {
+  id: number;
+  created: string;
+  deleted: string | null;
+  name: string;
+  search: Search5Phrases;
+  updated: string;
 }
 
 export interface Extension {
@@ -402,6 +424,47 @@ export interface RecentBooking {
   timecategoryid: number;
 }
 
+export interface Search5Phrases {
+  phrase1: string | null;
+  phrase2: string | null;
+  phrase3: string | null;
+  phrase4: string | null;
+  phrase5: string | null;
+}
+
+export interface SepaMandate {
+  id: number;
+  amounts: SepaMandateAmounts;
+  created: string;
+  deleted: string | null;
+  description: string;
+  references: SepaMandateReferences;
+  search: string | null;
+  sepa: SepaMandateData;
+  terminated: string | null;
+  updated: string;
+}
+
+export interface SepaMandateAmounts {
+  gross: number | null;
+  net: number | null;
+  tax: number | null;
+}
+
+export interface SepaMandateReferences {
+  account: number;
+  case: number;
+  category: number;
+  client: number;
+  currency: number;
+  party: number;
+}
+
+export interface SepaMandateData {
+  creditoridno: string;
+  reference: string;
+}
+
 export interface Session {
   token: string;
   username: string;
@@ -409,6 +472,50 @@ export interface Session {
 
 export interface StandingOrder {
 
+}
+
+export interface Stock {
+  id: number;
+  api: number | null;
+  bought: StockBought;
+  created: string;
+  currency: number;
+  current: StockCurrent;
+  deleted: string | null;
+  iscrypto: boolean;
+  isin: string;
+  lastcheck: string | null;
+  name: string;
+  symbol: string | null;
+  updated: string;
+  wkn: string;
+}
+
+export interface StockApi {
+  id: number;
+  created: string;
+  deleted: string | null;
+  name: string;
+  token: string;
+  updated: string;
+  url: string;
+}
+
+export interface StockBought {
+  quantity: number;
+  value: number;
+}
+
+export interface StockCurrent {
+  date: string | null;
+  dif: StockDif;
+  rate: number;
+  value: number;
+}
+
+export interface StockDif {
+  abs: number;
+  rel: number;
 }
 
 export interface Tag {
