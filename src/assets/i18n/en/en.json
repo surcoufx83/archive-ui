@@ -738,14 +738,21 @@
     "bought": "Purchased",
     "boughtValue": "{0} {1} each {2}",
     "currency": "Currency",
-    "dif": "Dif.",
+    "dif": "Änderung",
+    "difrel": "in %",
     "isin": "ISIN",
     "name": "Name",
     "quantity": "Quantity",
     "rate": "Price",
     "rate2": "Last price",
+    "rateInputModal": {
+      "title": "Werte nacherfassen",
+      "description": "Über dieses Formular können Aktienwerte manuell nacherfasst werden.",
+      "ignoreWithApi": "Automatisch aktualisierte ignorieren"
+    },
     "symbol": "Symbol",
     "total": "Total",
+    "updateRates": "Kurse",
     "value": "Value",
     "wkn": "WKN"
   },
