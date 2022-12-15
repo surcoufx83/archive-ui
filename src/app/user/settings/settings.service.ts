@@ -317,6 +317,14 @@ export class SettingsService {
   private stocks: BehaviorSubject<{ [key: number]: Stock }> = new BehaviorSubject<{ [key: number]: Stock }>({});
   stocks$ = this.stocks.asObservable();
 
+  getStock(id: number | null): Stock | null {
+    if (id == null)
+      return null;
+    if (this.stocks.value[id])
+      return this.stocks.value[id];
+    return null;
+  }
+
   private stocksApis: BehaviorSubject<{ [key: number]: StockApi }> = new BehaviorSubject<{ [key: number]: StockApi }>({});
   stocksApis$ = this.stocksApis.asObservable();
 

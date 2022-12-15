@@ -735,7 +735,8 @@
     "bought": "Gekauft",
     "boughtValue": "{0} {1} á {2}",
     "currency": "Währung",
-    "dif": "Änd.",
+    "dif": "Änderung",
+    "difrel": "in %",
     "isin": "ISIN",
     "name": "Name",
     "quantity": "Anzahl",
@@ -744,7 +745,13 @@
     "symbol": "Symbol",
     "total": "Gesamt",
     "value": "Wert",
-    "wkn": "WKN"
+    "wkn": "WKN",
+    "rateInputModal": {
+      "title": "Werte nacherfassen",
+      "description": "Über dieses Formular können Aktienwerte manuell nacherfasst werden.",
+      "ignoreWithApi": "Automatisch aktualisierte ignorieren"
+    },
+    "openAtBitpanda": "Auf bitpanda ansehen"
   },
   "work": {
     "offcategories": {

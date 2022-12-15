@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { format } from 'date-fns';
 import { AuthService } from 'src/app/auth.service';
 import { AppConfig, ConfigService } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
@@ -21,6 +22,9 @@ export class StocksComponent implements OnInit {
   valueCurrent: number = 0;
   valueDifAbs: number = 0;
   valueDifRel: number = 0;
+  currentRates: RateDate | null = null;
+  currentSkipWithApi: boolean = true;
+  savingRates: boolean = false;
 
   constructor(private authService: AuthService,
     private configService: ConfigService,
@@ -34,6 +38,15 @@ export class StocksComponent implements OnInit {
 
   get config(): AppConfig {
     return this.configService.config;
+  }
+
+  createNewRates(keepdate?: boolean): void {
+    let record: RateDate = {
+      date: keepdate && this.currentRates ? this.currentRates.date : format(new Date(), 'y-M-d'),
+      values: [],
+    };
+    this.stocksStore.sort((a, b) => a.name.toLocaleLowerCase() > b.name.toLocaleLowerCase() ? 1 : -1).forEach((s) => record.values.push({ stockid: s.id, stock: s, value: '' }));
+    this.currentRates = record;
   }
 
   currency(cur: number): Currency {
@@ -52,6 +65,7 @@ export class StocksComponent implements OnInit {
       this.stocks.forEach((s) => {
         bought += s.bought.value;
         current += s.current.value;
+
       });
       this.valueBought = bought;
       this.valueCurrent = current;
@@ -60,8 +74,18 @@ export class StocksComponent implements OnInit {
     });
   }
 
+  saveNewRates(record: RateDate | null): void {
+    if (this.savingRates || !record)
+      return;
+    this.savingRates = true;
+  }
+
   sort() {
     this.stocks = this.stocksStore.sort((a, b) => this.sort_compare2Stocks(a, b));
+  }
+
+  stock(id: number): Stock {
+    return this.userSettings.getStock(id)!;
   }
 
   private sort_compare2Stocks(a: Stock, b: Stock): number {
@@ -143,4 +167,15 @@ export class StocksComponent implements OnInit {
     return 0;
   }
 
+}
+
+export interface RateDate {
+  date: string;
+  values: RateItem[];
+}
+
+export interface RateItem {
+  stockid: number;
+  stock: Stock;
+  value: number | string;
 }
