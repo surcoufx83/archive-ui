@@ -204,8 +204,13 @@ export class AuthService implements OnInit {
     this.http.post<ApiReply>(url, payload, { headers: this.header }).subscribe({
       next: (response) => reply.next(response),
       error: (e: HttpErrorResponse) => {
-        console.log(e);
         reply.next({ success: false });
+        if (e.status === 304) {
+          this.toastService.confirm(this.i18nService.i18n('authService.notModified.title'),
+            this.i18nService.i18n('authService.notModified.message', [e.statusText]));
+          return;
+        }
+        console.log(e);
         this.toastService.error(this.i18nService.i18n('authService.apiError.title'),
           this.i18nService.i18n('authService.apiError.message', [e.statusText]));
         if (e.status === 401) {
@@ -214,6 +219,10 @@ export class AuthService implements OnInit {
       }
     });
     return reply;
+  }
+
+  public updateApi2(urlpart: string, payload: any = {}): Subject<ApiReply> {
+    return this.updateApi(`${this.configService.config.api.baseUrl}/${urlpart}`, payload);
   }
 
   ngOnInit(): void {

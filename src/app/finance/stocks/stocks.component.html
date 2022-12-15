@@ -1,1 +1,232 @@
-<p>stocks works!</p>
+<div>
+
+    <div class="container pt-4 pt-md-2 mb-2">
+        <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between align-items-center">
+            <h2 class="px-2 mb-0">{{ i18n('meter.readings.title') }}</h2>
+            <div>
+                <nav class="h-100" style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
+                    <ol class="breadcrumb d-flex align-items-center h-100 mb-0 flex-fill flex-nowrap">
+                        <button type="button" class="btn btn-sm btn-outline-primary" (click)="createNewRates()"
+                            data-bs-toggle="modal" data-bs-target="#rate-input-modal">
+                            <app-icon [iconClass]="config.icons['receipt']"></app-icon>
+                            {{ i18n('stocks.updateRates') }}
+                        </button>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="flex-table flex-table-sm mb-3">
+            <div class="flex-table-head row">
+                <div class="col-6 col-md-4 col-lg-3">{{ i18n('stocks.name') }}</div>
+                <div class="col-1 text-end d-none d-lg-block">{{ i18n('stocks.quantity') }}</div>
+                <div class="col-2 text-end d-none d-md-block">{{ i18n('stocks.rate') }}</div>
+                <div class="col-3 col-md-2 text-end">{{ i18n('stocks.value') }}</div>
+                <div class="col-3 text-end d-block d-md-none">{{ i18n('stocks.dif') }}</div>
+                <div class="col-2 text-end d-none d-md-block">{{ i18n('stocks.dif') }}</div>
+                <div class="col-2 text-end d-none d-md-block">{{ i18n('stocks.difrel') }}</div>
+            </div>
+            <ng-container *ngTemplateOutlet="sumRow"></ng-container>
+            <ng-container *ngFor="let stock of stocks; let i = index;">
+                <ng-container *ngTemplateOutlet="stockRow; context: { stock: stock }"></ng-container>
+            </ng-container>
+        </div>
+    </div>
+</div>
+
+<ng-template #sumRow>
+    <div class="flex-table-head row">
+        <div class="col-6 text-truncate">
+            {{ i18n('stocks.total') }}
+        </div>
+        <div class="col-3 col-md-2 text-end">
+            {{ formatService.fcur(valueCurrent) }}
+        </div>
+        <div
+            [ngClass]="{ 'col-3 col-md-2 d-block d-md-none': true, 'text-end': true, 'text-success': valueDifAbs > 0, 'text-danger': valueDifAbs < 0 }">
+            <span *ngIf="valueDifAbs > 0">+</span>{{ formatService.fcur(valueDifAbs) }}
+        </div>
+        <div
+            [ngClass]="{ 'col-2 d-none d-md-block': true, 'text-end': true, 'text-success': valueDifAbs > 0, 'text-danger': valueDifAbs < 0 }">
+            <span *ngIf="valueDifAbs > 0">+</span>{{ formatService.fcur(valueDifAbs) }}
+        </div>
+        <div
+            [ngClass]="{ 'col-2 d-none d-md-block': true, 'text-end': true, 'text-success': valueDifRel > 0, 'text-danger': valueDifRel < 0 }">
+            <span *ngIf="valueDifRel > 0">+</span>{{ formatService.fpercent(valueDifRel * 100, 1, 1)
+            }}
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #stockRow let-stock="stock">
+    <div class="flex-table-body row">
+        <div class="col-6 col-md-4 col-lg-3">
+            <div class="d-flex justify-content-between">
+                <div class="grow-1 text-truncate">
+                    <app-icon [iconClass]="config.icons[stock.iscrypto ? 'crypto' : 'stocks']" [marginEnd]="1"
+                        [fixedWidth]="true" [addCssClasses]="[ 'd-inline-block', 'd-md-none', 'd-lg-inline-block' ]">
+                    </app-icon>
+                    {{ stock.name }}
+                </div>
+                <div class="text-nowrap">
+                    <button
+                        [ngClass]="{ 'btn btn-sm ms-1': true, 'btn-outline-secondary': stock.id != showMoreId, 'btn-outline-success': stock.id == showMoreId }"
+                        (click)="showMoreId = stock.id == showMoreId ? 0 : stock.id">
+                        <app-icon [iconClass]="config.icons[stock.id == showMoreId ? 'close' : 'preview']"
+                            [fixedWidth]="true"></app-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-1 text-truncate text-end d-none d-lg-block">
+            {{ formatService.fnumber(stock.bought.quantity) }}
+        </div>
+        <div class="col-2 text-end d-none d-md-block">
+            {{ formatService.fcur(stock.current.rate, currency(stock.currency)) }}
+        </div>
+        <div class="col-3 col-md-2 text-end">
+            {{ formatService.fcur(stock.current.value, currency(stock.currency)) }}
+        </div>
+        <div
+            [ngClass]="{ 'col-3 col-md-2 d-block d-md-none': true, 'text-end': true, 'text-success': stock.current.dif.abs > 0, 'text-danger': stock.current.dif.abs < 0 }">
+            <span *ngIf="stock.current.dif.abs > 0">+</span>{{ formatService.fcur(stock.current.dif.abs,
+            currency(stock.currency)) }}
+        </div>
+        <div
+            [ngClass]="{ 'col-2 d-none d-md-block': true, 'text-end': true, 'text-success': stock.current.dif.abs > 0, 'text-danger': stock.current.dif.abs < 0 }">
+            <span *ngIf="stock.current.dif.abs > 0">+</span>{{ formatService.fcur(stock.current.dif.abs,
+            currency(stock.currency)) }}
+        </div>
+        <div
+            [ngClass]="{ 'col-2 d-none d-md-block': true, 'text-end': true, 'text-success': stock.current.dif.rel > 0, 'text-danger': stock.current.dif.rel < 0 }">
+            <span *ngIf="stock.current.dif.rel > 0">+</span>{{ formatService.fpercent(stock.current.dif.rel
+            * 100, 1, 1)
+            }}
+        </div>
+    </div>
+    <ng-container *ngIf="stock.id == showMoreId">
+        <ng-container *ngTemplateOutlet="stockDetails; context: { stock: stock }"></ng-container>
+    </ng-container>
+</ng-template>
+
+<ng-template #stockDetails let-stock="stock">
+    <div class="flex-table-body row">
+        <div class="col-12 col-md-6 col-lg-4">
+            <strong>{{ stock.name }}</strong>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4">
+            <strong>{{ i18n('stocks.isin') }}:</strong> {{ stock.isin ?? i18n('common.novalue') }}
+        </div>
+        <div class="col-12 col-md-6 col-lg-4">
+            <strong>{{ i18n('stocks.wkn') }} / {{ i18n('stocks.symbol') }}:</strong> {{ stock.wkn ??
+            i18n('common.novalue') }} / {{ stock.symbol ?? i18n('common.novalue')
+            }}
+        </div>
+        <div class="col-12 col-md-6 col-lg-4">
+            <strong>{{ i18n('stocks.currency') }}:</strong> {{ currency(stock.currency).name }}
+        </div>
+        <div class="col-12 col-md-6 col-lg-4">
+            <strong>{{ i18n('stocks.api') }}:</strong> {{ api(stock.api)?.name ?? i18n('common.none') }}
+        </div>
+    </div>
+    <div class="flex-table-body row">
+        <div class="col-12 col-md-6 col-lg-4">
+            <strong>{{ i18n('stocks.bought') }}:</strong> {{ i18n('stocks.boughtValue', [
+            formatService.fnumber(stock.bought.quantity), i18n('common.pcs'), formatService.fcur(stock.bought.value /
+            stock.bought.quantity, currency(stock.currency)) ]) }}
+        </div>
+        <div class="col-12 col-md-6 col-lg-4">
+            <strong>{{ i18n('stocks.rate2') }}:</strong> {{ formatService.fcur(stock.current.rate,
+            currency(stock.currency)) }} <span class="fs-7">{{ formatService.fdist(stock.current.date, true) }}</span>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4">
+            <strong>{{ i18n('stocks.value') }}:</strong> {{ formatService.fcur(stock.current.value,
+            currency(stock.currency)) }} <span class="fs-7">
+                <span [ngClass]="[stock.current.dif.abs > 0 ? 'text-success' : 'text-danger']">
+                    <span *ngIf="stock.current.dif.abs > 0">+</span>{{ formatService.fcur(stock.current.dif.abs,
+                    currency(stock.currency)) }}</span> (<span
+                    [ngClass]="[stock.current.dif.rel > 0 ? 'text-success' : 'text-danger']">{{
+                    formatService.fpercent(stock.current.dif.rel
+                    * 100, 2, 2)
+                    }}</span>)
+            </span>
+        </div>
+    </div>
+</ng-template>
+
+<div class="modal fade" id="rate-input-modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form (submit)="saveNewRates(currentRates); createNewRates(true);">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ i18n('stocks.rateInputModal.title') }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="fs-8">
+                        {{ i18n('stocks.rateInputModal.description') }}
+                    </p>
+                    <ul *ngIf="currentRates != null" class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <div class="form-check">
+                                <input type="checkbox" [(ngModel)]="currentSkipWithApi" name="input-skip-with-api"
+                                    id="input-skip-with-api" class="form-check-input">
+                                <label class="form-check-label" for="input-skip-with-api"> <strong>{{
+                                        i18n('stocks.rateInputModal.ignoreWithApi') }}</strong></label>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <strong>{{ i18n('common.date') }}</strong>
+                                </div>
+                                <div class="text-end">
+                                    <input type="date" [(ngModel)]="currentRates.date" name="input-date"
+                                        class="form-control form-control-sm">
+                                </div>
+                            </div>
+                        </li>
+                        <ng-container *ngFor="let value of currentRates.values">
+                            <li class="list-group-item" *ngIf="value.stock.api == null || !currentSkipWithApi">
+                                <div class="d-flex justify-content-between">
+                                    <div class="d-flex flex-column">
+                                        <strong>{{ value.stock.name }}</strong>
+                                        <span class="fs-8">
+                                            <span class="pointer user-select-all" [title]="i18n('stocks.isin')">{{
+                                                value.stock.isin }}</span><span
+                                                *ngIf="value.stock.symbol != null && value.stock.symbol != ''">
+                                                / <span class="pointer user-select-all" [title]="i18n('stocks.symbol')">{{
+                                                    value.stock.symbol
+                                                    }}</span>
+                                            </span>
+                                        </span>
+                                    </div>
+                                    <div class="text-end ms-2">
+                                        <div class="input-group" style="width: 160px;">
+                                            <input type="number" min="0" max="99999999" [step]="4" [(ngModel)]="value.value"
+                                                [name]="'input-value-' + value.stockid"
+                                                class="form-control form-control-sm text-end">
+                                            <span class="input-group-text fs-8 text-serif fw-bold px-2"
+                                                style="width: 52px;">{{ currency(value.stock.currency).sign
+                                                }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ng-container>
+                    </ul>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button #closeRatesModalButton type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ i18n('common.cancel')
+                        }}</button>
+                    <button type="submit" class="btn btn-success" [disabled]="savingRates">
+                        <app-icon [iconClass]="config.icons[savingRates ? 'busy' : 'save']"></app-icon>
+                        {{ i18n('common.save') }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

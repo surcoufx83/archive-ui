@@ -118,6 +118,32 @@
               </div>
             </div><!-- file meta information -->
 
+            <div class="row">
+              <!-- file tags -->
+              <div class="col-12 mb-3">
+                <div class="form-group">
+                  <label class="form-label">{{ i18n('file.main.tags') }}</label>
+                  <div id="file-tags" class="d-flex">
+                    <div *ngFor="let tagid of file.tags">
+                      <ng-container *ngIf="getTag(tagid) != null">
+                        <app-tag [tag]="getTag(tagid)!" (xclick)="untagFile(getTag(tagid)!)"></app-tag>
+                      </ng-container>
+                    </div>
+                    <div class="flex-fill">
+                      <form (submit)="tagFile()">
+                        <input class="form-control-plaintext form-control-px" list="file-tags-options" id="file-tags"
+                          name="file-tags" [placeholder]="i18n('file.main.tagsInputPlaceholder')"
+                          [(ngModel)]="filetagInput">
+                        <datalist id="file-tags-options">
+                          <option *ngFor="let tag of tags" [value]="tag.value">
+                        </datalist>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div><!-- file tags -->
+
           </div>
         </div>
 

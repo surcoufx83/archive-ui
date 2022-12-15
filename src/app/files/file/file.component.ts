@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import * as saveAs from 'file-saver';
 import { PdfJsViewerComponent } from 'ng2-pdfjs-viewer';
-import { Address, ButtonType, Case, CaseFiletype, Class, ContactType, File, Page, Party, PartyContact, UserSettings, Version } from 'src/app/if';
+import { Address, ButtonType, Case, CaseFiletype, Class, ContactType, File, Page, Party, PartyContact, Tag, UserSettings, Version } from 'src/app/if';
 import { FileService } from 'src/app/utils/file.service';
 import { FormatService } from 'src/app/utils/format.service';
 import { ToastsService } from 'src/app/utils/toasts.service';
@@ -29,6 +29,7 @@ export class FileComponent implements OnInit {
   file?: File;
   filecontent?: Blob;
   fileid: number = -1;
+  filetagInput: string = '';
   guessing: boolean = false;
   maxyear: number = new Date().getFullYear();
   recentVersion: Version | null | undefined;
@@ -46,6 +47,7 @@ export class FileComponent implements OnInit {
   contacttypes: ContactType[] = [];
   filetypes: CaseFiletype[] = [];
   parties: Party[] = [];
+  tags: Tag[] = [];
 
   ai_classifiedAs: Class | null = null;
   ai_classifiedConfidence: number = 0.0;
@@ -100,6 +102,9 @@ export class FileComponent implements OnInit {
     this.userSettings.parties$.subscribe((parties) => {
       this.parties = Object.values(parties);
       this.parties.sort((a, b) => { return a.name1 > b.name1 ? 1 : a.name1 < b.name1 ? -1 : 0 });
+    });
+    this.userSettings.tags$.subscribe((tags) => {
+      this.tags = Object.values(tags).sort((a, b) => a.value > b.value ? 1 : -1);
     });
   }
 
@@ -179,6 +184,10 @@ export class FileComponent implements OnInit {
 
   get fileurl(): string {
     return this.config.api.baseUrl + '/file/' + this.file?.id + '/download';
+  }
+
+  getTag(id: number): Tag | null {
+    return this.userSettings.getTag(id);
   }
 
   getViewer(): string {
@@ -298,7 +307,7 @@ export class FileComponent implements OnInit {
     this.authService.queryApi(url).subscribe((reply) => {
       if (reply.errno === 204) {
         this.toastService.warn(this.i18nService.i18n('file.errors.noNextFile.title'),
-        this.i18nService.i18n('file.errors.noNextFile.message'));
+          this.i18nService.i18n('file.errors.noNextFile.message'));
       } else {
         if (reply.success && reply.payload != undefined) {
           let id = <number>reply.payload['file'];
@@ -377,6 +386,36 @@ export class FileComponent implements OnInit {
         this.updating = false;
       });
     }, 500);
+  }
+
+  tagFile(): void {
+    if (this.filetagInput == '' || !this.file || this.file == null)
+      return;
+    let tagid = 0;
+    this.tags.forEach((t) => {
+      if (t.value.toLowerCase() == this.filetagInput.toLowerCase()) {
+        tagid = t.id;
+        return;
+      }
+    });
+    let url: string = `${this.config.api.baseUrl}/file/${this.file.id}/tags/add`;
+    this.authService.updateApi(url, { id: tagid, value: this.filetagInput }).subscribe((reply) => {
+      if (reply.success && reply.payload && reply.payload['file']) {
+        this.userSettings.syncTags();
+        this.file = <File>reply.payload['file'];
+        this.filetagInput = '';
+      }
+    });
+  }
+
+  untagFile(tag: Tag): void {
+    if (!this.file || this.file == null)
+      return;
+    let url: string = `${this.config.api.baseUrl}/file/${this.file.id}/tags/${tag.id}/delete`;
+    this.authService.updateApi(url, {}).subscribe((reply) => {
+      if (reply.success && reply.payload && reply.payload['file'])
+        this.file = <File>reply.payload['file'];
+    });
   }
 
   get version(): Version | null {

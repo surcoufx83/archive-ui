@@ -42,7 +42,7 @@ let mockfile: File = {
     mtime: '2022-01-01', size: 0, hash: '', deldate: null, case_filename: null,
     case_filedescription: null, case_filestatus: null, case_pintop: false,
     fileclass_meta: null, relpath: '/foo.bar', attributes: null,
-    istaxreceipt: false, taxyear: null, versions: { }
+    istaxreceipt: false, taxyear: null, versions: { }, tags: []
 };
 
 describe('FileService', () => {

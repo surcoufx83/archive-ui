@@ -234,7 +234,7 @@
     "no": "No",
     "none": "None",
     "novalue": "---",
-    "pcs": "pcs.",
+    "pcs": "Pcs.",
     "period": {
       "placeholder": "0y 0m 0d 0:0:0",
       "patternYears": "{0}y",
@@ -733,26 +733,26 @@
     }
   },
   "stocks": {
-    "title": "Stocks and Crypto",
+    "title": "Shares and crypto",
     "api": "API",
-    "bought": "Purchased",
+    "bought": "Bought",
     "boughtValue": "{0} {1} each {2}",
     "currency": "Currency",
-    "dif": "Änderung",
-    "difrel": "in %",
+    "dif": "Difference",
+    "difrel": "as %",
     "isin": "ISIN",
     "name": "Name",
     "quantity": "Quantity",
     "rate": "Price",
     "rate2": "Last price",
     "rateInputModal": {
-      "title": "Werte nacherfassen",
-      "description": "Über dieses Formular können Aktienwerte manuell nacherfasst werden.",
-      "ignoreWithApi": "Automatisch aktualisierte ignorieren"
+      "title": "Enter values subsequently",
+      "description": "Stock prices can be entered manually using this form.",
+      "ignoreWithApi": "Ignore automatically updated"
     },
     "symbol": "Symbol",
     "total": "Total",
-    "updateRates": "Kurse",
+    "updateRates": "Prices",
     "value": "Value",
     "wkn": "WKN"
   },

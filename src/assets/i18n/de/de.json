@@ -3,6 +3,10 @@
     "apiError": {
       "title": "Fehler",
       "message": "Fehler beim Abrufen von Daten: {0}"
+    },
+    "notModified": {
+      "title": "Info",
+      "message": "Keine Anderungen vorgenommen: {0}"
     }
   },
   "calendar": {
@@ -227,6 +231,7 @@
     "no": "Nein",
     "none": "Keine",
     "novalue": "---",
+    "pcs": "St.",
     "period": {
       "placeholder": "0j 0m 0t 0:0:0",
       "patternYears": "{0}j",
@@ -452,6 +457,8 @@
       "deleted": "Gelöscht",
       "size": "Dateigröße",
       "pages": "Seitenzahl",
+      "tags": "Tags",
+      "tagsInputPlaceholder": "Beliebigen Tag eingeben...",
       "words": "Anzahl Wörter"
     },
     "classify": {
@@ -721,6 +728,30 @@
     "cart": {
       "title": "Einkaufsliste"
     }
+  },
+  "stocks": {
+    "title": "Aktien und Krypto",
+    "api": "API",
+    "bought": "Gekauft",
+    "boughtValue": "{0} {1} á {2}",
+    "currency": "Währung",
+    "dif": "Änderung",
+    "difrel": "in %",
+    "isin": "ISIN",
+    "name": "Name",
+    "quantity": "Anzahl",
+    "rate": "Kurs",
+    "rate2": "Letzter Kurs",
+    "rateInputModal": {
+      "title": "Werte nacherfassen",
+      "description": "Über dieses Formular können Aktienwerte manuell nacherfasst werden.",
+      "ignoreWithApi": "Automatisch aktualisierte ignorieren"
+    },
+    "symbol": "Symbol",
+    "total": "Gesamt",
+    "updateRates": "Kurse",
+    "value": "Wert",
+    "wkn": "WKN"
   },
   "work": {
     "offcategories": {
