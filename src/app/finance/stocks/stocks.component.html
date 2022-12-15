@@ -8,8 +8,8 @@
                     <ol class="breadcrumb d-flex align-items-center h-100 mb-0 flex-fill flex-nowrap">
                         <button type="button" class="btn btn-sm btn-outline-primary" (click)="createNewRates()"
                             data-bs-toggle="modal" data-bs-target="#rate-input-modal">
-                            <app-icon [iconClass]="config.icons['add']"></app-icon>
-                            {{ i18n('common.add') }}
+                            <app-icon [iconClass]="config.icons['receipt']"></app-icon>
+                            {{ i18n('stocks.updateRates') }}
                         </button>
                     </ol>
                 </nav>
@@ -219,7 +219,7 @@
                     </ul>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ i18n('common.cancel')
+                    <button #closeRatesModalButton type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ i18n('common.cancel')
                         }}</button>
                     <button type="submit" class="btn btn-success" [disabled]="savingRates">
                         <app-icon [iconClass]="config.icons[savingRates ? 'busy' : 'save']"></app-icon>

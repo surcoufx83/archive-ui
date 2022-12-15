@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { format } from 'date-fns';
 import { AuthService } from 'src/app/auth.service';
 import { AppConfig, ConfigService } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
-import { Currency, Stock, StockApi } from 'src/app/if';
+import { ApiReply, Currency, Stock, StockApi } from 'src/app/if';
 import { SettingsService } from 'src/app/user/settings/settings.service';
 import { FormatService } from 'src/app/utils/format.service';
 
@@ -25,6 +25,7 @@ export class StocksComponent implements OnInit {
   currentRates: RateDate | null = null;
   currentSkipWithApi: boolean = true;
   savingRates: boolean = false;
+  @ViewChild('closeRatesModalButton') closeRatesModalButton?: ElementRef;
 
   constructor(private authService: AuthService,
     private configService: ConfigService,
@@ -45,7 +46,8 @@ export class StocksComponent implements OnInit {
       date: keepdate && this.currentRates ? this.currentRates.date : format(new Date(), 'y-M-d'),
       values: [],
     };
-    this.stocksStore.sort((a, b) => a.name.toLocaleLowerCase() > b.name.toLocaleLowerCase() ? 1 : -1).forEach((s) => record.values.push({ stockid: s.id, stock: s, value: '' }));
+    let temp = [...this.stocksStore];
+    temp.sort((a, b) => a.name.toLocaleLowerCase() > b.name.toLocaleLowerCase() ? 1 : -1).forEach((s) => record.values.push({ stockid: s.id, stock: s, value: '' }));
     this.currentRates = record;
   }
 
@@ -78,6 +80,12 @@ export class StocksComponent implements OnInit {
     if (this.savingRates || !record)
       return;
     this.savingRates = true;
+    console.log(record);
+    this.authService.updateApi2('money/stocks/rates', record).subscribe((reply: ApiReply) => {
+      this.savingRates = false;
+      this.userSettings.resyncFinance();
+      this.closeRatesModalButton?.nativeElement?.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+    });
   }
 
   sort() {

@@ -543,6 +543,9 @@ export class SettingsService {
   }
 
   private financesynctimeout: any = null;
+  public resyncFinance(): void {
+    this.syncFinance();
+  }
   private syncFinance(): void {
     if (this.financesynctimeout != null) {
       clearTimeout(this.financesynctimeout);

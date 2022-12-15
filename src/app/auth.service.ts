@@ -221,6 +221,10 @@ export class AuthService implements OnInit {
     return reply;
   }
 
+  public updateApi2(urlpart: string, payload: any = {}): Subject<ApiReply> {
+    return this.updateApi(`${this.configService.config.api.baseUrl}/${urlpart}`, payload);
+  }
+
   ngOnInit(): void {
 
   }

@@ -742,16 +742,16 @@
     "quantity": "Anzahl",
     "rate": "Kurs",
     "rate2": "Letzter Kurs",
-    "symbol": "Symbol",
-    "total": "Gesamt",
-    "value": "Wert",
-    "wkn": "WKN",
     "rateInputModal": {
       "title": "Werte nacherfassen",
       "description": "Über dieses Formular können Aktienwerte manuell nacherfasst werden.",
       "ignoreWithApi": "Automatisch aktualisierte ignorieren"
     },
-    "openAtBitpanda": "Auf bitpanda ansehen"
+    "symbol": "Symbol",
+    "total": "Gesamt",
+    "updateRates": "Kurse",
+    "value": "Wert",
+    "wkn": "WKN"
   },
   "work": {
     "offcategories": {
