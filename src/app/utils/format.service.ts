@@ -79,20 +79,20 @@ export class FormatService {
     return format(date, form, { locale: this.i18nService.DateLocale });
   }
 
-  fdist(date: Date | string | null): string {
+  fdist(date: Date | string | null, suffix: boolean | undefined = undefined): string {
     if (date == null)
       return this.i18nService.i18n('common.novalue');
     if (typeof (date) === 'string')
       date = new Date(date);
-    return formatDistanceToNow(date, { locale: this.i18nService.DateLocale });
+    return formatDistanceToNow(date, { locale: this.i18nService.DateLocale, addSuffix: suffix });
   }
 
   fnumber(n: number, fd: number = 0, md: number | undefined = undefined): string {
     return (+n).toLocaleString(this.i18nService.Locale, { minimumFractionDigits: fd, maximumFractionDigits: md });
   }
 
-  fpercent(n: number, fd: number = 0): string {
-    return (+n).toLocaleString(this.i18nService.Locale, { minimumFractionDigits: fd }) + '%';
+  fpercent(n: number, fd: number = 0, md: number | undefined = undefined): string {
+    return (+n).toLocaleString(this.i18nService.Locale, { minimumFractionDigits: fd, maximumFractionDigits: md }) + '%';
   }
 
 }

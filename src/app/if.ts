@@ -40,6 +40,7 @@ export interface BankAccount {
   created: string;
   currency: Currency;
   currencyid: number;
+  deleted: string | null;
   iban: string;
   title: string;
   updated: string;
@@ -200,6 +201,27 @@ export interface Directory {
   deldate: string | null;
 }
 
+export interface ExpenseCategory {
+  id: number;
+  created: string;
+  deleted: string | null;
+  icon: string;
+  name: string;
+  parentid: number | null;
+  search: Search5Phrases;
+  updated: string;
+  xtractname: string;
+}
+
+export interface ExpenseType {
+  id: number;
+  created: string;
+  deleted: string | null;
+  name: string;
+  search: Search5Phrases;
+  updated: string;
+}
+
 export interface Extension {
   id: number;
   displayable: boolean;
@@ -211,37 +233,38 @@ export interface Extension {
 
 export interface File {
   id: number;
-  directory: Directory | null;
-  directoryid: number | null;
+  attributes: any;
+  case: Case | null;
+  caseid: number | null;
+  case_filedescription: string | null;
+  case_filename: string | null;
+  case_filestatus: string | null;
+  case_filetype: CaseFiletype | null;
+  case_filetypeid: number | null;
+  case_pintop: boolean;
   class: Class | null;
   classid: number | null;
   classifyDisabled: boolean;
-  case: Case | null;
-  caseid: number | null;
-  case_filetype: CaseFiletype | null;
-  case_filetypeid: number | null;
   client: Party | null;
   clientid: number | null;
-  fileexists: boolean;
-  partyaddress: Address | null;
-  partyaddressid: number | null;
   contact: PartyContact | null;
   contactid: number | null;
-  name: string;
   date: string;
-  islink: boolean;
-  mtime: string;
-  size: number;
-  hash: string;
   deldate: string | null;
-  case_filename: string | null;
-  case_filedescription: string | null;
-  case_filestatus: string | null;
-  case_pintop: boolean;
+  directory: Directory | null;
+  directoryid: number | null;
   fileclass_meta: any;
-  relpath: string;
-  attributes: any;
+  fileexists: boolean;
+  hash: string;
+  islink: boolean;
   istaxreceipt: boolean | null;
+  mtime: string;
+  name: string;
+  partyaddress: Address | null;
+  partyaddressid: number | null;
+  relpath: string;
+  size: number;
+  tags: number[];
   taxyear: number | null;
   versions: { [key: number]: Version };
 }
@@ -401,6 +424,47 @@ export interface RecentBooking {
   timecategoryid: number;
 }
 
+export interface Search5Phrases {
+  phrase1: string | null;
+  phrase2: string | null;
+  phrase3: string | null;
+  phrase4: string | null;
+  phrase5: string | null;
+}
+
+export interface SepaMandate {
+  id: number;
+  amounts: SepaMandateAmounts;
+  created: string;
+  deleted: string | null;
+  description: string;
+  references: SepaMandateReferences;
+  search: string | null;
+  sepa: SepaMandateData;
+  terminated: string | null;
+  updated: string;
+}
+
+export interface SepaMandateAmounts {
+  gross: number | null;
+  net: number | null;
+  tax: number | null;
+}
+
+export interface SepaMandateReferences {
+  account: number;
+  case: number;
+  category: number;
+  client: number;
+  currency: number;
+  party: number;
+}
+
+export interface SepaMandateData {
+  creditoridno: string;
+  reference: string;
+}
+
 export interface Session {
   token: string;
   username: string;
@@ -408,6 +472,58 @@ export interface Session {
 
 export interface StandingOrder {
 
+}
+
+export interface Stock {
+  id: number;
+  api: number | null;
+  bought: StockBought;
+  created: string;
+  currency: number;
+  current: StockCurrent;
+  deleted: string | null;
+  iscrypto: boolean;
+  isin: string;
+  lastcheck: string | null;
+  name: string;
+  symbol: string | null;
+  updated: string;
+  wkn: string;
+}
+
+export interface StockApi {
+  id: number;
+  created: string;
+  deleted: string | null;
+  name: string;
+  token: string;
+  updated: string;
+  url: string;
+}
+
+export interface StockBought {
+  quantity: number;
+  value: number;
+}
+
+export interface StockCurrent {
+  date: string | null;
+  dif: StockDif;
+  rate: number;
+  value: number;
+}
+
+export interface StockDif {
+  abs: number;
+  rel: number;
+}
+
+export interface Tag {
+  id: number;
+  created: string;
+  deleted: string | null;
+  modified: string;
+  value: string;
 }
 
 export interface TaxRate {

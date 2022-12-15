@@ -11,9 +11,15 @@ import {
   ContactType,
   Country,
   Currency,
+  ExpenseCategory,
+  ExpenseType,
   Party,
   PartyContact,
   PartyRole,
+  SepaMandate,
+  Stock,
+  StockApi,
+  Tag,
   User,
   UserSettings,
   WorkCustomer,
@@ -43,19 +49,43 @@ export class SettingsService {
   private financesync: number = 0;
   private partiesstorage: string = this.config.storage.prefix + 'partiesData';
   private partiessync: number = 0;
+  private tagsstorage: string = this.config.storage.prefix + 'tagsData';
+  private tagssync: number = 0;
   private workstorage: string = this.config.storage.prefix + 'workData';
   private worksync: number = 0;
 
   constructor(private authService: AuthService,
     private configService: ConfigService) {
+    this.tags.subscribe((tags) => {
+      localStorage.setItem(this.tagsstorage, JSON.stringify({
+        tags: tags,
+        ts: this.tagssync,
+      }));
+    });
     this.loadCasesData();
     this.loadFinanceData();
     this.loadPartiesData();
+    this.loadTags();
     this.loadUserSettings();
   }
 
   get config(): AppConfig {
     return this.configService.config;
+  }
+
+  public loadArchiveSettings(): void {
+    if (this.archiveLoaded)
+      return;
+    this.archiveLoaded = true;
+    let url = this.configService.config.api.baseUrl + '/common/props';
+    this.authService.queryApi(url).subscribe((reply) => {
+      if (reply.success && reply.payload != null) {
+        this.updateClasses(reply.payload['classes']);
+        this.updateCountries(reply.payload['countries']);
+        this.updateCurrencies(reply.payload['currencies']);
+      }
+    });
+    this.caseFileStatus.next(['new', 'checked', 'approved']);
   }
 
   private loadCasesData(): void {
@@ -77,7 +107,14 @@ export class SettingsService {
     let olddata: string | null | FinanceStorage = localStorage.getItem(this.financestorage);
     if (olddata) {
       olddata = <FinanceStorage>JSON.parse(olddata);
-
+      this.bankAccounts.next(olddata.bankAccounts);
+      this.countries.next(olddata.countries);
+      this.currencies.next(olddata.currencies);
+      this.expenseCategories.next(olddata.expenseCategories);
+      this.expenseTypes.next(olddata.expenseTypes);
+      this.sepaMandates.next(olddata.sepaMandates);
+      this.stocks.next(olddata.stocks);
+      this.stocksApis.next(olddata.stocksApis);
       this.financesync = olddata.ts;
     }
     this.syncFinance();
@@ -99,19 +136,14 @@ export class SettingsService {
     this.syncParties();
   }
 
-  public loadArchiveSettings(): void {
-    if (this.archiveLoaded)
-      return;
-    this.archiveLoaded = true;
-    let url = this.configService.config.api.baseUrl + '/common/props';
-    this.authService.queryApi(url).subscribe((reply) => {
-      if (reply.success && reply.payload != null) {
-        this.updateClasses(reply.payload['classes']);
-        this.updateCountries(reply.payload['countries']);
-        this.updateCurrencies(reply.payload['currencies']);
-      }
-    });
-    this.caseFileStatus.next(['new', 'checked', 'approved']);
+  private loadTags(): void {
+    let olddata: string | null | TagsStorage = localStorage.getItem(this.tagsstorage);
+    if (olddata) {
+      olddata = <TagsStorage>JSON.parse(olddata);
+      this.tags.next(olddata.tags);
+      this.tagssync = olddata.ts;
+    }
+    this.syncTags();
   }
 
   private loadUserSettings(): void {
@@ -150,6 +182,9 @@ export class SettingsService {
 
   private banks: BehaviorSubject<{ [key: number]: Party }> = new BehaviorSubject<{ [key: number]: Party }>({});
   banks$ = this.banks.asObservable();
+
+  private bankAccounts: BehaviorSubject<{ [key: number]: BankAccount }> = new BehaviorSubject<{ [key: number]: BankAccount }>({});
+  bankAccounts$ = this.bankAccounts.asObservable();
 
   private cases: BehaviorSubject<{ [key: number]: Case }> = new BehaviorSubject<{ [key: number]: Case }>({});
   cases$ = this.cases.asObservable();
@@ -248,8 +283,24 @@ export class SettingsService {
   private currencies: BehaviorSubject<Currency[]> = new BehaviorSubject<Currency[]>([]);
   currencies$ = this.currencies.asObservable();
 
-  private customers: BehaviorSubject<WorkCustomer[]> = new BehaviorSubject<WorkCustomer[]>([]);
+  getCurrency(id: number | null): Currency | null {
+    if (id == null)
+      return null;
+    for (let i = 0; i < this.currencies.value.length; i++) {
+      if (this.currencies.value[i].id === id)
+        return this.currencies.value[i];
+    }
+    return null;
+  }
+
+  private customers: BehaviorSubject<{ [key: number]: WorkCustomer }> = new BehaviorSubject<{ [key: number]: WorkCustomer }>({});
   customers$ = this.customers.asObservable();
+
+  private expenseCategories: BehaviorSubject<{ [key: number]: ExpenseCategory }> = new BehaviorSubject<{ [key: number]: ExpenseCategory }>({});
+  expenseCategories$ = this.expenseCategories.asObservable();
+
+  private expenseTypes: BehaviorSubject<{ [key: number]: ExpenseType }> = new BehaviorSubject<{ [key: number]: ExpenseType }>({});
+  expenseTypes$ = this.expenseTypes.asObservable();
 
   private parties: BehaviorSubject<{ [key: number]: Party }> = new BehaviorSubject<{ [key: number]: Party }>({});
   parties$ = this.parties.asObservable();
@@ -257,8 +308,40 @@ export class SettingsService {
   private roles: BehaviorSubject<{ [key: number]: PartyRole }> = new BehaviorSubject<{ [key: number]: PartyRole }>({});
   roles$ = this.roles.asObservable();
 
+  private sepaMandates: BehaviorSubject<{ [key: number]: SepaMandate }> = new BehaviorSubject<{ [key: number]: SepaMandate }>({});
+  sepaMandates$ = this.sepaMandates.asObservable();
+
   private settings: BehaviorSubject<UserSettings | null> = new BehaviorSubject<UserSettings | null>(null);
   settings$ = this.settings.asObservable();
+
+  private stocks: BehaviorSubject<{ [key: number]: Stock }> = new BehaviorSubject<{ [key: number]: Stock }>({});
+  stocks$ = this.stocks.asObservable();
+
+  getStock(id: number | null): Stock | null {
+    if (id == null)
+      return null;
+    if (this.stocks.value[id])
+      return this.stocks.value[id];
+    return null;
+  }
+
+  private stocksApis: BehaviorSubject<{ [key: number]: StockApi }> = new BehaviorSubject<{ [key: number]: StockApi }>({});
+  stocksApis$ = this.stocksApis.asObservable();
+
+  getStocksApi(id: number | null): StockApi | null {
+    if (id == null)
+      return null;
+    if (this.stocksApis.value[id])
+      return this.stocksApis.value[id];
+    return null;
+  }
+
+  private tags: BehaviorSubject<{ [key: number]: Tag }> = new BehaviorSubject<{ [key: number]: Tag }>({});
+  tags$ = this.tags.asObservable();
+
+  getTag(id: number): Tag | null {
+    return this.tags.value[id] ?? null;
+  }
 
   private user: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
   user$ = this.user.asObservable();
@@ -388,7 +471,14 @@ export class SettingsService {
 
   private saveFinance(): void {
     localStorage.setItem(this.financestorage, JSON.stringify({
-
+      bankAccounts: this.bankAccounts.value,
+      countries: this.countries.value,
+      currencies: this.currencies.value,
+      expenseCategories: this.expenseCategories.value,
+      expenseTypes: this.expenseTypes.value,
+      sepaMandates: this.sepaMandates.value,
+      stocks: this.stocks.value,
+      stocksApis: this.stocksApis.value,
       ts: this.financesync,
     }));
   }
@@ -453,6 +543,9 @@ export class SettingsService {
   }
 
   private financesynctimeout: any = null;
+  public resyncFinance(): void {
+    this.syncFinance();
+  }
   private syncFinance(): void {
     if (this.financesynctimeout != null) {
       clearTimeout(this.financesynctimeout);
@@ -463,7 +556,14 @@ export class SettingsService {
     this.authService.queryApi(url).subscribe((reply) => {
       if (reply.success && reply.payload != undefined) {
         let response = <FinanceResponse>reply.payload;
-
+        this.updateBankAccounts(response.accounts);
+        this.updateCountries(response.countries);
+        this.updateCurrencies(response.currencies);
+        this.updateExpenseCategories(response.expenseCategories);
+        this.updateExpenseTypes(response.expenseTypes);
+        this.updateSepaMandates(response.sepaMandates);
+        this.updateStocks(response.stocks);
+        this.updateStocksApis(response.stocksApis);
         this.saveFinance();
       }
       this.financesynctimeout = setTimeout(() => { this.syncFinance(); }, 30000);
@@ -493,6 +593,25 @@ export class SettingsService {
       this.partiessynctimeout = setTimeout(() => { this.syncParties(); }, 15000);
     });
   }
+
+  private tagssynctimeout: any = null;
+  public syncTags(): void {
+    if (this.tagssynctimeout != null) {
+      clearTimeout(this.tagssynctimeout);
+      this.tagssynctimeout = null;
+    }
+    let url: string = this.config.api.baseUrl + '/tags' + (this.tagssync > 0 ? '/' + this.tagssync : '');
+    this.tagssync = Math.floor(Date.now() / 1000);
+    this.authService.queryApi(url).subscribe((reply) => {
+      if (reply.success && reply.payload != undefined) {
+        let response = <TagsResponse>reply.payload;
+        if (response.tags.length > 0)
+          this.updateTags(response.tags);
+      }
+      this.tagssynctimeout = setTimeout(() => { this.syncTags(); }, 30000);
+    });
+  }
+
 
   private worksynctimeout: any = null;
   private syncWork(): void {
@@ -648,7 +767,9 @@ export class SettingsService {
   }
 
   private updateCustomers(customers: WorkCustomer[]) {
-    this.customers.next(customers);
+    let temp = { ...this.customers.value };
+    customers.forEach((a) => this._updateCommon(temp, a));
+    this.customers.next(temp);
   }
 
   private updateParties(parties: Party[]) {
@@ -661,6 +782,18 @@ export class SettingsService {
     let temp = { ...this.roles.value };
     roles.forEach((a) => this._updateCommon(temp, a));
     this.roles.next(temp);
+  }
+
+  private updateTags(tags: Tag[]) {
+    let temp = { ...this.tags.value };
+    tags.forEach((a) => this._updateCommon(temp, a));
+    this.tags.next(temp);
+  }
+
+  updateBankAccounts(obj: BankAccount[]) {
+    let temp = { ...this.bankAccounts.value };
+    obj.forEach((a) => this._updateCommon(temp, a));
+    this.bankAccounts.next(temp);
   }
 
   updateCase(item: Case): BehaviorSubject<Case | null> {
@@ -702,8 +835,20 @@ export class SettingsService {
   updateCustomer(customeritem: WorkCustomer): BehaviorSubject<WorkCustomer | null> {
     let subject = new BehaviorSubject<WorkCustomer | null>(null);
     this.postCommon(customeritem.id == 0 ? 'create' : 'update', customeritem,
-      'customer', this.customers.value, subject, (c: WorkCustomer[]) => this.updateCustomers(c));
+      'customer', Object.values(this.customers.value), subject, (c: WorkCustomer[]) => this.updateCustomers(c));
     return subject;
+  }
+
+  updateExpenseCategories(obj: ExpenseCategory[]) {
+    let temp = { ...this.expenseCategories.value };
+    obj.forEach((a) => this._updateCommon(temp, a));
+    this.expenseCategories.next(temp);
+  }
+
+  updateExpenseTypes(obj: ExpenseType[]) {
+    let temp = { ...this.expenseTypes.value };
+    obj.forEach((a) => this._updateCommon(temp, a));
+    this.expenseTypes.next(temp);
   }
 
   updateRole(roleitem: PartyRole): BehaviorSubject<PartyRole | null> {
@@ -713,12 +858,37 @@ export class SettingsService {
     return subject;
   }
 
+  updateSepaMandates(mandates: SepaMandate[]) {
+    let temp = { ...this.sepaMandates.value };
+    mandates.forEach((a) => this._updateCommon(temp, a));
+    this.sepaMandates.next(temp);
+  }
+
   updateSettings(settings: UserSettings, push: boolean = false) {
     this.settings.next(settings);
     if (push) {
       let url = this.configService.config.api.baseUrl + '/user/settings';
       this.authService.updateApi(url, { userSettings: settings });
     }
+  }
+
+  updateStocks(obj: Stock[]) {
+    let temp = { ...this.stocks.value };
+    obj.forEach((a) => this._updateCommon(temp, a));
+    this.stocks.next(temp);
+  }
+
+  updateStocksApis(obj: StockApi[]) {
+    let temp = { ...this.stocksApis.value };
+    obj.forEach((a) => this._updateCommon(temp, a));
+    this.stocksApis.next(temp);
+  }
+
+  updateTag(tag: Tag): BehaviorSubject<Tag | null> {
+    let subject = new BehaviorSubject<Tag | null>(null);
+    this.postCommon(tag.id == 0 ? 'create' : 'update', tag,
+      'tags', Object.values(this.tags.value), subject, (c: Tag[]) => this.updateTags(c));
+    return subject;
   }
 
   updateUser(user: User, push: boolean = false) {
@@ -753,6 +923,15 @@ export interface CasesStorage {
   ts: number;
 }
 
+export interface ClientSettings {
+  casesettings: ClientCaseSettings
+}
+
+export interface ClientCaseSettings {
+  showCasesInDeletion: boolean;
+  showCasesInRetention: boolean;
+}
+
 export interface CommonProperty {
   deleted: string | null;
   id: number;
@@ -762,11 +941,22 @@ export interface FinanceResponse {
   accounts: BankAccount[];
   countries: Country[];
   currencies: Currency[];
-  // expenseCategories: 
+  expenseCategories: ExpenseCategory[];
+  expenseTypes: ExpenseType[];
+  sepaMandates: SepaMandate[];
+  stocks: Stock[];
+  stocksApis: StockApi[];
 }
 
 export interface FinanceStorage {
-
+  bankAccounts: BankAccount[];
+  countries: Country[];
+  currencies: Currency[];
+  expenseCategories: ExpenseCategory[];
+  expenseTypes: ExpenseType[];
+  sepaMandates: SepaMandate[];
+  stocks: Stock[];
+  stocksApis: StockApi[];
   ts: number;
 }
 
@@ -791,13 +981,13 @@ export interface PartiesStorage {
   ts: number;
 }
 
-export interface ClientSettings {
-  casesettings: ClientCaseSettings
+export interface TagsResponse {
+  tags: Tag[];
 }
 
-export interface ClientCaseSettings {
-  showCasesInDeletion: boolean;
-  showCasesInRetention: boolean;
+export interface TagsStorage {
+  tags: Tag[];
+  ts: number;
 }
 
 export interface WorkResponse {

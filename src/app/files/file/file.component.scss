@@ -1,0 +1,5 @@
+div#file-tags {
+    div:not(:first-child) {
+        margin-left: .3rem;;
+    }
+}
