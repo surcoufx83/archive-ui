@@ -3,6 +3,10 @@
     "apiError": {
       "title": "Error",
       "message": "Error retrieving data: {0}"
+    },
+    "notModified": {
+      "title": "Info",
+      "message": "No changes have been made: {0}"
     }
   },
   "calendar": {
@@ -35,6 +39,7 @@
     "title": "{0} (Case)",
     "metacard": {
       "title": "General information",
+      "shorttitle": "General",
       "name": "Name of case",
       "parent": "Parent case",
       "noparent": "None",
@@ -51,6 +56,9 @@
     },
     "childscard": {
       "title": "Related cases"
+    },
+    "filescard": {
+      "title": "Files"
     },
     "timecard": {
       "title": "Periods",
@@ -212,6 +220,7 @@
         "message": "Changes have been saved successfully."
       }
     },
+    "date": "Date",
     "day": "Day",
     "days": "Days",
     "delete": "Delete",
@@ -451,6 +460,8 @@
       "deleted": "Deleted",
       "size": "File size",
       "pages": "Page count",
+      "tags": "Tags",
+      "tagsInputPlaceholder": "Enter any tag...",
       "words": "Word count"
     },
     "classify": {
@@ -509,12 +520,16 @@
     "inbox": {
       "title": "New Documents"
     },
+    "readings": {
+      "title": "Counters",
+      "readingsLink": "Meter reading capture"
+    },
     "special": {
-      "title": "Additional functions",
-      "notepadLink": "Notepad",
+      "title": "Additional Features",
+      "notepadLink": "Notes",
       "warehouseLink": "Storage",
       "movingBoxesLink": "Moving boxes",
-      "wineCellarLink": "Wine cellar"
+      "wineCellarLink": "Wine Cellar"
     },
     "stats": {
       "title": "Quick Stats...",
@@ -576,6 +591,18 @@
       "subtitle": "This website requires a login via Nextcloud. Please click on the button to proceed.",
       "button": "Login"
     }
+  },
+  "meter": {
+    "readings": {
+      "title": "Meter reading capture",
+      "meter": "Counters",
+      "value": "Value",
+      "modal": {
+        "title": "Meter reading",
+        "description": "In the following fields you can enter the values for the counters. Only filled fields will be saved."
+      }
+    },
+    "title": "Counters"
   },
   "navbar": {
     "brand": {
