@@ -25,7 +25,7 @@ export class NotepadComponent implements OnInit {
   saving: boolean = false;
   sortasc: boolean = false;
   sortby: string = 'edit';
-  usersettingsObj: UserSettings|null = null;
+  usersettingsObj: UserSettings | null = null;
 
   constructor(private authService: AuthService,
     private configService: ConfigService,
@@ -38,7 +38,7 @@ export class NotepadComponent implements OnInit {
     });
   }
 
-  close() : void {
+  close(): void {
     this.editNote = undefined;
     this.editId = -1;
   }
@@ -47,25 +47,25 @@ export class NotepadComponent implements OnInit {
     return this.configService.config;
   }
 
-  delete(n: Note) : void {
+  delete(n: Note): void {
     this.saving = true;
-      let url = this.config.api.baseUrl + '/note/' + n.id + '/delete';
-      this.authService.updateApi(url, { }).subscribe((reply) => {
-        if (reply.success) {
-          for(let i = 0; i < this.notes.length; i++) {
-            if (this.notes[i].id == n.id) {
-              this.notes.splice(i, 1);
-              break;
-            }
+    let url = this.config.api.baseUrl + '/note/' + n.id + '/delete';
+    this.authService.updateApi(url, {}).subscribe((reply) => {
+      if (reply.success) {
+        for (let i = 0; i < this.notes.length; i++) {
+          if (this.notes[i].id == n.id) {
+            this.notes.splice(i, 1);
+            break;
           }
         }
-        this.saving = false;
-      });
+      }
+      this.saving = false;
+    });
   }
 
-  edit(n: Note) : void {
+  edit(n: Note): void {
     if (this.editNote) {
-      for(let i = 0; i < this.notes.length; i++) {
+      for (let i = 0; i < this.notes.length; i++) {
         if (this.notes[i].id == this.editNote.id) {
           this.notes[i] = this.editNote;
           this.save(this.notes[i]);
@@ -77,13 +77,13 @@ export class NotepadComponent implements OnInit {
     this.editId = n.id;
   }
 
-  f(date: Date|string, form: string): string {
+  f(date: Date | string, form: string): string {
     if (typeof date === 'string')
       date = new Date(date);
     return format(date, form, { locale: this.i18nService.DateLocale });
   }
 
-  filter() : void {
+  filter(): void {
     this.filterphrase = this.filterphrase.toLowerCase();
     if (this.filterphrase === '')
       this.notes.forEach(n => n.show = true);
@@ -91,7 +91,7 @@ export class NotepadComponent implements OnInit {
       this.notes.forEach(n => n.show = n.title.toLowerCase().includes(this.filterphrase) || n.content.toLowerCase().includes(this.filterphrase));
   }
 
-  filterKeyup() : void {
+  filterKeyup(): void {
     if (this.debounceFilter)
       clearTimeout(this.debounceFilter);
     this.debounceFilter = setTimeout(() => {
@@ -103,7 +103,7 @@ export class NotepadComponent implements OnInit {
     return this.i18nService.i18n(key, params);
   }
 
-  new() : void {
+  new(): void {
     this.notes = [
       {
         id: 0,
@@ -122,7 +122,7 @@ export class NotepadComponent implements OnInit {
     this.update();
   }
 
-  save(n: Note) : void {
+  save(n: Note): void {
     if (this.debounceSave)
       clearTimeout(this.debounceSave);
     this.debounceSave = setTimeout(() => {
@@ -141,29 +141,29 @@ export class NotepadComponent implements OnInit {
     }, 500);
   }
 
-  sort(key: string, asc: boolean|null = null) : void {
+  sort(key: string, asc: boolean | null = null): void {
     this.sortby = key;
     if (asc != null)
       this.sortasc = asc;
-      switch (this.sortby) {
-        case 'name':
-          if (this.sortasc)
-            this.notes = this.notes.sort((a, b) => { return a.title > b.title ? 1 : a.title < b.title ? -1 : 0 });
-          else
-            this.notes = this.notes.sort((a, b) => { return a.title > b.title ? -1 : a.title < b.title ? 1 : 0 });
-          break;
+    switch (this.sortby) {
+      case 'name':
+        if (this.sortasc)
+          this.notes = this.notes.sort((a, b) => { return a.title > b.title ? 1 : a.title < b.title ? -1 : 0 });
+        else
+          this.notes = this.notes.sort((a, b) => { return a.title > b.title ? -1 : a.title < b.title ? 1 : 0 });
+        break;
 
-        case 'edit':
-          if (this.sortasc)
-            this.notes = this.notes.sort((a, b) => { return a.updated > b.updated ? 1 : a.updated < b.updated ? -1 : 0 });
-          else
-            this.notes = this.notes.sort((a, b) => { return a.updated > b.updated ? -1 : a.updated < b.updated ? 1 : 0 });
-          break;
+      case 'edit':
+        if (this.sortasc)
+          this.notes = this.notes.sort((a, b) => { return a.updated > b.updated ? 1 : a.updated < b.updated ? -1 : 0 });
+        else
+          this.notes = this.notes.sort((a, b) => { return a.updated > b.updated ? -1 : a.updated < b.updated ? 1 : 0 });
+        break;
 
-      }
+    }
   }
 
-  update() : void {
+  update(): void {
     this.busy = true;
     let url: string = this.config.api.baseUrl + '/notes';
     this.authService.queryApi(url).subscribe((reply) => {
@@ -172,7 +172,6 @@ export class NotepadComponent implements OnInit {
         this.sort(this.sortby);
         this.filter();
       }
-      console.log(this.notes);
       this.busy = false;
     });
   }
