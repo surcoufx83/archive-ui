@@ -1,7 +1,7 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, SecurityContext, ViewChild } from '@angular/core';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import * as saveAs from 'file-saver';
-import { PdfJsViewerComponent } from 'ng2-pdfjs-viewer';
 import { Address, ButtonType, Case, CaseFiletype, Class, ContactType, File, Page, Party, PartyContact, Tag, UserSettings, Version } from 'src/app/if';
 import { FileService } from 'src/app/utils/file.service';
 import { FormatService } from 'src/app/utils/format.service';
@@ -21,7 +21,7 @@ export class FileComponent implements OnInit {
 
   @ViewChild('imgViewer') imgViewer?: ElementRef;
   @ViewChild('htmlViewer') htmlViewer?: ElementRef;
-  @ViewChild(PdfJsViewerComponent) pdfViewer?: PdfJsViewerComponent;
+  @ViewChild('embeddedObjectElement') objectViewer?: ElementRef;
 
   busy: boolean = false;
   changes: { [key: string]: any } = {};
@@ -67,7 +67,8 @@ export class FileComponent implements OnInit {
     private userSettings: SettingsService,
     public formatService: FormatService,
     private fileService: FileService,
-    private toastService: ToastsService) {
+    private toastService: ToastsService,
+    private sanitizer: DomSanitizer) {
     this.userSettings.loadArchiveSettings();
     this.userSettings.settings$.subscribe((settings) => { this.usersettingsObj = settings; });
     this.userSettings.addresses$.subscribe((addresses) => {
@@ -157,15 +158,17 @@ export class FileComponent implements OnInit {
       let url = this.config.api.baseUrl + '/file/' + id + '/download';
       this.authService.download(url).subscribe(async (reply) => {
         this.filecontent = reply;
-        if (this.pdfViewer && this.recentVersion?.ext?.mimetype === 'application/pdf' && this.filecontent) {
-          this.pdfViewer.pdfSrc = this.filecontent;
-          this.pdfViewer.refresh();
-        }
-        else if (this.getViewer() === 'html' && this.htmlViewer != undefined) {
+        console.log(this.getViewer())
+        if (this.getViewer() === 'html' && this.htmlViewer != undefined) {
           let document = this.htmlViewer.nativeElement.contentWindow.document;
           document.open();
           document.write(await new Response(this.filecontent).text());
           document.close();
+        }
+        else if (this.getViewer() === 'embeddedObject' && this.objectViewer != undefined) {
+          let urlCreator = window.URL || window.webkitURL;
+          let url = urlCreator.createObjectURL(await new Response(this.filecontent).blob());
+          this.objectViewer.nativeElement.src = url;
         }
         else if (this.getViewer() === 'img' && this.imgViewer != undefined) {
           let urlCreator = window.URL || window.webkitURL;
@@ -195,7 +198,7 @@ export class FileComponent implements OnInit {
       return 'plaintext';
     switch (this.recentVersion.ext.mimetype) {
       case 'application/pdf':
-        return 'ng2-pdfjs-viewer';
+        return 'embeddedObject';
       case 'image/gif':
       case 'image/jpeg':
       case 'image/png':

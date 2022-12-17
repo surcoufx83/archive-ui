@@ -30,9 +30,7 @@
 
   <ng-container *ngIf="view === 'preview' && recentVersion; else notPreview">
     <div class="container pt-4 pt-md-2 mb-2 ratio-2x3 ratio-md-3x2">
-      <ng-container *ngIf="getViewer() == 'ng2-pdfjs-viewer'">
-        <ng2-pdfjs-viewer #pdfViewer></ng2-pdfjs-viewer>
-      </ng-container>
+      <ng-container *ngIf="getViewer() == 'embeddedObject'" [ngTemplateOutlet]="embeddedObject"></ng-container>
       <ng-container *ngIf="getViewer() == 'plaintext'">
         <div class="card col-12">
           <div class="card-body">
@@ -325,9 +323,7 @@
               </div>
               <div class="col-12 col-lg-6 mb-3">
                 <div class="ratio-2x3">
-                  <ng-container *ngIf="getViewer() == 'ng2-pdfjs-viewer'">
-                    <ng2-pdfjs-viewer #pdfViewer></ng2-pdfjs-viewer>
-                  </ng-container>
+                  <ng-container *ngIf="getViewer() == 'embeddedObject'" [ngTemplateOutlet]="embeddedObject"></ng-container>
                 </div>
               </div>
             </div>
@@ -384,3 +380,7 @@
   </ng-template>
 
 </ng-container>
+
+<ng-template #embeddedObject>
+  <iframe #embeddedObjectElement class="w-100 h-100" src="about:blank"></iframe>
+</ng-template>
