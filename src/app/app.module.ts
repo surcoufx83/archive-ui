@@ -75,6 +75,8 @@ import { WorkComponent } from './work/work.component';
 import { IconComponent } from './utils/icon/icon.component';
 import { SorterIconComponent } from './utils/sorter-icon/sorter-icon.component';
 import { TagComponent } from './utils/tag/tag.component';
+import { SubNavbarComponent } from './utils/sub-navbar/sub-navbar.component';
+import { TaxComponent } from './finance/tax/tax.component';
 
 registerLocaleData(localeDe);
 
@@ -140,6 +142,8 @@ registerLocaleData(localeDe);
     IconComponent,
     SorterIconComponent,
     TagComponent,
+    SubNavbarComponent,
+    TaxComponent,
   ],
   imports: [
     AppRoutingModule,

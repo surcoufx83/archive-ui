@@ -77,6 +77,7 @@ export interface NavbarItem {
   title: string;
   icon: string;
   link: string;
+  params?: string[];
 }
 
 export interface OAuth2Config {
