@@ -234,7 +234,7 @@
     "no": "No",
     "none": "None",
     "novalue": "---",
-    "pcs": "Pcs.",
+    "pcs": "pcs.",
     "period": {
       "placeholder": "0y 0m 0d 0:0:0",
       "patternYears": "{0}y",
@@ -610,7 +610,8 @@
     },
     "finance": {
       "accounts": "Accounts",
-      "stocks": "Stocks"
+      "stocks": "Stocks",
+      "taxYear": "Steuern {0}"
     },
     "items": {
       "account": "Account",
@@ -733,22 +734,22 @@
     }
   },
   "stocks": {
-    "title": "Shares and crypto",
+    "title": "Stocks and Crypto",
     "api": "API",
-    "bought": "Bought",
+    "bought": "Purchased",
     "boughtValue": "{0} {1} each {2}",
     "currency": "Currency",
-    "dif": "Difference",
-    "difrel": "as %",
+    "dif": "Changes",
+    "difrel": "in %",
     "isin": "ISIN",
     "name": "Name",
     "quantity": "Quantity",
     "rate": "Price",
     "rate2": "Last price",
     "rateInputModal": {
-      "title": "Enter values subsequently",
-      "description": "Stock prices can be entered manually using this form.",
-      "ignoreWithApi": "Ignore automatically updated"
+      "title": "Update rates",
+      "description": "Stock values can be entered manually using this form.",
+      "ignoreWithApi": "Ignore automatically updated stocks"
     },
     "symbol": "Symbol",
     "total": "Total",
