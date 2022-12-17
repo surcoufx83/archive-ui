@@ -610,7 +610,8 @@
     },
     "finance": {
       "accounts": "Konten",
-      "stocks": "Wertpapiere"
+      "stocks": "Wertpapiere",
+      "taxYear": "Steuern {0}"
     },
     "items": {
       "account": "Konto",
