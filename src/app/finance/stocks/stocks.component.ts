@@ -80,7 +80,6 @@ export class StocksComponent implements OnInit {
     if (this.savingRates || !record)
       return;
     this.savingRates = true;
-    console.log(record);
     this.authService.updateApi2('money/stocks/rates', record).subscribe((reply: ApiReply) => {
       this.savingRates = false;
       this.userSettings.resyncFinance();
