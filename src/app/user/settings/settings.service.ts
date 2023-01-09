@@ -54,12 +54,21 @@ export class SettingsService {
   private workstorage: string = this.config.storage.prefix + 'workData';
   private worksync: number = 0;
 
+  private expectedVersions = {
+    casesData: 1,
+    financeData: 1,
+    partiesData: 1,
+    tagsData: 1,
+    workData: 1,
+  };
+
   constructor(private authService: AuthService,
     private configService: ConfigService) {
     this.tags.subscribe((tags) => {
       localStorage.setItem(this.tagsstorage, JSON.stringify({
         tags: tags,
         ts: this.tagssync,
+        version: this.expectedVersions.tagsData,
       }));
     });
     this.loadCasesData();
@@ -92,13 +101,15 @@ export class SettingsService {
     let olddata: string | null | CasesStorage = localStorage.getItem(this.casesstorage);
     if (olddata) {
       olddata = <CasesStorage>JSON.parse(olddata);
-      this.cases.next(olddata.cases);
-      this.casechilds.next(olddata.casechilds);
-      this.casefiletypes.next(olddata.casefiletypes);
-      this.caseroots.next(olddata.rootcases);
-      this.caseStatus.next(olddata.casestatus);
-      this.caseTypes.next(olddata.casetypes);
-      this.casessync = olddata.ts;
+      if (olddata.version === this.expectedVersions.casesData) {
+        this.cases.next(olddata.cases);
+        this.casechilds.next(olddata.casechilds);
+        this.casefiletypes.next(olddata.casefiletypes);
+        this.caseroots.next(olddata.rootcases);
+        this.caseStatus.next(olddata.casestatus);
+        this.caseTypes.next(olddata.casetypes);
+        this.casessync = olddata.ts;
+      }
     }
     this.syncCases();
   }
@@ -107,15 +118,17 @@ export class SettingsService {
     let olddata: string | null | FinanceStorage = localStorage.getItem(this.financestorage);
     if (olddata) {
       olddata = <FinanceStorage>JSON.parse(olddata);
-      this.bankAccounts.next(olddata.bankAccounts);
-      this.countries.next(olddata.countries);
-      this.currencies.next(olddata.currencies);
-      this.expenseCategories.next(olddata.expenseCategories);
-      this.expenseTypes.next(olddata.expenseTypes);
-      this.sepaMandates.next(olddata.sepaMandates);
-      this.stocks.next(olddata.stocks);
-      this.stocksApis.next(olddata.stocksApis);
-      this.financesync = olddata.ts;
+      if (olddata.version === this.expectedVersions.financeData) {
+        this.bankAccounts.next(olddata.bankAccounts);
+        this.countries.next(olddata.countries);
+        this.currencies.next(olddata.currencies);
+        this.expenseCategories.next(olddata.expenseCategories);
+        this.expenseTypes.next(olddata.expenseTypes);
+        this.sepaMandates.next(olddata.sepaMandates);
+        this.stocks.next(olddata.stocks);
+        this.stocksApis.next(olddata.stocksApis);
+        this.financesync = olddata.ts;
+      }
     }
     this.syncFinance();
   }
@@ -124,14 +137,16 @@ export class SettingsService {
     let olddata: string | null | PartiesStorage = localStorage.getItem(this.partiesstorage);
     if (olddata) {
       olddata = <PartiesStorage>JSON.parse(olddata);
-      this.addresses.next(olddata.addresses);
-      this.banks.next(olddata.banks);
-      this.clients.next(olddata.clients);
-      this.contacts.next(olddata.contacts);
-      this.contacttypes.next(olddata.contacttypes);
-      this.parties.next(olddata.parties);
-      this.roles.next(olddata.roles);
-      this.partiessync = olddata.ts;
+      if (olddata.version === this.expectedVersions.partiesData) {
+        this.addresses.next(olddata.addresses);
+        this.banks.next(olddata.banks);
+        this.clients.next(olddata.clients);
+        this.contacts.next(olddata.contacts);
+        this.contacttypes.next(olddata.contacttypes);
+        this.parties.next(olddata.parties);
+        this.roles.next(olddata.roles);
+        this.partiessync = olddata.ts;
+      }
     }
     this.syncParties();
   }
@@ -140,8 +155,10 @@ export class SettingsService {
     let olddata: string | null | TagsStorage = localStorage.getItem(this.tagsstorage);
     if (olddata) {
       olddata = <TagsStorage>JSON.parse(olddata);
-      this.tags.next(olddata.tags);
-      this.tagssync = olddata.ts;
+      if (olddata.version === this.expectedVersions.tagsData) {
+        this.tags.next(olddata.tags);
+        this.tagssync = olddata.ts;
+      }
     }
     this.syncTags();
   }
@@ -150,8 +167,10 @@ export class SettingsService {
     let olddata: string | null | WorkStorage = localStorage.getItem(this.workstorage);
     if (olddata) {
       olddata = <WorkStorage>JSON.parse(olddata);
-      this.customers.next(olddata.customers);
-      this.worksync = olddata.ts;
+      if (olddata.version === this.expectedVersions.workData) {
+        this.customers.next(olddata.customers);
+        this.worksync = olddata.ts;
+      }
     }
     this.syncWork();
   }
@@ -462,6 +481,7 @@ export class SettingsService {
       casetypes: this.caseTypes.value,
       rootcases: this.caseroots.value,
       ts: this.casessync,
+      version: this.expectedVersions.casesData,
     }));
   }
 
@@ -480,6 +500,7 @@ export class SettingsService {
       stocks: this.stocks.value,
       stocksApis: this.stocksApis.value,
       ts: this.financesync,
+      version: this.expectedVersions.financeData,
     }));
   }
 
@@ -493,6 +514,7 @@ export class SettingsService {
       parties: this.parties.value,
       roles: this.roles.value,
       ts: this.partiessync,
+      version: this.expectedVersions.partiesData,
     }));
   }
 
@@ -500,6 +522,7 @@ export class SettingsService {
     localStorage.setItem(this.workstorage, JSON.stringify({
       customers: this.customers.value,
       ts: this.casessync,
+      version: this.expectedVersions.workData,
     }));
   }
 
@@ -921,6 +944,7 @@ export interface CasesStorage {
   casestatus: { [key: number]: CaseStatus };
   casetypes: { [key: number]: CaseType };
   ts: number;
+  version: number;
 }
 
 export interface ClientSettings {
@@ -958,6 +982,7 @@ export interface FinanceStorage {
   stocks: Stock[];
   stocksApis: StockApi[];
   ts: number;
+  version: number;
 }
 
 export interface PartiesResponse {
@@ -979,6 +1004,7 @@ export interface PartiesStorage {
   parties: { [key: number]: Party };
   roles: { [key: number]: PartyRole };
   ts: number;
+  version: number;
 }
 
 export interface TagsResponse {
@@ -988,6 +1014,7 @@ export interface TagsResponse {
 export interface TagsStorage {
   tags: Tag[];
   ts: number;
+  version: number;
 }
 
 export interface WorkResponse {
@@ -997,4 +1024,5 @@ export interface WorkResponse {
 export interface WorkStorage {
   customers: WorkCustomer[];
   ts: number;
+  version: number;
 }
