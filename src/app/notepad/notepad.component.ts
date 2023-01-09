@@ -103,6 +103,17 @@ export class NotepadComponent implements OnInit {
     return this.i18nService.i18n(key, params);
   }
 
+  ngOnInit(): void {
+    this.userSettings.notepadItems$.subscribe((notes) => {
+      if (notes == undefined)
+        return;
+      console.log(notes)
+      this.notes = Object.values(notes);
+      this.sort(this.sortby);
+      this.filter();
+    });
+  }
+
   new(): void {
     this.notes = [
       {
@@ -118,10 +129,6 @@ export class NotepadComponent implements OnInit {
     this.edit(this.notes[0]);
   }
 
-  ngOnInit(): void {
-    this.update();
-  }
-
   save(n: Note): void {
     if (this.debounceSave)
       clearTimeout(this.debounceSave);
@@ -134,7 +141,7 @@ export class NotepadComponent implements OnInit {
       }).subscribe((reply) => {
         if (fragment === 'create') {
           this.notes.splice(0, 1);
-          this.update();
+          this.userSettings.resyncNotepad();
         }
         this.saving = false;
       });
@@ -148,9 +155,9 @@ export class NotepadComponent implements OnInit {
     switch (this.sortby) {
       case 'name':
         if (this.sortasc)
-          this.notes = this.notes.sort((a, b) => { return a.title > b.title ? 1 : a.title < b.title ? -1 : 0 });
+          this.notes = this.notes.sort((a, b) => { return a.title.toLocaleLowerCase() > b.title.toLocaleLowerCase() ? 1 : a.title.toLocaleLowerCase() < b.title.toLocaleLowerCase() ? -1 : 0 });
         else
-          this.notes = this.notes.sort((a, b) => { return a.title > b.title ? -1 : a.title < b.title ? 1 : 0 });
+          this.notes = this.notes.sort((a, b) => { return a.title.toLocaleLowerCase() > b.title.toLocaleLowerCase() ? -1 : a.title.toLocaleLowerCase() < b.title.toLocaleLowerCase() ? 1 : 0 });
         break;
 
       case 'edit':
@@ -161,19 +168,6 @@ export class NotepadComponent implements OnInit {
         break;
 
     }
-  }
-
-  update(): void {
-    this.busy = true;
-    let url: string = this.config.api.baseUrl + '/notes';
-    this.authService.queryApi(url).subscribe((reply) => {
-      if (reply.success && reply.payload && reply.payload['notes']) {
-        this.notes = reply.payload['notes'];
-        this.sort(this.sortby);
-        this.filter();
-      }
-      this.busy = false;
-    });
   }
 
 }
