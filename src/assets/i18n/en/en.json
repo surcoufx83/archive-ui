@@ -611,7 +611,7 @@
     "finance": {
       "accounts": "Accounts",
       "stocks": "Stocks",
-      "taxYear": "Steuern {0}"
+      "taxYear": "Taxes in {0}"
     },
     "items": {
       "account": "Account",
@@ -637,7 +637,8 @@
   },
   "notepad": {
     "title": "Notes",
-    "filterPlaceholder": "Filter"
+    "filterPlaceholder": "Filter",
+    "markdownGuide": "Formatierung mit Markdown"
   },
   "partyroles": {
     "authority": "Authority",
