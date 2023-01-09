@@ -518,7 +518,6 @@ export class SettingsService {
   }
 
   private saveNotepad(): void {
-    console.log('saveNotepad', this.notepadstorage, this.notepadItems.value)
     localStorage.setItem(this.notepadstorage, JSON.stringify({
       notes: this.notepadItems.value,
       ts: this.notepadsync,
@@ -632,7 +631,6 @@ export class SettingsService {
     let url: string = this.config.api.baseUrl + '/notes' + (this.notepadsync > 0 ? '/' + this.notepadsync : '');
     this.notepadsync = Math.floor(Date.now() / 1000);
     this.authService.queryApi(url).subscribe((reply) => {
-      console.log('syncNotepad', reply)
       if (reply.success && reply.payload != undefined) {
         let response = <NotepadResponse>reply.payload;
         this.updateNotes(response.notes);
