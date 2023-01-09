@@ -936,6 +936,13 @@ export class SettingsService {
     this.expenseTypes.next(temp);
   }
 
+  updateNote(note: Note): BehaviorSubject<Note | null | boolean> {
+    let subject = new BehaviorSubject<Note | null | boolean>(null);
+    this.postCommon(note.id == 0 ? 'create' : 'update', note,
+      'note', Object.values(this.notepadItems.value), subject, (n: Note[]) => this.updateNotes(n));
+    return subject;
+  }
+
   updateRole(roleitem: PartyRole): BehaviorSubject<PartyRole | null> {
     let subject = new BehaviorSubject<PartyRole | null>(null);
     //this.postCommon(roleitem.id == 0 ? 'create' : 'update', roleitem,

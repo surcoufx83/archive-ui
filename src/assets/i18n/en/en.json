@@ -636,7 +636,8 @@
   },
   "notepad": {
     "title": "Notes",
-    "filterPlaceholder": "Filter"
+    "filterPlaceholder": "Filter",
+    "markdownGuide": "Formatting using Markdown"
   },
   "partyroles": {
     "authority": "Authority",

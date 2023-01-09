@@ -634,7 +634,8 @@
   },
   "notepad": {
     "title": "Notizen",
-    "filterPlaceholder": "Filtern"
+    "filterPlaceholder": "Filtern",
+    "markdownGuide": "Formatierung mit Markdown"
   },
   "partyroles": {
     "authority": "Behörde",
