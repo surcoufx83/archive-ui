@@ -13,6 +13,7 @@ import {
   Currency,
   ExpenseCategory,
   ExpenseType,
+  Note,
   Party,
   PartyContact,
   PartyRole,
@@ -47,6 +48,8 @@ export class SettingsService {
   private casessync: number = 0;
   private financestorage: string = this.config.storage.prefix + 'financeData';
   private financesync: number = 0;
+  private notepadstorage: string = this.config.storage.prefix + 'notepadData';
+  private notepadsync: number = 0;
   private partiesstorage: string = this.config.storage.prefix + 'partiesData';
   private partiessync: number = 0;
   private tagsstorage: string = this.config.storage.prefix + 'tagsData';
@@ -57,6 +60,7 @@ export class SettingsService {
   private expectedVersions = {
     casesData: 1,
     financeData: 1,
+    notepadData: 1,
     partiesData: 1,
     tagsData: 1,
     workData: 1,
@@ -73,6 +77,7 @@ export class SettingsService {
     });
     this.loadCasesData();
     this.loadFinanceData();
+    this.loadNotepadData();
     this.loadPartiesData();
     this.loadTags();
     this.loadUserSettings();
@@ -131,6 +136,18 @@ export class SettingsService {
       }
     }
     this.syncFinance();
+  }
+
+  private loadNotepadData(): void {
+    let olddata: string | null | NotepadStorage = localStorage.getItem(this.tagsstorage);
+    if (olddata) {
+      olddata = <NotepadStorage>JSON.parse(olddata);
+      if (olddata.version === this.expectedVersions.notepadData) {
+        this.notepadItems.next(olddata.notes);
+        this.notepadsync = olddata.ts;
+      }
+    }
+    this.syncNotepad();
   }
 
   private loadPartiesData(): void {
@@ -321,6 +338,9 @@ export class SettingsService {
   private expenseTypes: BehaviorSubject<{ [key: number]: ExpenseType }> = new BehaviorSubject<{ [key: number]: ExpenseType }>({});
   expenseTypes$ = this.expenseTypes.asObservable();
 
+  private notepadItems: BehaviorSubject<{ [key: number]: Note }> = new BehaviorSubject<{ [key: number]: Note }>({});
+  notepadItems$ = this.notepadItems.asObservable();
+
   private parties: BehaviorSubject<{ [key: number]: Party }> = new BehaviorSubject<{ [key: number]: Party }>({});
   parties$ = this.parties.asObservable();
 
@@ -504,6 +524,15 @@ export class SettingsService {
     }));
   }
 
+  private saveNotepad(): void {
+    console.log('saveNotepad', this.notepadstorage, this.notepadItems.value)
+    localStorage.setItem(this.notepadstorage, JSON.stringify({
+      notes: this.notepadItems.value,
+      ts: this.notepadsync,
+      version: this.expectedVersions.notepadData,
+    }));
+  }
+
   private saveParties(): void {
     localStorage.setItem(this.partiesstorage, JSON.stringify({
       addresses: this.addresses.value,
@@ -590,6 +619,25 @@ export class SettingsService {
         this.saveFinance();
       }
       this.financesynctimeout = setTimeout(() => { this.syncFinance(); }, 30000);
+    });
+  }
+
+  private notepadsynctimeout: any = null;
+  private syncNotepad(): void {
+    if (this.notepadsynctimeout != null) {
+      clearTimeout(this.notepadsynctimeout);
+      this.notepadsynctimeout = null;
+    }
+    let url: string = this.config.api.baseUrl + '/notes' + (this.notepadsync > 0 ? '/' + this.notepadsync : '');
+    this.notepadsync = Math.floor(Date.now() / 1000);
+    this.authService.queryApi(url).subscribe((reply) => {
+      console.log('syncNotepad', reply)
+      if (reply.success && reply.payload != undefined) {
+        let response = <NotepadResponse>reply.payload;
+        this.updateNotes(response.notes);
+        this.saveNotepad();
+      }
+      this.notepadsynctimeout = setTimeout(() => { this.syncNotepad(); }, 15000);
     });
   }
 
@@ -795,6 +843,17 @@ export class SettingsService {
     this.customers.next(temp);
   }
 
+  private updateNotes(notes: Note[]) {
+    let temp = { ...this.notepadItems.value };
+    notes.forEach((n) => {
+      if (n.deldate == null)
+        temp[n.id] = n;
+      else
+        delete temp[n.id];
+    });
+    this.notepadItems.next(temp);
+  }
+
   private updateParties(parties: Party[]) {
     let temp = { ...this.parties.value };
     parties.forEach((a) => this._updateCommon(temp, a));
@@ -981,6 +1040,16 @@ export interface FinanceStorage {
   sepaMandates: SepaMandate[];
   stocks: Stock[];
   stocksApis: StockApi[];
+  ts: number;
+  version: number;
+}
+
+export interface NotepadResponse {
+  notes: Note[];
+}
+
+export interface NotepadStorage {
+  notes: Note[];
   ts: number;
   version: number;
 }
