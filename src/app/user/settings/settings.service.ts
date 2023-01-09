@@ -68,13 +68,6 @@ export class SettingsService {
 
   constructor(private authService: AuthService,
     private configService: ConfigService) {
-    this.tags.subscribe((tags) => {
-      localStorage.setItem(this.tagsstorage, JSON.stringify({
-        tags: tags,
-        ts: this.tagssync,
-        version: this.expectedVersions.tagsData,
-      }));
-    });
     this.loadCasesData();
     this.loadFinanceData();
     this.loadNotepadData();
@@ -547,6 +540,14 @@ export class SettingsService {
     }));
   }
 
+  private saveTags(): void {
+    localStorage.setItem(this.tagsstorage, JSON.stringify({
+      tags: this.tags.value,
+      ts: this.tagssync,
+      version: this.expectedVersions.tagsData,
+    }));
+  }
+
   private saveWork(): void {
     localStorage.setItem(this.workstorage, JSON.stringify({
       customers: this.customers.value,
@@ -678,6 +679,7 @@ export class SettingsService {
         let response = <TagsResponse>reply.payload;
         if (response.tags.length > 0)
           this.updateTags(response.tags);
+        this.saveTags();
       }
       this.tagssynctimeout = setTimeout(() => { this.syncTags(); }, 30000);
     });
