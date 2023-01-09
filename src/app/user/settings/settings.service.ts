@@ -132,7 +132,7 @@ export class SettingsService {
   }
 
   private loadNotepadData(): void {
-    let olddata: string | null | NotepadStorage = localStorage.getItem(this.tagsstorage);
+    let olddata: string | null | NotepadStorage = localStorage.getItem(this.notepadstorage);
     if (olddata) {
       olddata = <NotepadStorage>JSON.parse(olddata);
       if (olddata.version === this.expectedVersions.notepadData) {
@@ -623,6 +623,9 @@ export class SettingsService {
   }
 
   private notepadsynctimeout: any = null;
+  public resyncNotepad(): void {
+    this.syncNotepad();
+  }
   private syncNotepad(): void {
     if (this.notepadsynctimeout != null) {
       clearTimeout(this.notepadsynctimeout);
