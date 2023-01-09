@@ -7,8 +7,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
-import { PdfJsViewerModule } from 'ng2-pdfjs-viewer';
 import { NgxEchartsModule } from 'ngx-echarts';
+import { MarkdownModule } from 'ngx-markdown';
 
 import { NgChartsModule } from 'ng2-charts';
 import { AccountComponent } from './account/account.component';
@@ -38,6 +38,7 @@ import { ReceiptComponent } from './finance/receipt/receipt.component';
 import { ReceiptsComponent } from './finance/receipts/receipts.component';
 import { ShoppingComponent } from './finance/shopping/shopping.component';
 import { StocksComponent } from './finance/stocks/stocks.component';
+import { TaxComponent } from './finance/tax/tax.component';
 import { HomeComponent } from './home/home.component';
 import { I18nService } from './i18n.service';
 import { LoginComponent } from './login/login.component';
@@ -52,7 +53,11 @@ import { H2Component } from './utils/h2/h2.component';
 import { H3Component } from './utils/h3/h3.component';
 import { H4Component } from './utils/h4/h4.component';
 import { H5Component } from './utils/h5/h5.component';
+import { IconComponent } from './utils/icon/icon.component';
 import { PeriodDropdownMenuComponent } from './utils/period-dropdown-menu/period-dropdown-menu.component';
+import { SorterIconComponent } from './utils/sorter-icon/sorter-icon.component';
+import { SubNavbarComponent } from './utils/sub-navbar/sub-navbar.component';
+import { TagComponent } from './utils/tag/tag.component';
 import { ToastContainerComponent } from './utils/toast-container/toast-container.component';
 import { ToastComponent } from './utils/toast/toast.component';
 import { ToastsService } from './utils/toasts.service';
@@ -73,9 +78,6 @@ import { WorkDayComponent } from './work/work-day/work-day.component';
 import { WorkMonthComponent } from './work/work-month/work-month.component';
 import { WorkYearComponent } from './work/work-year/work-year.component';
 import { WorkComponent } from './work/work.component';
-import { IconComponent } from './utils/icon/icon.component';
-import { SorterIconComponent } from './utils/sorter-icon/sorter-icon.component';
-import { TagComponent } from './utils/tag/tag.component';
 
 registerLocaleData(localeDe);
 
@@ -141,21 +143,23 @@ registerLocaleData(localeDe);
     IconComponent,
     SorterIconComponent,
     TagComponent,
+    SubNavbarComponent,
+    TaxComponent,
   ],
   imports: [
     AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,
-    FormsModule,
-    HttpClientModule,
     CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory,
     }),
+    FormsModule,
+    HttpClientModule,
+    MarkdownModule.forRoot(),
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts')
     }),
-    PdfJsViewerModule,
     NgChartsModule,
     ReactiveFormsModule,
   ],

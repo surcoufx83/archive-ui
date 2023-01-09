@@ -22,6 +22,7 @@ import { PriceComparisonComponent } from './finance/price-comparison/price-compa
 import { ReceiptsComponent } from './finance/receipts/receipts.component';
 import { ShoppingComponent } from './finance/shopping/shopping.component';
 import { StocksComponent } from './finance/stocks/stocks.component';
+import { TaxComponent } from './finance/tax/tax.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { Oauth2CallbackComponent } from './login/oauth2-callback/oauth2-callback.component';
@@ -29,6 +30,9 @@ import { LogoutComponent } from './logout/logout.component';
 import { ReadingsComponent } from './meters/readings/readings.component';
 import { NotepadComponent } from './notepad/notepad.component';
 import { SearchComponent } from './search/search.component';
+import { DummyComponent } from './utils/dummy/dummy.component';
+import { StorageRoomComponent } from './warehouse/storage-room/storage-room.component';
+import { WarehouseComponent } from './warehouse/warehouse.component';
 import { WorkLeadComponent } from './work/leads/lead/lead.component';
 import { WorkLeadsComponent } from './work/leads/leads.component';
 import { WorkCustomerComponent } from './work/settings/customers/customer/customer.component';
@@ -36,18 +40,17 @@ import { WorkCustomersComponent } from './work/settings/customers/customers.comp
 import { WorkDayComponent } from './work/work-day/work-day.component';
 import { WorkMonthComponent } from './work/work-month/work-month.component';
 import { WorkComponent } from './work/work.component';
-import { DummyComponent } from './utils/dummy/dummy.component';
-import { WarehouseComponent } from './warehouse/warehouse.component';
-import { StorageRoomComponent } from './warehouse/storage-room/storage-room.component';
 
 const routes: Routes = [
   { path: 'account', component: AccountComponent, canActivate: [SessionGuard] },
-  { path: 'case/:id', component: CaseComponent, canActivate: [SessionGuard], children:[
-    { path: 'childs', component: DummyComponent },
-    { path: 'files', component: DummyComponent },
-    { path: 'times', component: DummyComponent },
-    { path: '', component: DummyComponent },
-  ] },
+  {
+    path: 'case/:id', component: CaseComponent, canActivate: [SessionGuard], children: [
+      { path: 'childs', component: DummyComponent },
+      { path: 'files', component: DummyComponent },
+      { path: 'times', component: DummyComponent },
+      { path: '', component: DummyComponent },
+    ]
+  },
   { path: 'cases', component: CasesComponent, canActivate: [SessionGuard] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [SessionGuard] },
   {
@@ -76,10 +79,13 @@ const routes: Routes = [
   { path: 'file/:id', component: FileComponent, canActivate: [SessionGuard] },
   { path: 'files/:id', component: FilesComponent, canActivate: [SessionGuard] },
   { path: 'files', component: FilesComponent, canActivate: [SessionGuard], pathMatch: 'full' },
-  { path: 'finance', component: FinanceComponent, canActivate: [SessionGuard], children: [
-    { path: 'accounts', component: AccountsComponent, canActivate: [SessionGuard] },
-    { path: 'stocks', component: StocksComponent, canActivate: [SessionGuard] },
-  ] },
+  {
+    path: 'finance', component: FinanceComponent, canActivate: [SessionGuard], children: [
+      { path: 'accounts', component: AccountsComponent, canActivate: [SessionGuard] },
+      { path: 'stocks', component: StocksComponent, canActivate: [SessionGuard] },
+      { path: 'taxes/:year', component: TaxComponent, canActivate: [SessionGuard] },
+    ]
+  },
   { path: 'login', component: LoginComponent, canActivate: [SessionGuard], pathMatch: 'full' },
   { path: 'login/oauth2', component: Oauth2CallbackComponent, canActivate: [SessionGuard] },
   { path: 'logout', component: LogoutComponent, canActivate: [SessionGuard] },

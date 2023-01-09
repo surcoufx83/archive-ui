@@ -1,0 +1,22 @@
+<header>
+    <nav class="navbar navbar-expand navbar-sm navbar-secondary bg-secondary">
+        <div class="container-fluid d-flex justify-content-center">
+            <ul class="navbar-nav">
+                <ng-container *ngFor="let item of navitems; let i = index">
+                    <ng-container *ngTemplateOutlet="navbarItem; context: { item: item }"></ng-container>
+                </ng-container>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<ng-template #navbarItem let-item="item">
+  <li class="nav-item mx-2">
+    <a [ngClass]="{'nav-link': true, 'active': url == item.link }" [routerLink]="item.link">
+      <app-icon [iconClass]="config.icons[item.icon]" [marginEnd]="1"></app-icon>
+      <span class="d-none d-md-inline">
+        {{ i18n(item.title, item.params) }}
+      </span>
+    </a>
+  </li>
+</ng-template>

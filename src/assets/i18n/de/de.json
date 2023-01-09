@@ -607,7 +607,8 @@
     },
     "finance": {
       "accounts": "Konten",
-      "stocks": "Wertpapiere"
+      "stocks": "Wertpapiere",
+      "taxYear": "Steuern {0}"
     },
     "items": {
       "account": "Konto",
@@ -633,7 +634,8 @@
   },
   "notepad": {
     "title": "Notizen",
-    "filterPlaceholder": "Filtern"
+    "filterPlaceholder": "Filtern",
+    "markdownGuide": "Formatierung mit Markdown"
   },
   "partyroles": {
     "authority": "Behörde",

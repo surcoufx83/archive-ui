@@ -13,6 +13,7 @@ import {
   Currency,
   ExpenseCategory,
   ExpenseType,
+  Note,
   Party,
   PartyContact,
   PartyRole,
@@ -47,6 +48,8 @@ export class SettingsService {
   private casessync: number = 0;
   private financestorage: string = this.config.storage.prefix + 'financeData';
   private financesync: number = 0;
+  private notepadstorage: string = this.config.storage.prefix + 'notepadData';
+  private notepadsync: number = 0;
   private partiesstorage: string = this.config.storage.prefix + 'partiesData';
   private partiessync: number = 0;
   private tagsstorage: string = this.config.storage.prefix + 'tagsData';
@@ -54,16 +57,20 @@ export class SettingsService {
   private workstorage: string = this.config.storage.prefix + 'workData';
   private worksync: number = 0;
 
+  private expectedVersions = {
+    casesData: 1,
+    financeData: 1,
+    notepadData: 1,
+    partiesData: 1,
+    tagsData: 1,
+    workData: 1,
+  };
+
   constructor(private authService: AuthService,
     private configService: ConfigService) {
-    this.tags.subscribe((tags) => {
-      localStorage.setItem(this.tagsstorage, JSON.stringify({
-        tags: tags,
-        ts: this.tagssync,
-      }));
-    });
     this.loadCasesData();
     this.loadFinanceData();
+    this.loadNotepadData();
     this.loadPartiesData();
     this.loadTags();
     this.loadUserSettings();
@@ -92,13 +99,15 @@ export class SettingsService {
     let olddata: string | null | CasesStorage = localStorage.getItem(this.casesstorage);
     if (olddata) {
       olddata = <CasesStorage>JSON.parse(olddata);
-      this.cases.next(olddata.cases);
-      this.casechilds.next(olddata.casechilds);
-      this.casefiletypes.next(olddata.casefiletypes);
-      this.caseroots.next(olddata.rootcases);
-      this.caseStatus.next(olddata.casestatus);
-      this.caseTypes.next(olddata.casetypes);
-      this.casessync = olddata.ts;
+      if (olddata.version === this.expectedVersions.casesData) {
+        this.cases.next(olddata.cases);
+        this.casechilds.next(olddata.casechilds);
+        this.casefiletypes.next(olddata.casefiletypes);
+        this.caseroots.next(olddata.rootcases);
+        this.caseStatus.next(olddata.casestatus);
+        this.caseTypes.next(olddata.casetypes);
+        this.casessync = olddata.ts;
+      }
     }
     this.syncCases();
   }
@@ -107,31 +116,47 @@ export class SettingsService {
     let olddata: string | null | FinanceStorage = localStorage.getItem(this.financestorage);
     if (olddata) {
       olddata = <FinanceStorage>JSON.parse(olddata);
-      this.bankAccounts.next(olddata.bankAccounts);
-      this.countries.next(olddata.countries);
-      this.currencies.next(olddata.currencies);
-      this.expenseCategories.next(olddata.expenseCategories);
-      this.expenseTypes.next(olddata.expenseTypes);
-      this.sepaMandates.next(olddata.sepaMandates);
-      this.stocks.next(olddata.stocks);
-      this.stocksApis.next(olddata.stocksApis);
-      this.financesync = olddata.ts;
+      if (olddata.version === this.expectedVersions.financeData) {
+        this.bankAccounts.next(olddata.bankAccounts);
+        this.countries.next(olddata.countries);
+        this.currencies.next(olddata.currencies);
+        this.expenseCategories.next(olddata.expenseCategories);
+        this.expenseTypes.next(olddata.expenseTypes);
+        this.sepaMandates.next(olddata.sepaMandates);
+        this.stocks.next(olddata.stocks);
+        this.stocksApis.next(olddata.stocksApis);
+        this.financesync = olddata.ts;
+      }
     }
     this.syncFinance();
+  }
+
+  private loadNotepadData(): void {
+    let olddata: string | null | NotepadStorage = localStorage.getItem(this.notepadstorage);
+    if (olddata) {
+      olddata = <NotepadStorage>JSON.parse(olddata);
+      if (olddata.version === this.expectedVersions.notepadData) {
+        this.notepadItems.next(olddata.notes);
+        this.notepadsync = olddata.ts;
+      }
+    }
+    this.syncNotepad();
   }
 
   private loadPartiesData(): void {
     let olddata: string | null | PartiesStorage = localStorage.getItem(this.partiesstorage);
     if (olddata) {
       olddata = <PartiesStorage>JSON.parse(olddata);
-      this.addresses.next(olddata.addresses);
-      this.banks.next(olddata.banks);
-      this.clients.next(olddata.clients);
-      this.contacts.next(olddata.contacts);
-      this.contacttypes.next(olddata.contacttypes);
-      this.parties.next(olddata.parties);
-      this.roles.next(olddata.roles);
-      this.partiessync = olddata.ts;
+      if (olddata.version === this.expectedVersions.partiesData) {
+        this.addresses.next(olddata.addresses);
+        this.banks.next(olddata.banks);
+        this.clients.next(olddata.clients);
+        this.contacts.next(olddata.contacts);
+        this.contacttypes.next(olddata.contacttypes);
+        this.parties.next(olddata.parties);
+        this.roles.next(olddata.roles);
+        this.partiessync = olddata.ts;
+      }
     }
     this.syncParties();
   }
@@ -140,8 +165,10 @@ export class SettingsService {
     let olddata: string | null | TagsStorage = localStorage.getItem(this.tagsstorage);
     if (olddata) {
       olddata = <TagsStorage>JSON.parse(olddata);
-      this.tags.next(olddata.tags);
-      this.tagssync = olddata.ts;
+      if (olddata.version === this.expectedVersions.tagsData) {
+        this.tags.next(olddata.tags);
+        this.tagssync = olddata.ts;
+      }
     }
     this.syncTags();
   }
@@ -150,8 +177,10 @@ export class SettingsService {
     let olddata: string | null | WorkStorage = localStorage.getItem(this.workstorage);
     if (olddata) {
       olddata = <WorkStorage>JSON.parse(olddata);
-      this.customers.next(olddata.customers);
-      this.worksync = olddata.ts;
+      if (olddata.version === this.expectedVersions.workData) {
+        this.customers.next(olddata.customers);
+        this.worksync = olddata.ts;
+      }
     }
     this.syncWork();
   }
@@ -301,6 +330,9 @@ export class SettingsService {
 
   private expenseTypes: BehaviorSubject<{ [key: number]: ExpenseType }> = new BehaviorSubject<{ [key: number]: ExpenseType }>({});
   expenseTypes$ = this.expenseTypes.asObservable();
+
+  private notepadItems: BehaviorSubject<{ [key: number]: Note }> = new BehaviorSubject<{ [key: number]: Note }>({});
+  notepadItems$ = this.notepadItems.asObservable();
 
   private parties: BehaviorSubject<{ [key: number]: Party }> = new BehaviorSubject<{ [key: number]: Party }>({});
   parties$ = this.parties.asObservable();
@@ -462,6 +494,7 @@ export class SettingsService {
       casetypes: this.caseTypes.value,
       rootcases: this.caseroots.value,
       ts: this.casessync,
+      version: this.expectedVersions.casesData,
     }));
   }
 
@@ -480,6 +513,15 @@ export class SettingsService {
       stocks: this.stocks.value,
       stocksApis: this.stocksApis.value,
       ts: this.financesync,
+      version: this.expectedVersions.financeData,
+    }));
+  }
+
+  private saveNotepad(): void {
+    localStorage.setItem(this.notepadstorage, JSON.stringify({
+      notes: this.notepadItems.value,
+      ts: this.notepadsync,
+      version: this.expectedVersions.notepadData,
     }));
   }
 
@@ -493,6 +535,15 @@ export class SettingsService {
       parties: this.parties.value,
       roles: this.roles.value,
       ts: this.partiessync,
+      version: this.expectedVersions.partiesData,
+    }));
+  }
+
+  private saveTags(): void {
+    localStorage.setItem(this.tagsstorage, JSON.stringify({
+      tags: this.tags.value,
+      ts: this.tagssync,
+      version: this.expectedVersions.tagsData,
     }));
   }
 
@@ -500,6 +551,7 @@ export class SettingsService {
     localStorage.setItem(this.workstorage, JSON.stringify({
       customers: this.customers.value,
       ts: this.casessync,
+      version: this.expectedVersions.workData,
     }));
   }
 
@@ -570,6 +622,27 @@ export class SettingsService {
     });
   }
 
+  private notepadsynctimeout: any = null;
+  public resyncNotepad(): void {
+    this.syncNotepad();
+  }
+  private syncNotepad(): void {
+    if (this.notepadsynctimeout != null) {
+      clearTimeout(this.notepadsynctimeout);
+      this.notepadsynctimeout = null;
+    }
+    let url: string = this.config.api.baseUrl + '/notes' + (this.notepadsync > 0 ? '/' + this.notepadsync : '');
+    this.notepadsync = Math.floor(Date.now() / 1000);
+    this.authService.queryApi(url).subscribe((reply) => {
+      if (reply.success && reply.payload != undefined) {
+        let response = <NotepadResponse>reply.payload;
+        this.updateNotes(response.notes);
+        this.saveNotepad();
+      }
+      this.notepadsynctimeout = setTimeout(() => { this.syncNotepad(); }, 15000);
+    });
+  }
+
   private partiessynctimeout: any = null;
   private syncParties(): void {
     if (this.partiessynctimeout != null) {
@@ -607,6 +680,7 @@ export class SettingsService {
         let response = <TagsResponse>reply.payload;
         if (response.tags.length > 0)
           this.updateTags(response.tags);
+        this.saveTags();
       }
       this.tagssynctimeout = setTimeout(() => { this.syncTags(); }, 30000);
     });
@@ -671,7 +745,7 @@ export class SettingsService {
     cases.forEach((c) => { if (this._updateCase(tempcases, c)) needsrefresh = true; });
     this.cases.next(tempcases);
     if (needsrefresh)
-      this._updateCasesEvaluation(cases, tempcases);
+      this._updateCasesEvaluation(tempcases);
   }
 
   private _updateCase(cases: { [key: number]: Case }, c: Case): boolean {
@@ -691,10 +765,10 @@ export class SettingsService {
     return needsrefresh;
   }
 
-  private _updateCasesEvaluation(casesarray: Case[], cases: { [key: number]: Case }): void {
+  private _updateCasesEvaluation(cases: { [key: number]: Case }): void {
     let rootcases: number[] = [];
     let casechilds: { [key: number]: number[] } = {};
-    casesarray.forEach((c) => {
+    Object.values(cases).forEach((c) => {
       if (c.parentid == null) {
         rootcases.push(c.id);
         casechilds[c.id] = [];
@@ -770,6 +844,17 @@ export class SettingsService {
     let temp = { ...this.customers.value };
     customers.forEach((a) => this._updateCommon(temp, a));
     this.customers.next(temp);
+  }
+
+  private updateNotes(notes: Note[]) {
+    let temp = { ...this.notepadItems.value };
+    notes.forEach((n) => {
+      if (n.deldate == null)
+        temp[n.id] = n;
+      else
+        delete temp[n.id];
+    });
+    this.notepadItems.next(temp);
   }
 
   private updateParties(parties: Party[]) {
@@ -851,6 +936,13 @@ export class SettingsService {
     this.expenseTypes.next(temp);
   }
 
+  updateNote(note: Note): BehaviorSubject<Note | null | boolean> {
+    let subject = new BehaviorSubject<Note | null | boolean>(null);
+    this.postCommon(note.id == 0 ? 'create' : 'update', note,
+      'note', Object.values(this.notepadItems.value), subject, (n: Note[]) => this.updateNotes(n));
+    return subject;
+  }
+
   updateRole(roleitem: PartyRole): BehaviorSubject<PartyRole | null> {
     let subject = new BehaviorSubject<PartyRole | null>(null);
     //this.postCommon(roleitem.id == 0 ? 'create' : 'update', roleitem,
@@ -921,6 +1013,7 @@ export interface CasesStorage {
   casestatus: { [key: number]: CaseStatus };
   casetypes: { [key: number]: CaseType };
   ts: number;
+  version: number;
 }
 
 export interface ClientSettings {
@@ -958,6 +1051,17 @@ export interface FinanceStorage {
   stocks: Stock[];
   stocksApis: StockApi[];
   ts: number;
+  version: number;
+}
+
+export interface NotepadResponse {
+  notes: Note[];
+}
+
+export interface NotepadStorage {
+  notes: Note[];
+  ts: number;
+  version: number;
 }
 
 export interface PartiesResponse {
@@ -979,6 +1083,7 @@ export interface PartiesStorage {
   parties: { [key: number]: Party };
   roles: { [key: number]: PartyRole };
   ts: number;
+  version: number;
 }
 
 export interface TagsResponse {
@@ -988,6 +1093,7 @@ export interface TagsResponse {
 export interface TagsStorage {
   tags: Tag[];
   ts: number;
+  version: number;
 }
 
 export interface WorkResponse {
@@ -997,4 +1103,5 @@ export interface WorkResponse {
 export interface WorkStorage {
   customers: WorkCustomer[];
   ts: number;
+  version: number;
 }
