@@ -78,6 +78,7 @@ import { WorkDayComponent } from './work/work-day/work-day.component';
 import { WorkMonthComponent } from './work/work-month/work-month.component';
 import { WorkYearComponent } from './work/work-year/work-year.component';
 import { WorkComponent } from './work/work.component';
+import { SettingsService } from './user/settings/settings.service';
 
 registerLocaleData(localeDe);
 
@@ -173,6 +174,7 @@ registerLocaleData(localeDe);
     { provide: I18nService, multi: false, },
     { provide: ToastsService, multi: false, },
     { provide: AuthService, multi: false, },
+    { provide: SettingsService, multi: false, },
   ],
   bootstrap: [
     AppComponent
