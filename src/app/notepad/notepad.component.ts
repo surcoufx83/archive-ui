@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { format } from 'date-fns';
+import { format, sub } from 'date-fns';
 import { Note, UserSettings } from 'src/app/if';
 import { AuthService } from '../auth.service';
 import { AppConfig, ConfigService } from '../config.service';
@@ -18,6 +19,10 @@ export class NotepadComponent implements OnInit {
   busy: boolean = false;
   debounceFilter: any;
   debounceSave: any;
+  editItemFormgroup = new FormGroup({
+    title: new FormControl('', Validators.required),
+    content: new FormControl('', Validators.required),
+  });
   editId: number = -1;
   editNote?: Note;
   filterphrase: string = '';
@@ -41,6 +46,10 @@ export class NotepadComponent implements OnInit {
   close(): void {
     this.editNote = undefined;
     this.editId = -1;
+    this.editItemFormgroup.patchValue({
+      title: '',
+      content: ''
+    });
   }
 
   get config(): AppConfig {
@@ -68,13 +77,17 @@ export class NotepadComponent implements OnInit {
       for (let i = 0; i < this.notes.length; i++) {
         if (this.notes[i].id == this.editNote.id) {
           this.notes[i] = this.editNote;
-          this.save(this.notes[i]);
+          this.saveAndClose();
         }
       }
-      this.close();
+    } else {
+      this.editNote = { ...n };
+      this.editId = this.editNote.id;
+      this.editItemFormgroup.patchValue({
+        title: this.editNote.title,
+        content: this.editNote.content
+      });
     }
-    this.editNote = n;
-    this.editId = n.id;
   }
 
   f(date: Date | string, form: string): string {
@@ -103,6 +116,16 @@ export class NotepadComponent implements OnInit {
     return this.i18nService.i18n(key, params);
   }
 
+  ngOnInit(): void {
+    this.userSettings.notepadItems$.subscribe((notes) => {
+      if (this.editId > -1)
+        return;
+      this.notes = Object.values(notes);
+      this.sort(this.sortby);
+      this.filter();
+    });
+  }
+
   new(): void {
     this.notes = [
       {
@@ -118,27 +141,41 @@ export class NotepadComponent implements OnInit {
     this.edit(this.notes[0]);
   }
 
-  ngOnInit(): void {
-    this.update();
-  }
-
-  save(n: Note): void {
+  save(force: boolean = false, callback?: Function): void {
     if (this.debounceSave)
       clearTimeout(this.debounceSave);
-    this.debounceSave = setTimeout(() => {
-      this.saving = true;
-      let fragment = n.id === 0 ? 'create' : n.id;
-      let url = `${this.config.api.baseUrl}/note/${fragment}`;
-      this.authService.updateApi(url, {
-        'note': n
-      }).subscribe((reply) => {
-        if (fragment === 'create') {
-          this.notes.splice(0, 1);
-          this.update();
-        }
+    if (force)
+      this.save2(callback);
+    else
+    this.debounceSave = setTimeout(() => this.save2(), 1000);
+  }
+
+  saveAndClose(): void {
+    this.save(true, () => { this.close() });
+  }
+
+  private save2(callback?: Function) {
+    if (!this.editNote || !this.editItemFormgroup.valid) {
+      if (callback)
+        callback();
+      return;
+    }
+    if (this.editNote.title == this.editItemFormgroup.get('title')!.value && this.editNote.content == this.editItemFormgroup.get('content')!.value) {
+      if (callback)
+        callback();
+      return;
+    }
+    this.saving = true;
+    let newnote = { ...this.editNote };
+    newnote.title = this.editItemFormgroup.get('title')!.value!;
+    newnote.content = this.editItemFormgroup.get('content')!.value!;
+    this.userSettings.updateNote(newnote).subscribe((subject) => {
+      if (subject !== null) {
         this.saving = false;
-      });
-    }, 500);
+        if (callback)
+          callback();
+      }
+    });
   }
 
   sort(key: string, asc: boolean | null = null): void {
@@ -148,9 +185,9 @@ export class NotepadComponent implements OnInit {
     switch (this.sortby) {
       case 'name':
         if (this.sortasc)
-          this.notes = this.notes.sort((a, b) => { return a.title > b.title ? 1 : a.title < b.title ? -1 : 0 });
+          this.notes = this.notes.sort((a, b) => { return a.title.toLocaleLowerCase() > b.title.toLocaleLowerCase() ? 1 : a.title.toLocaleLowerCase() < b.title.toLocaleLowerCase() ? -1 : 0 });
         else
-          this.notes = this.notes.sort((a, b) => { return a.title > b.title ? -1 : a.title < b.title ? 1 : 0 });
+          this.notes = this.notes.sort((a, b) => { return a.title.toLocaleLowerCase() > b.title.toLocaleLowerCase() ? -1 : a.title.toLocaleLowerCase() < b.title.toLocaleLowerCase() ? 1 : 0 });
         break;
 
       case 'edit':
@@ -161,19 +198,6 @@ export class NotepadComponent implements OnInit {
         break;
 
     }
-  }
-
-  update(): void {
-    this.busy = true;
-    let url: string = this.config.api.baseUrl + '/notes';
-    this.authService.queryApi(url).subscribe((reply) => {
-      if (reply.success && reply.payload && reply.payload['notes']) {
-        this.notes = reply.payload['notes'];
-        this.sort(this.sortby);
-        this.filter();
-      }
-      this.busy = false;
-    });
   }
 
 }
