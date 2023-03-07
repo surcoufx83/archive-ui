@@ -187,31 +187,31 @@
       "In_TaxAssessment": "Avis d'impôt",
       "In_TaxReceipt": "Attestation fiscale",
       "In_TaxReport": "Relevé fiscal",
-      "In_TaxTravelDocumentation": "Reisedokumentation",
-      "In_TaxVL": "Steuererklärung Anlage VL",
-      "In_TicketEntrance": "Eintrittskarte",
-      "In_TicketTransport": "Fahrschein, Ticket",
-      "In_TrafficTicket": "Blitzer, Knöllchen, Verkehrsordnungswidrigkeit",
-      "In_VacationResp": "Urlaub, Krank, Mehrarbeit",
-      "In_VaccinationCertificate": "Impfbescheinigung",
-      "In_Voucher": "Gutschein",
-      "Out_ClaimReport": "Schadensmeldung",
-      "Out_Contradiction": "Wiederspruch",
-      "Out_ExpenseReport": "Spesenabrechnung und -belege",
-      "Out_Inquiry": "Anfrage",
-      "Out_Questionnaire": "Fragebogen",
-      "Out_Revocation": "Wiederruf",
-      "Out_SepaMandate": "SEPA Lastschriftmandat",
-      "Out_TaxDeclaration": "Steuererklärung",
-      "Out_Termination": "Kündigung"
+      "In_TaxTravelDocumentation": "Documentation de voyage",
+      "In_TaxVL": "Déclaration d'impôts Annexe VL",
+      "In_TicketEntrance": "Ticket d'Entrée",
+      "In_TicketTransport": "Titre de transport, billet",
+      "In_TrafficTicket": "Radars, PV, infraction au code de la route",
+      "In_VacationResp": "Congés, maladie, heures supplémentaires",
+      "In_VaccinationCertificate": "Certificat de vaccination",
+      "In_Voucher": "Coupon",
+      "Out_ClaimReport": "Déclaration de sinistre",
+      "Out_Contradiction": "Widerspruch",
+      "Out_ExpenseReport": "Décompte et justificatifs de frais",
+      "Out_Inquiry": "Demande",
+      "Out_Questionnaire": "Questionnaire",
+      "Out_Revocation": "Widerruf",
+      "Out_SepaMandate": "Mandat de prélèvement automatique",
+      "Out_TaxDeclaration": "Déclaration d'impôts",
+      "Out_Termination": "Résiliation"
     }
   },
   "common": {
-    "add": "Neu",
-    "back": "Zurück",
-    "cancel": "Abbruch",
+    "add": "Nouveau",
+    "back": "Retour",
+    "cancel": "Annuler",
     "confirm": {
-      "askDeletion": "Bist du sicher, dass der Datensatz {0} gelöscht werden soll?",
+      "askDeletion": "Es-tu sûr que l'enregistrement {0} doit être supprimé ?",
       "delete": {
         "title": "Enregistré",
         "message": "Cet enregistrement a déjà été supprimé."
@@ -247,7 +247,7 @@
     "second": "Seconde",
     "seconds": "Secondes",
     "select": {
-      "pickOne": "Veuillez choisir"
+      "pickOne": "Bitte wählen"
     },
     "switchTo": "Aller à",
     "today": "Aujourd'hui",
@@ -303,92 +303,92 @@
       }
     },
     "classes": {
-      "title": "Dokumentarten",
-      "techname": "Technischer Name",
-      "localized": "Lokalisierter Name",
-      "pattern": "Namensvorgabe",
+      "title": "Types de documents",
+      "techname": "Nom technique",
+      "localized": "Nom localisé",
+      "pattern": "Nom par défaut",
       "default": "Standard",
       "editor": {
-        "title": "Dokumentenart bearbeiten",
-        "localized": "Lokalisierung per json-Dateien",
+        "title": "Modifier le type de document",
+        "localized": "Localisation par fichiers json",
         "description": "Description",
-        "descriptionPlaceholder": "Ausführlicher Beschreibungstext",
-        "namepattern": "Vorgabe für Dateinamen",
-        "namepatternPlaceholder": "Platzhalter mit {...} um Dateinamen automatisch zu erzeugen"
+        "descriptionPlaceholder": "Texte descriptif détaillé",
+        "namepattern": "Modèle de nom de fichier",
+        "namepatternPlaceholder": "Caractère de remplacement avec {...} pour générer automatiquement des noms de fichiers"
       }
     },
     "contacts": {
       "types": {
-        "title": "Kontaktarten",
-        "name": "Technischer Name",
-        "i18nname": "Lokalisierter Name",
-        "icon": "Icon",
+        "title": "Types de contacts",
+        "name": "Nom technique",
+        "i18nname": "Nom localisé",
+        "icon": "Icône",
         "editor": {
-          "title": "Kontaktarten bearbeiten",
-          "localized": "Lokalisierung per json-Dateien",
-          "name": "Technischer Name",
-          "icon": "Icon"
+          "title": "Modifier les types de contact",
+          "localized": "Localisation par fichiers json",
+          "name": "Nom technique",
+          "icon": "Icône"
         }
       }
     },
     "countries": {
-      "title": "Länder",
+      "title": "Pays",
       "default": "Standard",
-      "name": "Technischer Name",
-      "i18nname": "Lokalisierter Name",
-      "currency": "Währung",
+      "name": "Nom technique",
+      "i18nname": "Nom localisé",
+      "currency": "Devise",
       "key2": "Code-2",
       "key3": "Code-3",
       "taxrates": {
-        "title": "Steuersätze"
+        "title": "Taux d'imposition"
       },
       "editor": {
-        "key2": "2-stelliger Code",
-        "key3": "3-stelliger Code",
-        "title": "Länder bearbeiten",
-        "localized": "Lokalisierung per json-Dateien"
+        "key2": "Code à 2 chiffres",
+        "key3": "Code à 3 chiffres",
+        "title": "Modifier les pays",
+        "localized": "Localisation par fichiers json"
       }
     },
     "cronjobs": {
       "title": "Cronjobs"
     },
     "currencies": {
-      "title": "Währungen",
+      "title": "Monnaies",
       "default": "Standard",
-      "name": "Name",
-      "shortname": "Kürzel",
-      "sign": "Zeichen",
+      "name": "Nom",
+      "shortname": "Abréviation",
+      "sign": "Symbole",
       "editor": {
-        "name": "Vollständiger Name",
-        "shortname": "3-stelliger Code",
-        "sign": "Internationales Zeichen",
-        "title": "Währung bearbeiten"
+        "name": "Nom complet",
+        "shortname": "Code à 3 chiffres",
+        "sign": "Signe international",
+        "title": "Modifier la monnaie"
       }
     },
     "directories": {
-      "title": "Root-Verzeichnisse"
+      "title": "Répertoires racines"
     },
     "expenses": {
-      "title": "Ausgaben",
+      "title": "Dépenses",
       "categories": {
-        "title": "Ausgabearten"
+        "title": "Types des dépenses"
       },
       "templates": {
-        "title": "Vorlagen"
+        "title": "Modèles"
       },
       "types": {
-        "title": "Buchungsarten"
+        "title": "Types de réservation"
       }
     },
     "extension": {
       "title": "Types de fichiers"
     },
     "manager": {
-      "title": "Stammdatenverwaltung",
-      "countries": "Länder",
-      "filesystem": "Dateisystem",
+      "title": "Gestion des données de base",
+      "countries": "Pays",
+      "filesystem": "Système de fichiers",
       "finance": "Finances",
-      "files": "Dateien und Klassifizierung",
+      "files": "Fichiers et classification",
       "living": "Appartement",
       "parties": "Correspondants",
       "system": "Administration",
@@ -484,77 +484,77 @@
     "housekeeping": {
       "title": "Organisation ",
       "move": {
-        "title": "Datei Verschieben",
-        "description": "Verschiebt die Datei im Archiv in ein anderes Verzeichnis.",
-        "btn": "Ziel wählen"
+        "title": "Déplacer le fichier",
+        "description": "Déplace le fichier de l'archive vers un autre répertoire.",
+        "btn": "Choisir la destination"
       },
       "delete": {
-        "title": "Datei Löschen",
-        "description": "Löscht die Datei unwiderruflich aus dem Archiv.",
-        "btn": "Löschen",
-        "confirm": "Datei wirklich löschen?"
+        "title": "Supprimer le fichier",
+        "description": "Supprime le fichier de l'archive de manière irréversible.",
+        "btn": "Supprimer",
+        "confirm": "Supprimer vraiment le fichier ?"
       }
     },
     "errors": {
       "noNextFile": {
-        "title": "Keine Daten",
-        "message": "Es gibt keine weiteren Dateien die eine Klassifizierung erfordern."
+        "title": "Pas de données",
+        "message": "Il n'y a pas d'autres fichiers qui nécessitent une classification."
       }
     }
   },
   "folderbrowser": {
-    "title": "Ordner durchsuchen",
-    "selected": "Gewählt: {0}",
+    "title": "Rechercher dans les répertoires",
+    "selected": "Sélectionné : {0}",
     "newFolder": {
-      "title": "Neuer Ordner..."
+      "title": "Nouveau répertoire..."
     }
   },
   "home": {
-    "title": "Archiv Start",
+    "title": "Page d'accueil de l'archive",
     "cases": {
-      "title": "Akten zur Prüfung"
+      "title": "Dossiers pour vérification"
     },
     "database": {
-      "title": "Stammdaten",
-      "dbmanager": "Zur Stammdatenverwaltung"
+      "title": "Données de base",
+      "dbmanager": "Vers la gestion des données de base"
     },
     "inbox": {
-      "title": "Neue Dokumente"
+      "title": "Nouveaux documents"
     },
     "readings": {
       "title": "Compteur",
-      "readingsLink": "Erfassung von Zählerständen"
+      "readingsLink": "Saisie des relevés de compteurs"
     },
     "special": {
-      "title": "Zusatzfunktionen",
+      "title": "Fonctions supplémentaires",
       "notepadLink": "Notes",
-      "warehouseLink": "Lager",
-      "movingBoxesLink": "Umzugskartons",
-      "wineCellarLink": "Weinkeller"
+      "warehouseLink": "Entrepôt",
+      "movingBoxesLink": "Cartons de déménagement",
+      "wineCellarLink": "Cave à vin"
     },
     "stats": {
-      "title": "Schnelle Statistiken...",
-      "files1": "Das Archiv verwaltet aktuell {0} Dateien in {1} Verzeichnissen mit insgesamt {2}.",
-      "files2": "{0} der Dateien wurden klassifiziert, {1} wurden einer Akte zugeordnert. Für {2} konnte kein OCR-Text erzeugt werden.",
-      "files3": "Diesen Monat wurden {0} neue Dateien hinzugefügt.",
+      "title": "Statistiques rapides...",
+      "files1": "L'archive gère actuellement {0} fichiers dans {1} répertoires avec un total de {2}.",
+      "files2": "{0} des fichiers ont été classés, {1} ont été attribués à un dossier. Aucun texte OCR n'a pu être généré pour {2}.",
+      "files3": "Ce mois-ci, {0} nouveaux fichiers ont été ajoutés.",
       "casesLink": "Dossiers",
-      "filesLink": "Alle Dateien",
-      "noclassFilesLink": "Nicht klassifiziert",
-      "noocrFilesLink": "Kein OCR",
-      "storageLink": "Speicher"
+      "filesLink": "Tous les fichiers",
+      "noclassFilesLink": "Non classé",
+      "noocrFilesLink": "Pas de texte",
+      "storageLink": "Espace disque"
     },
     "supermarket": {
-      "title": "Im Supermark",
-      "priceComparison": "Preisvergleich und -historie",
-      "receiptsLink": "Erfassung von Einkäufen",
-      "shoppingLink": "Einkaufsliste"
+      "title": "Au supermarché",
+      "priceComparison": "Comparaison et historique des prix",
+      "receiptsLink": "Saisie des achats",
+      "shoppingLink": "Liste d'achats"
     }
   },
   "lead": {
     "title": "Lead #{0}",
     "common": {
-      "title": "Allgemeine Angaben",
-      "party": "Firma"
+      "title": "Informations générales",
+      "party": "Société"
     }
   },
   "leads": {
@@ -562,11 +562,11 @@
     "table": {
       "head": {
         "key": "[LI]",
-        "customer": "Kunde",
-        "project": "Projekt",
-        "created": "Erstellt",
-        "completed": "Abgeschlossen",
-        "payed": "Ausgezahlt"
+        "customer": "Client",
+        "project": "Projet",
+        "created": "Créé",
+        "completed": "Terminé",
+        "payed": "Payé"
       },
       "data": {
         "lead": "Lead",
@@ -575,8 +575,8 @@
     }
   },
   "login": {
-    "title": "Benutzeranmeldung",
-    "subtitle": "Diese Webseite erfordert die Eingabe von Zugangsdaten. Bitte mit Benutzername und Passwort anmelden.",
+    "title": "Connexion d'utilisateur",
+    "subtitle": "Ce site web nécessite la saisie de données d'accès. Veuillez vous connecter avec votre nom d'utilisateur et votre mot de passe.",
     "button": "Se connecter",
     "password": "Mot de passe",
     "passwordPlaceholder": "*********",
@@ -655,90 +655,90 @@
     "lender": "Prêteur",
     "main": "Principal acteur",
     "patient": "Patient",
-    "renter": "Mieter",
-    "vendor": "Verkäufer"
+    "renter": "Locataire",
+    "vendor": "Vendeur"
   },
   "pricecomparison": {
-    "title": "Preisvergleich und -historie",
-    "chart": "Verlauf (180 Tage)",
-    "time": "Zeitraum",
-    "range": "Preisspanne",
-    "article": "Artikel"
+    "title": "Comparaison et historique des prix",
+    "chart": "Historique (180 jours)",
+    "time": "Période",
+    "range": "Fourchette de prix",
+    "article": "Article"
   },
   "receipts": {
-    "title": "Belegerfassung",
+    "title": "Saisie des documents",
     "client": "Acheteur",
-    "currency": "Währung",
-    "date": "Datum",
-    "party": "Händler",
-    "amount": "Betrag",
+    "currency": "Devise",
+    "date": "Date",
+    "party": "Revendeurs",
+    "amount": "Montant",
     "items": {
-      "title": "Positionen",
-      "article": "Artikel",
-      "quantity": "Menge",
-      "singleprice": "E-Preis",
-      "discount": "Rabatt",
-      "deposit": "Pfand",
-      "totalnet": "G-Preis",
-      "summary": "Summen",
-      "organic": "Bio"
+      "title": "Positions",
+      "article": "Article",
+      "quantity": "Quantité",
+      "singleprice": "Prix à l'unité",
+      "discount": "Réduction",
+      "deposit": "Consigne",
+      "totalnet": "Prix total",
+      "summary": "Totaux",
+      "organic": "Organique"
     },
     "edit": {
-      "title": "Erfassung eines Belegs",
-      "noitems1": "Noch keine Position erfasst.",
-      "noitems2": "Noch keine Position vollständig erfasst."
+      "title": "Saisie d'un document",
+      "noitems1": "Pas encore de position saisie.",
+      "noitems2": "Aucune position n'a encore été entièrement saisie."
     },
     "select": {
       "stillediting": {
-        "title": "Belegauswahl abgebrochen",
-        "message": "Der Wechsel des Belegs wurde abgebrochen, da aktuell noch ein Beleg erfasst wird. Der zu erfassende Beleg muss gespeichert oder abgebrochen werden."
+        "title": "Sélection de documents annulée",
+        "message": "Le changement de document a été annulé, car un document est encore en cours de saisie. Le document à saisir doit être enregistré ou annulé."
       }
     }
   },
   "search": {
     "title": "Rechercher",
     "setup": {
-      "phrase": "Suchbegriff(e)",
-      "helpSearching": "Mehr Informationen zu den Suchstrategien auf mariadb.com",
+      "phrase": "Termes de recherche",
+      "helpSearching": "Plus d'informations sur les stratégies de recherche sur mariadb.com",
       "groups": {
-        "accounts": "Konten",
+        "accounts": "Comptes",
         "cases": "Dossiers",
-        "directories": "Verzeichnisse",
-        "files": "Dateien (Metadaten)",
-        "pages": "Dateiinhalte",
-        "notepad": "Notizen"
+        "directories": "Répertoires",
+        "files": "Fichiers (métadonnées)",
+        "pages": "Contenu des fichiers",
+        "notepad": "Notes"
       },
-      "groupstitle": "Suchbereiche",
-      "runSearch": "Suche starten"
+      "groupstitle": "Domaines de recherche",
+      "runSearch": "Lancer la recherche"
     },
     "result": {
-      "title": "{0} Treffer",
-      "subtitle": "{0} Treffer in {1}",
+      "title": "{0} résultats",
+      "subtitle": "{0} résultats dans {1}",
       "group": {
-        "accounts": "Konten",
+        "accounts": "Comptes",
         "cases": "Dossiers",
-        "directories": "Verzeichnisse",
-        "files": "Dateien",
-        "notes": "Notizen",
-        "pages": "Dateiinhalte",
-        "onPageNo": "Seite {0}",
-        "downloadFileTitle": "Datei herunterladen",
-        "gotoPreviewTitle": "Direkt zur Dateianzeige springen"
+        "directories": "Répertoires",
+        "files": "Fichiers",
+        "notes": "Notes",
+        "pages": "Contenu des fichiers",
+        "onPageNo": "Page {0}",
+        "downloadFileTitle": "Télécharger le fichier",
+        "gotoPreviewTitle": "Aller directement à l'affichage du fichier"
       },
-      "points": "{0} P.",
-      "showHistoric": "Hist.",
-      "showHistoricTooltip": "Auch ältere Werte aus der Historie anzeigen?"
+      "points": "{0} p.",
+      "showHistoric": "hist.",
+      "showHistoricTooltip": "Afficher également les valeurs plus anciennes de l'historique ?"
     }
   },
   "shopping": {
     "cart": {
-      "title": "Einkaufsliste"
+      "title": "Liste d'achats"
     }
   },
   "stocks": {
-    "title": "Aktien und Krypto",
+    "title": "Titres et crypto",
     "api": "API",
-    "bought": "Gekauft",
+    "bought": "Acheté",
     "boughtValue": "{0} {1} á {2}",
     "currency": "Devise",
     "dif": "Modification",
@@ -808,43 +808,43 @@
         "from": "Du",
         "project": "Projet client",
         "recentTitle": "Cliquer pour reprendre ces données",
-        "task": "Arbeitspaket",
-        "timeCategory": "Kategorie",
+        "task": "Tâche",
+        "timeCategory": "Сatégorie",
         "timePlaceholder": "hh:mm | hhmm | hmm",
-        "until": "Bis"
+        "until": "Jusqu'à"
       },
       "createCustomer": {
-        "title": "Neuer Kunde",
-        "nameTitle": "Kundenname",
-        "namePlaceholder": "Bitte angeben..."
+        "title": "Nouveau client",
+        "nameTitle": "Nom du client",
+        "namePlaceholder": "Veuillez préciser..."
       },
       "live": {}
     }
   },
   "workmonth": {
-    "pagetitle": "Monatsübersicht {0}",
+    "pagetitle": "Aperçu mensuel {0}",
     "pagetitleShort": "{0}",
     "calendar": {
-      "title": "Kalender"
+      "title": "Calendrier"
     },
     "cards": {
       "target": {
-        "title": "Monatsinfo",
-        "businessDays": "Arbeitstage",
-        "offDays": "WE / FT",
-        "lastEdit": "Letzte Änderung",
-        "lastEditShort": "Letzte Änd."
+        "title": "Info mensuelle",
+        "businessDays": "Jours ouvrables",
+        "offDays": "Week-end / Jour férié",
+        "lastEdit": "Dernière modification",
+        "lastEditShort": "Dernier mod."
       },
       "time": {
-        "title": "Gebuchte Zeiten",
-        "takeover": "Übernahme",
-        "balance": "Differenz",
-        "carryover": "Übertrag"
+        "title": "Temps réservés",
+        "takeover": "Reprise",
+        "balance": "Différence",
+        "carryover": "Retenir"
       }
     },
     "offtime": {
-      "title": "Abwesenheiten buchen",
-      "subtitle": "Abwesenheitsmarker setzen das Tagessoll generell auf 0 Stunden. Es können für Abwesenheitstage keine Zeiten gebucht werden."
+      "title": "Enregistrer les absences",
+      "subtitle": "Les marqueurs d'absence fixent en général le débit journalier à 0 heure. Il n'est pas possible de comptabiliser des heures pour les jours d'absence."
     }
   }
 }
