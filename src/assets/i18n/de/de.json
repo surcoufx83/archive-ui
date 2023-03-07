@@ -193,11 +193,11 @@
       "In_VaccinationCertificate": "Impfbescheinigung",
       "In_Voucher": "Gutschein",
       "Out_ClaimReport": "Schadensmeldung",
-      "Out_Contradiction": "Wiederspruch",
+      "Out_Contradiction": "Widerspruch",
       "Out_ExpenseReport": "Spesenabrechnung und -belege",
       "Out_Inquiry": "Anfrage",
       "Out_Questionnaire": "Fragebogen",
-      "Out_Revocation": "Wiederruf",
+      "Out_Revocation": "Widerruf",
       "Out_SepaMandate": "SEPA Lastschriftmandat",
       "Out_TaxDeclaration": "Steuererklärung",
       "Out_Termination": "Kündigung"
