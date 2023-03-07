@@ -1,22 +1,22 @@
 {
   "authService": {
     "apiError": {
-      "title": "Fehler",
-      "message": "Fehler beim Abrufen von Daten: {0}"
+      "title": "Erreur",
+      "message": "Erreur lors de la récupération des données : {0}"
     },
     "notModified": {
       "title": "Info",
-      "message": "Keine Anderungen vorgenommen: {0}"
+      "message": "Aucune modification n'a été apportée : {0}"
     }
   },
   "calendar": {
-    "showAsGridTitle": "Als Kalender darstellen",
-    "showAsListTitle": "Als Liste darstellen",
-    "showWeek": "KW",
-    "showWeekTitle": "Kalenderwoche anzeigen",
-    "showWeekend": "WE",
-    "showWeekendTitle": "Wochenende anzeigen",
-    "weekday": "Wochentag",
+    "showAsGridTitle": "Représenter sous forme de calendrier",
+    "showAsListTitle": "Présenter sous forme de liste",
+    "showWeek": "semaine",
+    "showWeekTitle": "Afficher la semaine calendaire",
+    "showWeekend": "week-end",
+    "showWeekendTitle": "Afficher le week-end",
+    "weekday": "Jour de la semaine",
     "duration": {
       "short": "{0} h"
     },
@@ -147,6 +147,7 @@
       "In_Contract": "Vertrag",
       "In_ContractAdjustment": "Vertragsänderung",
       "In_ContractAmendment": "Vertragsergänzung",
+      "In_ContractProtocol": "Beratungsprotokoll",
       "In_ContractRenewal": "Vertragsverlängerung",
       "In_ContractTermination": "Kündigungsbestätigung, Auflösung",
       "In_ContractTermsAndConditions": "AGBs",
