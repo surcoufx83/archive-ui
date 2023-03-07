@@ -196,11 +196,11 @@
       "In_VaccinationCertificate": "Vaccination Certificate",
       "In_Voucher": "Voucher",
       "Out_ClaimReport": "Damage report",
-      "Out_Contradiction": "Contradiction",
+      "Out_Contradiction": "Widerspruch",
       "Out_ExpenseReport": "Expense report and receipts",
       "Out_Inquiry": "Inquiry",
       "Out_Questionnaire": "Questionnaire",
-      "Out_Revocation": "Revocation",
+      "Out_Revocation": "Widerruf",
       "Out_SepaMandate": "SEPA direct debit mandate",
       "Out_TaxDeclaration": "Tax declaration",
       "Out_Termination": "Termination"
@@ -247,7 +247,7 @@
     "second": "Second",
     "seconds": "Seconds",
     "select": {
-      "pickOne": " Please choose"
+      "pickOne": "Bitte wählen"
     },
     "switchTo": "Switch to",
     "today": "Today",
