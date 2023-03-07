@@ -72,69 +72,69 @@
     }
   },
   "casefilestatus": {
-    "approved": "Freigegeben",
-    "checked": "Geprüft",
-    "new": "Neu"
+    "approved": "Partagé",
+    "checked": "Vérifié",
+    "new": "Nouveau"
   },
   "casefiletypes": {
-    "draft": "Entwurf",
-    "signed_draft": "Entwurf (unterschrieben)",
-    "contract": "Vertrag",
-    "termination_draft": "Kündigungsentwurf",
-    "termination": "Kündigung"
+    "draft": "Brouillon",
+    "signed_draft": "Brouillon (signé)",
+    "contract": "Contrat",
+    "termination_draft": "Ébauche de résiliation",
+    "termination": "Résiliation"
   },
   "cases": {
-    "title": "Aktenstruktur",
+    "title": "Structure des dossiers",
     "filescount": [
-      "1 Datei",
-      "{0} Dateien"
+      "1 fichier",
+      "Fichiers : {0}"
     ],
-    "reference": "Referenz {0}",
-    "showDeleted": "Gel.",
-    "showInRetention": "Ausgebl."
+    "reference": "Référence {0}",
+    "showDeleted": "supprimé",
+    "showInRetention": "masqué"
   },
   "casestatus": {
-    "created": "Erstellt",
-    "draft": "Entwurf",
-    "draftsign": "Unterschrieben",
-    "entered": "Eingegangen",
-    "active": "Aktiv",
-    "activeexpiring": "Läuft aus",
-    "activenoncontributory": "Beitragsfrei aktiv",
-    "activeterminated": "Gekündigt",
-    "activeterminating": "Wird gekündigt",
-    "cancelled": "Verworfen",
-    "expired": "Ausgelaufen",
-    "terminated": "Beendet",
-    "retentiondeletion": "Aufbewahrung",
-    "retentionhidden": "Ausgeblendet",
-    "todelete": "Zum Löschen"
+    "created": "Créé",
+    "draft": "Brouillon",
+    "draftsign": "Signé",
+    "entered": "Reçu",
+    "active": "Actif",
+    "activeexpiring": "En cours d'expiration",
+    "activenoncontributory": "Actif sans cotisation",
+    "activeterminated": "Résilié",
+    "activeterminating": "Est résilié",
+    "cancelled": "Rejeté",
+    "expired": "Expiré",
+    "terminated": "Terminé",
+    "retentiondeletion": "Rétention",
+    "retentionhidden": "Masqué",
+    "todelete": "Pour supprimer"
   },
   "casetype": {
-    "apartment": "Wohnen",
-    "bankaccounts": "Bank und Konten",
-    "car": "Auto",
-    "carbusiness": "Firmenwagen",
-    "communication": "Kommunikation",
-    "consumables": "Nebenkosten / Verbraucher",
-    "contracts": "Verträge",
-    "damage": "Schäden und Schadensmeldungen",
-    "insurance": "Versicherungen",
-    "legals": "Verfahren (Behörden/Gerichte)",
-    "misc": "Sonstige",
-    "repair": "Reparaturen und Wartung",
-    "studies": "Ausbildung und Studium",
-    "taxes": "Steuern",
-    "work": "Beschäftigungsverhältnis"
+    "apartment": "Habitation",
+    "bankaccounts": "Banque et comptes",
+    "car": "Voiture",
+    "carbusiness": "Voiture de société",
+    "communication": "Communication",
+    "consumables": "Charges / Consommateurs",
+    "contracts": "Contrats",
+    "damage": "Dommages et déclarations de sinistre",
+    "insurance": "Assurances",
+    "legals": "Procédure (autorités/tribunaux)",
+    "misc": "Autres",
+    "repair": "Réparations et entretien",
+    "studies": "Formation et études",
+    "taxes": "Impôts",
+    "work": "Relation d'emploi"
   },
   "classify": {
     "classes": {
-      "In_AccountData": "Zugangsdaten, Credentials, Passwörter",
-      "In_AccountReport": "Kontoreport",
-      "In_AnnualBonus": "Jahresbonus, Sonderzahlungen, etc.",
-      "In_AnnualReport": "Jahresbericht",
-      "In_Approval": "Freigabe / Bewilligung",
-      "In_AU": "Krankmeldung (AU)",
+      "In_AccountData": "Données d'accès, credentials, mots de passe",
+      "In_AccountReport": "Rapport de compte",
+      "In_AnnualBonus": "Prime annuelle, paiements spéciaux, etc.",
+      "In_AnnualReport": "Rapport annuel",
+      "In_Approval": "Validation / autorisation",
+      "In_AU": "Certificat médical",
       "In_BallotDocs": "Documents électoraux",
       "In_BankEarnings": "Recettes provenant d'opérations bancaires/de titres",
       "In_BankOrders_Buy": "Achat de titres",
@@ -142,7 +142,7 @@
       "In_BankOrders_Sell": "Vente de titres",
       "In_BankStatement": "Relevé de compte",
       "In_Certificate": "Acte, certificat, attestation de participation",
-      "In_ClaimSettlement": "Schadensregulierung",
+      "In_ClaimSettlement": "Règlement des dommages",
       "In_Common": "Boîte de réception générale",
       "In_Contract": "Contrat",
       "In_ContractAdjustment": "Modification du contrat",
@@ -160,33 +160,33 @@
       "In_DonationReceipt": "Reçu de dons",
       "In_ExpenseClearing": "Validation ou remboursement de la note de frais",
       "In_FeeAdjustment": "Ajustement des cotisations",
-      "In_HomeAnnualSettlement": "Abrechnung Mietnebenkosten",
-      "In_Id": "Ausweis uä.",
-      "In_Information": "Allgemeine Informationen",
-      "In_InsuranceStatement": "Meldebestätigung Sozialversicherung",
-      "In_Invoice": "Rechnung",
-      "In_InvoiceReminder": "Mahnung",
-      "In_LeadStatus": "Lead/Incentive Status",
-      "In_LegalNotice": "Verfahrensmitteilung",
-      "In_Mandate": "Vollmacht, Mandat",
-      "In_MeterReading": "Zählerablesung",
-      "In_Order": "Auftrag",
-      "In_OrderConfirmation": "Bestell-/ Kauf-/ Auftragsbestätigung",
-      "In_PayRollTaxCertificate": "Lohnsteuerbescheinigung",
-      "In_PaySlip": "Lohnzettel",
-      "In_PerformanceReport": "Information Wertentwicklung",
-      "In_PostReceipt": "Einlieferungsbeleg Post/Paket",
-      "In_QuarterReport": "Quartalsabschluss",
-      "In_Receipt": "Kassenbeleg",
-      "In_Rejection": "Ablehnung, Ablehnungsbescheid",
-      "In_RepairOrder": "Reparaturauftrag",
-      "In_RepairReport": "Reparaturbericht",
-      "In_Request": "Antrag",
-      "In_Statement": "Bescheinigung allgemein",
-      "In_Stock_Info": "Wertpapier Information",
-      "In_TaxAssessment": "Steuerbescheid",
-      "In_TaxReceipt": "Steuerbescheinigung",
-      "In_TaxReport": "Steuerauszug",
+      "In_HomeAnnualSettlement": "Décompte des charges locatives",
+      "In_Id": "Carte d'identité, etc.",
+      "In_Information": "Informations générales",
+      "In_InsuranceStatement": "Attestation de déclaration à la sécurité sociale",
+      "In_Invoice": "Facture",
+      "In_InvoiceReminder": "Rappel",
+      "In_LeadStatus": "Statut de Lead/Incentive",
+      "In_LegalNotice": "Avis juridique",
+      "In_Mandate": "Procuration, mandat",
+      "In_MeterReading": "Relevé des compteurs",
+      "In_Order": "Ordre",
+      "In_OrderConfirmation": "Confirmation de commande / d'achat / de commande",
+      "In_PayRollTaxCertificate": "Attestation d'impôt sur le salaire",
+      "In_PaySlip": "Fiche de paie",
+      "In_PerformanceReport": "Information sur la performance",
+      "In_PostReceipt": "Preuve de dépôt poste/colis",
+      "In_QuarterReport": "Clôture trimestrielle",
+      "In_Receipt": "Pièce de caisse",
+      "In_Rejection": "Refus, décision de refus",
+      "In_RepairOrder": "Ordre de réparation",
+      "In_RepairReport": "Rapport de réparation",
+      "In_Request": "Demande",
+      "In_Statement": "Attestation générale",
+      "In_Stock_Info": "Informations sur les titres",
+      "In_TaxAssessment": "Avis d'impôt",
+      "In_TaxReceipt": "Attestation fiscale",
+      "In_TaxReport": "Relevé fiscal",
       "In_TaxTravelDocumentation": "Reisedokumentation",
       "In_TaxVL": "Steuererklärung Anlage VL",
       "In_TicketEntrance": "Eintrittskarte",
@@ -213,93 +213,93 @@
     "confirm": {
       "askDeletion": "Bist du sicher, dass der Datensatz {0} gelöscht werden soll?",
       "delete": {
-        "title": "Gespeichert",
-        "message": "Der Datensatz wurde aus der Datenbank gelöscht."
+        "title": "Enregistré",
+        "message": "Cet enregistrement a déjà été supprimé."
       },
       "save": {
-        "title": "Gespeichert",
-        "message": "Die Änderungen wurden erfolgreich gespeichert."
+        "title": "Enregistré",
+        "message": "Les modifications ont été enregistrées avec succès."
       }
     },
-    "date": "Datum",
-    "day": "Tag",
-    "days": "Tage",
-    "delete": "Löschen",
-    "goto": "Gehe zu",
-    "hour": "Stunde",
-    "hours": "Stunden",
+    "date": "Date",
+    "day": "Jour",
+    "days": "Jours",
+    "delete": "Supprimer",
+    "goto": "Ouvrir",
+    "hour": "Heure",
+    "hours": "Heures",
     "minute": "Minute",
-    "minutes": "Minuten",
-    "month": "Monat",
-    "months": "Monate",
-    "no": "Nein",
-    "none": "Keine",
+    "minutes": "Minutes",
+    "month": "Mois",
+    "months": "Mois",
+    "no": "Non",
+    "none": "Aucun",
     "novalue": "---",
-    "pcs": "St.",
+    "pcs": "pièces",
     "period": {
-      "placeholder": "0j 0m 0t 0:0:0",
-      "patternYears": "{0}j",
-      "patternMonths": "{0}m",
-      "patternDays": "{0}t",
+      "placeholder": "0a 0m 0j 0:0:0",
+      "patternYears": "{0} ans",
+      "patternMonths": "{0} mois",
+      "patternDays": "{0} jours",
       "patternTime": "{0}h:{1}m:{2}s"
     },
-    "save": "Speichern",
-    "second": "Sekunde",
-    "seconds": "Sekunden",
+    "save": "Enregistrer",
+    "second": "Seconde",
+    "seconds": "Secondes",
     "select": {
-      "pickOne": " Bitte wählen "
+      "pickOne": "Veuillez choisir"
     },
-    "switchTo": "Wechseln zu",
-    "today": "Heute",
+    "switchTo": "Aller à",
+    "today": "Aujourd'hui",
     "warn": {
       "formInvalid": {
-        "title": "Warnung",
-        "message": "Das Formular enthält noch Fehler."
+        "title": "Attention",
+        "message": "Le formulaire contient encore des erreurs."
       }
     },
-    "year": "Jahr",
-    "years": "Jahre",
-    "yes": "Ja"
+    "year": "Année",
+    "years": "Années",
+    "yes": "Oui"
   },
   "contacttypes": {
-    "phone": "Telefon",
-    "email": "E-Mail",
-    "mobile": "Mobil",
+    "phone": "Téléphone",
+    "email": "E-mail",
+    "mobile": "Téléphone mobile",
     "fax": "Fax"
   },
   "country": {
-    "germany": "Deutschland",
-    "nederlands": "Niederlande"
+    "germany": "Allemagne",
+    "nederlands": "Les pays-bas"
   },
   "db": {
     "accounts": {
-      "title": "Bankkonten",
+      "title": "Comptes bancaires",
       "mandates": {
-        "title": "Lastschriftmandate"
+        "title": "Mandats de prélèvement automatique"
       },
       "orders": {
-        "title": "Daueraufträge"
+        "title": "Ordres permanents"
       }
     },
     "articles": {
-      "title": "Artikel (für Rechnungen)",
+      "title": "Articles (pour les factures)",
       "categories": {
-        "title": "Artikel-Kategorien"
+        "title": "Catégories d'articles"
       }
     },
     "cases": {
-      "title": "Aktenstruktur",
+      "title": "Structure des dossiers",
       "actions": {
-        "title": "Akten-Workflows"
+        "title": "Workflows des dossiers"
       },
       "filetypes": {
-        "title": "Dateitypen"
+        "title": "Types de fichiers"
       },
       "status": {
-        "title": "Akten-Status"
+        "title": "Statut des dossiers"
       },
       "types": {
-        "title": "Aktenarten"
+        "title": "Types des dossiers"
       }
     },
     "classes": {
@@ -311,7 +311,7 @@
       "editor": {
         "title": "Dokumentenart bearbeiten",
         "localized": "Lokalisierung per json-Dateien",
-        "description": "Beschreibung",
+        "description": "Description",
         "descriptionPlaceholder": "Ausführlicher Beschreibungstext",
         "namepattern": "Vorgabe für Dateinamen",
         "namepatternPlaceholder": "Platzhalter mit {...} um Dateinamen automatisch zu erzeugen"
@@ -381,21 +381,21 @@
       }
     },
     "extension": {
-      "title": "Dateitypen"
+      "title": "Types de fichiers"
     },
     "manager": {
       "title": "Stammdatenverwaltung",
       "countries": "Länder",
       "filesystem": "Dateisystem",
-      "finance": "Finanzen",
+      "finance": "Finances",
       "files": "Dateien und Klassifizierung",
-      "living": "Wohnung",
-      "parties": "Korrespondenten",
-      "system": "Verwaltung",
-      "work": "Arbeitszeitverwaltung"
+      "living": "Appartement",
+      "parties": "Correspondants",
+      "system": "Administration",
+      "work": "Gestion du temps de travail"
     },
     "meters": {
-      "title": "Zähler"
+      "title": "Compteur"
     },
     "oauth": {
       "services": {
@@ -403,86 +403,86 @@
       }
     },
     "parties": {
-      "title": "Korrespondenten",
+      "title": "Correspondants",
       "addresses": {
-        "title": "Addressdatensätze"
+        "title": "Jeux de données Address"
       },
       "banks": {
-        "title": "Nur Kreditinstitute"
+        "title": "Établissements bancaires"
       },
       "clients": {
-        "title": "Nur eigene Mandanten"
+        "title": "Mandants"
       },
       "contacts": {
-        "title": "Kontaktdaten"
+        "title": "Coordonnées"
       },
       "roles": {
-        "title": "Rollen",
-        "name": "Technischer Name",
-        "i18nname": "Lokalisierter Name"
+        "title": "Rôles",
+        "name": "Nom technique",
+        "i18nname": "Nom localisé"
       }
     },
     "stocks": {
-      "title": "Wertpapiere und CC",
+      "title": "Titres et crypto-monnaies",
       "apis": {
         "title": "APIs"
       }
     },
     "units": {
-      "title": "Maßeinheiten"
+      "title": "Unités de mesure"
     },
     "user": {
-      "title": "Benutzer"
+      "title": "Utilisateurs"
     },
     "work": {
       "customers": {
-        "title": "Kunden"
+        "title": "Clients"
       },
       "holidays": {
-        "title": "Feiertage"
+        "title": "Jours fériés"
       },
       "offcategories": {
-        "title": "Abwesenheitsarten"
+        "title": "Type d'absences"
       },
       "timecategories": {
-        "title": "Buchungsarten"
+        "title": "Type de comptabilisation"
       }
     }
   },
   "file": {
-    "title": "Datei {0}",
-    "downloadButton": "Download",
-    "previewButton": "Vorschau",
+    "title": "Fichier {0}",
+    "downloadButton": "Téléchargement",
+    "previewButton": "Aperçu",
     "main": {
-      "title": "Dateiinformationen",
-      "dir": "Übergeordnetes Verzeichnis",
-      "name": "Dateiname",
-      "created": "Erstellt",
-      "deleted": "Gelöscht",
-      "size": "Dateigröße",
-      "pages": "Seitenzahl",
+      "title": "Détails des fichiers",
+      "dir": "Répertoire supérieur",
+      "name": "Nom de fichier",
+      "created": "Créé",
+      "deleted": "Supprimé",
+      "size": "Taille du fichier",
+      "pages": "Nombre de pages",
       "tags": "Tags",
-      "tagsInputPlaceholder": "Beliebigen Tag eingeben...",
-      "words": "Anzahl Wörter"
+      "tagsInputPlaceholder": "Saisir n'importe quel mot...",
+      "words": "Nombre de mots"
     },
     "classify": {
-      "title": "Klassifizierung und Zuordnung",
-      "nextFile": "Nächste",
-      "date": "Datum",
-      "class": "Dokumentenart",
-      "suggestion": "Vorschlag: {0} {1}%",
-      "case": "Akte",
-      "caseFiletype": "Dokumentart in Akte",
-      "caseFilestatus": "Status",
-      "caseFilename": "Anzeigename",
-      "caseFiledesc": "Beschreibung",
+      "title": "Classification et attribution",
+      "nextFile": "Suivant",
+      "date": "Date",
+      "class": "Type de document",
+      "suggestion": "Suggestion : {0} {1}%",
+      "case": "Dossier",
+      "caseFiletype": "Type de document dans le dossier",
+      "caseFilestatus": "Statut",
+      "caseFilename": "Nom d'affichage",
+      "caseFiledesc": "Description",
       "client": "Mandant",
-      "party": "Korrespondent",
-      "taxreceipt": "Steuerbeleg",
-      "taxyear": "Steuerjahr"
+      "party": "Correspondant",
+      "taxreceipt": "Document fiscal",
+      "taxyear": "Année fiscale"
     },
     "housekeeping": {
-      "title": "Organisation",
+      "title": "Organisation ",
       "move": {
         "title": "Datei Verschieben",
         "description": "Verschiebt die Datei im Archiv in ein anderes Verzeichnis.",
@@ -522,12 +522,12 @@
       "title": "Neue Dokumente"
     },
     "readings": {
-      "title": "Zähler",
+      "title": "Compteur",
       "readingsLink": "Erfassung von Zählerständen"
     },
     "special": {
       "title": "Zusatzfunktionen",
-      "notepadLink": "Notepad",
+      "notepadLink": "Notes",
       "warehouseLink": "Lager",
       "movingBoxesLink": "Umzugskartons",
       "wineCellarLink": "Weinkeller"
@@ -537,7 +537,7 @@
       "files1": "Das Archiv verwaltet aktuell {0} Dateien in {1} Verzeichnissen mit insgesamt {2}.",
       "files2": "{0} der Dateien wurden klassifiziert, {1} wurden einer Akte zugeordnert. Für {2} konnte kein OCR-Text erzeugt werden.",
       "files3": "Diesen Monat wurden {0} neue Dateien hinzugefügt.",
-      "casesLink": "Akten",
+      "casesLink": "Dossiers",
       "filesLink": "Alle Dateien",
       "noclassFilesLink": "Nicht klassifiziert",
       "noocrFilesLink": "Kein OCR",
@@ -577,83 +577,83 @@
   "login": {
     "title": "Benutzeranmeldung",
     "subtitle": "Diese Webseite erfordert die Eingabe von Zugangsdaten. Bitte mit Benutzername und Passwort anmelden.",
-    "button": "Anmelden",
-    "password": "Passwort",
+    "button": "Se connecter",
+    "password": "Mot de passe",
     "passwordPlaceholder": "*********",
-    "username": "Benutzername",
+    "username": "Nom d'utilisateur",
     "usernamePlaceholder": "pete@archive.org",
-    "failed": "Fehler bei der Anmeldung. Bitte Eingabe prüfen und nochmal versuchen.",
+    "failed": "Erreur lors de l'inscription. Veuillez vérifier votre saisie et réessayer.",
     "sessioncheck": {
-      "title": "Benutzeranmeldung",
-      "subtitle": "Bitte warten, die Anmeldung wird überprüft..."
+      "title": "Connexion d'utilisateur",
+      "subtitle": "Veuillez patienter, l'inscription est en cours de vérification..."
     },
     "oauth2": {
-      "title": "Benutzeranmeldung",
-      "subtitle": "Diese Webseite erfordert eine Anmeldung via Nextcloud. Bitte klicke auf den Button um die Anmeldung vorzunehmen.",
-      "button": "Anmelden"
+      "title": "Connexion d'utilisateur",
+      "subtitle": "Ce site web nécessite une inscription via Nextcloud. Veuillez cliquer sur le bouton pour vous inscrire.",
+      "button": "Se connecter"
     }
   },
   "meter": {
     "readings": {
-      "title": "Erfassung von Zählerständen",
-      "meter": "Zähler",
-      "value": "Wert",
+      "title": "Saisie des relevés de compteurs",
+      "meter": "Compteur",
+      "value": "Valeur",
       "modal": {
-        "title": "Zählerablesung",
-        "description": "In den folgenden Feldern kannst du die Werte für die Zähler eingeben. Nur ausgefüllte Felder werden gespeichert."
+        "title": "Relevé des compteurs",
+        "description": "Dans les champs suivants, tu peux saisir les valeurs des compteurs. Seuls les champs remplis seront enregistrés."
       }
     },
-    "title": "Zähler"
+    "title": "Compteur"
   },
   "navbar": {
     "brand": {
-      "title": "Archiv"
+      "title": "Archive"
     },
     "finance": {
-      "accounts": "Konten",
-      "stocks": "Wertpapiere",
-      "taxYear": "Steuern {0}"
+      "accounts": "Comptes",
+      "stocks": "Titres",
+      "taxYear": "Impôts {0}"
     },
     "items": {
-      "account": "Konto",
-      "cases": "Akten",
+      "account": "Compte",
+      "cases": "Dossiers",
       "dashboard": "Dashboard",
-      "finance": "Finanzen",
-      "home": "Start",
-      "notepad": "Notepad",
-      "settings": "Einstellungen",
-      "work": "Arbeit"
+      "finance": "Finances",
+      "home": "Accueil",
+      "notepad": "Notes",
+      "settings": "Paramètres",
+      "work": "Travail"
     },
     "search": {
-      "label": "Durchsuchen des Archivs",
-      "placeholder": "Suchbegriff",
-      "submit": "Suchen"
+      "label": "Rechercher dans l'archive",
+      "placeholder": "Terme de recherche",
+      "submit": "Rechercher"
     },
     "workitems": {
       "leads": "Leads",
-      "month": "Monatsansicht",
-      "settings": "Einstellungen",
-      "today": "Tagesbuchung"
+      "month": "Vue mensuelle",
+      "settings": "Paramètres",
+      "today": "Réservation à la journée"
     }
   },
   "notepad": {
-    "title": "Notizen",
-    "filterPlaceholder": "Filtern",
-    "markdownGuide": "Formatierung mit Markdown"
+    "title": "Notes",
+    "filterPlaceholder": "Filtrer",
+    "markdownGuide": "Mise en forme avec Markdown"
   },
   "partyroles": {
-    "authority": "Behörde",
-    "bank": "Bank",
-    "borrower": "Kreditnehmer",
-    "buyer": "Käufer",
-    "doctor": "Arzt",
-    "employee": "Arbeitnehmer",
-    "employer": "Arbeitgeber",
-    "insuredperson": "Versicherter",
-    "insurer": "Versicherer",
-    "landlord": "Vermieter",
-    "lender": "Kreditgeber",
-    "main": "Hauptbeteiligter",
+    "authority": "Autorité",
+    "bank": "Banque",
+    "borrower": "Emprunteur",
+    "buyer": "Acheteur",
+    "doctor": "Médecin",
+    "employee": "Travailleur",
+    "employer": "Employeur",
+    "insuredperson": "Assuré",
+    "insurer": "Assureur",
+    "landlord": "Bailleur",
+    "lender": "Prêteur",
+    "main": "Principal acteur",
     "patient": "Patient",
     "renter": "Mieter",
     "vendor": "Verkäufer"
@@ -667,7 +667,7 @@
   },
   "receipts": {
     "title": "Belegerfassung",
-    "client": "Käufer",
+    "client": "Acheteur",
     "currency": "Währung",
     "date": "Datum",
     "party": "Händler",
@@ -696,13 +696,13 @@
     }
   },
   "search": {
-    "title": "Suchen",
+    "title": "Rechercher",
     "setup": {
       "phrase": "Suchbegriff(e)",
       "helpSearching": "Mehr Informationen zu den Suchstrategien auf mariadb.com",
       "groups": {
         "accounts": "Konten",
-        "cases": "Akten",
+        "cases": "Dossiers",
         "directories": "Verzeichnisse",
         "files": "Dateien (Metadaten)",
         "pages": "Dateiinhalte",
@@ -716,7 +716,7 @@
       "subtitle": "{0} Treffer in {1}",
       "group": {
         "accounts": "Konten",
-        "cases": "Akten",
+        "cases": "Dossiers",
         "directories": "Verzeichnisse",
         "files": "Dateien",
         "notes": "Notizen",
@@ -740,74 +740,74 @@
     "api": "API",
     "bought": "Gekauft",
     "boughtValue": "{0} {1} á {2}",
-    "currency": "Währung",
-    "dif": "Änderung",
-    "difrel": "in %",
+    "currency": "Devise",
+    "dif": "Modification",
+    "difrel": "en %",
     "isin": "ISIN",
-    "name": "Name",
-    "quantity": "Anzahl",
-    "rate": "Kurs",
-    "rate2": "Letzter Kurs",
+    "name": "Nom",
+    "quantity": "Quantité",
+    "rate": "Cours",
+    "rate2": "Dernier cours",
     "rateInputModal": {
-      "title": "Werte nacherfassen",
-      "description": "Über dieses Formular können Aktienwerte manuell nacherfasst werden.",
-      "ignoreWithApi": "Automatisch aktualisierte ignorieren"
+      "title": "Saisir les cours des titres",
+      "description": "Ce formulaire permet de saisir manuellement les valeurs des titres.",
+      "ignoreWithApi": "Ignorer les mises à jour automatiques"
     },
     "symbol": "Symbol",
-    "total": "Gesamt",
-    "updateRates": "Kurse",
-    "value": "Wert",
-    "wkn": "WKN"
+    "total": "Total",
+    "updateRates": "Cours",
+    "value": "Valeur",
+    "wkn": "Code boursier"
   },
   "work": {
     "offcategories": {
-      "educationalLeave": "Bildungsurlaub",
-      "holidays": "Feiertag",
-      "sick": "Krank",
-      "specialLeave": "Sonderurlaub",
-      "vacation": "Urlaub",
-      "weekend": "Wochenende",
-      "none": "Keine",
-      "title": "Abwesenheit"
+      "educationalLeave": "Congé de formation",
+      "holidays": "Jour férié",
+      "sick": "Déclaré malade",
+      "specialLeave": "Congé spécial",
+      "vacation": "Congé",
+      "weekend": "Week-end",
+      "none": "Aucun",
+      "title": "Absence"
     },
     "timecategories": {
-      "administration": "Administratives",
+      "administration": "Activités administratives",
       "bugfixing": "Bugfixing",
-      "meeting": "Meeting intern",
-      "implementation": "Implementierung",
+      "meeting": "Meeting",
+      "implementation": "Implémentation",
       "presales": "Presales",
       "support": "Support",
-      "trainingself": "Fortbildung",
-      "travel": "Reise",
-      "title": "Zeitart"
+      "trainingself": "Perfectionnement professionnel",
+      "travel": "Voyage",
+      "title": "Catégorie de temps"
     }
   },
   "workday": {
-    "pagetitle": "Tagesbuchungen {0}",
+    "pagetitle": "Réservations journalières {0}",
     "daycard": {
-      "title": "Übersicht",
-      "booked": "Gebucht"
+      "title": "Aperçu",
+      "booked": "Réservé"
     },
     "tracked": {
-      "title": "Heutige Buchungen",
-      "description": "Beschreibung",
-      "fromUntil": "{0} bis {1}",
-      "fromUntilTitle": "Von Bis"
+      "title": "Réservations d'aujourd'hui",
+      "description": "Description",
+      "fromUntil": "{0} a {1}",
+      "fromUntilTitle": "De à"
     },
     "tracking": {
-      "title": "Zeitbuchung",
-      "liveTitle": "Live Zeitbuchung",
-      "livebtn": "Live",
-      "livebtnTitle": "Livetracking Funktion",
+      "title": "Réservation de temps",
+      "liveTitle": "Réservation de temps en direct",
+      "livebtn": "En direct",
+      "livebtnTitle": "Fonction de suivi en direct",
       "common": {
-        "break": "Ab Pause",
-        "breakPlaceholder": "mm",
-        "customer": "Kunde",
-        "description": "Beschreibung der durchgeführten Arbeiten",
-        "duration": "Arbeitszeit",
-        "from": "Von",
-        "project": "Kundenprojekt",
-        "recentTitle": "Anklicken um diese Daten zu übernehmen",
+        "break": "Pause",
+        "breakPlaceholder": "minutes",
+        "customer": "Client",
+        "description": "Description des travaux effectués",
+        "duration": "Temps de travail",
+        "from": "Du",
+        "project": "Projet client",
+        "recentTitle": "Cliquer pour reprendre ces données",
         "task": "Arbeitspaket",
         "timeCategory": "Kategorie",
         "timePlaceholder": "hh:mm | hhmm | hmm",
