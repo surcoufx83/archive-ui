@@ -108,7 +108,8 @@
     "terminated": "Ended",
     "retentiondeletion": "Retention",
     "retentionhidden": "Hidden",
-    "todelete": "To delete"
+    "todelete": "To delete",
+    "waitforstart": "Warten auf Startdatum"
   },
   "casetype": {
     "apartment": "Residential",
