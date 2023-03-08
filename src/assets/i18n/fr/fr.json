@@ -108,7 +108,8 @@
     "terminated": "Terminé",
     "retentiondeletion": "Rétention",
     "retentionhidden": "Masqué",
-    "todelete": "Pour supprimer"
+    "todelete": "Pour supprimer",
+    "waitforstart": "Warten auf Startdatum"
   },
   "casetype": {
     "apartment": "Habitation",
