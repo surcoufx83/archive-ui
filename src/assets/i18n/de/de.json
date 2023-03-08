@@ -105,7 +105,8 @@
     "terminated": "Beendet",
     "retentiondeletion": "Aufbewahrung",
     "retentionhidden": "Ausgeblendet",
-    "todelete": "Zum Löschen"
+    "todelete": "Zum Löschen",
+    "waitforstart": "Warten auf Startdatum"
   },
   "casetype": {
     "apartment": "Wohnen",
