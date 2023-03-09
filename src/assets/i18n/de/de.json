@@ -105,7 +105,8 @@
     "terminated": "Beendet",
     "retentiondeletion": "Aufbewahrung",
     "retentionhidden": "Ausgeblendet",
-    "todelete": "Zum Löschen"
+    "todelete": "Zum Löschen",
+    "waitforstart": "Warten auf Startdatum"
   },
   "casetype": {
     "apartment": "Wohnen",
@@ -139,11 +140,12 @@
       "In_BankOrders_Sell": "Wertpapier Verkauf",
       "In_BankStatement": "Kontoauszug",
       "In_Certificate": "Urkunde, Zertifikat, Teilnahmebescheinigung",
-      "In_ClaimSettlement": "Schadesregulienrung",
+      "In_ClaimSettlement": "Schadensregulierung",
       "In_Common": "Allgemeiner Posteingang",
       "In_Contract": "Vertrag",
       "In_ContractAdjustment": "Vertragsänderung",
       "In_ContractAmendment": "Vertragsergänzung",
+      "In_ContractProtocol": "Beratungsprotokoll",
       "In_ContractRenewal": "Vertragsverlängerung",
       "In_ContractTermination": "Kündigungsbestätigung, Auflösung",
       "In_ContractTermsAndConditions": "AGBs",
@@ -192,11 +194,11 @@
       "In_VaccinationCertificate": "Impfbescheinigung",
       "In_Voucher": "Gutschein",
       "Out_ClaimReport": "Schadensmeldung",
-      "Out_Contradiction": "Wiederspruch",
+      "Out_Contradiction": "Widerspruch",
       "Out_ExpenseReport": "Spesenabrechnung und -belege",
       "Out_Inquiry": "Anfrage",
       "Out_Questionnaire": "Fragebogen",
-      "Out_Revocation": "Wiederruf",
+      "Out_Revocation": "Widerruf",
       "Out_SepaMandate": "SEPA Lastschriftmandat",
       "Out_TaxDeclaration": "Steuererklärung",
       "Out_Termination": "Kündigung"
@@ -243,7 +245,7 @@
     "second": "Sekunde",
     "seconds": "Sekunden",
     "select": {
-      "pickOne": " Bitte wählen "
+      "pickOne": "Bitte wählen"
     },
     "switchTo": "Wechseln zu",
     "today": "Heute",
