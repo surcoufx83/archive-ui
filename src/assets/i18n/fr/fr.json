@@ -109,7 +109,7 @@
     "retentiondeletion": "Rétention",
     "retentionhidden": "Masqué",
     "todelete": "Pour supprimer",
-    "waitforstart": "Warten auf Startdatum"
+    "waitforstart": "Attendre la date de lancement"
   },
   "casetype": {
     "apartment": "Habitation",
@@ -197,11 +197,11 @@
       "In_VaccinationCertificate": "Certificat de vaccination",
       "In_Voucher": "Coupon",
       "Out_ClaimReport": "Déclaration de sinistre",
-      "Out_Contradiction": "Widerspruch",
+      "Out_Contradiction": "Contradiction",
       "Out_ExpenseReport": "Décompte et justificatifs de frais",
       "Out_Inquiry": "Demande",
       "Out_Questionnaire": "Questionnaire",
-      "Out_Revocation": "Widerruf",
+      "Out_Revocation": "Révocation",
       "Out_SepaMandate": "Mandat de prélèvement automatique",
       "Out_TaxDeclaration": "Déclaration d'impôts",
       "Out_Termination": "Résiliation"
@@ -248,7 +248,7 @@
     "second": "Seconde",
     "seconds": "Secondes",
     "select": {
-      "pickOne": "Bitte wählen"
+      "pickOne": "Veuillez choisir"
     },
     "switchTo": "Aller à",
     "today": "Aujourd'hui",
