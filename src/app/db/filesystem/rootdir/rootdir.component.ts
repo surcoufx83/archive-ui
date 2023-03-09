@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from 'src/app/auth.service';
 import { AppConfig, ConfigService } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
@@ -10,7 +10,7 @@ import { FormatService } from 'src/app/utils/format.service';
   templateUrl: './rootdir.component.html',
   styleUrls: ['./rootdir.component.scss']
 })
-export class DbRootdirComponent {
+export class DbRootdirComponent implements OnInit {
 
   @ViewChild('editor') editor?: ElementRef;
 
