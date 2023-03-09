@@ -783,6 +783,9 @@
       "title": "Catégorie de temps"
     }
   },
+  "warehouse": {
+    "pagetitle": "Lagerverwaltung"
+  },
   "workday": {
     "pagetitle": "Réservations journalières {0}",
     "daycard": {
