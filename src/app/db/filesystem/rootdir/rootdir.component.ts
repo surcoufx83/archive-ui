@@ -18,7 +18,7 @@ export class DbRootdirComponent implements OnInit {
   saving: boolean = false;
   dirs: Directory[] = [];
   sortAsc: boolean = true;
-  sortBy: string = 'i18nname';
+  sortBy: string = 'name';
 
   constructor(private authService: AuthService,
     private configService: ConfigService,
