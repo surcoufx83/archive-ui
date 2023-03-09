@@ -783,6 +783,9 @@
       "title": "Category"
     }
   },
+  "warehouse": {
+    "pagetitle": "Lagerverwaltung"
+  },
   "workday": {
     "pagetitle": "Day bookings {0}",
     "daycard": {
