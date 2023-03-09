@@ -26,10 +26,8 @@ export class DbManagerComponent implements OnInit {
       items: [
         { link: '/db/classes', title: 'db.classes.title', icon: this.config.icons['class'] + this.colFinished },
         { link: '/db/cases', title: 'db.cases.title', icon: this.config.icons['cases'], children: [
-          { link: '/db/cases/actions', title: 'db.cases.actions.title', icon: 'fa-solid fa-shapes' },
           { link: '/db/cases/status', title: 'db.cases.status.title', icon: 'fa-solid fa-shapes' },
           { link: '/db/cases/types', title: 'db.cases.types.title', icon: 'fa-solid fa-shapes' },
-          { link: '/db/cases/filetypes', title: 'db.cases.filetypes.title', icon: 'fa-solid fa-shapes' },
         ] }
       ]
     },

@@ -292,12 +292,6 @@
     },
     "cases": {
       "title": "Aktenstruktur",
-      "actions": {
-        "title": "Akten-Workflows"
-      },
-      "filetypes": {
-        "title": "Dateitypen"
-      },
       "status": {
         "title": "Akten-Status"
       },
