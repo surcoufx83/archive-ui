@@ -127,6 +127,8 @@
   },
   "classify": {
     "classes": {
+      "Application": "Bewerbung",
+      "ApplicationPublic": "Bewerbung (öffentl. Ämter)",
       "In_AccountData": "Zugangsdaten, Credentials, Passwörter",
       "In_AccountReport": "Kontoreport",
       "In_AnnualBonus": "Jahresbonus, Sonderzahlungen, etc.",
@@ -176,6 +178,7 @@
       "In_PostReceipt": "Einlieferungsbeleg Post/Paket",
       "In_QuarterReport": "Quartalsabschluss",
       "In_Receipt": "Kassenbeleg",
+      "In_Receipt2": "Quittung",
       "In_Rejection": "Ablehnung, Ablehnungsbescheid",
       "In_RepairOrder": "Reparaturauftrag",
       "In_RepairReport": "Reparaturbericht",
@@ -193,6 +196,7 @@
       "In_VacationResp": "Urlaub, Krank, Mehrarbeit",
       "In_VaccinationCertificate": "Impfbescheinigung",
       "In_Voucher": "Gutschein",
+      "LeaseAgreement": "Pachtvertrag",
       "Out_ClaimReport": "Schadensmeldung",
       "Out_Contradiction": "Widerspruch",
       "Out_ExpenseReport": "Spesenabrechnung und -belege",
@@ -201,7 +205,8 @@
       "Out_Revocation": "Widerruf",
       "Out_SepaMandate": "SEPA Lastschriftmandat",
       "Out_TaxDeclaration": "Steuererklärung",
-      "Out_Termination": "Kündigung"
+      "Out_Termination": "Kündigung",
+      "RentalAgreement": "Mietvertrag"
     }
   },
   "common": {
