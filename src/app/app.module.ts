@@ -79,6 +79,7 @@ import { WorkMonthComponent } from './work/work-month/work-month.component';
 import { WorkYearComponent } from './work/work-year/work-year.component';
 import { WorkComponent } from './work/work.component';
 import { SettingsService } from './user/settings/settings.service';
+import { DbRootdirComponent } from './db/filesystem/rootdir/rootdir.component';
 
 registerLocaleData(localeDe);
 
@@ -146,6 +147,7 @@ registerLocaleData(localeDe);
     TagComponent,
     SubNavbarComponent,
     TaxComponent,
+    DbRootdirComponent,
   ],
   imports: [
     AppRoutingModule,

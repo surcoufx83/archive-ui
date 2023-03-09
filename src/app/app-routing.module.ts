@@ -40,6 +40,7 @@ import { WorkCustomersComponent } from './work/settings/customers/customers.comp
 import { WorkDayComponent } from './work/work-day/work-day.component';
 import { WorkMonthComponent } from './work/work-month/work-month.component';
 import { WorkComponent } from './work/work.component';
+import { DbRootdirComponent } from './db/filesystem/rootdir/rootdir.component';
 
 const routes: Routes = [
   { path: 'account', component: AccountComponent, canActivate: [SessionGuard] },
@@ -58,6 +59,7 @@ const routes: Routes = [
       { path: 'classes', component: DbClassesComponent, canActivate: [SessionGuard] },
       { path: 'countries', component: DbCountriesComponent, canActivate: [SessionGuard] },
       { path: 'currencies', component: DbCurrenciesComponent, canActivate: [SessionGuard] },
+      { path: 'dirs', component: DbRootdirComponent, canActivate: [SessionGuard] },
       {
         path: 'parties', canActivate: [SessionGuard], children:
           [

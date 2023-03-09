@@ -24,8 +24,8 @@ export class DbManagerComponent implements OnInit {
     {
       title: 'db.manager.files',
       items: [
-        { link: '/db/classes', title: 'db.classes.title', icon: this.config.icons['class'] + this.colFinished },
-        { link: '/db/cases', title: 'db.cases.title', icon: this.config.icons['cases'], children: [
+        { link: '/db/classes', title: 'db.classes.title', icon: `${this.config.icons['class']} ${this.colFinished}` },
+        { link: '/cases', title: 'db.cases.title', icon: `${this.config.icons['cases']} ${this.colFinished}`, children: [
           { link: '/db/cases/status', title: 'db.cases.status.title', icon: 'fa-solid fa-shapes' },
           { link: '/db/cases/types', title: 'db.cases.types.title', icon: 'fa-solid fa-shapes' },
         ] }
@@ -39,9 +39,9 @@ export class DbManagerComponent implements OnInit {
           { link: '/db/parties/banks', title: 'db.parties.banks.title', icon: 'fa-solid fa-shapes' },
           { link: '/db/parties/addresses', title: 'db.parties.addresses.title', icon: 'fa-solid fa-shapes' },
           { link: '/db/parties/contacts', title: 'db.parties.contacts.title', icon: 'fa-solid fa-shapes', children: [
-            { link: '/db/parties/contacts/types', title: 'db.contacts.types.title', icon: this.config.icons['contacttype'] + this.colFinished },
+            { link: '/db/parties/contacts/types', title: 'db.contacts.types.title', icon: `${this.config.icons['contacttype']} ${this.colFinished}` },
           ] },
-          { link: '/db/parties/roles', title: 'db.parties.roles.title', icon: this.config.icons['role'] + this.colFinished },
+          { link: '/db/parties/roles', title: 'db.parties.roles.title', icon: `${this.config.icons['role']} ${this.colFinished}` },
         ] }
       ]
     },
@@ -74,15 +74,14 @@ export class DbManagerComponent implements OnInit {
     {
       title: 'db.manager.countries',
       items: [
-        { link: '/db/countries', title: 'db.countries.title', icon: this.config.icons['country'] + this.colFinished, children: [
-          { link: '/db/currencies', title: 'db.currencies.title', icon: this.config.icons['currency'] + this.colFinished },
-        ] }
+        { link: '/db/countries', title: 'db.countries.title', icon: `${this.config.icons['country']} ${this.colFinished}` },
+        { link: '/db/currencies', title: 'db.currencies.title', icon: `${this.config.icons['currency']} ${this.colFinished}` },
       ]
     },
     {
       title: 'db.manager.filesystem',
       items: [
-        { link: '/db/dirs', title: 'db.directories.title', icon: 'fa-solid fa-shapes' },
+        { link: '/db/dirs', title: 'db.directories.title', icon: `${this.config.icons['folder']} ${this.colFinished}` },
         { link: '/db/extension', title: 'db.extension.title', icon: 'fa-solid fa-shapes' }
       ]
     },

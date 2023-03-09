@@ -363,7 +363,10 @@
       }
     },
     "directories": {
-      "title": "Root-Verzeichnisse"
+      "title": "Root-Verzeichnisse",
+      "id": "Id",
+      "name": "Name",
+      "mtime": "Letzte Änderung"
     },
     "expenses": {
       "title": "Ausgaben",
