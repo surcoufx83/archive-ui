@@ -80,6 +80,7 @@ import { WorkYearComponent } from './work/work-year/work-year.component';
 import { WorkComponent } from './work/work.component';
 import { SettingsService } from './user/settings/settings.service';
 import { DbRootdirComponent } from './db/filesystem/rootdir/rootdir.component';
+import { DbExtensionsComponent } from './db/filesystem/extensions/extensions.component';
 
 registerLocaleData(localeDe);
 
@@ -148,6 +149,7 @@ registerLocaleData(localeDe);
     SubNavbarComponent,
     TaxComponent,
     DbRootdirComponent,
+    DbExtensionsComponent,
   ],
   imports: [
     AppRoutingModule,

@@ -380,8 +380,18 @@
         "title": "Buchungsarten"
       }
     },
-    "extension": {
-      "title": "Dateitypen"
+    "extensions": {
+      "title": "Dateitypen",
+      "ext": "Ext",
+      "options": "Optionen",
+      "displayable": "Anzeige im Browser",
+      "downloadable": "Herunterladen",
+      "indexable": "Inhalt lesbar (OCR)",
+      "mimetype": "Mimetype",
+      "unknownMimetype": "Unbekannter Mimetype",
+      "editor": {
+        "title": "Dateitypen bearbeiten"
+      }
     },
     "manager": {
       "title": "Stammdatenverwaltung",

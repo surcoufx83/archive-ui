@@ -1,0 +1,139 @@
+<div class="container pt-4 pt-md-2 mb-2">
+    <app-h2 [title]="i18n('db.extensions.title')" [busy]="busy" [btn1]="i18n('common.back')"
+        [btn1css]="'btn btn-sm btn-outline-primary'" [btn1icon]="config.icons['go-left']" [btn1link]="'/db'">
+    </app-h2>
+</div>
+
+<div #editor>
+    <div class="container pt-4 pt-md-2 mb-2" *ngIf="edititem">
+        <div class="card">
+            <app-h4 [containercss]="'card-header'" [title]="i18n('db.extensions.editor.title')" [busy]="saving"
+                [btn1]="i18n('common.save')" [btn1css]="'btn btn-sm btn-success'" [btn1icon]="config.icons['save']"
+                (btn1Clicked)="submit(f)" [btn2css]="edititem.id > 0 ? 'btn btn-sm btn-outline-danger' : ''"
+                [btn2icon]="edititem.id > 0 ? config.icons['delete'] : ''" (btn2Clicked)="delete(edititem)"
+                [xshow]="true" (xClicked)="edititem = undefined"></app-h4>
+            <div class="card-body">
+                <form #f="ngForm" (submit)="submit(f)" ngNativeValidate>
+
+                    <div class="row">
+                        <div class="col-12 col-lg-6 mb-3">
+                            <div class="form-group">
+                                <label for="extension-ext" class="form-label required">{{
+                                    i18n('db.extensions.ext') }}</label>
+                                <input type="text" class="form-control" id="extension-ext" name="extension-ext"
+                                    [(ngModel)]="edititem.ext" [placeholder]="i18n('db.extensions.ext')" required>
+                            </div>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <div class="form-group">
+                                <label for="extension-mimetype" class="form-label required">{{
+                                    i18n('db.extensions.mimetype') }}</label>
+                                <input type="text" class="form-control" id="extension-mimetype"
+                                    name="extension-mimetype" [(ngModel)]="edititem.mimetype"
+                                    [placeholder]="i18n('db.extensions.mimetype')" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <div class="form-group">
+                                <label for="extension-displayable" class="form-label">{{
+                                    i18n('db.extensions.displayable') }}</label>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="extension-displayable"
+                                        name="extension-displayable" [(ngModel)]="edititem.displayable">
+                                    <label for="extension-displayable" class="form-check-label"
+                                        *ngIf="edititem.displayable">{{
+                                        i18n('common.yes') }}</label>
+                                    <label for="extension-displayable" class="form-check-label"
+                                        *ngIf="!edititem.displayable">{{
+                                        i18n('common.no') }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <div class="form-group">
+                                <label for="extension-downloadable" class="form-label">{{
+                                    i18n('db.extensions.downloadable') }}</label>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="extension-downloadable"
+                                        name="extension-downloadable" [(ngModel)]="edititem.downloadable">
+                                    <label for="extension-downloadable" class="form-check-label"
+                                        *ngIf="edititem.downloadable">{{
+                                        i18n('common.yes') }}</label>
+                                    <label for="extension-downloadable" class="form-check-label"
+                                        *ngIf="!edititem.downloadable">{{
+                                        i18n('common.no') }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <div class="form-group">
+                                <label for="extension-indexable" class="form-label">{{
+                                    i18n('db.extensions.indexable') }}</label>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="extension-indexable"
+                                        name="extension-indexable" [(ngModel)]="edititem.indexable">
+                                    <label for="extension-indexable" class="form-check-label"
+                                        *ngIf="edititem.indexable">{{
+                                        i18n('common.yes') }}</label>
+                                    <label for="extension-indexable" class="form-check-label"
+                                        *ngIf="!edititem.indexable">{{
+                                        i18n('common.no') }}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container pt-4 pt-md-2 mb-2">
+    <div class="flex-table flex-table-sm mb-3">
+        <div class="flex-table-head row">
+            <div class="col-4 col-lg-3">
+                {{ i18n('db.extensions.ext') }}
+                <app-sorter-icon columnName="ext" [sortAsc]="sortAsc" [sortBy]="sortBy"
+                    (click)="sort('ext', sortBy === 'ext' ? !sortAsc : sortAsc);"></app-sorter-icon>
+            </div>
+            <div class="col-8 col-lg-3">
+                {{ i18n('db.extensions.options') }}
+            </div>
+            <div class="col-lg-6 d-none d-lg-block">
+                {{ i18n('db.extensions.mimetype') }}
+                <app-sorter-icon columnName="mimetype" [sortAsc]="sortAsc" [sortBy]="sortBy"
+                    (click)="sort('mimetype', sortBy === 'mimetype' ? !sortAsc : sortAsc);"></app-sorter-icon>
+            </div>
+        </div>
+        <ng-container *ngFor="let item of extensions; let i = index;">
+            <div (click)="edit(item);" class="flex-table-body row pointer">
+                <div class="col-4 col-lg-3 text-truncate">
+                    {{ item.ext }}
+                    <span class="badge bg-danger" *ngIf="item.mimetype === '/unknown'">{{
+                        i18n('db.extensions.unknownMimetype') }}</span>
+                </div>
+                <div class="col-8 col-lg-3 text-truncate">
+                    <span [ngClass]="{ 'strikethrough': !item.displayable}">
+                        <app-icon [iconClass]="displayableIcon"
+                            [addCssClasses]="[ !item.displayable ? 'text-muted' : '' ]"></app-icon>
+                    </span>
+                    <span [ngClass]="{ 'ms-3': true, 'strikethrough': !item.downloadable}">
+                        <app-icon [iconClass]="downloadableIcon"
+                            [addCssClasses]="[ !item.downloadable ? 'text-muted' : '' ]"></app-icon>
+                    </span>
+                    <span [ngClass]="{ 'ms-3': true, 'strikethrough': !item.indexable}">
+                        <app-icon [iconClass]="indexableIcon"
+                            [addCssClasses]="[ !item.indexable ? 'text-muted' : '' ]"></app-icon>
+                    </span>
+                </div>
+                <div class="col-lg-6 d-none d-lg-block text-truncate">
+                    {{ item.mimetype }}
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</div>

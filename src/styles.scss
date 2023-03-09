@@ -145,10 +145,11 @@ form {
 }
 
 .fix-border.list-group-item:first-child {
-    border-top-width: 0!important;
+  border-top-width: 0 !important;
 }
+
 .fix-border.list-group-item:last-child {
-    border-bottom-width: 0!important;
+  border-bottom-width: 0 !important;
 }
 
 .fs-7 {
@@ -159,14 +160,37 @@ form {
   font-size: $font-size-base * .8 !important;
 }
 
-.intend-level-0 { padding-left: 1.5rem !important; }
-.intend-level-1 { padding-left: 2.5rem !important; }
-.intend-level-2 { padding-left: 3.5rem !important; }
-.intend-level-3 { padding-left: 4.5rem !important; }
-.intend-level-4 { padding-left: 5.5rem !important; }
-.intend-level-5 { padding-left: 6.5rem !important; }
-.intend-level-6 { padding-left: 7.5rem !important; }
-.intend-level-7 { padding-left: 8.5rem !important; }
+.intend-level-0 {
+  padding-left: 1.5rem !important;
+}
+
+.intend-level-1 {
+  padding-left: 2.5rem !important;
+}
+
+.intend-level-2 {
+  padding-left: 3.5rem !important;
+}
+
+.intend-level-3 {
+  padding-left: 4.5rem !important;
+}
+
+.intend-level-4 {
+  padding-left: 5.5rem !important;
+}
+
+.intend-level-5 {
+  padding-left: 6.5rem !important;
+}
+
+.intend-level-6 {
+  padding-left: 7.5rem !important;
+}
+
+.intend-level-7 {
+  padding-left: 8.5rem !important;
+}
 
 .list-group {
 
@@ -249,6 +273,29 @@ pre {
 
 .rounded-0 {
   border-radius: 0 !important;
+}
+
+.strikethrough {
+  position: relative;
+
+  &:before {
+    position: absolute;
+    content: "";
+    left: 0;
+    top: 50%;
+    right: 0;
+    border-top: 2px solid;
+    border-color: inherit;
+    outline-width: 2px;
+    outline-style: solid;
+    outline-color: rgba(255, 255, 255, .8);
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+  }
+
 }
 
 .text-serif {

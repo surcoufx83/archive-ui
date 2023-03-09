@@ -1,8 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
-import { SessionGuard } from './session-guard.guard';
-
 import { AccountComponent } from './account/account.component';
 import { CaseComponent } from './cases/case/case.component';
 import { CasesComponent } from './cases/cases.component';
@@ -10,6 +7,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { DbClassesComponent } from './db/classes/classes.component';
 import { DbCountriesComponent } from './db/countries/countries.component';
 import { DbCurrenciesComponent } from './db/countries/currencies/currencies.component';
+import { DbExtensionsComponent } from './db/filesystem/extensions/extensions.component';
+import { DbRootdirComponent } from './db/filesystem/rootdir/rootdir.component';
 import { DbManagerComponent } from './db/manager/manager.component';
 import { DbContactTypeComponent } from './db/parties/contacts/type/type.component';
 import { DbPartyComponent } from './db/parties/party/party.component';
@@ -30,6 +29,7 @@ import { LogoutComponent } from './logout/logout.component';
 import { ReadingsComponent } from './meters/readings/readings.component';
 import { NotepadComponent } from './notepad/notepad.component';
 import { SearchComponent } from './search/search.component';
+import { SessionGuard } from './session-guard.guard';
 import { DummyComponent } from './utils/dummy/dummy.component';
 import { StorageRoomComponent } from './warehouse/storage-room/storage-room.component';
 import { WarehouseComponent } from './warehouse/warehouse.component';
@@ -40,7 +40,6 @@ import { WorkCustomersComponent } from './work/settings/customers/customers.comp
 import { WorkDayComponent } from './work/work-day/work-day.component';
 import { WorkMonthComponent } from './work/work-month/work-month.component';
 import { WorkComponent } from './work/work.component';
-import { DbRootdirComponent } from './db/filesystem/rootdir/rootdir.component';
 
 const routes: Routes = [
   { path: 'account', component: AccountComponent, canActivate: [SessionGuard] },
@@ -60,6 +59,7 @@ const routes: Routes = [
       { path: 'countries', component: DbCountriesComponent, canActivate: [SessionGuard] },
       { path: 'currencies', component: DbCurrenciesComponent, canActivate: [SessionGuard] },
       { path: 'dirs', component: DbRootdirComponent, canActivate: [SessionGuard] },
+      { path: 'extensions', component: DbExtensionsComponent, canActivate: [SessionGuard] },
       {
         path: 'parties', canActivate: [SessionGuard], children:
           [
