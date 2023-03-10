@@ -130,8 +130,8 @@
   },
   "classify": {
     "classes": {
-      "Application": "Bewerbung",
-      "ApplicationPublic": "Bewerbung (öffentl. Ämter)",
+      "Application": "Candidature",
+      "ApplicationPublic": "Candidature à une fonction publique",
       "In_AccountData": "Données d'accès, credentials, mots de passe",
       "In_AccountReport": "Rapport de compte",
       "In_AnnualBonus": "Prime annuelle, paiements spéciaux, etc.",
@@ -181,7 +181,7 @@
       "In_PostReceipt": "Preuve de dépôt poste/colis",
       "In_QuarterReport": "Clôture trimestrielle",
       "In_Receipt": "Pièce de caisse",
-      "In_Receipt2": "Quittung",
+      "In_Receipt2": "Reçu",
       "In_Rejection": "Refus, décision de refus",
       "In_RepairOrder": "Ordre de réparation",
       "In_RepairReport": "Rapport de réparation",
@@ -199,7 +199,7 @@
       "In_VacationResp": "Congés, maladie, heures supplémentaires",
       "In_VaccinationCertificate": "Certificat de vaccination",
       "In_Voucher": "Coupon",
-      "LeaseAgreement": "Pachtvertrag",
+      "LeaseAgreement": "Contrat de bail",
       "Out_ClaimReport": "Déclaration de sinistre",
       "Out_Contradiction": "Contradiction",
       "Out_ExpenseReport": "Décompte et justificatifs de frais",
@@ -209,7 +209,7 @@
       "Out_SepaMandate": "Mandat de prélèvement automatique",
       "Out_TaxDeclaration": "Déclaration d'impôts",
       "Out_Termination": "Résiliation",
-      "RentalAgreement": "Mietvertrag"
+      "RentalAgreement": "Contrat de location"
     }
   },
   "common": {
@@ -254,7 +254,7 @@
     "seconds": "Secondes",
     "select": {
       "pickOne": "Veuillez choisir",
-      "pickedNone": "Keine gewählt"
+      "pickedNone": "Aucun sélectionné"
     },
     "switchTo": "Aller à",
     "today": "Aujourd'hui",
@@ -385,21 +385,21 @@
       }
     },
     "extensions": {
-      "title": "Dateitypen",
+      "title": "Types de fichiers",
       "ext": "Ext",
-      "options": "Optionen",
-      "displayable": "Anzeige im Browser",
-      "downloadable": "Herunterladen",
-      "indexable": "Inhalt lesbar (OCR)",
-      "isofficefile": "Office Datei",
-      "mimetype": "Mimetype",
-      "unknownMimetype": "Unbekannter Mimetype",
+      "options": "Options",
+      "displayable": "Affichage dans le navigateur",
+      "downloadable": "Télécharger",
+      "indexable": "Contenu lisible (OCR)",
+      "isofficefile": "Fichier Office",
+      "mimetype": "Type de mime",
+      "unknownMimetype": "Type de mime inconnu",
       "editor": {
-        "title": "Dateitypen bearbeiten",
-        "gscommand": "GhostScript Kommando",
-        "ocrcommand": "OCR Kommando",
-        "returnImg": "GhostScript liefert Bilddatei",
-        "returnMimetype": "Mimetype nach Konvertierung"
+        "title": "Modifier les types de fichiers",
+        "gscommand": "Commande GhostScript",
+        "ocrcommand": "Commande OCR",
+        "returnImg": "GhostScript fournit un fichier image",
+        "returnMimetype": "Type de mime après conversion"
       }
     },
     "manager": {
@@ -417,7 +417,7 @@
       "title": "Compteur"
     },
     "mimetypes": {
-      "title": "Mime types"
+      "title": "Types de mime"
     },
     "oauth": {
       "services": {
