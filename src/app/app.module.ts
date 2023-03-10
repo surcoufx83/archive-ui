@@ -23,6 +23,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { DbClassesComponent } from './db/classes/classes.component';
 import { DbCountriesComponent } from './db/countries/countries.component';
 import { DbCurrenciesComponent } from './db/countries/currencies/currencies.component';
+import { DbExtensionsComponent } from './db/filesystem/extensions/extensions.component';
+import { DbRootdirComponent } from './db/filesystem/rootdir/rootdir.component';
 import { DbManagerComponent } from './db/manager/manager.component';
 import { DbContactTypeComponent } from './db/parties/contacts/type/type.component';
 import { DbPartyComponent } from './db/parties/party/party.component';
@@ -146,6 +148,8 @@ registerLocaleData(localeDe);
     TagComponent,
     SubNavbarComponent,
     TaxComponent,
+    DbRootdirComponent,
+    DbExtensionsComponent,
   ],
   imports: [
     AppRoutingModule,
