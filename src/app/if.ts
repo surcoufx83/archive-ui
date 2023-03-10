@@ -642,6 +642,33 @@ export interface VersionStats {
   votedWordcount: number;
 }
 
+export interface WarehouseRoom {
+  id: number;
+  created: string;
+  deleted: string | null;
+  name: string;
+  order: number;
+  spaces: number[];
+  updated: string;
+  urlname: string;
+}
+
+export interface WarehouseSpace {
+  id: number;
+  children: number[];
+  created: string;
+  deleted: string | null;
+  fullkey: string;
+  key: string;
+  layout: string;
+  level: number;
+  name: string;
+  order: number;
+  parentid: number | null;
+  roomid: number;
+  updated: string;
+}
+
 export interface WorkCalendarColor {
   primary: string;
   secondary: string;

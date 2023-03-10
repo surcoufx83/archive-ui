@@ -23,9 +23,12 @@ import {
   Tag,
   User,
   UserSettings,
+  WarehouseRoom,
+  WarehouseSpace,
   WorkCustomer,
   WorkProperties
 } from 'src/app/if';
+import { WarehouseReply } from 'src/app/warehouse/warehouse.component';
 import { AuthService } from '../../auth.service';
 import { AppConfig, ConfigService } from '../../config.service';
 
@@ -183,6 +186,36 @@ export class SettingsService {
       }
     }
     this.syncWork();
+  }
+
+  public loadWarehouseEntities(): void {
+    this.authService.queryApi('api/warehouse').subscribe((reply) => {
+      if (reply.success && reply.payload != undefined && reply.payload['rooms'] != undefined && reply.payload['spaces'] != undefined) {
+        const payload = <WarehouseReply>reply.payload;
+        payload.rooms.forEach((room) => {
+          room.urlname = room.name.replace(/\s/ig, '-');
+          room.spaces = [];
+        });
+        let tempspaces: { [key: number]: WarehouseSpace } = {}
+        payload.spaces.sort((a, b) => a.roomid != b.roomid ? a.roomid - b.roomid : a.level != b.level ? a.level - b.level : a.order - b.order);
+        payload.spaces.forEach((space) => {
+          space.children = [];
+          tempspaces[space.id] = space;
+          if (space.parentid !== null) {
+            if (tempspaces[space.parentid] !== undefined)
+              tempspaces[space.parentid].children.push(space.id);
+            else
+              console.warn(`Found warehouse space ${space.id} with parentid ${space.parentid} is not yet loaded`)
+          }
+          if (payload.rooms[space.roomid] !== undefined)
+            payload.rooms[space.roomid].spaces.push(space.id);
+          else
+            console.warn(`Found warehouse space ${space.id} with roomid ${space.roomid} is not yet loaded`)
+        });
+        this.warehouseRooms.next(payload.rooms.sort((a, b) => a.order - b.order));
+        this.warehouseSpaces.next(tempspaces);
+      }
+    });
   }
 
   public loadWorkEntities(): void {
@@ -377,6 +410,12 @@ export class SettingsService {
 
   private user: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
   user$ = this.user.asObservable();
+
+  private warehouseRooms: BehaviorSubject<WarehouseRoom[] | null> = new BehaviorSubject<WarehouseRoom[] | null>(null);
+  warehouseRooms$ = this.warehouseRooms.asObservable();
+
+  private warehouseSpaces: BehaviorSubject<{ [key: number]: WarehouseSpace } | null> = new BehaviorSubject<{ [key: number]: WarehouseSpace } | null>(null);
+  warehouseSpaces$ = this.warehouseSpaces.asObservable();
 
   private workprops: BehaviorSubject<WorkProperties | null> = new BehaviorSubject<WorkProperties | null>(null);
   workprops$ = this.workprops.asObservable();
