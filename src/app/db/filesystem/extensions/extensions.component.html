@@ -2,13 +2,6 @@
     <app-h2 [title]="i18n('db.extensions.title')" [busy]="busy" [btn1]="i18n('common.back')"
         [btn1css]="'btn btn-sm btn-outline-primary'" [btn1icon]="config.icons['go-left']" [btn1link]="'/db'">
     </app-h2>
-
-    <!-- 
-        Todo! Work in Progress
-    -->
-    <span class="text-danger">
-        TODO: Not all properties configurable yet
-    </span>
 </div>
 
 <div #editor>
@@ -23,7 +16,7 @@
                 <form #f="ngForm" (submit)="submit(f)" ngNativeValidate>
 
                     <div class="row">
-                        <div class="col-12 col-lg-6 mb-3">
+                        <div class="col-12 col-lg-3 mb-3">
                             <div class="form-group">
                                 <label for="extension-ext" class="form-label required">{{
                                     i18n('db.extensions.ext') }}</label>
@@ -31,19 +24,70 @@
                                     [(ngModel)]="edititem.ext" [placeholder]="i18n('db.extensions.ext')" required>
                             </div>
                         </div>
-                        <div class="col-12 mb-3">
+                        <div class="col-12 col-lg-6 mb-3">
                             <div class="form-group">
                                 <label for="extension-mimetype" class="form-label required">{{
                                     i18n('db.extensions.mimetype') }}</label>
-                                <input type="text" class="form-control" id="extension-mimetype"
-                                    name="extension-mimetype" [(ngModel)]="edititem.mimetype"
-                                    [placeholder]="i18n('db.extensions.mimetype')" required>
+                                <select class="form-select" id="extension-mimetype" name="extension-mimetype"
+                                    [(ngModel)]="edititem.mimetype" required>
+                                    <option *ngFor="let mt of mimetypes" [value]="mt.mimetype">{{ mt.mimetype }}
+                                    </option>
+                                </select>
                             </div>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-12 mb-3">
+                            <div class="form-group">
+                                <label for="extension-gscommand" class="form-label">{{
+                                    i18n('db.extensions.editor.gscommand') }}</label>
+                                <input type="text" class="form-control" id="extension-gscommand"
+                                    name="extension-gscommand" [(ngModel)]="edititem.convert.gscommand"
+                                    [placeholder]="i18n('db.extensions.editor.gscommand')">
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3 mb-3">
+                            <div class="form-group">
+                                <label for="extension-returnImg" class="form-label">{{
+                                    i18n('db.extensions.editor.returnImg') }}</label>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="extension-returnImg"
+                                        name="extension-returnImg" [(ngModel)]="edititem.convert.returnImg">
+                                    <label for="extension-returnImg" class="form-check-label"
+                                        *ngIf="edititem.convert.returnImg">{{
+                                        i18n('common.yes') }}</label>
+                                    <label for="extension-returnImg" class="form-check-label"
+                                        *ngIf="!edititem.convert.returnImg">{{
+                                        i18n('common.no') }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 mb-3">
+                            <div class="form-group">
+                                <label for="extension-returnMimetype" class="form-label">{{
+                                    i18n('db.extensions.editor.returnMimetype') }}</label>
+                                <select class="form-select" id="extension-returnMimetype" name="extension-returnMimetype"
+                                    [(ngModel)]="edititem.convert.returnMimetype">
+                                    <option value="" [selected]="edititem.convert.returnMimetype == ''">{{ i18n('common.select.pickedNone') }}</option>
+                                    <option *ngFor="let mt of mimetypes" [value]="mt.mimetype" [selected]="mt.mimetype === edititem.convert.returnMimetype">{{ mt.mimetype }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <div class="form-group">
+                                <label for="extension-ocrcommand" class="form-label">{{
+                                    i18n('db.extensions.editor.ocrcommand') }}</label>
+                                <input type="text" class="form-control" id="extension-mimetype"
+                                    name="extension-ocrcommand" [(ngModel)]="edititem.convert.ocrcommand"
+                                    [placeholder]="i18n('db.extensions.editor.ocrcommand')">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 col-lg-3 mb-3">
                             <div class="form-group">
                                 <label for="extension-displayable" class="form-label">{{
                                     i18n('db.extensions.displayable') }}</label>
@@ -59,7 +103,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 mb-3">
+                        <div class="col-12 col-lg-3 mb-3">
                             <div class="form-group">
                                 <label for="extension-downloadable" class="form-label">{{
                                     i18n('db.extensions.downloadable') }}</label>
@@ -75,7 +119,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 mb-3">
+                        <div class="col-12 col-lg-3 mb-3">
                             <div class="form-group">
                                 <label for="extension-indexable" class="form-label">{{
                                     i18n('db.extensions.indexable') }}</label>
@@ -87,6 +131,22 @@
                                         i18n('common.yes') }}</label>
                                     <label for="extension-indexable" class="form-check-label"
                                         *ngIf="!edititem.indexable">{{
+                                        i18n('common.no') }}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-3 mb-3">
+                            <div class="form-group">
+                                <label for="extension-isofficefile" class="form-label">{{
+                                    i18n('db.extensions.isofficefile') }}</label>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="extension-isofficefile"
+                                        name="extension-isofficefile" [(ngModel)]="edititem.phpoffice">
+                                    <label for="extension-isofficefile" class="form-check-label"
+                                        *ngIf="edititem.phpoffice">{{
+                                        i18n('common.yes') }}</label>
+                                    <label for="extension-isofficefile" class="form-check-label"
+                                        *ngIf="!edititem.phpoffice">{{
                                         i18n('common.no') }}</label>
                                 </div>
                             </div>
@@ -135,6 +195,9 @@
                     <span [ngClass]="{ 'ms-3': true, 'strikethrough': !item.indexable}">
                         <app-icon [iconClass]="indexableIcon"
                             [addCssClasses]="[ !item.indexable ? 'text-muted' : '' ]"></app-icon>
+                    </span>
+                    <span *ngIf="item.mimetypemeta != null" [ngClass]="{ 'ms-3': true}">
+                        <app-icon [iconClass]="item.mimetypemeta.icon"></app-icon>
                     </span>
                 </div>
                 <div class="col-lg-6 d-none d-lg-block text-truncate">

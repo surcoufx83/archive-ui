@@ -250,7 +250,8 @@
     "second": "Sekunde",
     "seconds": "Sekunden",
     "select": {
-      "pickOne": "Bitte wählen"
+      "pickOne": "Bitte wählen",
+      "pickedNone": "Keine gewählt"
     },
     "switchTo": "Wechseln zu",
     "today": "Heute",
@@ -387,10 +388,15 @@
       "displayable": "Anzeige im Browser",
       "downloadable": "Herunterladen",
       "indexable": "Inhalt lesbar (OCR)",
+      "isofficefile": "Office Datei",
       "mimetype": "Mimetype",
       "unknownMimetype": "Unbekannter Mimetype",
       "editor": {
-        "title": "Dateitypen bearbeiten"
+        "title": "Dateitypen bearbeiten",
+        "gscommand": "GhostScript Kommando",
+        "ocrcommand": "OCR Kommando",
+        "returnImg": "GhostScript liefert Bilddatei",
+        "returnMimetype": "Mimetype nach Konvertierung"
       }
     },
     "manager": {
@@ -406,6 +412,9 @@
     },
     "meters": {
       "title": "Zähler"
+    },
+    "mimetypes": {
+      "title": "Mime types"
     },
     "oauth": {
       "services": {

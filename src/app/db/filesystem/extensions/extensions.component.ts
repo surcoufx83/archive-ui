@@ -3,9 +3,30 @@ import { NgForm } from '@angular/forms';
 import { AuthService } from 'src/app/auth.service';
 import { AppConfig, ConfigService } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
-import { Extension } from 'src/app/if';
+import { Extension, Mimetype } from 'src/app/if';
 import { SettingsService } from 'src/app/user/settings/settings.service';
 import { ToastsService } from 'src/app/utils/toasts.service';
+
+export const newFileextension: Extension = {
+  id: 0,
+  displayable: false,
+  downloadable: true,
+  ext: '',
+  indexable: false,
+  mimetype: '',
+  mimetypemeta: null,
+  phpoffice: false,
+  convert: {
+    gscommand: '',
+    ocrcommand: '',
+    returnImg: false,
+    returnMimetype: '',
+  },
+  meta: {
+    nocase: false,
+    noclass: false,
+  }
+};
 
 @Component({
   selector: 'app-extensions',
@@ -20,6 +41,9 @@ export class DbExtensionsComponent implements OnInit {
   saving: boolean = false;
   extensions: Extension[] = [];
   edititem?: Extension;
+  mimetypes: Mimetype[] = [];
+  mimetypeIds: { [key: number]: number } = {};
+  mimetypeNames: { [key: string]: number } = {};
   sortAsc: boolean = true;
   sortBy: string = 'ext';
   timeout: any;
@@ -45,14 +69,7 @@ export class DbExtensionsComponent implements OnInit {
     if (item)
       this.edititem = { ...item };
     else
-      this.edititem = {
-        id: 0,
-        displayable: false,
-        downloadable: true,
-        ext: '',
-        indexable: false,
-        mimetype: ''
-      };
+      this.edititem = { ...newFileextension };
     if (this.editor && this.editor.nativeElement) {
       window.scrollTo(0, this.editor.nativeElement.offsetTop - 64);
     }
@@ -77,9 +94,22 @@ export class DbExtensionsComponent implements OnInit {
   ngOnInit(): void {
     let url: string = `${this.config.api.baseUrl}/extensions`;
     this.authService.queryApi(url).subscribe((reply) => {
-      if (reply.success && reply.payload != undefined && reply.payload['extensions'] != undefined) {
-        this.extensions = <Extension[]>reply.payload['extensions'];
-        this.sort();
+      if (reply.success && reply.payload != undefined) {
+        if (reply.payload['extensions'] != undefined) {
+          this.extensions = <Extension[]>reply.payload['extensions'];
+          this.sort();
+        }
+        if (reply.payload['mimetypes'] != undefined) {
+          this.mimetypes = (<Mimetype[]>reply.payload['mimetypes']).sort((a, b) => a.mimetype.toLocaleLowerCase() > b.mimetype.toLocaleLowerCase() ? 1 : -1);
+          let ids: { [key: number]: number } = {};
+          let names: { [key: string]: number } = {};
+          for (let i = 0; i < this.mimetypes.length; i++) {
+            ids[this.mimetypes[i].id] = i;
+            names[this.mimetypes[i].mimetype] = i;
+          }
+          this.mimetypeIds = ids;
+          this.mimetypeNames = names;
+        }
       }
     });
   }

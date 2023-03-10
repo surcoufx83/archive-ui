@@ -82,7 +82,8 @@ export class DbManagerComponent implements OnInit {
       title: 'db.manager.filesystem',
       items: [
         { link: '/db/dirs', title: 'db.directories.title', icon: `${this.config.icons['folder']} ${this.colFinished}` },
-        { link: '/db/extensions', title: 'db.extensions.title', icon: 'fa-solid fa-shapes' }
+        { link: '/db/extensions', title: 'db.extensions.title', icon: `fa-solid fa-shapes ${this.colFinished}` },
+        { link: '/db/mimetypes', title: 'db.mimetypes.title', icon: 'fa-solid fa-shapes' },
       ]
     },
     {
