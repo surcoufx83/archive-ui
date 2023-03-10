@@ -100,6 +100,7 @@ const routes: Routes = [
   { path: 'search/:phrase/:token', component: SearchComponent, canActivate: [SessionGuard], pathMatch: 'full' },
   { path: 'search/:phrase', component: SearchComponent, canActivate: [SessionGuard], pathMatch: 'full' },
   { path: 'search', component: SearchComponent, canActivate: [SessionGuard], pathMatch: 'full' },
+  { path: 'warehouse/:roomid/:roomname', component: StorageRoomComponent, canActivate: [SessionGuard] },
   { path: 'warehouse/:room', component: StorageRoomComponent, canActivate: [SessionGuard] },
   { path: 'warehouse', component: WarehouseComponent, pathMatch: 'full', canActivate: [SessionGuard] },
   {

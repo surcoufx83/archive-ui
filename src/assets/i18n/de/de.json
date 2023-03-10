@@ -801,6 +801,9 @@
       "title": "Zeitart"
     }
   },
+  "warehouse": {
+    "pagetitle": "Lagerverwaltung"
+  },
   "workday": {
     "pagetitle": "Tagesbuchungen {0}",
     "daycard": {
