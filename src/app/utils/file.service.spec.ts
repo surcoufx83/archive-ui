@@ -3,7 +3,11 @@ import { FileService } from "./file.service";
 
 let mockext: Extension = {
     id: 0, displayable: true, downloadable: true, ext: 'bar',
-    indexable: true, mimetype: 'application/bar'
+    indexable: true, mimetype: 'application/bar',
+    convert: { gscommand: '', ocrcommand: '', returnImg: false, returnMimetype: '' },
+    meta: { nocase: false, noclass: false },
+    mimetypemeta: null,
+    phpoffice: false
 };
 
 let mockpage1: Page = {
