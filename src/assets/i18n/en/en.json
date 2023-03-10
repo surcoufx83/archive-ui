@@ -130,8 +130,8 @@
   },
   "classify": {
     "classes": {
-      "Application": "Bewerbung",
-      "ApplicationPublic": "Bewerbung (öffentl. Ämter)",
+      "Application": "Application",
+      "ApplicationPublic": "Application for public office",
       "In_AccountData": "Access data, credentials, passwords",
       "In_AccountReport": "Account report",
       "In_AnnualBonus": "Annual bonus, special payments, etc.",
@@ -181,7 +181,7 @@
       "In_PostReceipt": "Proof of posting Post/Parcel",
       "In_QuarterReport": "Quarterly financial statements",
       "In_Receipt": "Receipt",
-      "In_Receipt2": "Quittung",
+      "In_Receipt2": "Receipt",
       "In_Rejection": "Rejection, rejection notice",
       "In_RepairOrder": "Repair Order",
       "In_RepairReport": "Repair report",
@@ -199,7 +199,7 @@
       "In_VacationResp": "Vacation, sick, overtime",
       "In_VaccinationCertificate": "Vaccination Certificate",
       "In_Voucher": "Voucher",
-      "LeaseAgreement": "Pachtvertrag",
+      "LeaseAgreement": "Lease Agreement",
       "Out_ClaimReport": "Damage report",
       "Out_Contradiction": "Contradiction",
       "Out_ExpenseReport": "Expense report and receipts",
@@ -209,7 +209,7 @@
       "Out_SepaMandate": "SEPA direct debit mandate",
       "Out_TaxDeclaration": "Tax declaration",
       "Out_Termination": "Termination",
-      "RentalAgreement": "Mietvertrag"
+      "RentalAgreement": "Rental Agreement"
     }
   },
   "common": {
@@ -254,7 +254,7 @@
     "seconds": "Seconds",
     "select": {
       "pickOne": "Please select",
-      "pickedNone": "Keine gewählt"
+      "pickedNone": "None selected"
     },
     "switchTo": "Switch to",
     "today": "Today",
@@ -385,21 +385,21 @@
       }
     },
     "extensions": {
-      "title": "Dateitypen",
+      "title": "File types",
       "ext": "Ext",
-      "options": "Optionen",
-      "displayable": "Anzeige im Browser",
-      "downloadable": "Herunterladen",
-      "indexable": "Inhalt lesbar (OCR)",
-      "isofficefile": "Office Datei",
-      "mimetype": "Mimetype",
-      "unknownMimetype": "Unbekannter Mimetype",
+      "options": "Options",
+      "displayable": "View in browser",
+      "downloadable": "Download",
+      "indexable": "Content readable (OCR)",
+      "isofficefile": "Office file",
+      "mimetype": "Mime type",
+      "unknownMimetype": "Unknown mime type",
       "editor": {
-        "title": "Dateitypen bearbeiten",
-        "gscommand": "GhostScript Kommando",
-        "ocrcommand": "OCR Kommando",
-        "returnImg": "GhostScript liefert Bilddatei",
-        "returnMimetype": "Mimetype nach Konvertierung"
+        "title": "Edit file type",
+        "gscommand": "GhostScript command",
+        "ocrcommand": "OCR command",
+        "returnImg": "GhostScript returns image",
+        "returnMimetype": "Mime type after conversion"
       }
     },
     "manager": {
