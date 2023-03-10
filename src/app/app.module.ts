@@ -1,3 +1,4 @@
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { registerLocaleData } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import localeDe from '@angular/common/locales/de';
@@ -7,10 +8,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { NgChartsModule } from 'ng2-charts';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { MarkdownModule } from 'ngx-markdown';
-
-import { NgChartsModule } from 'ng2-charts';
 import { AccountComponent } from './account/account.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -23,6 +23,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { DbClassesComponent } from './db/classes/classes.component';
 import { DbCountriesComponent } from './db/countries/countries.component';
 import { DbCurrenciesComponent } from './db/countries/currencies/currencies.component';
+import { DbExtensionsComponent } from './db/filesystem/extensions/extensions.component';
+import { DbRootdirComponent } from './db/filesystem/rootdir/rootdir.component';
 import { DbManagerComponent } from './db/manager/manager.component';
 import { DbContactTypeComponent } from './db/parties/contacts/type/type.component';
 import { DbPartyComponent } from './db/parties/party/party.component';
@@ -47,6 +49,7 @@ import { LogoutComponent } from './logout/logout.component';
 import { ReadingsComponent } from './meters/readings/readings.component';
 import { NotepadComponent } from './notepad/notepad.component';
 import { SearchComponent } from './search/search.component';
+import { SettingsService } from './user/settings/settings.service';
 import { ButtonComponent } from './utils/button/button.component';
 import { DummyComponent } from './utils/dummy/dummy.component';
 import { H2Component } from './utils/h2/h2.component';
@@ -84,16 +87,56 @@ registerLocaleData(localeDe);
 @NgModule({
   declarations: [
     AccountComponent,
+    AccountsComponent,
     AppComponent,
+    ButtonComponent,
+    CaseComponent,
     CasesComponent,
+    CaseListItemComponent,
     DashboardComponent,
+    DbClassesComponent,
+    DbContactTypeComponent,
+    DbCountriesComponent,
+    DbCurrenciesComponent,
+    DbExtensionsComponent,
+    DbManagerComponent,
+    DbPartyComponent,
+    DbRoleComponent,
+    DbRootdirComponent,
+    DummyComponent,
+    FileComponent,
+    FilesComponent,
+    FileListItemComponent,
     FinanceComponent,
+    FolderBrowserDialogComponent,
+    H2Component,
+    H3Component,
+    H4Component,
+    H5Component,
     HomeComponent,
+    IconComponent,
     LoginComponent,
     LogoutComponent,
     NotepadComponent,
+    Oauth2CallbackComponent,
+    PeriodDropdownMenuComponent,
+    PriceComparisonComponent,
+    ReadingsComponent,
+    ReceiptComponent,
+    ReceiptsComponent,
+    SearchComponent,
+    ShoppingComponent,
+    SorterIconComponent,
+    StocksComponent,
+    StorageRoomComponent,
+    SubNavbarComponent,
+    TagComponent,
+    TaxComponent,
+    ToastComponent,
+    ToastContainerComponent,
     UiBusyIndicatorComponent,
     UiCenteredBusyIndicatorComponent,
+    WarehouseComponent,
     WorkCalendarComponent,
     WorkComponent,
     WorkCustomerComponent,
@@ -107,44 +150,6 @@ registerLocaleData(localeDe);
     WorkProjectsComponent,
     WorkTimeCategoriesComponent,
     WorkYearComponent,
-    Oauth2CallbackComponent,
-    SearchComponent,
-    FileComponent,
-    FilesComponent,
-    FileListItemComponent,
-    CaseListItemComponent,
-    CaseComponent,
-    FolderBrowserDialogComponent,
-    ReceiptsComponent,
-    ReceiptComponent,
-    DbClassesComponent,
-    DbManagerComponent,
-    ToastContainerComponent,
-    ToastComponent,
-    DbCountriesComponent,
-    ShoppingComponent,
-    H2Component,
-    H3Component,
-    H4Component,
-    H5Component,
-    PriceComparisonComponent,
-    ButtonComponent,
-    DbCurrenciesComponent,
-    DbRoleComponent,
-    DbPartyComponent,
-    DbContactTypeComponent,
-    PeriodDropdownMenuComponent,
-    StocksComponent,
-    AccountsComponent,
-    ReadingsComponent,
-    DummyComponent,
-    WarehouseComponent,
-    StorageRoomComponent,
-    IconComponent,
-    SorterIconComponent,
-    TagComponent,
-    SubNavbarComponent,
-    TaxComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -154,6 +159,7 @@ registerLocaleData(localeDe);
       provide: DateAdapter,
       useFactory: adapterFactory,
     }),
+    DragDropModule,
     FormsModule,
     HttpClientModule,
     MarkdownModule.forRoot(),
@@ -173,6 +179,7 @@ registerLocaleData(localeDe);
     { provide: I18nService, multi: false, },
     { provide: ToastsService, multi: false, },
     { provide: AuthService, multi: false, },
+    { provide: SettingsService, multi: false, },
   ],
   bootstrap: [
     AppComponent

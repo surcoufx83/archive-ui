@@ -224,11 +224,27 @@ export interface ExpenseType {
 
 export interface Extension {
   id: number;
+  convert: ExtensionConversion;
   displayable: boolean;
   downloadable: boolean;
   ext: string;
   indexable: boolean;
+  meta: ExtensionMeta;
   mimetype: string;
+  mimetypemeta: Mimetype | null;
+  phpoffice: boolean;
+}
+
+export interface ExtensionConversion {
+  gscommand: string;
+  ocrcommand: string;
+  returnImg: boolean;
+  returnMimetype: string;
+}
+
+export interface ExtensionMeta {
+  nocase: boolean;
+  noclass: boolean;
 }
 
 export interface File {
@@ -290,6 +306,20 @@ export interface MeterReading {
   meterid: number;
   value: number;
   date: string;
+}
+
+export interface Mimetype {
+  id: number;
+  icon: string;
+  isCodefile: boolean;
+  isExcelfile: boolean;
+  isImagefile: boolean;
+  isPdffile: boolean;
+  isPowerpointfile: boolean;
+  isTextfile: boolean;
+  isWordfile: boolean;
+  isZipfile: boolean;
+  mimetype: string;
 }
 
 export interface Note {

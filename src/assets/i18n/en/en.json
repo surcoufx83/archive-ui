@@ -108,7 +108,8 @@
     "terminated": "Ended",
     "retentiondeletion": "Retention",
     "retentionhidden": "Hidden",
-    "todelete": "To delete"
+    "todelete": "To delete",
+    "waitforstart": "Waiting for start"
   },
   "casetype": {
     "apartment": "Residential",
@@ -147,6 +148,7 @@
       "In_Contract": "Contract",
       "In_ContractAdjustment": "Contract changes",
       "In_ContractAmendment": "Contract amendment",
+      "In_ContractProtocol": "Consultation protocol",
       "In_ContractRenewal": "Contract Renewal",
       "In_ContractTermination": "Confirmation of termination, dissolution",
       "In_ContractTermsAndConditions": "Terms of Service",
@@ -234,7 +236,7 @@
     "no": "No",
     "none": "None",
     "novalue": "---",
-    "pcs": "Pcs.",
+    "pcs": "pcs.",
     "period": {
       "placeholder": "0y 0m 0d 0:0:0",
       "patternYears": "{0}y",
@@ -246,7 +248,7 @@
     "second": "Second",
     "seconds": "Seconds",
     "select": {
-      "pickOne": " Please choose"
+      "pickOne": "Please select"
     },
     "switchTo": "Switch to",
     "today": "Today",
@@ -610,7 +612,8 @@
     },
     "finance": {
       "accounts": "Accounts",
-      "stocks": "Stocks"
+      "stocks": "Stocks",
+      "taxYear": "Taxes in {0}"
     },
     "items": {
       "account": "Account",
@@ -734,22 +737,22 @@
     }
   },
   "stocks": {
-    "title": "Shares and crypto",
+    "title": "Stocks and Crypto",
     "api": "API",
-    "bought": "Bought",
+    "bought": "Purchased",
     "boughtValue": "{0} {1} each {2}",
     "currency": "Currency",
-    "dif": "Difference",
-    "difrel": "as %",
+    "dif": "Changes",
+    "difrel": "in %",
     "isin": "ISIN",
     "name": "Name",
     "quantity": "Quantity",
     "rate": "Price",
     "rate2": "Last price",
     "rateInputModal": {
-      "title": "Enter values subsequently",
-      "description": "Stock prices can be entered manually using this form.",
-      "ignoreWithApi": "Ignore automatically updated"
+      "title": "Update rates",
+      "description": "Stock values can be entered manually using this form.",
+      "ignoreWithApi": "Ignore automatically updated stocks"
     },
     "symbol": "Symbol",
     "total": "Total",

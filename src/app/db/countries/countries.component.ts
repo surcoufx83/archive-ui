@@ -70,7 +70,6 @@ export class DbCountriesComponent implements OnInit, OnDestroy {
     }
   }
 
-
   edit(item?: Country): void {
     if (item)
       this.editcountry = item;
