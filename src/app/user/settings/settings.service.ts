@@ -61,7 +61,7 @@ export class SettingsService {
   private worksync: number = 0;
 
   private expectedVersions = {
-    casesData: 1,
+    casesData: 2,
     financeData: 1,
     notepadData: 1,
     partiesData: 1,
@@ -810,7 +810,8 @@ export class SettingsService {
     Object.values(cases).forEach((c) => {
       if (c.parentid == null) {
         rootcases.push(c.id);
-        casechilds[c.id] = [];
+        if (casechilds[c.id] == undefined)
+          casechilds[c.id] = [];
       } else {
         if (casechilds[c.parentid] == undefined)
           casechilds[c.parentid] = [];
