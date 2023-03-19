@@ -642,10 +642,23 @@ export interface VersionStats {
   votedWordcount: number;
 }
 
+export interface WarehouseItem {
+  id: number;
+  created: string;
+  deleted: string | null;
+  description: string;
+  icon: string;
+  name: string;
+  order: number;
+  spaceid: number;
+  updated: string;
+}
+
 export interface WarehouseRoom {
   id: number;
   created: string;
   deleted: string | null;
+  icon: string;
   name: string;
   order: number;
   spaces: number[];
@@ -659,6 +672,7 @@ export interface WarehouseSpace {
   created: string;
   deleted: string | null;
   fullkey: string;
+  icon: string;
   key: string;
   layout: string;
   level: number;
