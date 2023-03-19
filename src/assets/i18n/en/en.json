@@ -781,6 +781,20 @@
     "value": "Value",
     "wkn": "WKN"
   },
+  "warehouse": {
+    "pagetitle": "Storage management",
+    "rooms": {
+      "pagetitle": "Raumverwaltung {0}",
+      "metacard": {
+        "title": "Settings",
+        "name": "Bezeichnung",
+        "icon": "Icon"
+      },
+      "spacescard": {
+        "title": "Abschnitte"
+      }
+    }
+  },
   "work": {
     "offcategories": {
       "educationalLeave": "Educational leave",
@@ -803,9 +817,6 @@
       "travel": "Travel time",
       "title": "Category"
     }
-  },
-  "warehouse": {
-    "pagetitle": "Storage management"
   },
   "workday": {
     "pagetitle": "Day bookings {0}",
