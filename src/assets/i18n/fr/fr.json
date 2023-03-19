@@ -781,6 +781,20 @@
     "value": "Valeur",
     "wkn": "Code boursier"
   },
+  "warehouse": {
+    "pagetitle": "Gestion de stocks",
+    "rooms": {
+      "pagetitle": "Raumverwaltung {0}",
+      "metacard": {
+        "title": "Paramètres",
+        "name": "Bezeichnung",
+        "icon": "Icône"
+      },
+      "spacescard": {
+        "title": "Abschnitte"
+      }
+    }
+  },
   "work": {
     "offcategories": {
       "educationalLeave": "Congé de formation",
@@ -803,9 +817,6 @@
       "travel": "Voyage",
       "title": "Catégorie de temps"
     }
-  },
-  "warehouse": {
-    "pagetitle": "Gestion de stocks"
   },
   "workday": {
     "pagetitle": "Réservations journalières {0}",
