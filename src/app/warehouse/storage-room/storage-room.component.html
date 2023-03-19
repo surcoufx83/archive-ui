@@ -48,7 +48,7 @@
 </div>
 
 <ng-template #spaceListingTemplate let-layout="layout" let-spaceids="spaceids" let-space="space" let-room="room">
-    <div [ngClass]="{ 'd-flex': true, 'flex-row': layout == 'row', 'flex-column': layout == 'col' }">
+    <div [ngClass]="{ 'd-flex': true, 'flex-lg-row': layout == 'row', 'flex-column': true }">
         <ng-container *ngFor="let id of spaceids">
             <ng-container *ngTemplateOutlet="spaceTemplate; context: { space: spaces[id], room: room, parentlayout: layout }"></ng-container>
         </ng-container>
