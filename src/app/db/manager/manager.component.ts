@@ -100,6 +100,7 @@ export class DbManagerComponent implements OnInit {
       items: [
         { link: '/db/cronjobs', title: 'db.cronjobs.title', icon: 'fa-solid fa-shapes' },
         { link: '/db/units', title: 'db.units.title', icon: 'fa-solid fa-shapes' },
+        { link: '/db/tags', title: 'db.tags.title', icon: 'fa-solid fa-shapes' },
         { link: '/db/oauth/services', title: 'db.oauth.services.title', icon: 'fa-solid fa-shapes' },
         { link: '/db/user', title: 'db.user.title', icon: 'fa-solid fa-shapes' },
       ]

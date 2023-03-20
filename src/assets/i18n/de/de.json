@@ -450,6 +450,9 @@
         "title": "APIs"
       }
     },
+    "tags": {
+      "title": "Tags"
+    },
     "units": {
       "title": "Maßeinheiten"
     },
