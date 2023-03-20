@@ -789,14 +789,14 @@
   "warehouse": {
     "pagetitle": "Gestion de stocks",
     "rooms": {
-      "pagetitle": "Raumverwaltung {0}",
+      "pagetitle": "L'espace {0}",
       "metacard": {
         "title": "Paramètres",
-        "name": "Bezeichnung",
+        "name": "Libellé",
         "icon": "Icône"
       },
       "spacescard": {
-        "title": "Abschnitte"
+        "title": "Sections"
       }
     }
   },
