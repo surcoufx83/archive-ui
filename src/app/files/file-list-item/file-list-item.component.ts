@@ -14,7 +14,7 @@ export class FileListItemComponent {
 
   @Input() file!: File;
   @Input() gotoButton: boolean = false;
-  @Input() relevance: number|null = null;
+  @Input() relevance: number | null = null;
   @Input() showButtons: boolean = true;
   @Output() downloadClicked = new EventEmitter();
   @Output() clicked = new EventEmitter();
@@ -22,7 +22,7 @@ export class FileListItemComponent {
 
   constructor(private configService: ConfigService, private i18nService: I18nService, public formatService: FormatService, private fileService: FileService) { }
 
-  click() : void {
+  click(): void {
     this.clicked.emit();
   }
 
@@ -30,7 +30,7 @@ export class FileListItemComponent {
     return this.configService.config;
   }
 
-  download() : void {
+  download(): void {
     this.downloadClicked.emit();
   }
 
@@ -38,11 +38,11 @@ export class FileListItemComponent {
     return this.i18nService.i18n(key, params);
   }
 
-  preview() : void {
+  preview(): void {
     this.previewClicked.emit();
   }
 
-  get version() : Version|null {
+  get version(): Version | null {
     return this.fileService.version(this.file);
   }
 

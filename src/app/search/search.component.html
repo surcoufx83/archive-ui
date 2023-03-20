@@ -172,5 +172,47 @@
       </ul>
     </div>
 
+    <div [ngClass]="['tab-pane fade show container pt-4 pt-md-2 mb-2', this.showgroup === 'tags' ? 'active' : '']"
+      id="tags-tab" role="tabpanel" aria-labelledby="tags-tab-button">
+      <ng-container *ngTemplateOutlet="tagsPane"></ng-container>
+    </div>
+
   </div>
 </div>
+
+<ng-template #tagsPane>
+  <h4>{{ i18n('search.result.subtitle', [(resultgroupcount['tags'] == undefined ? i18n('common.none') :
+    ''+resultgroupcount['tags']), i18n('search.result.group.tags')]) }}</h4>
+  <ul class="list-group" *ngIf="searchresults.tags">
+    <li class="list-group-item d-flex flex-column" *ngFor="let tagname of tags;">
+      <div class="d-flex flex-row">
+        <app-icon [iconClass]="config.icons['tag']" [marginEnd]="2"></app-icon>
+        <span>{{ tagname }}</span>
+      </div>
+      <ul class="list-group list-group-flush">
+        <a class="list-group-item" *ngFor="let fileitem of tagfiles(tagname);" [routerLink]="['/file', fileitem.id]">
+          <ng-container *ngTemplateOutlet="fileRecord; context: { file: fileitem }"></ng-container>
+        </a>
+      </ul>
+    </li>
+  </ul>
+</ng-template>
+
+<ng-template #fileRecord let-file="file">
+  <div class="d-flex pointer">
+    <div class="d-flex flex-column flex-grow-1">
+      <div class="d-flex">
+        <div class="flex-grow-1 pointer">
+          <div>{{ file.name }}</div>
+        </div>
+      </div>
+      <div class="fs-8 text-wrap text-break">
+        <span class="text-primary" *ngIf="file.class">
+          {{ i18n('classify.classes.' + file.class.techname) }} •
+        </span>
+        {{ formatService.filesize(file.size, 0, 2) }} •
+        {{ file.relpath }}
+      </div>
+    </div>
+  </div>
+</ng-template>

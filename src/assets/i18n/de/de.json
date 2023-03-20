@@ -728,7 +728,8 @@
         "directories": "Verzeichnisse",
         "files": "Dateien (Metadaten)",
         "pages": "Dateiinhalte",
-        "notepad": "Notizen"
+        "notepad": "Notizen",
+        "tags": "Tags"
       },
       "groupstitle": "Suchbereiche",
       "runSearch": "Suche starten"
@@ -742,6 +743,7 @@
         "directories": "Verzeichnisse",
         "files": "Dateien",
         "notes": "Notizen",
+        "tags": "Tags",
         "pages": "Dateiinhalte",
         "onPageNo": "Seite {0}",
         "downloadFileTitle": "Datei herunterladen",

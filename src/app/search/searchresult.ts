@@ -7,6 +7,7 @@ export interface SearchResults {
     files?: SearchResultFileItem[];
     notes?: SearchResultNoteItem[];
     pages?: SearchResultPageItem[];
+    tags?: { [key: string]: { [key: number]: File } };
 }
 
 export interface SearchResultAccountItem {

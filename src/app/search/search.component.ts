@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { format } from 'date-fns';
 import { saveAs } from 'file-saver';
-import { UserSettings } from 'src/app/if';
+import { File, UserSettings } from 'src/app/if';
 import { AuthService } from '../auth.service';
 import { AppConfig, ConfigService } from '../config.service';
 import { I18nService } from '../i18n.service';
 import { SettingsService } from '../user/settings/settings.service';
+import { FormatService } from '../utils/format.service';
 import { SearchResultAccountItem, SearchResultCaseItem, SearchResultDirectoryItem, SearchResultFileItem, SearchResultNoteItem, SearchResultPageItem, SearchResults } from './searchresult';
 
 @Component({
@@ -20,27 +21,22 @@ export class SearchComponent implements OnInit {
   debounce: any = null;
   resultcount: number = 0;
   resultgroupcount: {[key: string]: number} = {};
-  resultgroups: string[] = ['notes', 'cases', 'files', 'pages', 'directories', 'accounts'];
+  resultgroups: string[] = ['tags', 'notes', 'cases', 'files', 'pages', 'directories', 'accounts'];
   phrase: string = '';
   searchactive: string[] = [];
   searchphrase: string = '';
   searchresults: SearchResults = {};
-  searchgroups: {[key: string]: any}[] = [
-    { groupName: 'notepad', searchPath: '/notepad/search', active: true },
-    { groupName: 'cases', searchPath: '/cases/search', active: true },
-    { groupName: 'files', searchPath: '/files/search', active: true },
-    { groupName: 'pages', searchPath: '/files/searchContent', active: false },
-    { groupName: 'directories', searchPath: '/directories/search', active: true },
-    { groupName: 'accounts', searchPath: '/accounts/search', active: true }
-  ];
+  searchgroups: SearchGroupDefinition[] = [];
   searchtoken: string = '';
-  showgroup: string = 'notes';
+  showgroup: string = 'tags';
   showHistoric: boolean = false;
+  storageVersion: number = 1;
   urltoken: string = '';
   usersettingsObj: UserSettings|null = null;
 
   constructor(private authService: AuthService,
     private configService: ConfigService,
+    public formatService: FormatService,
     private i18nService: I18nService,
     private route: ActivatedRoute,
     public router: Router,
@@ -49,9 +45,15 @@ export class SearchComponent implements OnInit {
     this.settings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
     });
-    let search = localStorage.getItem(this.configService.config.storage.prefix + 'Search');
+    let search: string | null | SearchStorage = localStorage.getItem(this.configService.config.storage.prefix + 'Search');
     if (search != null) {
-      this.searchgroups = JSON.parse(search);
+      search = <SearchStorage>JSON.parse(search);
+      if (this.storageVersion !== search.version) {
+        localStorage.setItem(this.configService.config.storage.prefix + 'Search', JSON.stringify(DefaultSearchItems));
+        this.searchgroups = DefaultSearchItems.groups;
+      }
+      else
+        this.searchgroups = search.groups;
     }
   }
 
@@ -83,13 +85,15 @@ export class SearchComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
-      this.reset();
-      this.showgroup = params.get('tab') ?? 'notes';
-      this.phrase = params.get('phrase') ?? '';
-      this.searchphrase = params.get('phrase') ?? '';
-      this.searchtoken = params.get('token') ?? '';
-      this.urltoken = params.get('token') ?? '';
-      this.onSearch(false, (params.get('token') ?? ''));
+      setTimeout(() => {
+        this.reset();
+        this.showgroup = params.get('tab') ?? 'tags';
+        this.phrase = params.get('phrase') ?? '';
+        this.searchphrase = params.get('phrase') ?? '';
+        this.searchtoken = params.get('token') ?? '';
+        this.urltoken = params.get('token') ?? '';
+        this.onSearch(false, (params.get('token') ?? ''));
+      }, 100);
     });
   }
 
@@ -145,6 +149,9 @@ export class SearchComponent implements OnInit {
               case 'pages':
                 this.searchresults.pages = <SearchResultPageItem[]>reply.payload['items'];
                 break;
+              case 'tags':
+                this.searchresults.tags = <{ [key: string]: { [key: number]: File } }>(reply.payload['items']);
+                break;
             }
           }
           this.searchactive.splice(this.searchactive.indexOf(group['groupName']));
@@ -170,4 +177,41 @@ export class SearchComponent implements OnInit {
     this.busy = false;
   }
 
+  get tags(): string[] {
+    if (this.searchresults.tags != undefined)
+      return Object.keys(this.searchresults.tags);
+    return [];
+  }
+
+  tagfiles(tag: string): File[] {
+    if (this.searchresults.tags != undefined && this.searchresults.tags[tag] != undefined)
+      return Object.values(this.searchresults.tags[tag]);
+    return [];
+  }
+
+}
+
+export interface SearchGroupDefinition {
+  groupName: string;
+  searchPath: string;
+  active: boolean;
+  defaultActive: boolean;
+}
+
+export interface SearchStorage {
+  version: number;
+  groups: SearchGroupDefinition[];
+}
+
+const DefaultSearchItems: SearchStorage = {
+  version: 1,
+  groups: [
+    { groupName: 'tags', searchPath: '/tags/search', active: true, defaultActive: true },
+    { groupName: 'notepad', searchPath: '/notepad/search', active: true, defaultActive: true },
+    { groupName: 'cases', searchPath: '/cases/search', active: true, defaultActive: true },
+    { groupName: 'files', searchPath: '/files/search', active: true, defaultActive: true },
+    { groupName: 'pages', searchPath: '/files/searchContent', active: false, defaultActive: false },
+    { groupName: 'directories', searchPath: '/directories/search', active: true, defaultActive: true },
+    { groupName: 'accounts', searchPath: '/accounts/search', active: true, defaultActive: true },
+  ]
 }
