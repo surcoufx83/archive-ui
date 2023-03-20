@@ -107,7 +107,7 @@ export class StorageRoomComponent implements OnInit {
   }
 
   onSortSpaces(event: CdkDragDrop<string[]>): void {
-
+    
   }
 
   onSubmitRoom(): void {
