@@ -450,6 +450,9 @@
         "title": "APIs"
       }
     },
+    "tags": {
+      "title": "Tags"
+    },
     "units": {
       "title": "Unités de mesure"
     },
@@ -728,7 +731,8 @@
         "directories": "Répertoires",
         "files": "Fichiers (métadonnées)",
         "pages": "Contenu des fichiers",
-        "notepad": "Notes"
+        "notepad": "Notes",
+        "tags": "Tags"
       },
       "groupstitle": "Domaines de recherche",
       "runSearch": "Lancer la recherche"
@@ -742,6 +746,7 @@
         "directories": "Répertoires",
         "files": "Fichiers",
         "notes": "Notes",
+        "tags": "Tags",
         "pages": "Contenu des fichiers",
         "onPageNo": "Page {0}",
         "downloadFileTitle": "Télécharger le fichier",
