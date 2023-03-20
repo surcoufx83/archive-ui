@@ -450,6 +450,9 @@
         "title": "APIs"
       }
     },
+    "tags": {
+      "title": "Tags"
+    },
     "units": {
       "title": "Units of measurement"
     },
@@ -728,7 +731,8 @@
         "directories": "Directories",
         "files": "Files (meta data)",
         "pages": "File Content",
-        "notepad": "Notes"
+        "notepad": "Notes",
+        "tags": "Tags"
       },
       "groupstitle": "Search scope",
       "runSearch": "Start search"
@@ -742,6 +746,7 @@
         "directories": "Directories",
         "files": "Files",
         "notes": "Notes",
+        "tags": "Tags",
         "pages": "File Content",
         "onPageNo": "Page {0}",
         "downloadFileTitle": "Download file",
@@ -784,14 +789,14 @@
   "warehouse": {
     "pagetitle": "Storage management",
     "rooms": {
-      "pagetitle": "Raumverwaltung {0}",
+      "pagetitle": "Room {0}",
       "metacard": {
         "title": "Settings",
-        "name": "Bezeichnung",
+        "name": "Label",
         "icon": "Icon"
       },
       "spacescard": {
-        "title": "Abschnitte"
+        "title": "Sections"
       }
     }
   },
