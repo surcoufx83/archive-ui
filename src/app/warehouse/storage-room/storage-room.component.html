@@ -24,8 +24,13 @@
                         <div class="form-group">
                             <label for="room-icon" class="form-label required">{{ i18n('warehouse.rooms.metacard.icon')
                                 }}</label>
-                            <input type="text" class="form-control" id="room-icon" name="room-icon"
-                                formControlName="icon">
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <app-icon [iconClass]="roomFormgroup.controls.icon.value ?? ''"></app-icon>
+                                </span>
+                                <input type="text" class="form-control" id="room-icon" name="room-icon"
+                                    formControlName="icon">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -34,15 +39,6 @@
 
         <ng-container
             *ngTemplateOutlet="spaceListingTemplate; context: { layout: 'col', spaceids: room.spaces, space: null, room: room }"></ng-container>
-        <!--
-        <div class="card mt-4">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h3 class="text-nowrap text-truncate">{{ i18n('warehouse.rooms.spacescard.title') }}</h3>
-            </div>
-            <div class="card-body">
-                
-            </div>
-        </div>-->
     </form>
 
 </div>
