@@ -223,9 +223,9 @@ export class SettingsService {
     });
   }
 
-  public loadWarehouseItems(space: WarehouseSpace): Subject<boolean | WarehouseItem[]> {
+  public loadWarehouseItems(room: WarehouseRoom): Subject<boolean | WarehouseItem[]> {
     let subject = new Subject<boolean | WarehouseItem[]>();
-    this.authService.queryApi(`api/warehouse/space/${space.id}/items`).subscribe((reply) => {
+    this.authService.queryApi(`api/warehouse/${room.id}/items`).subscribe((reply) => {
       if (reply.success && reply.payload != undefined && reply.payload['items'] != undefined) {
         subject.next(<WarehouseItem[]>reply.payload['items']);
         subject.complete();

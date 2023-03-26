@@ -647,6 +647,8 @@ export interface WarehouseItem {
   created: string;
   deleted: string | null;
   description: string;
+  externalUrl: string;
+  fixed: WarehouseItemFixedLocation;
   icon: string;
   name: string;
   order: number;
@@ -654,8 +656,14 @@ export interface WarehouseItem {
   updated: string;
 }
 
+export interface WarehouseItemFixedLocation {
+  col: number;
+  row: number;
+}
+
 export interface WarehouseRoom {
   id: number;
+  allwaysopen: boolean;
   created: string;
   deleted: string | null;
   icon: string;
@@ -671,8 +679,10 @@ export interface WarehouseSpace {
   children: number[];
   created: string;
   deleted: string | null;
+  fixed: WarehouseSpaceFixedLayout | null;
   fullkey: string;
   icon: string;
+  items?: WarehouseSpaceItems;
   key: string;
   layout: string;
   level: number;
@@ -681,6 +691,18 @@ export interface WarehouseSpace {
   parentid: number | null;
   roomid: number;
   updated: string;
+}
+
+export interface WarehouseSpaceFixedLayout {
+  cols: number;
+  rows: number;
+}
+
+export interface WarehouseSpaceItems {
+  default: WarehouseItem[];
+  fixed: { [key: string]: WarehouseItem };
+  fixedCols?: number[];
+  fixedRows?: number[];
 }
 
 export interface WorkCalendarColor {

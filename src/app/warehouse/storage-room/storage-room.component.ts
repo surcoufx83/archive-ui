@@ -26,7 +26,8 @@ export class StorageRoomComponent implements OnInit {
   spaces: { [key: number]: WarehouseSpace } = {};
   spacesOpened: number[] = [];
   currentSpaceId: number | null = null;
-  currentSpaceItems: WarehouseItem[] | null = null;
+  currentFixedCols: number[] = [];
+  currentFixedRows: number[] = [];
   subs: Subscription[] = [];
 
   constructor(private authService: AuthService,
@@ -40,7 +41,6 @@ export class StorageRoomComponent implements OnInit {
     this.subs.push(this.settings.warehouseSpaces$.subscribe((spaces) => {
       if (spaces !== null) {
         this.spaces = spaces;
-        this.loadSpaceItems();
       }
     }));
     this.subs.push(route.params.subscribe((params) => {
@@ -52,7 +52,6 @@ export class StorageRoomComponent implements OnInit {
     this.subs.push(route.queryParams.subscribe((params) => {
       this.spacesOpened = params['route'] != undefined ? (<string>params['route']).split(',').map(Number) : [];
       this.currentSpaceId = params['space'] != undefined ? <number>params['space'] : null;
-      this.loadSpaceItems();
     }));
   }
 
@@ -64,6 +63,15 @@ export class StorageRoomComponent implements OnInit {
     let items: number[] = space.parentid === null ? [] : this.getSpaceIdRoute(this.spaces[space.parentid]);
     items.push(space.id);
     return items;
+  }
+
+  getSpaceItem(space: WarehouseSpace, row: number, col: number): WarehouseItem | undefined {
+    return space.items?.fixed[`${row},${col}`] ?? {
+      id: 0, created: '', deleted: null, description: '',
+      fixed: { row: row, col: col }, icon: 'fa-solid fa-question',
+      name: '', order: 0, spaceid: this.currentSpaceId!, updated: '',
+      externalUrl: ''
+    };
   }
 
   getSpaceQueryParam(space: WarehouseSpace): string {
@@ -80,6 +88,7 @@ export class StorageRoomComponent implements OnInit {
       this.room = this.settings.getWarehouseRoom(this.roomid);
       if (this.room != null) {
         this.roomFormgroup.setValue({ name: this.room.name, icon: this.room.icon });
+        this.loadRoomItems();
       }
       else {
         this.roomFormgroup.setValue({ name: '', icon: '' });
@@ -87,14 +96,31 @@ export class StorageRoomComponent implements OnInit {
     }
   }
 
-  loadSpaceItems(): void {
-    this.currentSpaceItems = null;
-    if (this.currentSpaceId == null || this.spaces[this.currentSpaceId] == undefined)
+  loadRoomItems(): void {
+    if (this.room == null)
       return;
-    this.settings.loadWarehouseItems(this.spaces[this.currentSpaceId]).subscribe((reply) => {
+    this.settings.loadWarehouseItems(this.room).subscribe((reply) => {
       if (reply == true || reply == false)
         return;
-      this.currentSpaceItems = <WarehouseItem[]>reply;
+      Object.keys(this.spaces).forEach((key) => {
+        this.spaces[+key].items = {
+          default: [],
+          fixed: {},
+          fixedCols: this.spaces[+key].layout === 'fixed' ? Array(this.spaces[+key].fixed!.cols).fill(0).map((x, i) => i) : undefined,
+          fixedRows: this.spaces[+key].layout === 'fixed' ? Array(this.spaces[+key].fixed!.rows).fill(0).map((x, i) => i) : undefined,
+        };
+      });
+      (<WarehouseItem[]>reply).forEach((item) => {
+        if (this.spaces[item.spaceid] == undefined)
+          console.error('SpaceId from Id is not available in room?');
+        else {
+          if (this.spaces[item.spaceid].layout === 'fixed')
+            this.spaces[item.spaceid].items!.fixed[`${item.fixed.row},${item.fixed.col}`] = item;
+          else
+            this.spaces[item.spaceid].items!.default.push(item);
+        }
+      });
+      console.log(this.spaces);
     });
   }
 
@@ -107,7 +133,7 @@ export class StorageRoomComponent implements OnInit {
   }
 
   onSortSpaces(event: CdkDragDrop<string[]>): void {
-    
+
   }
 
   onSubmitRoom(): void {
