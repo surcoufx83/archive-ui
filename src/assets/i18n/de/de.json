@@ -239,6 +239,7 @@
     "date": "Datum",
     "day": "Tag",
     "days": "Tage",
+    "default": "Standard",
     "delete": "Löschen",
     "goto": "Gehe zu",
     "hour": "Stunde",
@@ -611,6 +612,17 @@
       }
     }
   },
+  "locales": {
+    "de": {
+      "title": "Deutsch"
+    },
+    "en": {
+      "title": "Englisch"
+    },
+    "fr": {
+      "title": "Französisch"
+    }
+  },
   "login": {
     "title": "Benutzeranmeldung",
     "subtitle": "Diese Webseite erfordert die Eingabe von Zugangsdaten. Bitte mit Benutzername und Passwort anmelden.",
@@ -665,6 +677,9 @@
       "label": "Durchsuchen des Archivs",
       "placeholder": "Suchbegriff",
       "submit": "Suchen"
+    },
+    "switchLocale": {
+      "btnTitle": "Ändern der Anzeigesprache"
     },
     "workitems": {
       "leads": "Leads",

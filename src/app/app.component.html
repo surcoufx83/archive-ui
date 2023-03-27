@@ -26,7 +26,22 @@
             </li>
           </ul>
         </div>
-        <div class="d-none d-lg-block text-white d-flex align-items-center">
+        <div class="d-none d-lg-flex text-white align-items-center">
+          <div class="me-4 dropdown">
+            <button type="button" class="btn btn-dark locale-btn dropdown-toggle" id="navbarDarkDropdownMenuLink"
+              role="button" data-bs-toggle="dropdown" aria-expanded="false" [title]="i18n('navbar.switchLocale.btnTitle')">
+              <app-icon [iconClass]="config.icons['locale']"></app-icon>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-dark bg-dark mt-2 border shadow"
+              aria-labelledby="navbarDarkDropdownMenuLink">
+              <li *ngFor="let locale of navbarLocales">
+                <a class="dropdown-item" href="#" (click)="changeLocaleTo(locale.code, $event)">
+                  {{ i18n('locales.' + locale.code + '.title') }}
+                  <span *ngIf="locale.isDefault" class="fs-7">({{ i18n('common.default') }})</span>
+                </a>
+              </li>
+            </ul>
+          </div>
           <form (submit)="submitSearch()">
             <div class="input-group">
               <label class="input-group-text" id="navbar-main-search-label" for="navbar-main-search-input">

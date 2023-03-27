@@ -2,9 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Locale } from 'date-fns';
-import { de } from 'date-fns/locale';
+import { de, enUS, fr } from 'date-fns/locale';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { ConfigService } from './config.service';
 import { ToastsService } from './utils/toasts.service';
 
 @Injectable({
@@ -12,13 +13,40 @@ import { ToastsService } from './utils/toasts.service';
 })
 export class I18nService {
 
-  loaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  private locale: string = navigator.language.substr(0, 2);
+  public availableLocales: string[] = ['en', 'de', 'fr'];
+  public defaultLocale: string = 'en';
+  public loaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private locale: string = navigator.language.substring(0, 2);
   private entries: { [key: string]: { [key: string]: string | string[] } } = {};
 
-  constructor(private http: HttpClient,
+  get DateLocale(): Locale {
+    switch (this.locale) {
+      case 'de':
+        return de;
+      case 'fr':
+        return fr;
+      case 'en':
+      default:
+        return enUS;
+    }
+  }
+
+  get Locale(): string {
+    return this.locale;
+  }
+
+  constructor(private configService: ConfigService,
+    private http: HttpClient,
     private titleService: Title,
     private toastService: ToastsService) {
+    let olddata: string | null | LocalesStorage = localStorage.getItem(`${this.configService.config.storage.prefix}locale`);
+    if (olddata !== null) {
+      olddata = <LocalesStorage>JSON.parse(olddata);
+      if (this.availableLocales.indexOf(olddata.locale) > -1)
+        this.locale = olddata.locale;
+    }
+    if (this.availableLocales.indexOf(this.locale) == -1)
+      this.locale = this.defaultLocale;
     this.loadStrings(this.locale);
     if (this.locale != environment.i18nFallback)
       this.loadStrings(environment.i18nFallback);
@@ -78,6 +106,17 @@ export class I18nService {
     return `<I18n/${locale}: string '${key}' missing!>`;
   }
 
+  public setLocale(key: string): void {
+    if (this.availableLocales.indexOf(this.locale) == -1)
+      return;
+    this.locale = key;
+    this.loadStrings(this.locale);
+    let storeItem: LocalesStorage = {
+      locale: this.locale
+    };
+    localStorage.setItem(`${this.configService.config.storage.prefix}locale`, JSON.stringify(storeItem));
+  }
+
   private titleTimeout?: any;
   public setTitle(key: string, params: any[] = [], i: number = 0): void {
     if (this.titleTimeout !== undefined)
@@ -89,20 +128,12 @@ export class I18nService {
     this.titleService.setTitle(this.i18n(key, params, i));
   }
 
-  get DateLocale(): undefined | Locale {
-    switch (this.locale) {
-      case 'de':
-        return de;
-    }
-    return undefined;
-  }
-
-  get Locale(): string {
-    return this.locale;
-  }
-
 }
 
 export interface I18nEntry {
   [key: string]: I18nEntry | string;
+}
+
+export interface LocalesStorage {
+  locale: string;
 }
