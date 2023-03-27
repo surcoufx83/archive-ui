@@ -1,4 +1,7 @@
 {
+  "accounts": {
+    "pagetitle": "Comptes"
+  },
   "authService": {
     "apiError": {
       "title": "Erreur",
@@ -37,6 +40,11 @@
   },
   "case": {
     "title": "{0} (dossier)",
+    "pagetitleNocase": "Aktenansicht",
+    "pagetitle_": "Aktenansicht: {0}",
+    "pagetitle_childs": "Untergeordnete Akten von: {0}",
+    "pagetitle_files": "Dateien der Akte: {0}",
+    "pagetitle_times": "Zeiträume der Akte: {0}",
     "metacard": {
       "title": "Informations générales",
       "shorttitle": "Généralités",
@@ -85,6 +93,7 @@
   },
   "cases": {
     "title": "Structure des dossiers",
+    "pagetitle": "Gesamte Aktenstruktur",
     "filescount": [
       "1 fichier",
       "Fichiers : {0}"
@@ -527,6 +536,9 @@
       }
     }
   },
+  "finance": {
+    "pagetitle": "Finanz-Dashboard"
+  },
   "folderbrowser": {
     "title": "Rechercher dans les répertoires",
     "selected": "Sélectionné : {0}",
@@ -535,7 +547,7 @@
     }
   },
   "home": {
-    "title": "Page d'accueil de l'archive",
+    "title": "Archiv Startseite",
     "cases": {
       "title": "Dossiers pour vérification"
     },
@@ -692,6 +704,7 @@
   },
   "receipts": {
     "title": "Saisie des documents",
+    "pagetitle": "Saisie des achats",
     "client": "Acheteur",
     "currency": "Devise",
     "date": "Date",
@@ -758,12 +771,14 @@
     }
   },
   "shopping": {
+    "pagetitle": "Liste d'achats",
     "cart": {
       "title": "Liste d'achats"
     }
   },
   "stocks": {
     "title": "Titres et crypto",
+    "pagetitle": "Wertpapierübersicht",
     "api": "API",
     "bought": "Acheté",
     "boughtValue": "{0} {1} á {2}",
