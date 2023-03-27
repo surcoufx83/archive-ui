@@ -1,7 +1,7 @@
-import { Component, ElementRef, OnInit, SecurityContext, ViewChild } from '@angular/core';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import * as saveAs from 'file-saver';
+import { saveAs } from 'file-saver-es';
 import { Address, ButtonType, Case, CaseFiletype, Class, ContactType, File, Page, Party, PartyContact, Tag, UserSettings, Version } from 'src/app/if';
 import { FileService } from 'src/app/utils/file.service';
 import { FormatService } from 'src/app/utils/format.service';
