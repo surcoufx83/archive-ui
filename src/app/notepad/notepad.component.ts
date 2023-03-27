@@ -41,6 +41,7 @@ export class NotepadComponent implements OnInit {
     this.userSettings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
     });
+    this.i18nService.setTitle('notepad.title');
   }
 
   close(): void {

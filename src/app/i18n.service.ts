@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { Locale } from 'date-fns';
 import { de } from 'date-fns/locale';
 import { BehaviorSubject } from 'rxjs';
@@ -13,9 +14,10 @@ export class I18nService {
 
   loaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private locale: string = navigator.language.substr(0, 2);
-  private entries: { [key: string]: { [key: string]: string|string[] } } = {};
+  private entries: { [key: string]: { [key: string]: string | string[] } } = {};
 
   constructor(private http: HttpClient,
+    private titleService: Title,
     private toastService: ToastsService) {
     this.loadStrings(this.locale);
     if (this.locale != environment.i18nFallback)
@@ -74,6 +76,17 @@ export class I18nService {
     if (locale != environment.i18nFallback)
       return this.i18n_locale(environment.i18nFallback, key, params, i);
     return `<I18n/${locale}: string '${key}' missing!>`;
+  }
+
+  private titleTimeout?: any;
+  public setTitle(key: string, params: any[] = [], i: number = 0): void {
+    if (this.titleTimeout !== undefined)
+      clearTimeout(this.titleTimeout);
+    if (!this.loaded.value)
+      this.titleTimeout = setTimeout(() => {
+        this.setTitle(key, params, i);
+      }, 100);
+    this.titleService.setTitle(this.i18n(key, params, i));
   }
 
   get DateLocale(): undefined | Locale {

@@ -52,8 +52,9 @@ export class CaseComponent implements OnInit {
     });
     this.route.url.subscribe((url) => {
       this.activeRouteChild = this.route.firstChild && this.route.firstChild.routeConfig && this.route.firstChild.routeConfig.path ? this.route.firstChild.routeConfig.path : '';
+      this.i18nService.setTitle(`case.pagetitle_${this.activeRouteChild}`, [this.case?.title]);
     });
-
+    this.i18nService.setTitle('case.pagetitleNocase');
   }
 
   changeShowDeleted(switchvalue: boolean): void {
@@ -111,6 +112,7 @@ export class CaseComponent implements OnInit {
       else if (this.cases[this.caseid])
         this.case = { ...this.cases[this.caseid] };
       if (this.case) {
+        this.i18nService.setTitle(`case.pagetitle_${this.activeRouteChild}`, [this.case.title]);
         this.case.parentid = this.case.parentid ?? -1;
         this.case.clientid = this.case.clientid ?? -1;
         this.case.partyid = this.case.partyid ?? -1;

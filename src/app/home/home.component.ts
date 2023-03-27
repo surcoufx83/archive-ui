@@ -40,6 +40,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.newfiles = olddata.inboxfiles;
       this.stats = olddata.stats;
     }
+    this.i18nService.setTitle('home.title');
   }
 
   get config(): AppConfig {

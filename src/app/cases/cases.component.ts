@@ -32,6 +32,7 @@ export class CasesComponent implements OnInit {
       this.usersettingsObj = settings;
     });
     this.userSettings.loadArchiveSettings();
+    this.i18nService.setTitle('cases.pagetitle');
   }
 
   case(id: number): Case {

@@ -29,6 +29,7 @@ export class ShoppingComponent implements OnInit {
     this.userSettings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
     });
+    this.i18nService.setTitle('shopping.pagetitle');
   }
 
   article(id: number) : ReceiptArticle|null {
