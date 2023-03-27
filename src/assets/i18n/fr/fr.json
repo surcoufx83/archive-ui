@@ -40,11 +40,11 @@
   },
   "case": {
     "title": "{0} (dossier)",
-    "pagetitleNocase": "Aktenansicht",
-    "pagetitle_": "Aktenansicht: {0}",
-    "pagetitle_childs": "Untergeordnete Akten von: {0}",
-    "pagetitle_files": "Dateien der Akte: {0}",
-    "pagetitle_times": "Zeiträume der Akte: {0}",
+    "pagetitleNocase": "Vue du dossier",
+    "pagetitle_": "Vue du dossier : {0}",
+    "pagetitle_childs": "Enregistrements subordonnés de : {0}",
+    "pagetitle_files": "Fichiers du dossier : {0}",
+    "pagetitle_times": "Périodes du dossier : {0}",
     "metacard": {
       "title": "Informations générales",
       "shorttitle": "Généralités",
@@ -93,7 +93,7 @@
   },
   "cases": {
     "title": "Structure des dossiers",
-    "pagetitle": "Gesamte Aktenstruktur",
+    "pagetitle": "Structure globale des dossiers",
     "filescount": [
       "1 fichier",
       "Fichiers : {0}"
@@ -538,7 +538,7 @@
     }
   },
   "finance": {
-    "pagetitle": "Finanz-Dashboard"
+    "pagetitle": "Tableau de bord financier"
   },
   "folderbrowser": {
     "title": "Rechercher dans les répertoires",
@@ -548,7 +548,7 @@
     }
   },
   "home": {
-    "title": "Archiv Startseite",
+    "title": "Page d'accueil de l'archive",
     "cases": {
       "title": "Dossiers pour vérification"
     },
@@ -614,13 +614,13 @@
   },
   "locales": {
     "de": {
-      "title": "Deutsch"
+      "title": "Allemand"
     },
     "en": {
-      "title": "Englisch"
+      "title": "Anglais"
     },
     "fr": {
-      "title": "Französisch"
+      "title": "Français"
     }
   },
   "login": {
@@ -678,8 +678,11 @@
       "placeholder": "Terme de recherche",
       "submit": "Rechercher"
     },
+    "showNavigationItems": {
+      "btnTitle": "Afficher la navigation"
+    },
     "switchLocale": {
-      "btnTitle": "Ändern der Anzeigesprache"
+      "btnTitle": "Changer la langue d'affichage"
     },
     "workitems": {
       "leads": "Leads",
@@ -793,7 +796,7 @@
   },
   "stocks": {
     "title": "Titres et crypto",
-    "pagetitle": "Wertpapierübersicht",
+    "pagetitle": "Aperçu des titres",
     "api": "API",
     "bought": "Acheté",
     "boughtValue": "{0} {1} á {2}",
