@@ -1,4 +1,7 @@
 {
+  "accounts": {
+    "pagetitle": "Accounts"
+  },
   "authService": {
     "apiError": {
       "title": "Error",
@@ -37,6 +40,11 @@
   },
   "case": {
     "title": "{0} (Case)",
+    "pagetitleNocase": "Record view",
+    "pagetitle_": "Record view: {0}",
+    "pagetitle_childs": "Subordinate records of: {0}",
+    "pagetitle_files": "Files of the record: {0}",
+    "pagetitle_times": "Periods of the record: {0}",
     "metacard": {
       "title": "General information",
       "shorttitle": "General",
@@ -85,6 +93,7 @@
   },
   "cases": {
     "title": "Cases",
+    "pagetitle": "Overall record structure",
     "filescount": [
       "1 file",
       "{0} files"
@@ -130,6 +139,8 @@
   },
   "classify": {
     "classes": {
+      "Application": "Application",
+      "ApplicationPublic": "Application for public office",
       "In_AccountData": "Access data, credentials, passwords",
       "In_AccountReport": "Account report",
       "In_AnnualBonus": "Annual bonus, special payments, etc.",
@@ -179,6 +190,7 @@
       "In_PostReceipt": "Proof of posting Post/Parcel",
       "In_QuarterReport": "Quarterly financial statements",
       "In_Receipt": "Receipt",
+      "In_Receipt2": "Receipt",
       "In_Rejection": "Rejection, rejection notice",
       "In_RepairOrder": "Repair Order",
       "In_RepairReport": "Repair report",
@@ -196,6 +208,7 @@
       "In_VacationResp": "Vacation, sick, overtime",
       "In_VaccinationCertificate": "Vaccination Certificate",
       "In_Voucher": "Voucher",
+      "LeaseAgreement": "Lease Agreement",
       "Out_ClaimReport": "Damage report",
       "Out_Contradiction": "Contradiction",
       "Out_ExpenseReport": "Expense report and receipts",
@@ -204,7 +217,8 @@
       "Out_Revocation": "Revocation",
       "Out_SepaMandate": "SEPA direct debit mandate",
       "Out_TaxDeclaration": "Tax declaration",
-      "Out_Termination": "Termination"
+      "Out_Termination": "Termination",
+      "RentalAgreement": "Rental Agreement"
     }
   },
   "common": {
@@ -225,6 +239,7 @@
     "date": "Date",
     "day": "Day",
     "days": "Days",
+    "default": "System Default",
     "delete": "Delete",
     "goto": "Jump to",
     "hour": "Hour",
@@ -248,7 +263,8 @@
     "second": "Second",
     "seconds": "Seconds",
     "select": {
-      "pickOne": "Please select"
+      "pickOne": "Please select",
+      "pickedNone": "None selected"
     },
     "switchTo": "Switch to",
     "today": "Today",
@@ -290,12 +306,6 @@
     },
     "cases": {
       "title": "Cases",
-      "actions": {
-        "title": "Case actions"
-      },
-      "filetypes": {
-        "title": "File types"
-      },
       "status": {
         "title": "Case status"
       },
@@ -367,7 +377,10 @@
       }
     },
     "directories": {
-      "title": "Root directories"
+      "title": "Root directories",
+      "id": "Id",
+      "name": "Name",
+      "mtime": "Last Update"
     },
     "expenses": {
       "title": "Expenses",
@@ -381,8 +394,23 @@
         "title": "Expense types"
       }
     },
-    "extension": {
-      "title": "File types"
+    "extensions": {
+      "title": "File types",
+      "ext": "Ext",
+      "options": "Options",
+      "displayable": "View in browser",
+      "downloadable": "Download",
+      "indexable": "Content readable (OCR)",
+      "isofficefile": "Office file",
+      "mimetype": "Mime type",
+      "unknownMimetype": "Unknown mime type",
+      "editor": {
+        "title": "Edit file type",
+        "gscommand": "GhostScript command",
+        "ocrcommand": "OCR command",
+        "returnImg": "GhostScript returns image",
+        "returnMimetype": "Mime type after conversion"
+      }
     },
     "manager": {
       "title": "Data management",
@@ -397,6 +425,9 @@
     },
     "meters": {
       "title": "Counters"
+    },
+    "mimetypes": {
+      "title": "Mime types"
     },
     "oauth": {
       "services": {
@@ -428,6 +459,9 @@
       "apis": {
         "title": "APIs"
       }
+    },
+    "tags": {
+      "title": "Tags"
     },
     "units": {
       "title": "Units of measurement"
@@ -503,6 +537,9 @@
       }
     }
   },
+  "finance": {
+    "pagetitle": "Financial Dashboard"
+  },
   "folderbrowser": {
     "title": "Browse folders",
     "selected": "Selected: {0}",
@@ -511,7 +548,7 @@
     }
   },
   "home": {
-    "title": "Archive home",
+    "title": "Archive home page",
     "cases": {
       "title": "Cases for review"
     },
@@ -575,6 +612,17 @@
       }
     }
   },
+  "locales": {
+    "de": {
+      "title": "German"
+    },
+    "en": {
+      "title": "English"
+    },
+    "fr": {
+      "title": "French"
+    }
+  },
   "login": {
     "title": "User login",
     "subtitle": "This website requires the input of credentials. Please login with your username and password.",
@@ -630,6 +678,12 @@
       "placeholder": "Search topic",
       "submit": "Search"
     },
+    "showNavigationItems": {
+      "btnTitle": "Show navigation"
+    },
+    "switchLocale": {
+      "btnTitle": "Change display language"
+    },
     "workitems": {
       "leads": "Leads",
       "month": "Month",
@@ -668,6 +722,7 @@
   },
   "receipts": {
     "title": "Voucher registration",
+    "pagetitle": "Recording of receipts",
     "client": "Buyer",
     "currency": "Currency",
     "date": "Date",
@@ -707,7 +762,8 @@
         "directories": "Directories",
         "files": "Files (meta data)",
         "pages": "File Content",
-        "notepad": "Notes"
+        "notepad": "Notes",
+        "tags": "Tags"
       },
       "groupstitle": "Search scope",
       "runSearch": "Start search"
@@ -721,6 +777,7 @@
         "directories": "Directories",
         "files": "Files",
         "notes": "Notes",
+        "tags": "Tags",
         "pages": "File Content",
         "onPageNo": "Page {0}",
         "downloadFileTitle": "Download file",
@@ -732,12 +789,14 @@
     }
   },
   "shopping": {
+    "pagetitle": "Shopping list",
     "cart": {
       "title": "Shopping list"
     }
   },
   "stocks": {
     "title": "Stocks and Crypto",
+    "pagetitle": "Securities overview",
     "api": "API",
     "bought": "Purchased",
     "boughtValue": "{0} {1} each {2}",
@@ -759,6 +818,20 @@
     "updateRates": "Prices",
     "value": "Value",
     "wkn": "WKN"
+  },
+  "warehouse": {
+    "pagetitle": "Storage management",
+    "rooms": {
+      "pagetitle": "Room {0}",
+      "metacard": {
+        "title": "Settings",
+        "name": "Label",
+        "icon": "Icon"
+      },
+      "spacescard": {
+        "title": "Sections"
+      }
+    }
   },
   "work": {
     "offcategories": {

@@ -1,4 +1,7 @@
 {
+  "accounts": {
+    "pagetitle": "Comptes"
+  },
   "authService": {
     "apiError": {
       "title": "Erreur",
@@ -37,6 +40,11 @@
   },
   "case": {
     "title": "{0} (dossier)",
+    "pagetitleNocase": "Vue du dossier",
+    "pagetitle_": "Vue du dossier : {0}",
+    "pagetitle_childs": "Enregistrements subordonnés de : {0}",
+    "pagetitle_files": "Fichiers du dossier : {0}",
+    "pagetitle_times": "Périodes du dossier : {0}",
     "metacard": {
       "title": "Informations générales",
       "shorttitle": "Généralités",
@@ -85,6 +93,7 @@
   },
   "cases": {
     "title": "Structure des dossiers",
+    "pagetitle": "Structure globale des dossiers",
     "filescount": [
       "1 fichier",
       "Fichiers : {0}"
@@ -130,6 +139,8 @@
   },
   "classify": {
     "classes": {
+      "Application": "Candidature",
+      "ApplicationPublic": "Candidature à une fonction publique",
       "In_AccountData": "Données d'accès, credentials, mots de passe",
       "In_AccountReport": "Rapport de compte",
       "In_AnnualBonus": "Prime annuelle, paiements spéciaux, etc.",
@@ -179,6 +190,7 @@
       "In_PostReceipt": "Preuve de dépôt poste/colis",
       "In_QuarterReport": "Clôture trimestrielle",
       "In_Receipt": "Pièce de caisse",
+      "In_Receipt2": "Reçu",
       "In_Rejection": "Refus, décision de refus",
       "In_RepairOrder": "Ordre de réparation",
       "In_RepairReport": "Rapport de réparation",
@@ -196,6 +208,7 @@
       "In_VacationResp": "Congés, maladie, heures supplémentaires",
       "In_VaccinationCertificate": "Certificat de vaccination",
       "In_Voucher": "Coupon",
+      "LeaseAgreement": "Contrat de bail",
       "Out_ClaimReport": "Déclaration de sinistre",
       "Out_Contradiction": "Contradiction",
       "Out_ExpenseReport": "Décompte et justificatifs de frais",
@@ -204,7 +217,8 @@
       "Out_Revocation": "Révocation",
       "Out_SepaMandate": "Mandat de prélèvement automatique",
       "Out_TaxDeclaration": "Déclaration d'impôts",
-      "Out_Termination": "Résiliation"
+      "Out_Termination": "Résiliation",
+      "RentalAgreement": "Contrat de location"
     }
   },
   "common": {
@@ -225,6 +239,7 @@
     "date": "Date",
     "day": "Jour",
     "days": "Jours",
+    "default": "Standard",
     "delete": "Supprimer",
     "goto": "Ouvrir",
     "hour": "Heure",
@@ -248,7 +263,8 @@
     "second": "Seconde",
     "seconds": "Secondes",
     "select": {
-      "pickOne": "Veuillez choisir"
+      "pickOne": "Veuillez choisir",
+      "pickedNone": "Aucun sélectionné"
     },
     "switchTo": "Aller à",
     "today": "Aujourd'hui",
@@ -290,12 +306,6 @@
     },
     "cases": {
       "title": "Structure des dossiers",
-      "actions": {
-        "title": "Workflows des dossiers"
-      },
-      "filetypes": {
-        "title": "Types de fichiers"
-      },
       "status": {
         "title": "Statut des dossiers"
       },
@@ -367,7 +377,10 @@
       }
     },
     "directories": {
-      "title": "Répertoires racines"
+      "title": "Répertoires racines",
+      "id": "Id",
+      "name": "Nom",
+      "mtime": "Dernière modification"
     },
     "expenses": {
       "title": "Dépenses",
@@ -381,8 +394,23 @@
         "title": "Types de réservation"
       }
     },
-    "extension": {
-      "title": "Types de fichiers"
+    "extensions": {
+      "title": "Types de fichiers",
+      "ext": "Ext",
+      "options": "Options",
+      "displayable": "Affichage dans le navigateur",
+      "downloadable": "Télécharger",
+      "indexable": "Contenu lisible (OCR)",
+      "isofficefile": "Fichier Office",
+      "mimetype": "Type de mime",
+      "unknownMimetype": "Type de mime inconnu",
+      "editor": {
+        "title": "Modifier les types de fichiers",
+        "gscommand": "Commande GhostScript",
+        "ocrcommand": "Commande OCR",
+        "returnImg": "GhostScript fournit un fichier image",
+        "returnMimetype": "Type de mime après conversion"
+      }
     },
     "manager": {
       "title": "Gestion des données de base",
@@ -397,6 +425,9 @@
     },
     "meters": {
       "title": "Compteur"
+    },
+    "mimetypes": {
+      "title": "Types de mime"
     },
     "oauth": {
       "services": {
@@ -428,6 +459,9 @@
       "apis": {
         "title": "APIs"
       }
+    },
+    "tags": {
+      "title": "Tags"
     },
     "units": {
       "title": "Unités de mesure"
@@ -503,6 +537,9 @@
       }
     }
   },
+  "finance": {
+    "pagetitle": "Tableau de bord financier"
+  },
   "folderbrowser": {
     "title": "Rechercher dans les répertoires",
     "selected": "Sélectionné : {0}",
@@ -575,6 +612,17 @@
       }
     }
   },
+  "locales": {
+    "de": {
+      "title": "Allemand"
+    },
+    "en": {
+      "title": "Anglais"
+    },
+    "fr": {
+      "title": "Français"
+    }
+  },
   "login": {
     "title": "Connexion d'utilisateur",
     "subtitle": "Ce site web nécessite la saisie de données d'accès. Veuillez vous connecter avec votre nom d'utilisateur et votre mot de passe.",
@@ -630,6 +678,12 @@
       "placeholder": "Terme de recherche",
       "submit": "Rechercher"
     },
+    "showNavigationItems": {
+      "btnTitle": "Afficher la navigation"
+    },
+    "switchLocale": {
+      "btnTitle": "Changer la langue d'affichage"
+    },
     "workitems": {
       "leads": "Leads",
       "month": "Vue mensuelle",
@@ -668,6 +722,7 @@
   },
   "receipts": {
     "title": "Saisie des documents",
+    "pagetitle": "Saisie des achats",
     "client": "Acheteur",
     "currency": "Devise",
     "date": "Date",
@@ -707,7 +762,8 @@
         "directories": "Répertoires",
         "files": "Fichiers (métadonnées)",
         "pages": "Contenu des fichiers",
-        "notepad": "Notes"
+        "notepad": "Notes",
+        "tags": "Tags"
       },
       "groupstitle": "Domaines de recherche",
       "runSearch": "Lancer la recherche"
@@ -721,6 +777,7 @@
         "directories": "Répertoires",
         "files": "Fichiers",
         "notes": "Notes",
+        "tags": "Tags",
         "pages": "Contenu des fichiers",
         "onPageNo": "Page {0}",
         "downloadFileTitle": "Télécharger le fichier",
@@ -732,12 +789,14 @@
     }
   },
   "shopping": {
+    "pagetitle": "Liste d'achats",
     "cart": {
       "title": "Liste d'achats"
     }
   },
   "stocks": {
     "title": "Titres et crypto",
+    "pagetitle": "Aperçu des titres",
     "api": "API",
     "bought": "Acheté",
     "boughtValue": "{0} {1} á {2}",
@@ -759,6 +818,20 @@
     "updateRates": "Cours",
     "value": "Valeur",
     "wkn": "Code boursier"
+  },
+  "warehouse": {
+    "pagetitle": "Gestion de stocks",
+    "rooms": {
+      "pagetitle": "L'espace {0}",
+      "metacard": {
+        "title": "Paramètres",
+        "name": "Libellé",
+        "icon": "Icône"
+      },
+      "spacescard": {
+        "title": "Sections"
+      }
+    }
   },
   "work": {
     "offcategories": {
