@@ -239,6 +239,7 @@
     "date": "Date",
     "day": "Day",
     "days": "Days",
+    "default": "System Default",
     "delete": "Delete",
     "goto": "Jump to",
     "hour": "Hour",
@@ -611,6 +612,17 @@
       }
     }
   },
+  "locales": {
+    "de": {
+      "title": "Deutsch"
+    },
+    "en": {
+      "title": "Englisch"
+    },
+    "fr": {
+      "title": "Französisch"
+    }
+  },
   "login": {
     "title": "User login",
     "subtitle": "This website requires the input of credentials. Please login with your username and password.",
@@ -665,6 +677,9 @@
       "label": "Search archive",
       "placeholder": "Search topic",
       "submit": "Search"
+    },
+    "switchLocale": {
+      "btnTitle": "Ändern der Anzeigesprache"
     },
     "workitems": {
       "leads": "Leads",
