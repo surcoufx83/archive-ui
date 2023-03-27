@@ -678,6 +678,9 @@
       "placeholder": "Suchbegriff",
       "submit": "Suchen"
     },
+    "showNavigationItems": {
+      "btnTitle": "Navigation anzeigen"
+    },
     "switchLocale": {
       "btnTitle": "Ändern der Anzeigesprache"
     },
