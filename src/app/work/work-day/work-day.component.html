@@ -10,6 +10,30 @@
             <li class="breadcrumb-item">
               <ui-busy-indicator *ngIf="busy"></ui-busy-indicator>
             </li>
+            <li class="breadcrumb-item">
+              <a class="breadcrumb-item" *ngIf="yesterday != undefined" [routerLink]="['/work', 'day', f(yesterday, 'yyyy-MM-dd')]">
+                <button type="button" class="btn btn-sm btn-outline-primary">
+                  <app-icon [iconClass]="config.icons['go-left']" [marginEnd]="1"></app-icon>
+                  {{ f(yesterday, 'P') }}
+                </button>
+              </a>
+            </li>
+            <li class="breadcrumb-item" *ngIf="!isToday">
+              <a class="breadcrumb-item" [routerLink]="['/work', 'day', actualDate]">
+                <button type="button" class="btn btn-sm btn-outline-primary">
+                  <app-icon [iconClass]="config.icons['rotate-left']" [marginEnd]="1"></app-icon>
+                  {{ i18n('common.today') }}
+                </button>
+              </a>
+            </li>
+            <li class="breadcrumb-item">
+              <a class="breadcrumb-item" *ngIf="tomorrow != undefined" [routerLink]="['/work', 'day', f(tomorrow, 'yyyy-MM-dd')]">
+                <button type="button" class="btn btn-sm btn-outline-primary">
+                  <app-icon [iconClass]="config.icons['go-right']" [marginEnd]="1"></app-icon>
+                  {{ f(tomorrow, 'P') }}
+                </button>
+              </a>
+            </li>
           </ol>
         </nav>
       </div>

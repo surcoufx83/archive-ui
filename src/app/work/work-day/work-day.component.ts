@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { differenceInMinutes, format, parseISO, set } from 'date-fns';
+import { addDays, differenceInMinutes, format, parseISO, set, setHours, subDays } from 'date-fns';
 import { AuthService } from '../../auth.service';
 import { SettingsService } from '../../user/settings/settings.service';
 
@@ -31,6 +31,10 @@ export class WorkDayComponent implements OnInit {
   recentEntries: RecentBooking[] = [];
   timepattern: RegExp = /^(?<hr>\d{1,2}):?(?<min>\d{2})$/;
   today: Date = new Date();
+  tomorrow?: Date;
+  yesterday?: Date;
+  actualDate: string = this.f(new Date(), 'yyyy-MM-dd');
+  isToday: boolean = true;
   usersettingsObj: UserSettings | null = null;
   workprops: WorkProperties | null = null;
 
@@ -173,15 +177,21 @@ export class WorkDayComponent implements OnInit {
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
       let date = 'today';
-      if (params.has('date'))
-        date = params.get('date') ?? '';
+      if (!params.has('date')) {
+        this.router.navigate(['/work', 'day', this.actualDate]);
+        return;
+      }
+      date = params.get('date') ?? '';
       this.busy = true;
       let url = this.config.api.baseUrl + '/work/' + date;
       this.authService.queryApi(url).subscribe((reply) => {
         if (reply.success && reply.payload) {
           this.day = <WorkDay>reply.payload['day'];
           this.newBooking(this.day.id);
-          this.today = parseISO(this.day.date);
+          this.today = setHours(parseISO(this.day.date), 12);
+          this.isToday = (this.f(this.today, 'P') == this.actualDate);
+          this.yesterday = subDays(this.today, 1);
+          this.tomorrow = addDays(this.today, 1);
         }
         this.busy = false;
       });
