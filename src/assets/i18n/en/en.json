@@ -40,11 +40,11 @@
   },
   "case": {
     "title": "{0} (Case)",
-    "pagetitleNocase": "Aktenansicht",
-    "pagetitle_": "Aktenansicht: {0}",
-    "pagetitle_childs": "Untergeordnete Akten von: {0}",
-    "pagetitle_files": "Dateien der Akte: {0}",
-    "pagetitle_times": "Zeiträume der Akte: {0}",
+    "pagetitleNocase": "Record view",
+    "pagetitle_": "Record view: {0}",
+    "pagetitle_childs": "Subordinate records of: {0}",
+    "pagetitle_files": "Files of the record: {0}",
+    "pagetitle_times": "Periods of the record: {0}",
     "metacard": {
       "title": "General information",
       "shorttitle": "General",
@@ -93,7 +93,7 @@
   },
   "cases": {
     "title": "Cases",
-    "pagetitle": "Gesamte Aktenstruktur",
+    "pagetitle": "Overall record structure",
     "filescount": [
       "1 file",
       "{0} files"
@@ -538,7 +538,7 @@
     }
   },
   "finance": {
-    "pagetitle": "Finanz-Dashboard"
+    "pagetitle": "Financial Dashboard"
   },
   "folderbrowser": {
     "title": "Browse folders",
@@ -548,7 +548,7 @@
     }
   },
   "home": {
-    "title": "Archiv Startseite",
+    "title": "Archive home page",
     "cases": {
       "title": "Cases for review"
     },
@@ -614,13 +614,13 @@
   },
   "locales": {
     "de": {
-      "title": "Deutsch"
+      "title": "German"
     },
     "en": {
-      "title": "Englisch"
+      "title": "English"
     },
     "fr": {
-      "title": "Französisch"
+      "title": "French"
     }
   },
   "login": {
@@ -678,8 +678,11 @@
       "placeholder": "Search topic",
       "submit": "Search"
     },
+    "showNavigationItems": {
+      "btnTitle": "Show navigation"
+    },
     "switchLocale": {
-      "btnTitle": "Ändern der Anzeigesprache"
+      "btnTitle": "Change display language"
     },
     "workitems": {
       "leads": "Leads",
@@ -793,7 +796,7 @@
   },
   "stocks": {
     "title": "Stocks and Crypto",
-    "pagetitle": "Wertpapierübersicht",
+    "pagetitle": "Securities overview",
     "api": "API",
     "bought": "Purchased",
     "boughtValue": "{0} {1} each {2}",
