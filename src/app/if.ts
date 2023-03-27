@@ -642,6 +642,69 @@ export interface VersionStats {
   votedWordcount: number;
 }
 
+export interface WarehouseItem {
+  id: number;
+  created: string;
+  deleted: string | null;
+  description: string;
+  externalUrl: string;
+  fixed: WarehouseItemFixedLocation;
+  icon: string;
+  name: string;
+  order: number;
+  spaceid: number;
+  updated: string;
+}
+
+export interface WarehouseItemFixedLocation {
+  col: number;
+  row: number;
+}
+
+export interface WarehouseRoom {
+  id: number;
+  allwaysopen: boolean;
+  created: string;
+  deleted: string | null;
+  icon: string;
+  name: string;
+  order: number;
+  spaces: number[];
+  updated: string;
+  urlname: string;
+}
+
+export interface WarehouseSpace {
+  id: number;
+  children: number[];
+  created: string;
+  deleted: string | null;
+  fixed: WarehouseSpaceFixedLayout | null;
+  fullkey: string;
+  icon: string;
+  items?: WarehouseSpaceItems;
+  key: string;
+  layout: string;
+  level: number;
+  name: string;
+  order: number;
+  parentid: number | null;
+  roomid: number;
+  updated: string;
+}
+
+export interface WarehouseSpaceFixedLayout {
+  cols: number;
+  rows: number;
+}
+
+export interface WarehouseSpaceItems {
+  default: WarehouseItem[];
+  fixed: { [key: string]: WarehouseItem };
+  fixedCols?: number[];
+  fixedRows?: number[];
+}
+
 export interface WorkCalendarColor {
   primary: string;
   secondary: string;

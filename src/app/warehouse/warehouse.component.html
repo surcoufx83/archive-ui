@@ -22,6 +22,10 @@
                 <div class="d-none d-lg-block me-1">
                     <span class="badge bg-light text-dark fw-lighter">{{ formatService.fnumber(room.order + 1) }}</span>
                 </div>
+                <div class="mx-2" *ngIf="room.icon != ''">
+                    <app-icon [iconClass]="room.icon" [fixedWidth]="true"></app-icon>
+                </div>
+                <div class="mx-2" *ngIf="room.icon == ''" style="width: 20px;"></div>
                 <div class="flex-grow-1 pointer">
                     <div>{{ room.name }}</div>
                 </div>

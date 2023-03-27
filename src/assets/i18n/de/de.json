@@ -85,7 +85,10 @@
   },
   "cases": {
     "title": "Aktenstruktur",
-    "filescount": ["1 Datei", "{0} Dateien"],
+    "filescount": [
+      "1 Datei",
+      "{0} Dateien"
+    ],
     "reference": "Referenz {0}",
     "showDeleted": "Gel.",
     "showInRetention": "Ausgebl."
@@ -438,7 +441,7 @@
       "roles": {
         "title": "Rollen",
         "name": "Technischer Name",
-        "i18nname":"Lokalisierter Name"
+        "i18nname": "Lokalisierter Name"
       }
     },
     "stocks": {
@@ -446,6 +449,9 @@
       "apis": {
         "title": "APIs"
       }
+    },
+    "tags": {
+      "title": "Tags"
     },
     "units": {
       "title": "Maßeinheiten"
@@ -725,7 +731,8 @@
         "directories": "Verzeichnisse",
         "files": "Dateien (Metadaten)",
         "pages": "Dateiinhalte",
-        "notepad": "Notizen"
+        "notepad": "Notizen",
+        "tags": "Tags"
       },
       "groupstitle": "Suchbereiche",
       "runSearch": "Suche starten"
@@ -739,6 +746,7 @@
         "directories": "Verzeichnisse",
         "files": "Dateien",
         "notes": "Notizen",
+        "tags": "Tags",
         "pages": "Dateiinhalte",
         "onPageNo": "Seite {0}",
         "downloadFileTitle": "Datei herunterladen",
@@ -778,6 +786,20 @@
     "value": "Wert",
     "wkn": "WKN"
   },
+  "warehouse": {
+    "pagetitle": "Lagerverwaltung",
+    "rooms": {
+      "pagetitle": "Raumverwaltung {0}",
+      "metacard": {
+        "title": "Einstellungen",
+        "name": "Bezeichnung",
+        "icon": "Icon"
+      },
+      "spacescard": {
+        "title": "Abschnitte"
+      }
+    }
+  },
   "work": {
     "offcategories": {
       "educationalLeave": "Bildungsurlaub",
@@ -800,9 +822,6 @@
       "travel": "Reise",
       "title": "Zeitart"
     }
-  },
-  "warehouse": {
-    "pagetitle": "Lagerverwaltung"
   },
   "workday": {
     "pagetitle": "Tagesbuchungen {0}",
@@ -840,9 +859,7 @@
         "nameTitle": "Kundenname",
         "namePlaceholder": "Bitte angeben..."
       },
-      "live": {
-
-      }
+      "live": {}
     }
   },
   "workmonth": {

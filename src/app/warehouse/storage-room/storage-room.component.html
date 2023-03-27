@@ -1,1 +1,158 @@
-<p>storage-room works!</p>
+<div class="container-fluid pt-4 pt-md-2 mb-2">
+    <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between align-items-center">
+        <h2 class="text-nowrap text-truncate">{{ i18n('warehouse.rooms.pagetitle', [room?.name ?? '']) }}</h2>
+    </div>
+</div>
+
+<div class="container-fluid pt-4 pt-md-2 mb-2" *ngIf="room != null">
+    <form #f (ngSubmit)="onSubmitRoom()" ngNativeValidate [formGroup]="roomFormgroup">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h3 class="text-nowrap text-truncate">{{ i18n('warehouse.rooms.metacard.title') }}</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12 col-lg-6 mb-3">
+                        <div class="form-group">
+                            <label for="room-name" class="form-label required">{{ i18n('warehouse.rooms.metacard.name')
+                                }}</label>
+                            <input type="text" class="form-control" id="room-name" name="room-name"
+                                formControlName="name">
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-3 mb-3">
+                        <div class="form-group">
+                            <label for="room-icon" class="form-label required">{{ i18n('warehouse.rooms.metacard.icon')
+                                }}</label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <app-icon [iconClass]="roomFormgroup.controls.icon.value ?? ''"></app-icon>
+                                </span>
+                                <input type="text" class="form-control" id="room-icon" name="room-icon"
+                                    formControlName="icon">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <ng-container
+            *ngTemplateOutlet="spaceListingTemplate; context: { layout: 'col', spaceids: room.spaces, space: null, room: room }"></ng-container>
+    </form>
+
+</div>
+
+<ng-template #spaceListingTemplate let-layout="layout" let-spaceids="spaceids" let-space="space" let-room="room">
+    <div [ngClass]="{ 'd-flex': true, 'flex-lg-row': layout == 'row', 'flex-column': true }">
+        <ng-container *ngFor="let id of spaceids">
+            <ng-container
+                *ngTemplateOutlet="spaceTemplate; context: { space: spaces[id], room: room, parentlayout: layout }"></ng-container>
+        </ng-container>
+        <ng-container *ngIf="space != null && space.id == currentSpaceId && space.layout !== 'fixed'">
+            <ng-container
+                *ngTemplateOutlet="spaceAddItemTemplate; context: { space: space, room: room }"></ng-container>
+        </ng-container>
+    </div>
+</ng-template>
+
+<ng-template #spaceTemplate let-space="space" let-room="room" let-parentlayout="parentlayout">
+    <div
+        [ngClass]="{ 'd-flex': true, 'flex-column': true, 'flex-grow-1': spacesOpened.indexOf(space.id) > -1, 'ms-2': parentlayout == 'row', ' p-2 mb-2 border bg-white rounded': true }">
+        <div class="d-flex flex-row">
+            <a cdkDrag [routerLink]="['/warehouse', room.id, room.urlname]"
+                [queryParams]="{ route: getSpaceQueryParam(space), space: space.id }"
+                class="list-group-item flex-grow-1">
+                <div class="mx-2" *ngIf="space.icon != ''">
+                    <app-icon [iconClass]="space.icon" [fixedWidth]="true"></app-icon>
+                </div>
+                <h5>{{ space.name }}</h5>
+            </a>
+            <div class="pointer text-secondary" *ngIf="(currentSpaceId == space.id || room.allwaysopen)">
+                <button type="button" class="btn btn-outline-primary border-0 btn-sm ms-2">
+                    <app-icon [iconClass]="config.icons['edit']"></app-icon>
+                </button>
+                <button type="button" class="btn btn-outline-danger border-0 btn-sm ms-2">
+                    <app-icon [iconClass]="config.icons['delete']"></app-icon>
+                </button>
+            </div>
+        </div>
+        <div *ngIf="space.layout != 'none'" class="mt-3">
+            <ng-container
+                *ngTemplateOutlet="spaceListingTemplate; context: { layout: space.layout, spaceids: space.children, space: space, room: room }"></ng-container>
+        </div>
+        <div *ngIf="(currentSpaceId == space.id || room.allwaysopen) && space.items?.default.length > 0" class="mt-3">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item pe-0" *ngFor="let item of space.items.default; let i = index">
+                    <ng-container
+                        *ngTemplateOutlet="spaceItemTemplate; context: { space: space, item: item, showOrder: true }"></ng-container>
+                </li>
+                <li class="list-group-item pe-0">
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-outline-secondary border-0 btn-sm">
+                            <app-icon [iconClass]="config.icons['add']"></app-icon>
+                        </button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div *ngIf="(currentSpaceId == space.id || room.allwaysopen) && space.items?.fixedCols.length > 0" class="mt-3">
+            <div class="container-fluid">
+                <div class="row" *ngFor="let row of space.items.fixedRows">
+                    <div class="col m-2 py-2 border rounded" *ngFor="let col of space.items.fixedCols">
+                        <ng-container
+                            *ngTemplateOutlet="spaceItemTemplate; context: { space: space, item: getSpaceItem(space, row, col) }"></ng-container>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #spaceAddItemTemplate let-space="space" let-room="room">
+    <div class="p-2 mb-2 mx-1 border rounded">
+        <button type="button" class="btn btn-outline-secondary border-0 btn-sm">
+            <app-icon [iconClass]="config.icons['add']"></app-icon>
+        </button>
+    </div>
+</ng-template>
+
+<ng-template #spaceItemTemplate let-space="space" let-item="item" let-showOrder="showOrder">
+    <div class="d-flex flex-column flex-grow-1">
+        <div class="d-flex">
+            <div class="d-none d-lg-block me-1" *ngIf="showOrder">
+                <span class="badge bg-light text-dark fw-lighter">{{
+                    formatService.fnumber(item.order + 1) }}</span>
+            </div>
+            <div class="mx-1" *ngIf="item.icon != ''">
+                <app-icon [iconClass]="item.icon" [fixedWidth]="true"></app-icon>
+            </div>
+            <div class="mx-1" *ngIf="item.icon == ''" style="width: 20px;"></div>
+            <div class="flex-grow-1">
+                <strong>{{ item.name }}</strong>
+            </div>
+            <div class="d-flex flex-row">
+                <button type="button" class="btn btn-outline-primary border-0 btn-sm" *ngIf="item.id === 0">
+                    <app-icon [iconClass]="config.icons['add']"></app-icon>
+                </button>
+                <button type="button" class="btn btn-outline-primary border-0 btn-sm" *ngIf="item.id > 0">
+                    <app-icon [iconClass]="config.icons['edit']"></app-icon>
+                </button>
+                <button type="button" class="btn btn-outline-danger border-0 btn-sm" *ngIf="item.id > 0">
+                    <app-icon [iconClass]="config.icons['x']"></app-icon>
+                </button>
+                <button type="button" class="btn btn-outline-danger border-0 btn-sm" *ngIf="item.id > 0">
+                    <app-icon [iconClass]="config.icons['delete']"></app-icon>
+                </button>
+            </div>
+        </div>
+        <div *ngIf="item.description || item.externalUrl" class="d-flex justify-content-between align-items-center">
+            <i>{{ item.description }}</i>
+            <a *ngIf="item.externalUrl" target="_blank" [href]="item.externalUrl">
+                <button type="button" class="btn btn-sm btn-secondary">
+                    <app-icon [iconClass]="config.icons['goto']"></app-icon>
+                </button>
+            </a>
+        </div>
+    </div>
+</ng-template>

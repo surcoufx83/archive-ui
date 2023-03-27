@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import {
   Address,
   BankAccount,
@@ -23,9 +23,13 @@ import {
   Tag,
   User,
   UserSettings,
+  WarehouseItem,
+  WarehouseRoom,
+  WarehouseSpace,
   WorkCustomer,
   WorkProperties
 } from 'src/app/if';
+import { WarehouseReply } from 'src/app/warehouse/warehouse.component';
 import { AuthService } from '../../auth.service';
 import { AppConfig, ConfigService } from '../../config.service';
 
@@ -58,7 +62,7 @@ export class SettingsService {
   private worksync: number = 0;
 
   private expectedVersions = {
-    casesData: 1,
+    casesData: 2,
     financeData: 1,
     notepadData: 1,
     partiesData: 1,
@@ -183,6 +187,55 @@ export class SettingsService {
       }
     }
     this.syncWork();
+  }
+
+  public loadWarehouseEntities(): void {
+    this.authService.queryApi('api/warehouse').subscribe((reply) => {
+      if (reply.success && reply.payload != undefined && reply.payload['rooms'] != undefined && reply.payload['spaces'] != undefined) {
+        const payload = <WarehouseReply>reply.payload;
+        let roomidmapper: { [key: number]: number } = {};
+        payload.rooms.forEach((room, i) => {
+          room.urlname = room.name.replace(/\s/ig, '-');
+          room.spaces = [];
+          roomidmapper[room.id] = i;
+        });
+        let tempspaces: { [key: number]: WarehouseSpace } = {}
+        payload.spaces.sort((a, b) => a.roomid != b.roomid ? a.roomid - b.roomid : a.level != b.level ? a.level - b.level : a.order - b.order);
+        payload.spaces.forEach((space) => {
+          space.children = [];
+          tempspaces[space.id] = space;
+          if (space.parentid !== null) {
+            if (tempspaces[space.parentid] !== undefined)
+              tempspaces[space.parentid].children.push(space.id);
+            else
+              console.warn(`Found warehouse space ${space.id} with parentid ${space.parentid} is not yet loaded`)
+          }
+          else {
+            if (payload.rooms[roomidmapper[space.roomid]] !== undefined)
+              payload.rooms[roomidmapper[space.roomid]].spaces.push(space.id);
+            else
+              console.warn(`Found warehouse space ${space.id} with roomid ${space.roomid} is not yet loaded`)
+          }
+        });
+        this.warehouseRooms.next(payload.rooms.sort((a, b) => a.order - b.order));
+        this.warehouseSpaces.next(tempspaces);
+      }
+    });
+  }
+
+  public loadWarehouseItems(room: WarehouseRoom): Subject<boolean | WarehouseItem[]> {
+    let subject = new Subject<boolean | WarehouseItem[]>();
+    this.authService.queryApi(`api/warehouse/${room.id}/items`).subscribe((reply) => {
+      if (reply.success && reply.payload != undefined && reply.payload['items'] != undefined) {
+        subject.next(<WarehouseItem[]>reply.payload['items']);
+        subject.complete();
+      }
+      else {
+        subject.next(false);
+        subject.complete();
+      }
+    });
+    return subject;
   }
 
   public loadWorkEntities(): void {
@@ -377,6 +430,22 @@ export class SettingsService {
 
   private user: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
   user$ = this.user.asObservable();
+
+  private warehouseRooms: BehaviorSubject<WarehouseRoom[] | null> = new BehaviorSubject<WarehouseRoom[] | null>(null);
+  warehouseRooms$ = this.warehouseRooms.asObservable();
+
+  getWarehouseRoom(id: number): WarehouseRoom | null {
+    if (this.warehouseRooms.value == undefined)
+      return null;
+    for (let i = 0; i < this.warehouseRooms.value?.length; i++) {
+      if (this.warehouseRooms.value[i].id === id)
+        return this.warehouseRooms.value[i];
+    }
+    return null;
+  }
+
+  private warehouseSpaces: BehaviorSubject<{ [key: number]: WarehouseSpace } | null> = new BehaviorSubject<{ [key: number]: WarehouseSpace } | null>(null);
+  warehouseSpaces$ = this.warehouseSpaces.asObservable();
 
   private workprops: BehaviorSubject<WorkProperties | null> = new BehaviorSubject<WorkProperties | null>(null);
   workprops$ = this.workprops.asObservable();
@@ -771,7 +840,8 @@ export class SettingsService {
     Object.values(cases).forEach((c) => {
       if (c.parentid == null) {
         rootcases.push(c.id);
-        casechilds[c.id] = [];
+        if (casechilds[c.id] == undefined)
+          casechilds[c.id] = [];
       } else {
         if (casechilds[c.parentid] == undefined)
           casechilds[c.parentid] = [];
