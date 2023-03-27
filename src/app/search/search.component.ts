@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { format } from 'date-fns';
-import { saveAs } from 'file-saver';
+import { saveAs } from 'file-saver-es';
 import { File, UserSettings } from 'src/app/if';
 import { AuthService } from '../auth.service';
 import { AppConfig, ConfigService } from '../config.service';
@@ -32,7 +32,7 @@ export class SearchComponent implements OnInit {
   showHistoric: boolean = false;
   storageVersion: number = 1;
   urltoken: string = '';
-  usersettingsObj: UserSettings|null = null;
+  usersettingsObj: UserSettings | null = null;
 
   constructor(private authService: AuthService,
     private configService: ConfigService,
@@ -40,8 +40,7 @@ export class SearchComponent implements OnInit {
     private i18nService: I18nService,
     private route: ActivatedRoute,
     public router: Router,
-    private settings: SettingsService)
-  {
+    private settings: SettingsService) {
     this.settings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
     });
@@ -61,11 +60,11 @@ export class SearchComponent implements OnInit {
     return this.configService.config;
   }
 
-  download(item: SearchResultFileItem) : void {
+  download(item: SearchResultFileItem): void {
     this.authService.download(this.fileurl(item)).subscribe(blob => saveAs(blob, item.file.name));
   }
 
-  f(date: Date|string, form: string): string {
+  f(date: Date | string, form: string): string {
     if (typeof date === 'string')
       date = new Date(date);
     return format(date, form, { locale: this.i18nService.DateLocale });
@@ -97,13 +96,13 @@ export class SearchComponent implements OnInit {
     });
   }
 
-  reset() : void {
+  reset(): void {
     this.resultcount = 0;
     this.resultgroupcount = {};
     this.searchresults = {};
   }
 
-  onSearch(formSubmit: boolean, token: string = '') : void {
+  onSearch(formSubmit: boolean, token: string = ''): void {
     if (this.phrase === '')
       return;
     if (this.busy)
@@ -130,7 +129,7 @@ export class SearchComponent implements OnInit {
         let url = this.config.api.baseUrl + group['searchPath'];
         this.authService.updateApi(url, { search: phrase }).subscribe((reply) => {
           if (reply.success && reply.payload != null) {
-            switch(group['groupName']) {
+            switch (group['groupName']) {
               case 'accounts':
                 this.searchresults.accounts = <SearchResultAccountItem[]>reply.payload['items'];
                 break;
@@ -157,13 +156,13 @@ export class SearchComponent implements OnInit {
           this.searchactive.splice(this.searchactive.indexOf(group['groupName']));
           let $this = this;
           clearTimeout(this.debounce);
-          this.debounce = setTimeout(function() { $this.onSearchCompleted(formSubmit); }, 200);
+          this.debounce = setTimeout(function () { $this.onSearchCompleted(formSubmit); }, 200);
         });
       }
     }
   }
 
-  onSearchCompleted(formSubmit: boolean) : void {
+  onSearchCompleted(formSubmit: boolean): void {
     this.resultcount = 0;
     this.resultgroupcount = {};
     for (let [key, obj] of Object.entries(this.searchresults)) {
