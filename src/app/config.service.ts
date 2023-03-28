@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +14,7 @@ export class ConfigService {
 
   private cache: { [key: string]: any } = {};
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private http: HttpClient) {
     this.startUrl = location.href.substr(location.href.indexOf('#') + 1);
   }
 
@@ -33,6 +32,7 @@ export class ConfigService {
       .then(config => {
         this.appConfig = <AppConfig>config;
         this.appConfig.api.startUrl = this.startUrl;
+        this.appConfig.icons = DefaultIcons;
         this.appConfig.loaded = true;
       });
   }
@@ -85,7 +85,7 @@ export interface NavbarItem {
 
 export interface OAuth2Config {
   enabled: boolean;
-  items: {[key: string]: OAuth2Item};
+  items: { [key: string]: OAuth2Item };
 }
 
 export interface OAuth2Item {
@@ -101,7 +101,7 @@ export interface StorageConfig {
   prefix: string;
 }
 
-export const DefaultIcons: { [key: string] : string } = {
+export const DefaultIcons: { [key: string]: string } = {
   'account': 'fa-solid fa-user',
   'add': 'fa-solid fa-plus',
   'bankAccount': 'fa-solid fa-wallet',
@@ -140,7 +140,9 @@ export const DefaultIcons: { [key: string] : string } = {
   'info': 'fa-solid fa-info-circle',
   'leads': 'fa-solid fa-funnel-dollar',
   'list': 'fa-solid fa-grip-lines',
+  'locale': 'fa-solid fa-language',
   'login': 'fa-solid fa-user-lock',
+  'menu': 'fa-solid fa-bars',
   'meter': 'fa-solid fa-gauge',
   'meter-reading': 'fa-solid fa-gauge-simple',
   'moving-boxes': 'fa-solid fa-people-carry-box',
@@ -160,6 +162,7 @@ export const DefaultIcons: { [key: string] : string } = {
   'step-next': 'fa-solid fa-forward-step',
   'stocks': 'fa-solid fa-money-bills',
   'stopwatch': 'fa-solid fa-stopwatch',
+  'tag': 'fa-solid fa-tag',
   'taxes': 'fa-solid fa-stamp',
   'taxrate': 'fa-solid fa-scale-balanced',
   'today': 'fa-solid fa-calendar-day',
