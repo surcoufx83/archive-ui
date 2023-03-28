@@ -43,7 +43,6 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private router: Router,
     private userSettings: SettingsService) {
-    this.userSettings.loadWorkEntities();
     this.userSettings.settings$.subscribe((settings) => this.usersettingsObj = settings);
     this.userSettings.workprops$.subscribe((props) => {
       if (props == null)

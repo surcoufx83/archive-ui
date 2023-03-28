@@ -50,7 +50,6 @@ export class WorkDayComponent implements OnInit {
     private router: Router,
     private userSettings: SettingsService,
     private scroller: ViewportScroller) {
-    this.userSettings.loadWorkEntities();
     this.userSettings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
     });
