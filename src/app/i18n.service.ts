@@ -5,7 +5,6 @@ import { Locale } from 'date-fns';
 import { de, enUS, fr } from 'date-fns/locale';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { ConfigService } from './config.service';
 import { ToastsService } from './utils/toasts.service';
 
 @Injectable({
@@ -35,11 +34,10 @@ export class I18nService {
     return this.locale;
   }
 
-  constructor(private configService: ConfigService,
-    private http: HttpClient,
+  constructor(private http: HttpClient,
     private titleService: Title,
     private toastService: ToastsService) {
-    let olddata: string | null | LocalesStorage = localStorage.getItem(`${this.configService.config.storage.prefix}locale`);
+    let olddata: string | null | LocalesStorage = localStorage.getItem(`locale`);
     if (olddata !== null) {
       olddata = <LocalesStorage>JSON.parse(olddata);
       if (this.availableLocales.indexOf(olddata.locale) > -1)
@@ -114,7 +112,7 @@ export class I18nService {
     let storeItem: LocalesStorage = {
       locale: this.locale
     };
-    localStorage.setItem(`${this.configService.config.storage.prefix}locale`, JSON.stringify(storeItem));
+    localStorage.setItem(`locale`, JSON.stringify(storeItem));
   }
 
   private titleTimeout?: any;
