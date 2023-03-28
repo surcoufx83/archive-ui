@@ -66,37 +66,6 @@
               </form>
             </li>
           </ul>
-          <!-- <div class="d-none d-md-flex text-white align-items-center">
-            <div class="me-4 dropdown">
-              <button type="button" class="btn btn-dark locale-btn dropdown-toggle" id="navbar-locales-dropdown"
-                role="button" data-bs-toggle="dropdown" aria-expanded="false"
-                [title]="i18n('navbar.switchLocale.btnTitle')">
-                <app-icon [iconClass]="config.icons['locale']"></app-icon>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-dark bg-dark mt-2 border shadow"
-                aria-labelledby="navbar-locales-dropdown">
-                <li *ngFor="let locale of navbarLocales">
-                  <a class="dropdown-item" href="#" (click)="changeLocaleTo(locale.code, $event)">
-                    {{ i18n('locales.' + locale.code + '.title') }}
-                    <span *ngIf="locale.isDefault" class="fs-7">({{ i18n('common.default') }})</span>
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <form (submit)="submitSearch()">
-              <div class="input-group">
-                <label class="input-group-text" id="navbar-main-search-label" for="navbar-main-search-input">
-                  <app-icon [iconClass]="config.icons['search']"></app-icon>
-                </label>
-                <input type="text" class="form-control form-control-sm"
-                  [placeholder]="i18n('navbar.search.placeholder')" aria-describedby="navbar-main-search-label"
-                  id="navbar-main-search-input" name="navbar-main-search-input" [(ngModel)]="searchphrase">
-                <button class="btn btn-sm btn-secondary" type="submit">
-                  {{ i18n('navbar.search.submit') }}
-                </button>
-              </div>
-            </form>
-          </div> -->
         </div>
       </div>
     </nav>
