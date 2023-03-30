@@ -30,6 +30,7 @@ export class PriceComparisonComponent implements OnInit {
     this.userSettings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
     });
+    this.i18nService.setTitle('pricecomparison.title');
   }
 
   get config(): AppConfig {

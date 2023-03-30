@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  i18nFallback: 'de'
+  i18nFallback: 'en'
 };

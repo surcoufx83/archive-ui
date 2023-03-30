@@ -47,6 +47,7 @@ export class ReceiptsComponent implements OnInit, OnDestroy {
     this.userSettings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
     });
+    this.i18nService.setTitle('receipts.pagetitle');
     let olddata: string | null | ReceiptsStorage = localStorage.getItem(this.storagename);
     if (olddata) {
       olddata = <ReceiptsStorage>JSON.parse(olddata);

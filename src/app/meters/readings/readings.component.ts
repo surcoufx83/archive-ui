@@ -18,7 +18,7 @@ export class ReadingsComponent implements OnInit {
   busy: boolean = true;
   saving: boolean = false;
   meter: Meter[] = [];
-  editRecord: ReadingDate|null = null;
+  editRecord: ReadingDate | null = null;
   dates: { [key: string]: number } = {};
   readings: ReadingDate[] = [];
   showmeter: { [key: number]: boolean } = {};
@@ -30,7 +30,7 @@ export class ReadingsComponent implements OnInit {
     public router: Router,
     private userSettings: SettingsService,
     public formatService: FormatService) {
-
+    this.i18nService.setTitle('meter.readings.title');
   }
 
   get config(): AppConfig {
@@ -45,7 +45,7 @@ export class ReadingsComponent implements OnInit {
     return this.i18nService.i18n(key, params);
   }
 
-  getMeter(id: number): Meter|null {
+  getMeter(id: number): Meter | null {
     for (let i = 0; i < this.meter.length; i++) {
       if (this.meter[i].id === id)
         return this.meter[i];
@@ -96,7 +96,7 @@ export class ReadingsComponent implements OnInit {
     return this.formatService.fnumber(n, fd, md);
   }
 
-  saveRecord(record: ReadingDate|null): void {
+  saveRecord(record: ReadingDate | null): void {
     if (this.saving || !record)
       return;
     this.saving = true;
@@ -152,5 +152,5 @@ export interface ReadingDate {
 
 export interface ReadingItem {
   meterid: number;
-  value: number|string;
+  value: number | string;
 }

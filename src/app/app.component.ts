@@ -13,32 +13,17 @@ import { SettingsService } from './user/settings/settings.service';
 })
 export class AppComponent {
 
-  routeUrl: string = '';
-  searchphrase: string = '';
 
   constructor(private authService: AuthService,
-              private configService: ConfigService,
-              private i18nService: I18nService,
-              private router: Router)
+              private configService: ConfigService)
   { }
 
   get config() : AppConfig {
     return this.configService.config;
   }
 
-  i18n(key: string) : string {
-    return this.i18nService.i18n(key);
-  }
-
   get isLoggedin() : boolean {
     return this.authService.isLoggedin;
-  }
-
-  submitSearch() : void {
-    if (this.searchphrase !== '')
-      this.router.navigate(['search', this.searchphrase]);
-    else
-      this.router.navigate(['search']);
   }
 
 }

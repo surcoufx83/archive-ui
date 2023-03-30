@@ -22,6 +22,7 @@ export class FinanceComponent implements OnInit {
       tempar.push({ "title": "navbar.finance.taxYear", params: [`${getYear(Date.now()) - 1}`], "icon": "taxes", "link": `/finance/taxes/${getYear(Date.now()) - 1}` });
     tempar.push({ "title": "navbar.finance.taxYear", params: [`${getYear(Date.now())}`], "icon": "taxes", "link": `/finance/taxes/${getYear(Date.now())}` });
     this.navitems = tempar;
+    this.i18nService.setTitle('finance.pagetitle');
   }
 
   get config(): AppConfig {

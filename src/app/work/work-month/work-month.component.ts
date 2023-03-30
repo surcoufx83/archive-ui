@@ -29,7 +29,7 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
   viewDate: Date = new Date();
   year: number | undefined;
   month: number | undefined;
-  monthLoading: boolean = false;
+  monthLoading: boolean = true;
   dayObjs: WorkDay[] = [];
   monthObj?: WorkMonth;
   usersettingsObj: UserSettings | null = null;
@@ -43,7 +43,6 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private router: Router,
     private userSettings: SettingsService) {
-    this.userSettings.loadWorkEntities();
     this.userSettings.settings$.subscribe((settings) => this.usersettingsObj = settings);
     this.userSettings.workprops$.subscribe((props) => {
       if (props == null)
@@ -144,6 +143,7 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
       if (reply.success && reply.payload != undefined) {
         if (reply.payload['month'] != null) {
           this.monthObj = <WorkMonth>reply.payload['month'];
+          this.i18nService.setTitle('workmonth.pagetitle', [this.f(this.selectedMonth, 'MMMM yyyy')]);
           if (reply.payload['days'] != null) {
             this.dayObjs = <WorkDay[]>reply.payload['days'];
             this.calendarEvents = [];

@@ -72,12 +72,13 @@ export class SettingsService {
 
   constructor(private authService: AuthService,
     private configService: ConfigService) {
+    this.loadUserSettings();
     this.loadCasesData();
     this.loadFinanceData();
     this.loadNotepadData();
     this.loadPartiesData();
     this.loadTags();
-    this.loadUserSettings();
+    this.loadWorkStorageSettings();
   }
 
   get config(): AppConfig {
@@ -177,7 +178,7 @@ export class SettingsService {
     this.syncTags();
   }
 
-  private loadUserSettings(): void {
+  private loadWorkStorageSettings(): void {
     let olddata: string | null | WorkStorage = localStorage.getItem(this.workstorage);
     if (olddata) {
       olddata = <WorkStorage>JSON.parse(olddata);
@@ -188,6 +189,29 @@ export class SettingsService {
     }
     this.syncWork();
   }
+
+  public loadUserSettings(): void {
+    let olddata: string | null | ClientSettings = localStorage.getItem(this.clientSettingsStorage);
+    if (olddata) {
+      olddata = <ClientSettings>JSON.parse(olddata);
+      this.clientSettings.next(olddata);
+    }
+    let olddata2: string | null | UserSettingsStorage = localStorage.getItem(`${this.config.storage.prefix}user`);
+    if (olddata2) {
+      olddata2 = <UserSettingsStorage>JSON.parse(olddata2);
+      this.updateUser(olddata2.user, false);
+        this.updateWorkProps(olddata2.work, false);
+    }
+    let url = this.configService.config.api.baseUrl + '/user/settings';
+    this.authService.queryApi(url).subscribe((reply) => {
+      if (reply.success && reply.payload != null) {
+        this.updateUser(<User>reply.payload['user']);
+        this.updateWorkProps(<WorkProperties>reply.payload['work']);
+        localStorage.setItem(`${this.config.storage.prefix}user`, JSON.stringify(reply.payload));
+      }
+    });
+  }
+
 
   public loadWarehouseEntities(): void {
     this.authService.queryApi('api/warehouse').subscribe((reply) => {
@@ -237,22 +261,6 @@ export class SettingsService {
     });
     return subject;
   }
-
-  public loadWorkEntities(): void {
-    let olddata: string | null | ClientSettings = localStorage.getItem(this.clientSettingsStorage);
-    if (olddata) {
-      olddata = <ClientSettings>JSON.parse(olddata);
-      this.clientSettings.next(olddata);
-    }
-    let url = this.configService.config.api.baseUrl + '/user/settings';
-    this.authService.queryApi(url).subscribe((reply) => {
-      if (reply.success && reply.payload != null) {
-        this.updateUser(<User>reply.payload['user']);
-        this.updateWorkProps(<WorkProperties>reply.payload['work']);
-      }
-    });
-  }
-
   public setTimeout(timeout: any): void {
     if (this.componentRefresher)
       clearTimeout(this.componentRefresher);
@@ -1164,6 +1172,11 @@ export interface TagsStorage {
   tags: Tag[];
   ts: number;
   version: number;
+}
+
+export interface UserSettingsStorage {
+  user: User;
+  work: WorkProperties;
 }
 
 export interface WorkResponse {

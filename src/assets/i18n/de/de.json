@@ -1,4 +1,7 @@
 {
+  "accounts": {
+    "pagetitle": "Konten"
+  },
   "authService": {
     "apiError": {
       "title": "Fehler",
@@ -37,6 +40,11 @@
   },
   "case": {
     "title": "{0} (Akte)",
+    "pagetitleNocase": "Aktenansicht",
+    "pagetitle_": "Aktenansicht: {0}",
+    "pagetitle_childs": "Untergeordnete Akten von: {0}",
+    "pagetitle_files": "Dateien der Akte: {0}",
+    "pagetitle_times": "Zeiträume der Akte: {0}",
     "metacard": {
       "title": "Allgemeine Informationen",
       "shorttitle": "Allgemeines",
@@ -85,6 +93,7 @@
   },
   "cases": {
     "title": "Aktenstruktur",
+    "pagetitle": "Gesamte Aktenstruktur",
     "filescount": [
       "1 Datei",
       "{0} Dateien"
@@ -230,6 +239,7 @@
     "date": "Datum",
     "day": "Tag",
     "days": "Tage",
+    "default": "Standard",
     "delete": "Löschen",
     "goto": "Gehe zu",
     "hour": "Stunde",
@@ -527,6 +537,9 @@
       }
     }
   },
+  "finance": {
+    "pagetitle": "Finanz-Dashboard"
+  },
   "folderbrowser": {
     "title": "Ordner durchsuchen",
     "selected": "Gewählt: {0}",
@@ -535,7 +548,7 @@
     }
   },
   "home": {
-    "title": "Archiv Start",
+    "title": "Archiv Startseite",
     "cases": {
       "title": "Akten zur Prüfung"
     },
@@ -599,6 +612,17 @@
       }
     }
   },
+  "locales": {
+    "de": {
+      "title": "Deutsch"
+    },
+    "en": {
+      "title": "Englisch"
+    },
+    "fr": {
+      "title": "Französisch"
+    }
+  },
   "login": {
     "title": "Benutzeranmeldung",
     "subtitle": "Diese Webseite erfordert die Eingabe von Zugangsdaten. Bitte mit Benutzername und Passwort anmelden.",
@@ -654,6 +678,12 @@
       "placeholder": "Suchbegriff",
       "submit": "Suchen"
     },
+    "showNavigationItems": {
+      "btnTitle": "Navigation anzeigen"
+    },
+    "switchLocale": {
+      "btnTitle": "Ändern der Anzeigesprache"
+    },
     "workitems": {
       "leads": "Leads",
       "month": "Monatsansicht",
@@ -692,6 +722,7 @@
   },
   "receipts": {
     "title": "Belegerfassung",
+    "pagetitle": "Erfassung von Einkäufen",
     "client": "Käufer",
     "currency": "Währung",
     "date": "Datum",
@@ -758,12 +789,14 @@
     }
   },
   "shopping": {
+    "pagetitle": "Einkaufsliste",
     "cart": {
       "title": "Einkaufsliste"
     }
   },
   "stocks": {
     "title": "Aktien und Krypto",
+    "pagetitle": "Wertpapierübersicht",
     "api": "API",
     "bought": "Gekauft",
     "boughtValue": "{0} {1} á {2}",
@@ -801,6 +834,7 @@
     }
   },
   "work": {
+    "pagetitle": "Arbeitsdokumentation",
     "offcategories": {
       "educationalLeave": "Bildungsurlaub",
       "holidays": "Feiertag",

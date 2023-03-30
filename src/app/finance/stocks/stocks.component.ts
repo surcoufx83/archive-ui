@@ -31,7 +31,9 @@ export class StocksComponent implements OnInit {
     private configService: ConfigService,
     private i18nService: I18nService,
     private userSettings: SettingsService,
-    public formatService: FormatService) { }
+    public formatService: FormatService) {
+    this.i18nService.setTitle('stocks.pagetitle');
+  }
 
   api(api: number | null): StockApi | null {
     return this.userSettings.getStocksApi(api);
@@ -83,7 +85,7 @@ export class StocksComponent implements OnInit {
     this.authService.updateApi2('money/stocks/rates', record).subscribe((reply: ApiReply) => {
       this.savingRates = false;
       this.userSettings.resyncFinance();
-      this.closeRatesModalButton?.nativeElement?.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+      this.closeRatesModalButton?.nativeElement?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     });
   }
 
