@@ -834,6 +834,7 @@
     }
   },
   "work": {
+    "pagetitle": "Arbeitsdokumentation",
     "offcategories": {
       "educationalLeave": "Congé de formation",
       "holidays": "Jour férié",
