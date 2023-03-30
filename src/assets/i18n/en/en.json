@@ -834,6 +834,7 @@
     }
   },
   "work": {
+    "pagetitle": "Arbeitsdokumentation",
     "offcategories": {
       "educationalLeave": "Educational leave",
       "holidays": "Public Holiday",
