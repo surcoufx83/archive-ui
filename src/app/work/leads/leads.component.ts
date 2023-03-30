@@ -35,6 +35,7 @@ export class WorkLeadsComponent implements OnInit {
         this.leads = workprops.leads.sort((a,b) => (b.date_reported > a.date_reported ? 1 : -1));
       }
     });
+    this.i18nService.setTitle('leads.title');
   }
 
   get config(): AppConfig {

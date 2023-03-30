@@ -143,6 +143,7 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
       if (reply.success && reply.payload != undefined) {
         if (reply.payload['month'] != null) {
           this.monthObj = <WorkMonth>reply.payload['month'];
+          this.i18nService.setTitle('workmonth.pagetitle', [this.f(this.selectedMonth, 'MMMM yyyy')]);
           if (reply.payload['days'] != null) {
             this.dayObjs = <WorkDay[]>reply.payload['days'];
             this.calendarEvents = [];
