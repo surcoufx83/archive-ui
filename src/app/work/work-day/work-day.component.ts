@@ -188,7 +188,7 @@ export class WorkDayComponent implements OnInit {
           this.day = <WorkDay>reply.payload['day'];
           this.newBooking(this.day.id);
           this.today = setHours(parseISO(this.day.date), 12);
-          this.isToday = (this.f(this.today, 'P') == this.actualDate);
+          this.isToday = (this.f(this.today, 'yyyy-MM-dd') == this.actualDate);
           this.yesterday = subDays(this.today, 1);
           this.tomorrow = addDays(this.today, 1);
         }
