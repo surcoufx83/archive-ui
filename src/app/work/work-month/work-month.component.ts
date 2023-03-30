@@ -29,7 +29,7 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
   viewDate: Date = new Date();
   year: number | undefined;
   month: number | undefined;
-  monthLoading: boolean = false;
+  monthLoading: boolean = true;
   dayObjs: WorkDay[] = [];
   monthObj?: WorkMonth;
   usersettingsObj: UserSettings | null = null;
