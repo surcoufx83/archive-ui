@@ -31,18 +31,17 @@
                             </button>
                             <ul class="dropdown-menu dropdown-menu-dark bg-dark mt-2 border shadow"
                                 aria-labelledby="navbar-locales-dropdown">
-                                <li *ngFor="let locale of navbarLocales">
-                                    <a class="dropdown-item" href="#" (click)="changeLocaleTo(locale.code, $event)">
-                                        {{ i18n('locales.' + locale.code + '.title') }}
-                                        <span *ngIf="locale.isDefault" class="fs-7">({{ i18n('common.default')
-                                            }})</span>
-                                    </a>
+                                <li [ngClass]="{'dropdown-item pointer': true, 'active': locale.code == currentLocale}" *ngFor="let locale of navbarLocales"
+                                    (click)="changeLocaleTo(locale.code, $event)">
+                                    {{ i18n('locales.' + locale.code + '.title') }}
+                                    <span *ngIf="locale.isDefault" class="fs-7">({{ i18n('common.default')
+                                        }})</span>
                                 </li>
                             </ul>
                         </div>
                         <div class="d-flex d-md-none flex-row align-items-center text-light mx-1 mb-3">
                             <app-icon [iconClass]="config.icons['locale']"></app-icon>
-                            <button type="button" class="btn btn-sm btn-dark ms-2" *ngFor="let locale of navbarLocales"
+                            <button type="button" [ngClass]="{'btn btn-sm btn-dark ms-2': true, 'active': locale.code == currentLocale}" *ngFor="let locale of navbarLocales"
                                 (click)="changeLocaleTo(locale.code, $event)">
                                 {{ locale.code }}
                             </button>

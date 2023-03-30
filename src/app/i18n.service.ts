@@ -12,10 +12,12 @@ import { ToastsService } from './utils/toasts.service';
 })
 export class I18nService {
 
+  private locale: string = navigator.language.substring(0, 2);
   public availableLocales: string[] = ['en', 'de', 'fr'];
+  private currentLocale_: BehaviorSubject<string> = new BehaviorSubject<string>(this.locale);
+  public currentLocale = this.currentLocale_.asObservable();
   public defaultLocale: string = 'en';
   public loaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  private locale: string = navigator.language.substring(0, 2);
   private entries: { [key: string]: { [key: string]: string | string[] } } = {};
 
   get DateLocale(): Locale {
@@ -37,29 +39,32 @@ export class I18nService {
   constructor(private http: HttpClient,
     private titleService: Title,
     private toastService: ToastsService) {
+    this.currentLocale_.subscribe((locale) => {
+      this.locale = locale;
+      this.loadStrings(locale);
+    });
     let olddata: string | null | LocalesStorage = localStorage.getItem(`locale`);
     if (olddata !== null) {
       olddata = <LocalesStorage>JSON.parse(olddata);
       if (this.availableLocales.indexOf(olddata.locale) > -1)
-        this.locale = olddata.locale;
+        this.currentLocale_.next(olddata.locale);
     }
-    if (this.availableLocales.indexOf(this.locale) == -1)
-      this.locale = this.defaultLocale;
-    this.loadStrings(this.locale);
-    if (this.locale != environment.i18nFallback)
-      this.loadStrings(environment.i18nFallback);
+    if (this.availableLocales.indexOf(this.currentLocale_.value) == -1)
+      this.currentLocale_.next(this.defaultLocale);
+    this.loadStrings(environment.i18nFallback);
   }
 
   private loadStrings(locale: string) {
+    if (this.entries[locale] != undefined)
+      return;
+    this.entries[locale] = {};
     this.http.get('/assets/i18n/' + locale + '/' + locale + '.json').subscribe({
       next: (strings: any) => {
-        if (!this.entries[locale])
-          this.entries[locale] = {};
         if (strings) {
           Object.entries(strings).forEach((e) => {
             this.iterateStrings(locale, '', e[0], <I18nEntry>e[1]);
           });
-          if (locale === this.locale)
+          if (locale === this.currentLocale_.value)
             this.loaded.next(true);
         }
       },
@@ -81,7 +86,7 @@ export class I18nService {
   }
 
   public i18n(key: string, params: any[] = [], i: number = 0): string {
-    return this.i18n_locale(this.locale, key, params, i);
+    return this.i18n_locale(this.currentLocale_.value, key, params, i);
   }
 
   private i18n_locale(locale: string, key: string, params: any[] = [], i: number = 0): string {
@@ -105,10 +110,9 @@ export class I18nService {
   }
 
   public setLocale(key: string): void {
-    if (this.availableLocales.indexOf(this.locale) == -1)
+    if (this.availableLocales.indexOf(key) == -1)
       return;
-    this.locale = key;
-    this.loadStrings(this.locale);
+    this.currentLocale_.next(key);
     let storeItem: LocalesStorage = {
       locale: this.locale
     };

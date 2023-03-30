@@ -10,6 +10,7 @@ import { I18nService } from 'src/app/i18n.service';
 })
 export class NavbarComponent {
 
+  currentLocale: string = '';
   navbarLocales: NavbarLocaleDefinition[] = [];
   routeUrl: string = '';
   searchphrase: string = '';
@@ -31,6 +32,7 @@ export class NavbarComponent {
         sub.unsubscribe();
       }
     });
+    this.i18nService.currentLocale.subscribe((l) => this.currentLocale = l);
   }
 
   changeLocaleTo(key: string, event: Event): void {
