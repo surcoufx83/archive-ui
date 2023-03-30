@@ -14,39 +14,36 @@ import { SettingsService } from '../user/settings/settings.service';
 })
 export class WorkComponent implements OnInit {
 
-  routeUrl: string = '';
-  settingsObj: UserSettings|null = null;
+  settingsObj: UserSettings | null = null;
+  navitems: NavbarItem[] = [];
 
-  constructor(private authService: AuthService,
-              private configService: ConfigService,
-              private i18nService: I18nService,
-              private route: ActivatedRoute,
-              private router: Router,
-              private settings: SettingsService)
-  {
+  constructor(private configService: ConfigService,
+    private i18nService: I18nService,
+    private settings: SettingsService) {
     this.settings.settings$.subscribe((settings) => {
       this.settingsObj = settings;
+      let tempar: NavbarItem[] = Object.assign([], this.config.navbar.workitems);
+      if (!this.settingsObj?.work.leads.enabled) {
+        for (let i = 0; i < tempar.length; i++) {
+          if (tempar[i].link == '/work/leads') {
+            tempar.splice(i, 1);
+            break;
+          }
+        }
+      }
+      this.navitems = tempar;
     });
+    this.i18nService.setTitle('work.pagetitle');
   }
 
-  get config() : AppConfig {
+  get config(): AppConfig {
     return this.configService.config;
   }
 
-  i18n(key: string) : string {
+  i18n(key: string): string {
     return this.i18nService.i18n(key);
   }
 
-  ngOnInit(): void {
-    this.route.url.subscribe(url => {
-      this.routeUrl = this.router.routerState.snapshot.url;
-    });
-  }
-
-  onShowLink(item: NavbarItem) : boolean {
-    if (item['link'] !== '/work/leads')
-      return true;
-    return (this.settingsObj?.work.leads.enabled ? true : false);
-  }
+  ngOnInit(): void { }
 
 }

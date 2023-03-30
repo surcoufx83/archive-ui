@@ -80,6 +80,7 @@ export interface NavbarItem {
   title: string;
   icon: string;
   link: string;
+  matchLink?: string;
   params?: string[];
 }
 
