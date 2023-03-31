@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppConfig, ConfigService } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
@@ -10,7 +10,10 @@ import { I18nService } from 'src/app/i18n.service';
 })
 export class NavbarComponent {
 
+  @ViewChild('navbarCollapseBtn') navbarCollapseBtn!: ElementRef;
+
   currentLocale: string = '';
+  navbarVisible: boolean = false;
   navbarLocales: NavbarLocaleDefinition[] = [];
   routeUrl: string = '';
   searchphrase: string = '';
