@@ -11,6 +11,7 @@ import { I18nService } from 'src/app/i18n.service';
 export class NavbarComponent {
 
   @ViewChild('navbarCollapseBtn') navbarCollapseBtn!: ElementRef;
+  @ViewChild('navbarLocalesDropdown') navbarLocalesDropdownBtn!: ElementRef<HTMLButtonElement>;
 
   currentLocale: string = '';
   navbarVisible: boolean = false;

@@ -26,14 +26,14 @@
                     <li class="nav-item">
                         <div class="d-none d-md-block me-4 dropdown">
                             <button type="button" class="btn btn-dark locale-btn dropdown-toggle"
-                                id="navbar-locales-dropdown" role="button" data-bs-toggle="dropdown"
+                                #navbarLocalesDropdown role="button" data-bs-toggle="dropdown"
                                 aria-expanded="false" [title]="i18n('navbar.switchLocale.btnTitle')">
                                 <app-icon [iconClass]="config.icons['locale']"></app-icon>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-dark bg-dark mt-2 border shadow"
-                                aria-labelledby="navbar-locales-dropdown">
+                                aria-labelledby="navbarLocalesDropdown">
                                 <li [ngClass]="{'dropdown-item pointer': true, 'active': locale.code == currentLocale}"
-                                    *ngFor="let locale of navbarLocales" (click)="changeLocaleTo(locale.code, $event)">
+                                    *ngFor="let locale of navbarLocales" (click)="changeLocaleTo(locale.code, $event); navbarLocalesDropdownBtn ? navbarLocalesDropdownBtn.nativeElement.click() : null">
                                     {{ i18n('locales.' + locale.code + '.title') }}
                                     <span *ngIf="locale.isDefault" class="fs-7">({{ i18n('common.default')
                                         }})</span>
