@@ -906,7 +906,7 @@
     },
     "cards": {
       "day": {
-        "title": "Tagesdetails {0}"
+        "title": "Détails pour le jour {0}"
       },
       "target": {
         "title": "Info mensuelle",
@@ -924,7 +924,7 @@
     },
     "offtime": {
       "title": "Enregistrer les absences",
-      "subtitle": "Abwesenheitsmarker setzen das Tagessoll generell auf 0 Stunden.\r\nEs können für Abwesenheitstage keine Zeiten gebucht werden."
+      "subtitle": "Les marqueurs d'absence fixent en général le débit journalier à 0 heure.\nIl n'est pas possible de comptabiliser des heures pour les jours d'absence."
     }
   }
 }
