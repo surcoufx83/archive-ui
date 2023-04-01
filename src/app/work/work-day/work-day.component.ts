@@ -66,7 +66,7 @@ export class WorkDayComponent implements OnInit {
   }
 
   get bookings(): WorkDayBooking[] {
-    if (!this.day)
+    if (!this.day || this.day.bookings == null)
       return [];
     return Object.values(this.day.bookings);
   }
@@ -132,7 +132,7 @@ export class WorkDayComponent implements OnInit {
   }
 
   get hasBookings(): boolean {
-    if (!this.day)
+    if (!this.day || this.day.bookings == null)
       return false;
     return Object.keys(this.day.bookings).length > 0;
   }

@@ -834,6 +834,7 @@
     }
   },
   "work": {
+    "pagetitle": "Documentation des travaux",
     "offcategories": {
       "educationalLeave": "Congé de formation",
       "holidays": "Jour férié",
@@ -875,10 +876,12 @@
       "livebtnTitle": "Fonction de suivi en direct",
       "common": {
         "break": "Pause",
+        "breakShort": "Pause",
         "breakPlaceholder": "minutes",
         "customer": "Client",
         "description": "Description des travaux effectués",
         "duration": "Temps de travail",
+        "durationShort": "Total",
         "from": "Du",
         "project": "Projet client",
         "recentTitle": "Cliquer pour reprendre ces données",
@@ -902,6 +905,9 @@
       "title": "Calendrier"
     },
     "cards": {
+      "day": {
+        "title": "Tagesdetails {0}"
+      },
       "target": {
         "title": "Info mensuelle",
         "businessDays": "Jours ouvrables",
@@ -918,7 +924,7 @@
     },
     "offtime": {
       "title": "Enregistrer les absences",
-      "subtitle": "Les marqueurs d'absence fixent en général le débit journalier à 0 heure. Il n'est pas possible de comptabiliser des heures pour les jours d'absence."
+      "subtitle": "Abwesenheitsmarker setzen das Tagessoll generell auf 0 Stunden.\r\nEs können für Abwesenheitstage keine Zeiten gebucht werden."
     }
   }
 }

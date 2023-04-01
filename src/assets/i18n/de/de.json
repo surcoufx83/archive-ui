@@ -876,10 +876,12 @@
       "livebtnTitle": "Livetracking Funktion",
       "common": {
         "break": "Ab Pause",
+        "breakShort": "Pause",
         "breakPlaceholder": "mm",
         "customer": "Kunde",
         "description": "Beschreibung der durchgeführten Arbeiten",
         "duration": "Arbeitszeit",
+        "durationShort": "Gesamt",
         "from": "Von",
         "project": "Kundenprojekt",
         "recentTitle": "Anklicken um diese Daten zu übernehmen",
@@ -903,6 +905,9 @@
       "title": "Kalender"
     },
     "cards": {
+      "day": {
+        "title": "Tagesdetails {0}"
+      },
       "target": {
         "title": "Monatsinfo",
         "businessDays": "Arbeitstage",
@@ -919,7 +924,7 @@
     },
     "offtime": {
       "title": "Abwesenheiten buchen",
-      "subtitle": "Abwesenheitsmarker setzen das Tagessoll generell auf 0 Stunden. Es können für Abwesenheitstage keine Zeiten gebucht werden."
+      "subtitle": "Abwesenheitsmarker setzen das Tagessoll generell auf 0 Stunden.\r\nEs können für Abwesenheitstage keine Zeiten gebucht werden."
     }
   }
 }
