@@ -128,7 +128,7 @@
                   {{ i18n('calendar.weekday') }}
                 </div>
                 <div class="font-weight-bold">
-                  <strong>{{ f(today, 'EEEE') }}</strong>
+                  <strong>{{ f(s2d(selectedDay.date), 'EEEE') }}</strong>
                 </div>
               </div>
               <div class="d-flex justify-content-between" *ngIf="selectedDay.offcategory">
