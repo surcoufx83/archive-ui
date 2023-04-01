@@ -137,6 +137,7 @@ export const DefaultIcons: { [key: string]: string } = {
   'go-up': 'fa-solid fa-caret-up',
   'goto': 'fa-solid fa-arrow-up-right-from-square',
   'grid': 'fa-solid fa-grip',
+  'help': 'fa-regular fa-circle-question',
   'home': 'fa-solid fa-handshake-simple',
   'info': 'fa-solid fa-info-circle',
   'leads': 'fa-solid fa-funnel-dollar',

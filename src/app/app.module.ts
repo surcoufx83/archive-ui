@@ -82,6 +82,7 @@ import { WorkMonthComponent } from './work/work-month/work-month.component';
 import { WorkYearComponent } from './work/work-year/work-year.component';
 import { WorkComponent } from './work/work.component';
 import { NavbarComponent } from './utils/navbar/navbar.component';
+import { TooltipDirective } from './utils/tooltip.directive';
 
 registerLocaleData(localeDe);
 
@@ -152,6 +153,7 @@ registerLocaleData(localeDe);
     WorkTimeCategoriesComponent,
     WorkYearComponent,
     NavbarComponent,
+    TooltipDirective,
   ],
   imports: [
     AppRoutingModule,
