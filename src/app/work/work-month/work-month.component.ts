@@ -3,7 +3,6 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarMonthViewDay } from 'angular-calendar';
 import { add, format, getDate, getMonth, getYear, isSameDay, isSameMonth, sub } from 'date-fns';
 import { Subject } from 'rxjs';
-
 import { ApiReply, UserSettings, WorkDay, WorkDayBooking, WorkMonth, WorkOffCategory, WorkProperties } from 'src/app/if';
 import { EventColor } from '../../../../node_modules/calendar-utils/calendar-utils';
 import { AuthService } from '../../auth.service';
@@ -88,10 +87,6 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
     return this.configService.config;
   }
 
-  i18n(key: string, params: string[] = []): string {
-    return this.i18nService.i18n(key, params);
-  }
-
   get locale(): string {
     return this.i18nService.Locale;
   }
@@ -108,7 +103,102 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
     return add(this.selectedMonth, { months: 1 });
   }
 
-  ngOnInit(): void { }
+  addEvent(id: string, title: string, start: Date, end: Date | undefined, allDay: boolean,
+    color: EventColor | undefined, incrementBadgeCount: boolean,
+    workObject: any, objectType: string): void {
+    this.calendarEvents = [
+      ...this.calendarEvents,
+      {
+        id: id,
+        title: title,
+        start: start,
+        end: end,
+        allDay: allDay,
+        color: color,
+        meta: {
+          obj: workObject,
+          type: objectType,
+          incrementsBadgeTotal: incrementBadgeCount
+        }
+      }
+    ];
+  }
+
+  beforeMonthViewRender({ body }: { body: CalendarMonthViewDay[] }): void {
+    body.forEach((day) => {
+      day.badgeTotal = day.events.filter(
+        (event) => event.meta.incrementsBadgeTotal
+      ).length;
+    });
+  }
+
+  dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
+    if (isSameMonth(date, this.viewDate)) {
+      if (
+        (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
+        events.length === 0
+      ) {
+        this.activeDayIsOpen = false;
+      } else {
+        this.activeDayIsOpen = true;
+      }
+      this.viewDate = date;
+    }
+  }
+
+  eventTimesChanged({
+    event,
+    newStart,
+    newEnd,
+  }: CalendarEventTimesChangedEvent): void {
+    if (event.meta.type == undefined)
+      return;
+    if (event.meta.type === 'WorkOffCategory') {
+      let cat: WorkOffCategory = event.meta.obj;
+      let date: number = getDate(newStart);
+      if (this.dayObjs[date] == undefined || !isSameMonth(newStart, new Date((<WorkMonth>this.monthObj).datefrom)))
+        return;
+      let day = this.dayObjs[date];
+      let url = this.config.api.baseUrl + `/work/day/${this.monthObj?.id}/${day.id}/offdays/set/${cat.id}`;
+      this.authService.updateApi(url, {}).subscribe((reply: ApiReply) => {
+        if (reply.success) {
+          this.calendarEvents = [
+            ...this.calendarEvents.filter((e) => {
+              return !isSameDay(e.start, newStart);
+            })
+          ];
+          if (cat.id !== 0)
+            this.addEvent('' + Date.now(), event.title, newStart, undefined, true, cat.calendarcolor, false, cat, 'WorkOffCategory');
+        }
+      });
+    }
+  }
+
+  f(date: Date, form: string): string {
+    return format(date, form, { locale: this.i18nService.DateLocale });
+  }
+
+  fd(duration: number): string {
+    return this.i18n('calendar.duration.short', [duration.toLocaleString(this.i18nService.Locale, { minimumFractionDigits: 1 })]);
+  }
+
+  getProjectDescription(entry: WorkDayBooking, inclCustomer: boolean = false): string {
+    return (entry.customer && inclCustomer ? entry.customer.name + ' // ' : '')
+      + (entry.project ? entry.project.name + ' // ' : '')
+      + (entry.projectstage !== '' ? entry.projectstage + ' // ' : '')
+      + entry.description;
+  }
+
+  handleEvent(action: string, event: CalendarEvent): void {
+    if (action === 'Clicked') {
+      if (event.meta.booking != null)
+        navigator.clipboard.writeText(this.getProjectDescription(event.meta.booking));
+    }
+  }
+
+  i18n(key: string, params: string[] = []): string {
+    return this.i18nService.i18n(key, params);
+  }
 
   ngAfterViewInit() {
     this.route.paramMap.subscribe((params: ParamMap) => {
@@ -198,107 +288,14 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
     });
   }
 
+  ngOnInit(): void { }
+
   pushUserSettings(): void {
     this.userSettings.updateSettings(<UserSettings>this.usersettingsObj, true);
   }
 
-  addEvent(id: string, title: string, start: Date, end: Date | undefined, allDay: boolean,
-    color: EventColor | undefined, incrementBadgeCount: boolean,
-    workObject: any, objectType: string): void {
-    this.calendarEvents = [
-      ...this.calendarEvents,
-      {
-        id: id,
-        title: title,
-        start: start,
-        end: end,
-        allDay: allDay,
-        color: color,
-        meta: {
-          obj: workObject,
-          type: objectType,
-          incrementsBadgeTotal: incrementBadgeCount
-        }
-      }
-    ];
-  }
-
-  beforeMonthViewRender({ body }: { body: CalendarMonthViewDay[] }): void {
-    body.forEach((day) => {
-      day.badgeTotal = day.events.filter(
-        (event) => event.meta.incrementsBadgeTotal
-      ).length;
-    });
-  }
-
-  dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
-    if (isSameMonth(date, this.viewDate)) {
-      if (
-        (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
-        events.length === 0
-      ) {
-        this.activeDayIsOpen = false;
-      } else {
-        this.activeDayIsOpen = true;
-      }
-      this.viewDate = date;
-    }
-  }
-
-  eventTimesChanged({
-    event,
-    newStart,
-    newEnd,
-  }: CalendarEventTimesChangedEvent): void {
-    console.log('eventTimesChanged', event, newStart, newEnd);
-    if (event.meta.type == undefined)
-      return;
-    if (event.meta.type === 'WorkOffCategory') {
-      let cat: WorkOffCategory = event.meta.obj;
-      let date: number = getDate(newStart);
-      if (this.dayObjs[date] == undefined || !isSameMonth(newStart, new Date((<WorkMonth>this.monthObj).datefrom)))
-        return;
-      let day = this.dayObjs[date];
-      let url = this.config.api.baseUrl + `/work/day/${this.monthObj?.id}/${day.id}/offdays/set/${cat.id}`;
-      this.authService.updateApi(url, {}).subscribe((reply: ApiReply) => {
-        if (reply.success) {
-          this.calendarEvents = [
-            ...this.calendarEvents.filter((e) => {
-              return !isSameDay(e.start, newStart);
-            })
-          ];
-          if (cat.id !== 0)
-            this.addEvent('' + Date.now(), event.title, newStart, undefined, true, cat.calendarcolor, false, cat, 'WorkOffCategory');
-        }
-      });
-    }
-  }
-
-  f(date: Date, form: string): string {
-    return format(date, form, { locale: this.i18nService.DateLocale });
-  }
-
-  fd(duration: number): string {
-    return this.i18n('calendar.duration.short', [duration.toLocaleString(this.i18nService.Locale, { minimumFractionDigits: 1 })]);
-  }
-
-  getProjectDescription(entry: WorkDayBooking, inclCustomer: boolean = false): string {
-    return (entry.customer && inclCustomer ? entry.customer.name + ' // ' : '')
-      + (entry.project ? entry.project.name + ' // ' : '')
-      + (entry.projectstage !== '' ? entry.projectstage + ' // ' : '')
-      + entry.description;
-  }
-
   s2d(datestr: string): Date {
     return new Date(datestr);
-  }
-
-  handleEvent(action: string, event: CalendarEvent): void {
-    console.log('handleEvent', action, event);
-    if (action === 'Clicked') {
-      if (event.meta.booking != null)
-        navigator.clipboard.writeText(this.getProjectDescription(event.meta.booking));
-    }
   }
 
 }
