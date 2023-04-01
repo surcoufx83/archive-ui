@@ -876,7 +876,7 @@
       "livebtnTitle": "Live tracking function",
       "common": {
         "break": "Minus break",
-        "breakShort": "Pause",
+        "breakShort": "Break",
         "breakPlaceholder": "mm",
         "customer": "Customer",
         "description": "Description of the work carried out",
@@ -906,7 +906,7 @@
     },
     "cards": {
       "day": {
-        "title": "Tagesdetails {0}"
+        "title": "Details for day {0}"
       },
       "target": {
         "title": "Info",
@@ -924,7 +924,7 @@
     },
     "offtime": {
       "title": "Submit time off",
-      "subtitle": "Abwesenheitsmarker setzen das Tagessoll generell auf 0 Stunden.\r\nEs können für Abwesenheitstage keine Zeiten gebucht werden."
+      "subtitle": "Daily off time resets the day's target hours to 0.\nThere are no bookings allowed for off time days."
     }
   }
 }
