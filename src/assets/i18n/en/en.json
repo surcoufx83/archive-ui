@@ -924,7 +924,7 @@
     },
     "offtime": {
       "title": "Submit time off",
-      "subtitle": "Daily off time resets the day's target hours to 0. There are no bookings allowed for off time days."
+      "subtitle": "Abwesenheitsmarker setzen das Tagessoll generell auf 0 Stunden.\r\nEs können für Abwesenheitstage keine Zeiten gebucht werden."
     }
   }
 }
