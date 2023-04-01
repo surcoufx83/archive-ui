@@ -158,10 +158,10 @@
               <ng-container *ngIf="selectedDay.daytimeStats">
                 <div class="mt-2 border-bottom"></div>
                 <div class="row mt-2 fs-8">
-                  <div class="col-3 text-center"><strong>Von</strong></div>
-                  <div class="col-3 text-center"><strong>Bis</strong></div>
-                  <div class="col-3 text-center"><strong>Pause</strong></div>
-                  <div class="col-3 text-center"><strong>Gesamt</strong></div>
+                  <div class="col-3 text-center"><strong>{{ i18n('workday.tracking.common.from') }}</strong></div>
+                  <div class="col-3 text-center"><strong>{{ i18n('workday.tracking.common.until') }}</strong></div>
+                  <div class="col-3 text-center"><strong>{{ i18n('workday.tracking.common.breakShort') }}</strong></div>
+                  <div class="col-3 text-center"><strong>{{ i18n('workday.tracking.common.durationShort') }}</strong></div>
                 </div>
                 <div class="row fs-8">
                   <div class="col-3 text-center">{{ f(s2d(selectedDay.daytimeStats.startOfDay), 'p') }}</div>

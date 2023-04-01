@@ -902,9 +902,6 @@
       "title": "Calendar"
     },
     "cards": {
-      "day": {
-        "title": "Tagesdetails {0}"
-      },
       "target": {
         "title": "Info",
         "businessDays": "Business days",
