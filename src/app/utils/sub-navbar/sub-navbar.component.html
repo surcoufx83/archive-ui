@@ -12,7 +12,7 @@
 
 <ng-template #navbarItem let-item="item">
   <li class="nav-item mx-2">
-    <a [ngClass]="{'nav-link': true, 'active text-dark': url == item.link || (item.matchLink != undefined && url.indexOf(item.matchLink) > -1) }" [routerLink]="item.link">
+    <a [ngClass]="{'nav-link': true, 'active text-light': url == item.link || (item.matchLink != undefined && url.indexOf(item.matchLink) > -1) }" [routerLink]="item.link">
       <app-icon [iconClass]="config.icons[item.icon]" [marginEnd]="1"></app-icon>
       <span class="d-none d-md-inline">
         {{ i18n(item.title, item.params) }}
