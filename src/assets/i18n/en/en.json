@@ -876,10 +876,12 @@
       "livebtnTitle": "Live tracking function",
       "common": {
         "break": "Minus break",
+        "breakShort": "Pause",
         "breakPlaceholder": "mm",
         "customer": "Customer",
         "description": "Description of the work carried out",
         "duration": "Working hours",
+        "durationShort": "Total",
         "from": "Of",
         "project": "Customer project",
         "recentTitle": "Click to apply",
@@ -903,6 +905,9 @@
       "title": "Calendar"
     },
     "cards": {
+      "day": {
+        "title": "Tagesdetails {0}"
+      },
       "target": {
         "title": "Info",
         "businessDays": "Business days",
