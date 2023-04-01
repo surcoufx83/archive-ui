@@ -1,5 +1,5 @@
 <header>
-    <nav class="navbar navbar-expand navbar-sm navbar-light bg-light shadow-sm">
+    <nav class="navbar navbar-expand navbar navbar-dark bg-dark shadow-sm">
         <div class="container-fluid d-flex">
             <ul class="navbar-nav">
                 <ng-container *ngFor="let item of navitems; let i = index">
@@ -12,7 +12,7 @@
 
 <ng-template #navbarItem let-item="item">
   <li class="nav-item mx-2">
-    <a [ngClass]="{'nav-link': true, 'active text-dark': url == item.link || (item.matchLink != undefined && url.indexOf(item.matchLink) > -1) }" [routerLink]="item.link">
+    <a [ngClass]="{'nav-link': true, 'active text-light': url == item.link || (item.matchLink != undefined && url.indexOf(item.matchLink) > -1) }" [routerLink]="item.link">
       <app-icon [iconClass]="config.icons[item.icon]" [marginEnd]="1"></app-icon>
       <span class="d-none d-md-inline">
         {{ i18n(item.title, item.params) }}
