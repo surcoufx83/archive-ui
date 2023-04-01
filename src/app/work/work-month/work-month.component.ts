@@ -1,8 +1,8 @@
 import { AfterViewInit, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarMonthViewDay } from 'angular-calendar';
-import { add, format, getDate, getMonth, getYear, isSameDay, isSameMonth, sub } from 'date-fns';
-import { Subject } from 'rxjs';
+import { add, differenceInMinutes, endOfDay, format, getDate, getDay, getMonth, getYear, isAfter, isBefore, isSameDay, isSameMonth, parseISO, sub } from 'date-fns';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { ApiReply, UserSettings, WorkDay, WorkDayBooking, WorkMonth, WorkOffCategory, WorkProperties } from 'src/app/if';
 import { EventColor } from '../../../../node_modules/calendar-utils/calendar-utils';
 import { AuthService } from '../../auth.service';
@@ -20,16 +20,19 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
   @ViewChild('calendar', { static: true }) calendar?: TemplateRef<any>;
 
   calendarEvents: CalendarEvent[] = [];
-  activeDayIsOpen: boolean = true;
+  activeDayIsOpen: boolean = false;
   refresh = new Subject<void>();
 
   today: Date = new Date();
   selectedMonth: Date = new Date();
+  private selectedDate$: BehaviorSubject<Date | null> = new BehaviorSubject<Date | null>(null);
+  selectedDate = this.selectedDate$.asObservable();
+  selectedDay?: WorkDay;
   viewDate: Date = new Date();
   year: number | undefined;
   month: number | undefined;
   monthLoading: boolean = true;
-  dayObjs: WorkDay[] = [];
+  dayObjs: { [key: number]: WorkDay } = {};
   monthObj?: WorkMonth;
   usersettingsObj: UserSettings | null = null;
   workprops: WorkProperties | null = null;
@@ -134,23 +137,11 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     if (isSameMonth(date, this.viewDate)) {
-      if (
-        (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
-        events.length === 0
-      ) {
-        this.activeDayIsOpen = false;
-      } else {
-        this.activeDayIsOpen = true;
-      }
-      this.viewDate = date;
+      this.selectedDate$.next(date);
     }
   }
 
-  eventTimesChanged({
-    event,
-    newStart,
-    newEnd,
-  }: CalendarEventTimesChangedEvent): void {
+  eventTimesChanged({ event, newStart, newEnd, }: CalendarEventTimesChangedEvent): void {
     if (event.meta.type == undefined)
       return;
     if (event.meta.type === 'WorkOffCategory') {
@@ -235,24 +226,26 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
           this.monthObj = <WorkMonth>reply.payload['month'];
           this.i18nService.setTitle('workmonth.pagetitle', [this.f(this.selectedMonth, 'MMMM yyyy')]);
           if (reply.payload['days'] != null) {
-            this.dayObjs = <WorkDay[]>reply.payload['days'];
+            this.dayObjs = <{ [key: number]: WorkDay }>reply.payload['days'];
             this.calendarEvents = [];
             for (const key in this.dayObjs) {
               let day: WorkDay = this.dayObjs[key];
-              for (const id in day.bookings) {
-                let e = day.bookings[id];
-                this.calendarEvents.push({
-                  id: 'event-' + e.id,
-                  title: this.fd(e.duration) + ': ' + this.getProjectDescription(e, true) + ' (' + this.i18n('work.timecategories.' + e.timecategory.name) + ')',
-                  start: new Date(e.timefrom),
-                  end: new Date(e.timeuntil),
-                  allDay: false,
-                  color: e.timecategory.calendarcolor,
-                  meta: {
-                    booking: e,
-                    incrementsBadgeTotal: true
-                  }
-                });
+              if (day.bookings != null) {
+                for (const id in day.bookings) {
+                  let e = day.bookings[id];
+                  this.calendarEvents.push({
+                    id: 'event-' + e.id,
+                    title: this.fd(e.duration) + ': ' + this.getProjectDescription(e, true) + ' (' + this.i18n('work.timecategories.' + e.timecategory.name) + ')',
+                    start: new Date(e.timefrom),
+                    end: new Date(e.timeuntil),
+                    allDay: false,
+                    color: e.timecategory.calendarcolor,
+                    meta: {
+                      booking: e,
+                      incrementsBadgeTotal: true
+                    }
+                  });
+                }
               }
               if (day.holiday != null && day.offcategory != null) {
                 this.calendarEvents.push({
@@ -281,6 +274,12 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
                 });
               }
             }
+            const today = new Date();
+            if (this.monthObj.month == getMonth(today) + 1 && this.dayObjs[getDate(today)] != undefined)
+              this.selectedDate$.next(today);
+            else if (this.dayObjs[1] != undefined) {
+              this.selectedDate$.next(this.s2d(this.dayObjs[1].date));
+            }
           }
         }
       }
@@ -288,7 +287,44 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.selectedDate.subscribe((date) => {
+      if (date == null)
+        return;
+      this.viewDate = date;
+      Object.keys(this.dayObjs).forEach((daynum: string) => {
+        if (isSameDay(parseISO(this.dayObjs[+daynum].date), date)) {
+          this.selectedDay = this.dayObjs[+daynum];
+          this.activeDayIsOpen = this.selectedDay.bookings != null || this.selectedDay.offcategory != null;
+          if (this.selectedDay.bookings != null) {
+            let starttime: string = '';
+            let endtime: string = '';
+            let durmin: number = 0;
+            for (const key in this.selectedDay.bookings) {
+              const booking = this.selectedDay.bookings[key];
+              if (starttime == '' || isBefore(this.s2d(booking.timefrom), this.s2d(starttime)))
+                starttime = booking.timefrom;
+              if (endtime == '' || isAfter(this.s2d(booking.timeuntil), this.s2d(endtime)))
+                endtime = booking.timeuntil;
+              durmin += differenceInMinutes(this.s2d(booking.timeuntil), this.s2d(booking.timefrom)) - (booking.break * 60);
+            }
+            if (starttime != '' && endtime != '' && isBefore(this.s2d(starttime), this.s2d(endtime))) {
+              const dayduration = differenceInMinutes(this.s2d(endtime), this.s2d(starttime));
+              this.selectedDay.daytimeStats = {
+                startOfDay: starttime,
+                endOfDay: endtime,
+                totalDurationWithoutBreaks: dayduration / 60,
+                totalDurationWithBreaks: durmin / 60,
+                breaksDuration: (dayduration - durmin) / 60
+              };
+            }
+          }
+          else
+            this.selectedDay.daytimeStats = undefined;
+        }
+      });
+    });
+  }
 
   pushUserSettings(): void {
     this.userSettings.updateSettings(<UserSettings>this.usersettingsObj, true);

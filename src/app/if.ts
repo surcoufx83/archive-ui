@@ -722,7 +722,7 @@ export interface WorkCustomer {
 }
 
 export interface WorkDay {
-  bookings: { [key: number]: WorkDayBooking };
+  bookings: { [key: number]: WorkDayBooking } | null;
   date: string;
   day: number;
   holiday: WorkHoliday | null;
@@ -734,6 +734,7 @@ export interface WorkDay {
   offcategory: WorkOffCategory | null;
   offcategoryid: number | null;
   stats: WorkDayStats | null;
+  daytimeStats?: WorkDayTimeStats;
 }
 
 export interface WorkDayBooking {
@@ -767,6 +768,14 @@ export interface WorkDayStats {
   minduration: number;
   projectlist: number[];
   projects: number;
+}
+
+export interface WorkDayTimeStats {
+  startOfDay: string;
+  endOfDay: string;
+  totalDurationWithoutBreaks: number;
+  totalDurationWithBreaks: number;
+  breaksDuration: number;
 }
 
 export interface WorkHoliday {
