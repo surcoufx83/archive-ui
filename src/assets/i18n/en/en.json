@@ -219,7 +219,8 @@
       "Out_SepaMandate": "SEPA direct debit mandate",
       "Out_TaxDeclaration": "Tax declaration",
       "Out_Termination": "Termination",
-      "RentalAgreement": "Rental Agreement"
+      "RentalAgreement": "Rental Agreement",
+      "Trash": "Papierkorb"
     }
   },
   "common": {
