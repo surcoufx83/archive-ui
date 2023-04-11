@@ -219,7 +219,8 @@
       "Out_SepaMandate": "Mandat de prélèvement automatique",
       "Out_TaxDeclaration": "Déclaration d'impôts",
       "Out_Termination": "Résiliation",
-      "RentalAgreement": "Contrat de location"
+      "RentalAgreement": "Contrat de location",
+      "Trash": "Papierkorb"
     }
   },
   "common": {
