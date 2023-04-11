@@ -219,7 +219,8 @@
       "Out_SepaMandate": "SEPA Lastschriftmandat",
       "Out_TaxDeclaration": "Steuererklärung",
       "Out_Termination": "Kündigung",
-      "RentalAgreement": "Mietvertrag"
+      "RentalAgreement": "Mietvertrag",
+      "Trash": "Papierkorb"
     }
   },
   "common": {
