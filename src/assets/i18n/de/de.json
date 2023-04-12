@@ -234,6 +234,13 @@
         "title": "Gespeichert",
         "message": "Der Datensatz wurde aus der Datenbank gelöscht."
       },
+      "deletion": {
+        "title": "Löschen bestätigen",
+        "message": "Bist du sicher, dass die Notiz gelöscht werden soll?",
+        "closeModal": "Dialog schließen",
+        "confirm": "Ja, löschen!",
+        "cancel": "Zurück"
+      },
       "save": {
         "title": "Gespeichert",
         "message": "Die Änderungen wurden erfolgreich gespeichert."

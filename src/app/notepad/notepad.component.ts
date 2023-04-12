@@ -18,6 +18,7 @@ import { ViewportScroller } from '@angular/common';
 export class NotepadComponent implements OnInit {
 
   busy: boolean = false;
+  confirmDeletionNote?: Note;
   debounceFilter: any;
   debounceSave: any;
   editItemFormgroup = new FormGroup({
@@ -68,6 +69,7 @@ export class NotepadComponent implements OnInit {
         for (let i = 0; i < this.notes.length; i++) {
           if (this.notes[i].id == n.id) {
             this.notes.splice(i, 1);
+            this.refresh();
             break;
           }
         }
@@ -126,9 +128,7 @@ export class NotepadComponent implements OnInit {
         return;
       this.notes = Object.values(notes);
       this.notes = this.notes.sort((a, b) => { return a.title.toLowerCase() > b.title.toLowerCase() ? 1 : a.title.toLowerCase() < b.title.toLowerCase() ? -1 : 0 })
-      this.sortedNotes = [ ...this.notes ];
-      this.sort(this.sortby);
-      this.filter();
+      this.refresh();
     });
   }
 
@@ -148,13 +148,19 @@ export class NotepadComponent implements OnInit {
     this.edit(this.notes[0]);
   }
 
+  refresh(): void {
+    this.sortedNotes = [...this.notes];
+    this.sort(this.sortby);
+    this.filter();
+  }
+
   save(force: boolean = false, callback?: Function): void {
     if (this.debounceSave)
       clearTimeout(this.debounceSave);
     if (force)
       this.save2(callback);
     else
-    this.debounceSave = setTimeout(() => this.save2(), 1000);
+      this.debounceSave = setTimeout(() => this.save2(callback), 30000);
   }
 
   saveAndClose(): void {
