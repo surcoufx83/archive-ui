@@ -227,12 +227,19 @@
     "add": "New",
     "back": "Back",
     "cancel": "Cancel",
-    "change": "Ändern",
+    "change": "Modify",
     "confirm": {
       "askDeletion": "Are you sure you want to remove record {0}?",
       "delete": {
         "title": "Saved",
         "message": "The record was deleted from the database."
+      },
+      "deletion": {
+        "title": "Löschen bestätigen",
+        "message": "Bist du sicher, dass die Notiz gelöscht werden soll?",
+        "closeModal": "Dialog schließen",
+        "confirm": "Ja, löschen!",
+        "cancel": "Back"
       },
       "save": {
         "title": "Saved",
@@ -277,10 +284,10 @@
         "message": "This form contains errors."
       },
       "notYetSaved": {
-        "message": "Änderungen noch nicht gespeichert!"
+        "message": "Changes not yet saved!"
       },
       "saved": {
-        "message": "Änderungen gespeichert."
+        "message": "Changes saved."
       }
     },
     "year": "Year",
