@@ -209,6 +209,7 @@
       "In_VaccinationCertificate": "Certificat de vaccination",
       "In_Voucher": "Coupon",
       "LeaseAgreement": "Contrat de bail",
+      "NewCard": "Nouvelle carte avec lettre de présentation",
       "Out_ClaimReport": "Déclaration de sinistre",
       "Out_Contradiction": "Contradiction",
       "Out_ExpenseReport": "Décompte et justificatifs de frais",
@@ -218,18 +219,27 @@
       "Out_SepaMandate": "Mandat de prélèvement automatique",
       "Out_TaxDeclaration": "Déclaration d'impôts",
       "Out_Termination": "Résiliation",
-      "RentalAgreement": "Contrat de location"
+      "RentalAgreement": "Contrat de location",
+      "Trash": "Poubelle"
     }
   },
   "common": {
     "add": "Nouveau",
     "back": "Retour",
     "cancel": "Annuler",
+    "change": "Modifier",
     "confirm": {
       "askDeletion": "Es-tu sûr que l'enregistrement {0} doit être supprimé ?",
       "delete": {
         "title": "Enregistré",
         "message": "Cet enregistrement a déjà été supprimé."
+      },
+      "deletion": {
+        "title": "Löschen bestätigen",
+        "message": "Bist du sicher, dass die Notiz gelöscht werden soll?",
+        "closeModal": "Dialog schließen",
+        "confirm": "Ja, löschen!",
+        "cancel": "Retour"
       },
       "save": {
         "title": "Enregistré",
@@ -272,6 +282,12 @@
       "formInvalid": {
         "title": "Attention",
         "message": "Le formulaire contient encore des erreurs."
+      },
+      "notYetSaved": {
+        "message": "Modifications non encore enregistrées !"
+      },
+      "saved": {
+        "message": "Changements sauvegardés."
       }
     },
     "year": "Année",
@@ -906,7 +922,7 @@
     },
     "cards": {
       "day": {
-        "title": "Tagesdetails {0}"
+        "title": "Détails pour le jour {0}"
       },
       "target": {
         "title": "Info mensuelle",
@@ -924,7 +940,7 @@
     },
     "offtime": {
       "title": "Enregistrer les absences",
-      "subtitle": "Abwesenheitsmarker setzen das Tagessoll generell auf 0 Stunden.\r\nEs können für Abwesenheitstage keine Zeiten gebucht werden."
+      "subtitle": "Les marqueurs d'absence fixent en général le débit journalier à 0 heure.\nIl n'est pas possible de comptabiliser des heures pour les jours d'absence."
     }
   }
 }

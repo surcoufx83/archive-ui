@@ -64,7 +64,7 @@ export class SettingsService {
   private expectedVersions = {
     casesData: 2,
     financeData: 1,
-    notepadData: 1,
+    notepadData: 2,
     partiesData: 1,
     tagsData: 1,
     workData: 1,

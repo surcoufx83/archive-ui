@@ -209,6 +209,7 @@
       "In_VaccinationCertificate": "Vaccination Certificate",
       "In_Voucher": "Voucher",
       "LeaseAgreement": "Lease Agreement",
+      "NewCard": "New card with cover letter",
       "Out_ClaimReport": "Damage report",
       "Out_Contradiction": "Contradiction",
       "Out_ExpenseReport": "Expense report and receipts",
@@ -218,18 +219,27 @@
       "Out_SepaMandate": "SEPA direct debit mandate",
       "Out_TaxDeclaration": "Tax declaration",
       "Out_Termination": "Termination",
-      "RentalAgreement": "Rental Agreement"
+      "RentalAgreement": "Rental Agreement",
+      "Trash": "Trash"
     }
   },
   "common": {
     "add": "New",
     "back": "Back",
     "cancel": "Cancel",
+    "change": "Modify",
     "confirm": {
       "askDeletion": "Are you sure you want to remove record {0}?",
       "delete": {
         "title": "Saved",
         "message": "The record was deleted from the database."
+      },
+      "deletion": {
+        "title": "Löschen bestätigen",
+        "message": "Bist du sicher, dass die Notiz gelöscht werden soll?",
+        "closeModal": "Dialog schließen",
+        "confirm": "Ja, löschen!",
+        "cancel": "Back"
       },
       "save": {
         "title": "Saved",
@@ -272,6 +282,12 @@
       "formInvalid": {
         "title": "Warning",
         "message": "This form contains errors."
+      },
+      "notYetSaved": {
+        "message": "Changes not yet saved!"
+      },
+      "saved": {
+        "message": "Changes saved."
       }
     },
     "year": "Year",
@@ -876,7 +892,7 @@
       "livebtnTitle": "Live tracking function",
       "common": {
         "break": "Minus break",
-        "breakShort": "Pause",
+        "breakShort": "Break",
         "breakPlaceholder": "mm",
         "customer": "Customer",
         "description": "Description of the work carried out",
@@ -906,7 +922,7 @@
     },
     "cards": {
       "day": {
-        "title": "Tagesdetails {0}"
+        "title": "Details for day {0}"
       },
       "target": {
         "title": "Info",
@@ -924,7 +940,7 @@
     },
     "offtime": {
       "title": "Submit time off",
-      "subtitle": "Abwesenheitsmarker setzen das Tagessoll generell auf 0 Stunden.\r\nEs können für Abwesenheitstage keine Zeiten gebucht werden."
+      "subtitle": "Daily off time resets the day's target hours to 0.\nThere are no bookings allowed for off time days."
     }
   }
 }

@@ -83,6 +83,7 @@ import { WorkYearComponent } from './work/work-year/work-year.component';
 import { WorkComponent } from './work/work.component';
 import { NavbarComponent } from './utils/navbar/navbar.component';
 import { TooltipDirective } from './utils/tooltip.directive';
+import { ConfirmDeletionComponent } from './dialog/confirm-deletion/confirm-deletion.component';
 
 registerLocaleData(localeDe);
 
@@ -154,6 +155,7 @@ registerLocaleData(localeDe);
     WorkYearComponent,
     NavbarComponent,
     TooltipDirective,
+    ConfirmDeletionComponent,
   ],
   imports: [
     AppRoutingModule,

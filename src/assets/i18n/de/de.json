@@ -209,6 +209,7 @@
       "In_VaccinationCertificate": "Impfbescheinigung",
       "In_Voucher": "Gutschein",
       "LeaseAgreement": "Pachtvertrag",
+      "NewCard": "Neue Karte mit Anschreiben",
       "Out_ClaimReport": "Schadensmeldung",
       "Out_Contradiction": "Widerspruch",
       "Out_ExpenseReport": "Spesenabrechnung und -belege",
@@ -218,18 +219,27 @@
       "Out_SepaMandate": "SEPA Lastschriftmandat",
       "Out_TaxDeclaration": "Steuererklärung",
       "Out_Termination": "Kündigung",
-      "RentalAgreement": "Mietvertrag"
+      "RentalAgreement": "Mietvertrag",
+      "Trash": "Papierkorb"
     }
   },
   "common": {
     "add": "Neu",
     "back": "Zurück",
     "cancel": "Abbruch",
+    "change": "Ändern",
     "confirm": {
       "askDeletion": "Bist du sicher, dass der Datensatz {0} gelöscht werden soll?",
       "delete": {
         "title": "Gespeichert",
         "message": "Der Datensatz wurde aus der Datenbank gelöscht."
+      },
+      "deletion": {
+        "title": "Löschen bestätigen",
+        "message": "Bist du sicher, dass die Notiz gelöscht werden soll?",
+        "closeModal": "Dialog schließen",
+        "confirm": "Ja, löschen!",
+        "cancel": "Zurück"
       },
       "save": {
         "title": "Gespeichert",
@@ -272,6 +282,12 @@
       "formInvalid": {
         "title": "Warnung",
         "message": "Das Formular enthält noch Fehler."
+      },
+      "notYetSaved": {
+        "message": "Änderungen noch nicht gespeichert!"
+      },
+      "saved": {
+        "message": "Änderungen gespeichert."
       }
     },
     "year": "Jahr",

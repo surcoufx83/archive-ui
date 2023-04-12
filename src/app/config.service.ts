@@ -150,6 +150,7 @@ export const DefaultIcons: { [key: string]: string } = {
   'moving-boxes': 'fa-solid fa-people-carry-box',
   'notepad': 'fa-regular fa-lightbulb',
   'organic': 'fa-solid fa-seedling',
+  'pin': 'fa-solid fa-map-pin',
   'preview': 'fa-solid fa-eye',
   'receipt': 'fa-solid fa-receipt',
   'role': 'fa-solid fa-user-shield',
