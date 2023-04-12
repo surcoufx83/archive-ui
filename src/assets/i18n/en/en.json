@@ -209,7 +209,7 @@
       "In_VaccinationCertificate": "Vaccination Certificate",
       "In_Voucher": "Voucher",
       "LeaseAgreement": "Lease Agreement",
-      "NewCard": "Neue Karte mit Anschreiben",
+      "NewCard": "New card with cover letter",
       "Out_ClaimReport": "Damage report",
       "Out_Contradiction": "Contradiction",
       "Out_ExpenseReport": "Expense report and receipts",
@@ -220,7 +220,7 @@
       "Out_TaxDeclaration": "Tax declaration",
       "Out_Termination": "Termination",
       "RentalAgreement": "Rental Agreement",
-      "Trash": "Papierkorb"
+      "Trash": "Trash"
     }
   },
   "common": {
