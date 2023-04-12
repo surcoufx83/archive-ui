@@ -227,6 +227,7 @@
     "add": "New",
     "back": "Back",
     "cancel": "Cancel",
+    "change": "Ändern",
     "confirm": {
       "askDeletion": "Are you sure you want to remove record {0}?",
       "delete": {
@@ -274,6 +275,12 @@
       "formInvalid": {
         "title": "Warning",
         "message": "This form contains errors."
+      },
+      "notYetSaved": {
+        "message": "Änderungen noch nicht gespeichert!"
+      },
+      "saved": {
+        "message": "Änderungen gespeichert."
       }
     },
     "year": "Year",
