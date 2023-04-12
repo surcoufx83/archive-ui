@@ -227,12 +227,19 @@
     "add": "Nouveau",
     "back": "Retour",
     "cancel": "Annuler",
-    "change": "Ändern",
+    "change": "Modifier",
     "confirm": {
       "askDeletion": "Es-tu sûr que l'enregistrement {0} doit être supprimé ?",
       "delete": {
         "title": "Enregistré",
         "message": "Cet enregistrement a déjà été supprimé."
+      },
+      "deletion": {
+        "title": "Löschen bestätigen",
+        "message": "Bist du sicher, dass die Notiz gelöscht werden soll?",
+        "closeModal": "Dialog schließen",
+        "confirm": "Ja, löschen!",
+        "cancel": "Retour"
       },
       "save": {
         "title": "Enregistré",
@@ -277,10 +284,10 @@
         "message": "Le formulaire contient encore des erreurs."
       },
       "notYetSaved": {
-        "message": "Änderungen noch nicht gespeichert!"
+        "message": "Modifications non encore enregistrées !"
       },
       "saved": {
-        "message": "Änderungen gespeichert."
+        "message": "Changements sauvegardés."
       }
     },
     "year": "Année",
