@@ -51,7 +51,7 @@
     </div>
 </div>
 
-<div class="container-fluid px-3">
+<div class="container-fluid px-0">
     <div class="row m-0">
         <ng-container *ngTemplateOutlet="sidebar"></ng-container>
         <ng-container *ngTemplateOutlet="notesContainer"></ng-container>
@@ -59,7 +59,7 @@
 </div>
 
 <ng-template #sidebar>
-    <div class="sidebar pe-3 pe-xl-5 d-none d-md-flex flex-column col-md-4 col-lg-3 col-xl-2">
+    <div class="sidebar ps-0 pe-3 pe-xl-5 d-none d-md-flex flex-column col-md-4 col-lg-3 col-xl-2">
         <ul class="list-group list-group-flush">
             <ng-container *ngFor="let note of notes; let i = index;">
                 <li class="list-group-item bg-light pointer text-nowrap text-truncate"
