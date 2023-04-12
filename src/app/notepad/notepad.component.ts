@@ -148,6 +148,18 @@ export class NotepadComponent implements OnInit {
     this.edit(this.notes[0]);
   }
 
+  pin(note: Note): void {
+    this.saving = true;
+    let newnote = { ...note };
+    newnote.pinned = !note.pinned;
+    this.userSettings.updateNote(newnote).subscribe((subject) => {
+      if (subject !== null) {
+        this.saving = false;
+        this.refresh();
+      }
+    });
+  }
+
   refresh(): void {
     this.sortedNotes = [...this.notes];
     this.sort(this.sortby);
@@ -198,16 +210,16 @@ export class NotepadComponent implements OnInit {
     switch (this.sortby) {
       case 'name':
         if (this.sortasc)
-          this.sortedNotes = this.sortedNotes.sort((a, b) => { return a.title.toLocaleLowerCase() > b.title.toLocaleLowerCase() ? 1 : a.title.toLocaleLowerCase() < b.title.toLocaleLowerCase() ? -1 : 0 });
+          this.sortedNotes = this.sortedNotes.sort((a, b) => { return a.pinned && !b.pinned ? -1 : !a.pinned && b.pinned ? 1 : a.title.toLocaleLowerCase() > b.title.toLocaleLowerCase() ? 1 : a.title.toLocaleLowerCase() < b.title.toLocaleLowerCase() ? -1 : 0 });
         else
-          this.sortedNotes = this.sortedNotes.sort((a, b) => { return a.title.toLocaleLowerCase() > b.title.toLocaleLowerCase() ? -1 : a.title.toLocaleLowerCase() < b.title.toLocaleLowerCase() ? 1 : 0 });
+          this.sortedNotes = this.sortedNotes.sort((a, b) => { return a.pinned && !b.pinned ? -1 : !a.pinned && b.pinned ? 1 : a.title.toLocaleLowerCase() > b.title.toLocaleLowerCase() ? -1 : a.title.toLocaleLowerCase() < b.title.toLocaleLowerCase() ? 1 : 0 });
         break;
 
       case 'edit':
         if (this.sortasc)
-          this.sortedNotes = this.sortedNotes.sort((a, b) => { return a.updated > b.updated ? 1 : a.updated < b.updated ? -1 : 0 });
+          this.sortedNotes = this.sortedNotes.sort((a, b) => { return a.pinned && !b.pinned ? -1 : !a.pinned && b.pinned ? 1 : a.updated > b.updated ? 1 : a.updated < b.updated ? -1 : 0 });
         else
-          this.sortedNotes = this.sortedNotes.sort((a, b) => { return a.updated > b.updated ? -1 : a.updated < b.updated ? 1 : 0 });
+          this.sortedNotes = this.sortedNotes.sort((a, b) => { return a.pinned && !b.pinned ? -1 : !a.pinned && b.pinned ? 1 : a.updated > b.updated ? -1 : a.updated < b.updated ? 1 : 0 });
         break;
 
     }

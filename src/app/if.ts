@@ -324,13 +324,13 @@ export interface Mimetype {
 
 export interface Note {
   id: number;
-  title: string;
   content: string;
-  variant: string;
-  updated: string;
   deldate: string | null;
   pinned: boolean;
   show: boolean;
+  title: string;
+  updated: string;
+  variant: string;
 }
 
 export interface Page {

@@ -94,7 +94,8 @@
     <div class="card-header d-flex justify-content-between">
         <h4 class="card-title mb-0">{{ note.title }}</h4>
         <app-icon [iconClass]="config.icons['pin']"
-            [ngClass]="{ 'pointer overflow-hidden pin': true, 'text-primary': note.pinned, 'unpinned': !note.pinned }"></app-icon>
+            [ngClass]="{ 'pointer overflow-hidden pin': true, 'text-primary': note.pinned, 'unpinned': !note.pinned }"
+            (click)="pin(note)"></app-icon>
     </div>
     <div class="card-body">
         <markdown ngPreserveWhitespaces [data]="note.content"></markdown>
