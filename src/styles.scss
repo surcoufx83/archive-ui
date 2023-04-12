@@ -238,6 +238,16 @@ form {
   }
 }
 
+.pin {
+  &.unpinned {
+    transform: translate(30%, -30%) rotate(25deg);
+    transition: transform .1s ease;
+    &:hover {
+      transform: translate(0%, 0%) rotate(12deg);
+    }
+  }
+}
+
 .pointer {
   cursor: pointer;
 }

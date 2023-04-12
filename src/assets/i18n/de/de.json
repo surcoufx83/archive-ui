@@ -227,6 +227,7 @@
     "add": "Neu",
     "back": "Zurück",
     "cancel": "Abbruch",
+    "change": "Ändern",
     "confirm": {
       "askDeletion": "Bist du sicher, dass der Datensatz {0} gelöscht werden soll?",
       "delete": {
@@ -274,6 +275,12 @@
       "formInvalid": {
         "title": "Warnung",
         "message": "Das Formular enthält noch Fehler."
+      },
+      "notYetSaved": {
+        "message": "Änderungen noch nicht gespeichert!"
+      },
+      "saved": {
+        "message": "Änderungen gespeichert."
       }
     },
     "year": "Jahr",

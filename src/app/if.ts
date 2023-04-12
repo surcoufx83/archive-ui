@@ -329,6 +329,7 @@ export interface Note {
   variant: string;
   updated: string;
   deldate: string | null;
+  pinned: boolean;
   show: boolean;
 }
 

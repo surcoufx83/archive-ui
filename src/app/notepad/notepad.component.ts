@@ -8,6 +8,7 @@ import { AppConfig, ConfigService } from '../config.service';
 import { I18nService } from '../i18n.service';
 import { SettingsService } from '../user/settings/settings.service';
 import { FormatService } from '../utils/format.service';
+import { ViewportScroller } from '@angular/common';
 
 @Component({
   selector: 'app-notepad',
@@ -27,6 +28,7 @@ export class NotepadComponent implements OnInit {
   editNote?: Note;
   filterphrase: string = '';
   notes: Note[] = [];
+  sortedNotes: Note[] = [];
   saving: boolean = false;
   sortasc: boolean = false;
   sortby: string = 'edit';
@@ -37,7 +39,8 @@ export class NotepadComponent implements OnInit {
     private i18nService: I18nService,
     public router: Router,
     private userSettings: SettingsService,
-    public formatService: FormatService) {
+    public formatService: FormatService,
+    public viewportScroller: ViewportScroller) {
     this.userSettings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
     });
@@ -100,9 +103,9 @@ export class NotepadComponent implements OnInit {
   filter(): void {
     this.filterphrase = this.filterphrase.toLowerCase();
     if (this.filterphrase === '')
-      this.notes.forEach(n => n.show = true);
+      this.sortedNotes.forEach(n => n.show = true);
     else
-      this.notes.forEach(n => n.show = n.title.toLowerCase().includes(this.filterphrase) || n.content.toLowerCase().includes(this.filterphrase));
+      this.sortedNotes.forEach(n => n.show = n.title.toLowerCase().includes(this.filterphrase) || n.content.toLowerCase().includes(this.filterphrase));
   }
 
   filterKeyup(): void {
@@ -122,6 +125,8 @@ export class NotepadComponent implements OnInit {
       if (this.editId > -1)
         return;
       this.notes = Object.values(notes);
+      this.notes = this.notes.sort((a, b) => { return a.title.toLowerCase() > b.title.toLowerCase() ? 1 : a.title.toLowerCase() < b.title.toLowerCase() ? -1 : 0 })
+      this.sortedNotes = [ ...this.notes ];
       this.sort(this.sortby);
       this.filter();
     });
@@ -136,6 +141,7 @@ export class NotepadComponent implements OnInit {
         variant: '',
         updated: (new Date()).toISOString(),
         deldate: null,
+        pinned: false,
         show: true,
       }, ...this.notes
     ];
@@ -186,16 +192,16 @@ export class NotepadComponent implements OnInit {
     switch (this.sortby) {
       case 'name':
         if (this.sortasc)
-          this.notes = this.notes.sort((a, b) => { return a.title.toLocaleLowerCase() > b.title.toLocaleLowerCase() ? 1 : a.title.toLocaleLowerCase() < b.title.toLocaleLowerCase() ? -1 : 0 });
+          this.sortedNotes = this.sortedNotes.sort((a, b) => { return a.title.toLocaleLowerCase() > b.title.toLocaleLowerCase() ? 1 : a.title.toLocaleLowerCase() < b.title.toLocaleLowerCase() ? -1 : 0 });
         else
-          this.notes = this.notes.sort((a, b) => { return a.title.toLocaleLowerCase() > b.title.toLocaleLowerCase() ? -1 : a.title.toLocaleLowerCase() < b.title.toLocaleLowerCase() ? 1 : 0 });
+          this.sortedNotes = this.sortedNotes.sort((a, b) => { return a.title.toLocaleLowerCase() > b.title.toLocaleLowerCase() ? -1 : a.title.toLocaleLowerCase() < b.title.toLocaleLowerCase() ? 1 : 0 });
         break;
 
       case 'edit':
         if (this.sortasc)
-          this.notes = this.notes.sort((a, b) => { return a.updated > b.updated ? 1 : a.updated < b.updated ? -1 : 0 });
+          this.sortedNotes = this.sortedNotes.sort((a, b) => { return a.updated > b.updated ? 1 : a.updated < b.updated ? -1 : 0 });
         else
-          this.notes = this.notes.sort((a, b) => { return a.updated > b.updated ? -1 : a.updated < b.updated ? 1 : 0 });
+          this.sortedNotes = this.sortedNotes.sort((a, b) => { return a.updated > b.updated ? -1 : a.updated < b.updated ? 1 : 0 });
         break;
 
     }
