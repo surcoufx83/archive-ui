@@ -227,6 +227,7 @@
     "add": "Nouveau",
     "back": "Retour",
     "cancel": "Annuler",
+    "change": "Ändern",
     "confirm": {
       "askDeletion": "Es-tu sûr que l'enregistrement {0} doit être supprimé ?",
       "delete": {
@@ -274,6 +275,12 @@
       "formInvalid": {
         "title": "Attention",
         "message": "Le formulaire contient encore des erreurs."
+      },
+      "notYetSaved": {
+        "message": "Änderungen noch nicht gespeichert!"
+      },
+      "saved": {
+        "message": "Änderungen gespeichert."
       }
     },
     "year": "Année",
