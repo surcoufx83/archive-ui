@@ -67,6 +67,7 @@ export class SettingsService {
     notepadData: 2,
     partiesData: 1,
     tagsData: 1,
+    userData: 1,
     workData: 1,
   };
 
@@ -199,12 +200,15 @@ export class SettingsService {
     let olddata2: string | null | UserSettingsStorage = localStorage.getItem(`${this.config.storage.prefix}user`);
     if (olddata2) {
       olddata2 = <UserSettingsStorage>JSON.parse(olddata2);
-      this.updateUser(olddata2.user, false);
+      if (olddata2.version != undefined && olddata2.version == this.expectedVersions.userData) {
+        this.updateUser(olddata2.user, false);
         this.updateWorkProps(olddata2.work, false);
+      }
     }
     let url = this.configService.config.api.baseUrl + '/user/settings';
     this.authService.queryApi(url).subscribe((reply) => {
       if (reply.success && reply.payload != null) {
+        reply.payload['version'] = this.expectedVersions.userData;
         this.updateUser(<User>reply.payload['user']);
         this.updateWorkProps(<WorkProperties>reply.payload['work']);
         localStorage.setItem(`${this.config.storage.prefix}user`, JSON.stringify(reply.payload));
@@ -1177,6 +1181,7 @@ export interface TagsStorage {
 export interface UserSettingsStorage {
   user: User;
   work: WorkProperties;
+  version?: number;
 }
 
 export interface WorkResponse {

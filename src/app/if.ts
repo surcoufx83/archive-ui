@@ -572,6 +572,11 @@ export interface User {
   settings: UserSettings;
 }
 
+export interface UserClients {
+  other: Party[];
+  primary: Party | null;
+}
+
 export interface UserSettings {
   view: UserViewSettings;
   work: UserWorkSettings;
