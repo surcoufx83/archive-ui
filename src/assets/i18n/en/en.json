@@ -700,6 +700,13 @@
     "switchLocale": {
       "btnTitle": "Change display language"
     },
+    "user": {
+      "btnTitle": "Benutzerprofil {0}",
+      "userProfileLink": "Profil anzeigen",
+      "userSettingsLink": "Settings",
+      "clearCacheLink": "Cache leeren",
+      "logoutLink": "Abmelden"
+    },
     "workitems": {
       "leads": "Leads",
       "month": "Month",
@@ -710,7 +717,8 @@
   "notepad": {
     "title": "Notes",
     "filterPlaceholder": "Filter",
-    "markdownGuide": "Formatting using Markdown"
+    "markdownGuide": "Formatting using Markdown",
+    "notYetSaved": "Speichern in {0}s."
   },
   "partyroles": {
     "authority": "Authority",
