@@ -710,7 +710,8 @@
   "notepad": {
     "title": "Notes",
     "filterPlaceholder": "Filtrer",
-    "markdownGuide": "Mise en forme avec Markdown"
+    "markdownGuide": "Mise en forme avec Markdown",
+    "notYetSaved": "Speichern in {0}s."
   },
   "partyroles": {
     "authority": "Autorité",
