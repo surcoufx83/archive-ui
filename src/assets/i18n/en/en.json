@@ -698,7 +698,8 @@
       "btnTitle": "Show navigation"
     },
     "switchLocale": {
-      "btnTitle": "Change display language"
+      "btnTitle": "Change display language",
+      "smTitle": "Sprache"
     },
     "user": {
       "btnTitle": "Benutzerprofil {0}",
