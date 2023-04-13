@@ -350,6 +350,7 @@ export interface Party {
   iban: string;
   isbank: boolean;
   isclient: boolean;
+  key: string;
   modified: string;
   name1: string;
   name2: string;
@@ -566,8 +567,10 @@ export interface TaxRate {
 
 export interface User {
   id: number;
+  clients: UserClients,
   enabled: boolean;
   email: string;
+  groups: UserGroup[];
   loginname: string;
   settings: UserSettings;
 }
@@ -575,6 +578,14 @@ export interface User {
 export interface UserClients {
   other: Party[];
   primary: Party | null;
+}
+
+export interface UserGroup {
+  id: number;
+  created: string;
+  grant_access: boolean;
+  groupname: string;
+  updated: string;
 }
 
 export interface UserSettings {

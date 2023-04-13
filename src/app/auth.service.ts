@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { AppConfig, ConfigService } from './config.service';
 import { I18nService } from './i18n.service';
 import { ApiReply, Session } from './if';
@@ -12,7 +12,8 @@ import { ToastsService } from './utils/toasts.service';
 })
 export class AuthService implements OnInit {
 
-  private loggedin: boolean = false;
+  private loggedin: BehaviorSubject<boolean | undefined> = new BehaviorSubject<boolean | undefined>(undefined);
+  public isLoggedIn = this.loggedin.asObservable();
   private session?: Session;
   private storeName: string = 'ArcApiv2__Session';
 
@@ -28,9 +29,11 @@ export class AuthService implements OnInit {
         localStorage.removeItem(this.storeName);
       } else {
         this.session = <Session>localSession;
-        this.loggedin = true;
+        this.loggedin.next(true);
       }
     }
+    if (this.loggedin.value == undefined)
+      this.loggedin.next(false);
     setTimeout(() => { this.ping(); }, 60000);
   }
 
@@ -67,7 +70,7 @@ export class AuthService implements OnInit {
   }
 
   get isLoggedin(): boolean {
-    return this.loggedin;
+    return this.loggedin.value ?? false;
   }
 
   /**
@@ -87,6 +90,7 @@ export class AuthService implements OnInit {
             username: username
           };
           localStorage.setItem(this.storeName, JSON.stringify(this.session));
+          this.loggedin.next(true);
           location.replace('/home');
           return;
         } else {
@@ -108,10 +112,9 @@ export class AuthService implements OnInit {
    * logout
    */
   public logout() {
-    console.log('AuthService.logout()');
     localStorage.removeItem(this.storeName);
     this.session = undefined;
-    this.loggedin = false;
+    this.loggedin.next(false);
     this.router.navigate(['login']);
   }
 

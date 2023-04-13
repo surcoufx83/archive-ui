@@ -700,6 +700,13 @@
     "switchLocale": {
       "btnTitle": "Ändern der Anzeigesprache"
     },
+    "user": {
+      "btnTitle": "Benutzerprofil {0}",
+      "userProfileLink": "Profil anzeigen",
+      "userSettingsLink": "Einstellungen",
+      "clearCacheLink": "Cache leeren",
+      "logoutLink": "Abmelden"
+    },
     "workitems": {
       "leads": "Leads",
       "month": "Monatsansicht",

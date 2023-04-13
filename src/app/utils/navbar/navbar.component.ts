@@ -2,6 +2,8 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppConfig, ConfigService } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
+import { User } from 'src/app/if';
+import { SettingsService } from 'src/app/user/settings/settings.service';
 
 @Component({
   selector: 'app-navbar',
@@ -18,8 +20,10 @@ export class NavbarComponent {
   navbarLocales: NavbarLocaleDefinition[] = [];
   routeUrl: string = '';
   searchphrase: string = '';
+  user: User | null = null;
 
   constructor(private configService: ConfigService,
+    private settings: SettingsService,
     private i18nService: I18nService,
     private router: Router) {
     let sub = this.i18nService.loaded.subscribe((state) => {
@@ -37,6 +41,7 @@ export class NavbarComponent {
       }
     });
     this.i18nService.currentLocale.subscribe((l) => this.currentLocale = l);
+    settings.user$.subscribe((user) => this.user = user);
   }
 
   changeLocaleTo(key: string, event: Event): void {
@@ -44,12 +49,17 @@ export class NavbarComponent {
     this.i18nService.setLocale(key);
   }
 
+  clearCache(): void {
+    this.settings.clearCache();
+    this.settings.loadArchiveSettings();
+  }
+
   get config(): AppConfig {
     return this.configService.config;
   }
 
-  i18n(key: string): string {
-    return this.i18nService.i18n(key);
+  i18n(key: string, params: string[] = []): string {
+    return this.i18nService.i18n(key, params);
   }
 
   submitSearch(): void {
