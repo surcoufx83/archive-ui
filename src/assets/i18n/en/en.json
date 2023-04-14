@@ -235,10 +235,10 @@
         "message": "The record was deleted from the database."
       },
       "deletion": {
-        "title": "Löschen bestätigen",
-        "message": "Bist du sicher, dass die Notiz gelöscht werden soll?",
-        "closeModal": "Dialog schließen",
-        "confirm": "Ja, löschen!",
+        "title": "Confirm deletion",
+        "message": "Are you sure you want to delete the note?",
+        "closeModal": "Close dialog",
+        "confirm": "Yes, delete!",
         "cancel": "Back"
       },
       "save": {
@@ -699,14 +699,14 @@
     },
     "switchLocale": {
       "btnTitle": "Change display language",
-      "smTitle": "Sprache"
+      "smTitle": "Language"
     },
     "user": {
-      "btnTitle": "Benutzerprofil {0}",
-      "userProfileLink": "Profil anzeigen",
+      "btnTitle": "User profile {0}",
+      "userProfileLink": "Show profile",
       "userSettingsLink": "Settings",
-      "clearCacheLink": "Cache leeren",
-      "logoutLink": "Abmelden"
+      "clearCacheLink": "Clear cache",
+      "logoutLink": "Logout"
     },
     "workitems": {
       "leads": "Leads",
@@ -719,7 +719,7 @@
     "title": "Notes",
     "filterPlaceholder": "Filter",
     "markdownGuide": "Formatting using Markdown",
-    "notYetSaved": "Speichern in {0}s."
+    "notYetSaved": "Saving in {0} seconds."
   },
   "partyroles": {
     "authority": "Authority",
