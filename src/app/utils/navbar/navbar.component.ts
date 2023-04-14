@@ -45,8 +45,6 @@ export class NavbarComponent {
     settings.user$.subscribe((user) => this.user = user);
     router.events.subscribe((e) => {
       if (e instanceof NavigationEnd)
-      console.log(e)
-      if (e instanceof NavigationEnd)
         this.routeUrl = e.urlAfterRedirects;
     });
   }
