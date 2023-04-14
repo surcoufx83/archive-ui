@@ -72,16 +72,19 @@ export interface BasicAuthConfig {
 
 export interface NavbarConfig {
   items: NavbarItem[];
+  items2: NavbarItem[];
   financeitems: NavbarItem[];
   workitems: NavbarItem[];
 }
 
 export interface NavbarItem {
-  title: string;
+  callFn?: string;
+  divider?: boolean;
   icon: string;
-  link: string;
+  link?: string;
   matchLink?: string;
   params?: string[];
+  title: string;
 }
 
 export interface OAuth2Config {
@@ -144,6 +147,7 @@ export const DefaultIcons: { [key: string]: string } = {
   'list': 'fa-solid fa-grip-lines',
   'locale': 'fa-solid fa-language',
   'login': 'fa-solid fa-user-lock',
+  'logout': 'fa-solid fa-power-off',
   'menu': 'fa-solid fa-bars',
   'meter': 'fa-solid fa-gauge',
   'meter-reading': 'fa-solid fa-gauge-simple',

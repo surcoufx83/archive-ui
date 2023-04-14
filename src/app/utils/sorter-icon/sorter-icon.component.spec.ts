@@ -114,6 +114,7 @@ let mockAppConfig: AppConfig = {
   loaded: true,
   navbar: {
     items: [],
+    items2: [],
     financeitems: [],
     workitems: []
   },

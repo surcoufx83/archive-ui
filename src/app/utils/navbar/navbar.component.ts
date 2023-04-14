@@ -1,7 +1,9 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
-import { AppConfig, ConfigService } from 'src/app/config.service';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { AppConfig, ConfigService, NavbarItem } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
+import { User } from 'src/app/if';
+import { SettingsService } from 'src/app/user/settings/settings.service';
 
 @Component({
   selector: 'app-navbar',
@@ -18,10 +20,13 @@ export class NavbarComponent {
   navbarLocales: NavbarLocaleDefinition[] = [];
   routeUrl: string = '';
   searchphrase: string = '';
+  user: User | null = null;
 
   constructor(private configService: ConfigService,
+    private settings: SettingsService,
     private i18nService: I18nService,
-    private router: Router) {
+    private router: Router,
+    private route: ActivatedRoute) {
     let sub = this.i18nService.loaded.subscribe((state) => {
       if (state === true) {
         let temp: NavbarLocaleDefinition[] = [];
@@ -37,6 +42,17 @@ export class NavbarComponent {
       }
     });
     this.i18nService.currentLocale.subscribe((l) => this.currentLocale = l);
+    settings.user$.subscribe((user) => this.user = user);
+    router.events.subscribe((e) => {
+      if (e instanceof NavigationEnd)
+      console.log(e)
+      if (e instanceof NavigationEnd)
+        this.routeUrl = e.urlAfterRedirects;
+    });
+  }
+
+  callFn(item: NavbarItem): void {
+    eval(`this.${item.callFn!}()`);
   }
 
   changeLocaleTo(key: string, event: Event): void {
@@ -44,12 +60,17 @@ export class NavbarComponent {
     this.i18nService.setLocale(key);
   }
 
+  clearCache(): void {
+    this.settings.clearCache();
+    this.settings.loadArchiveSettings();
+  }
+
   get config(): AppConfig {
     return this.configService.config;
   }
 
-  i18n(key: string): string {
-    return this.i18nService.i18n(key);
+  i18n(key: string, params: string[] = []): string {
+    return this.i18nService.i18n(key, params);
   }
 
   submitSearch(): void {

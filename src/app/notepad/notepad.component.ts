@@ -21,6 +21,7 @@ export class NotepadComponent implements OnInit {
   confirmDeletionNote?: Note;
   debounceFilter: any;
   debounceSave: any;
+  dirty: boolean = false;
   editItemFormgroup = new FormGroup({
     title: new FormControl('', Validators.required),
     content: new FormControl('', Validators.required),
@@ -31,6 +32,8 @@ export class NotepadComponent implements OnInit {
   notes: Note[] = [];
   sortedNotes: Note[] = [];
   saving: boolean = false;
+  saveIntervalSeconds: number = 15;
+  saveIntervalLeftSeconds: number = 15;
   sortasc: boolean = false;
   sortby: string = 'edit';
   usersettingsObj: UserSettings | null = null;
@@ -167,40 +170,32 @@ export class NotepadComponent implements OnInit {
   }
 
   save(force: boolean = false, callback?: Function): void {
+    this.saveIntervalLeftSeconds = this.saveIntervalSeconds;
+    console.log('save', this.saveIntervalLeftSeconds, this.debounceSave);
     if (this.debounceSave)
       clearTimeout(this.debounceSave);
     if (force)
-      this.save2(callback);
+      this.submitChanges(callback);
+    else {
+      this.dirty = true;
+      this.saveIntervalLeftSeconds = this.saveIntervalSeconds;
+      this.debounceSave = setTimeout(() => this.saveTimer(callback), 1000);
+    }
+  }
+
+  saveTimer(callback?: Function) {
+    this.saveIntervalLeftSeconds -= 1;
+    console.log('saveTimer', this.saveIntervalLeftSeconds, this.debounceSave);
+    if (this.debounceSave)
+      clearTimeout(this.debounceSave);
+    if (this.saveIntervalLeftSeconds <= 0)
+      this.submitChanges(callback);
     else
-      this.debounceSave = setTimeout(() => this.save2(callback), 30000);
+      this.debounceSave = setTimeout(() => this.saveTimer(callback), 1000);
   }
 
   saveAndClose(): void {
     this.save(true, () => { this.close() });
-  }
-
-  private save2(callback?: Function) {
-    if (!this.editNote || !this.editItemFormgroup.valid) {
-      if (callback)
-        callback();
-      return;
-    }
-    if (this.editNote.title == this.editItemFormgroup.get('title')!.value && this.editNote.content == this.editItemFormgroup.get('content')!.value) {
-      if (callback)
-        callback();
-      return;
-    }
-    this.saving = true;
-    let newnote = { ...this.editNote };
-    newnote.title = this.editItemFormgroup.get('title')!.value!;
-    newnote.content = this.editItemFormgroup.get('content')!.value!;
-    this.userSettings.updateNote(newnote).subscribe((subject) => {
-      if (subject !== null) {
-        this.saving = false;
-        if (callback)
-          callback();
-      }
-    });
   }
 
   sort(key: string, asc: boolean | null = null): void {
@@ -223,6 +218,34 @@ export class NotepadComponent implements OnInit {
         break;
 
     }
+  }
+
+  private submitChanges(callback?: Function) {
+    console.log('submitChanges');
+    if (!this.editNote || !this.editItemFormgroup.valid) {
+      this.dirty = false;
+      if (callback)
+        callback();
+      return;
+    }
+    if (this.editNote.title == this.editItemFormgroup.get('title')!.value && this.editNote.content == this.editItemFormgroup.get('content')!.value) {
+      this.dirty = false;
+      if (callback)
+        callback();
+      return;
+    }
+    this.saving = true;
+    let newnote = { ...this.editNote };
+    newnote.title = this.editItemFormgroup.get('title')!.value!;
+    newnote.content = this.editItemFormgroup.get('content')!.value!;
+    this.userSettings.updateNote(newnote).subscribe((subject) => {
+      if (subject !== null) {
+        this.saving = false;
+        this.dirty = false;
+        if (callback)
+          callback();
+      }
+    });
   }
 
 }

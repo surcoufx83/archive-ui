@@ -13,7 +13,7 @@
             <div class="container-fluid d-flex flex-column flex-md-row justify-content-between align-items-md-center">
                 <ul class="navbar-nav">
                     <li class="nav-item mx-1" *ngFor="let item of config.navbar.items; let i = index">
-                        <a [class]="'nav-link d-flex flex-row flex-md-column align-items-center ' + (routeUrl != item.link ? 'active' : '')"
+                        <a [class]="'nav-link d-flex flex-row flex-md-column align-items-center ' + (routeUrl === item.link || (item.matchLink != undefined && routeUrl.indexOf(item.matchLink) === 0) ? 'active text-white' : '')"
                             [routerLink]="item.link" (click)="navbarVisible ? navbarCollapseBtn?.click() : null">
                             <app-icon [iconClass]="config.icons[item.icon]"></app-icon>
                             <span class="ms-2 ms-md-0">
@@ -23,17 +23,81 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav">
+                    <ng-container *ngIf="user != null">
+                        <li class="nav-item d-none d-md-block me-4 dropdown">
+                            <button type="button" class="btn btn-dark locale-btn dropdown-toggle" #navbarUserDropdown
+                                role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                                [title]="i18n('navbar.user.btnTitle', [user.clients.primary != null ? user.clients.primary.name1 : user.loginname])">
+                                <span class="pe-2">{{ user.clients.primary != null ? user.clients.primary.key :
+                                    user.loginname.substr(0, 1).toUpperCase() }}</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-dark bg-dark mt-2 border shadow"
+                                aria-labelledby="navbarUserDropdown">
+                                <ng-container *ngFor="let item of config.navbar.items2; let i = index">
+                                    <ng-container *ngIf="item.divider == undefined || item.divider == false; else dropdownDivider">
+                                        <ng-container [ngSwitch]="item.callFn">
+                                            <ng-container *ngSwitchCase="undefined">
+                                                <a [ngClass]="{'dropdown-item pointer': true, 'active': (routeUrl === item.link || (item.matchLink != undefined && routeUrl.indexOf(item.matchLink) === 0)) }"
+                                                    [routerLink]="item.link"
+                                                    (click)="navbarVisible ? navbarCollapseBtn?.click() : null">
+                                                    <app-icon [iconClass]="config.icons[item.icon]"></app-icon>
+                                                    <span class="ms-2 ms-md-0">
+                                                        {{ i18n(item.title) }}
+                                                    </span>
+                                                </a>
+                                            </ng-container>
+                                            <ng-container *ngSwitchDefault>
+                                                <a class="dropdown-item pointer"
+                                                    (click)="callFn(item); navbarVisible ? navbarCollapseBtn?.click() : null">
+                                                    <app-icon [iconClass]="config.icons[item.icon]"></app-icon>
+                                                    <span class="ms-2 ms-md-0">
+                                                        {{ i18n(item.title) }}
+                                                    </span>
+                                                </a>
+                                            </ng-container>
+                                        </ng-container>
+                                    </ng-container>
+                                </ng-container>
+                            </ul>
+                        </li>
+                        <li class="nav-item d-md-none mx-1" *ngFor="let item of config.navbar.items2; let i = index">
+                            <ng-container *ngIf="item.divider == undefined || item.divider == false">
+                                <ng-container [ngSwitch]="item.callFn">
+                                    <ng-container *ngSwitchCase="undefined">
+                                        <a [class]="'nav-link d-flex flex-row flex-md-column align-items-center ' + (routeUrl === item.link || (item.matchLink != undefined && routeUrl.indexOf(item.matchLink) === 0) ? 'active text-white' : '')"
+                                            [routerLink]="item.link"
+                                            (click)="navbarVisible ? navbarCollapseBtn?.click() : null">
+                                            <app-icon [iconClass]="config.icons[item.icon]"></app-icon>
+                                            <span class="ms-2 ms-md-0">
+                                                {{ i18n(item.title) }}
+                                            </span>
+                                        </a>
+                                    </ng-container>
+                                    <ng-container *ngSwitchDefault>
+                                        <a class="nav-link d-flex flex-row flex-md-column align-items-center pointer"
+                                            (click)="callFn(item); navbarVisible ? navbarCollapseBtn?.click() : null">
+                                            <app-icon [iconClass]="config.icons[item.icon]"></app-icon>
+                                            <span class="ms-2 ms-md-0">
+                                                {{ i18n(item.title) }}
+                                            </span>
+                                        </a>
+                                    </ng-container>
+                                </ng-container>
+                            </ng-container>
+                        </li>
+                    </ng-container>
                     <li class="nav-item">
                         <div class="d-none d-md-block me-4 dropdown">
-                            <button type="button" class="btn btn-dark locale-btn dropdown-toggle"
-                                #navbarLocalesDropdown role="button" data-bs-toggle="dropdown"
-                                aria-expanded="false" [title]="i18n('navbar.switchLocale.btnTitle')">
-                                <app-icon [iconClass]="config.icons['locale']"></app-icon>
+                            <button type="button" class="btn btn-dark locale-btn dropdown-toggle" #navbarLocalesDropdown
+                                role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                                [title]="i18n('navbar.switchLocale.btnTitle')">
+                                <app-icon [iconClass]="config.icons['locale']" [addCssClasses]="'me-2'"></app-icon>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-dark bg-dark mt-2 border shadow"
                                 aria-labelledby="navbarLocalesDropdown">
                                 <li [ngClass]="{'dropdown-item pointer': true, 'active': locale.code == currentLocale}"
-                                    *ngFor="let locale of navbarLocales" (click)="changeLocaleTo(locale.code, $event); navbarLocalesDropdownBtn ? navbarLocalesDropdownBtn.nativeElement.click() : null">
+                                    *ngFor="let locale of navbarLocales"
+                                    (click)="changeLocaleTo(locale.code, $event); navbarLocalesDropdownBtn ? navbarLocalesDropdownBtn.nativeElement.click() : null">
                                     {{ i18n('locales.' + locale.code + '.title') }}
                                     <span *ngIf="locale.isDefault" class="fs-7">({{ i18n('common.default')
                                         }})</span>
@@ -42,6 +106,9 @@
                         </div>
                         <div class="d-flex d-md-none flex-row align-items-center text-light mx-1 mb-3">
                             <app-icon [iconClass]="config.icons['locale']"></app-icon>
+                            <span class="ms-2 ms-md-0 me-2">
+                                {{ i18n('navbar.switchLocale.smTitle') }}:
+                            </span>
                             <button type="button"
                                 [ngClass]="{'btn btn-sm btn-dark ms-2': true, 'active': locale.code == currentLocale}"
                                 *ngFor="let locale of navbarLocales"
@@ -73,3 +140,9 @@
         </div>
     </nav>
 </header>
+
+<ng-template #dropdownDivider>
+    <li>
+        <hr class="dropdown-divider">
+    </li>
+</ng-template>

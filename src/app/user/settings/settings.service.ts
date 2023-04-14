@@ -67,11 +67,49 @@ export class SettingsService {
     notepadData: 2,
     partiesData: 1,
     tagsData: 1,
+    userData: 1,
     workData: 1,
   };
 
   constructor(private authService: AuthService,
     private configService: ConfigService) {
+    this.loadAllCacheItems();
+    this.authService.isLoggedIn.subscribe((state) => {
+      if (state != undefined && state === false) {
+        this.clearCache(false);
+        localStorage.clear();
+      }
+    });
+  }
+
+  public clearCache(reload: boolean = true): void {
+    clearTimeout(this.casesynctimeout);
+    clearTimeout(this.financesynctimeout);
+    clearTimeout(this.notepadsynctimeout);
+    clearTimeout(this.partiessynctimeout);
+    clearTimeout(this.tagssynctimeout);
+    clearTimeout(this.worksynctimeout);
+    clearTimeout(this.componentRefresher);
+    localStorage.removeItem(this.casesstorage);
+    localStorage.removeItem(this.financestorage);
+    localStorage.removeItem(this.notepadstorage);
+    localStorage.removeItem(this.partiesstorage);
+    localStorage.removeItem(this.tagsstorage);
+    localStorage.removeItem(this.workstorage);
+    localStorage.removeItem(this.clientSettingsStorage);
+    localStorage.removeItem(`${this.config.storage.prefix}user`);
+    this.archiveLoaded = false;
+    if (reload) {
+      this.loadArchiveSettings();
+      this.loadAllCacheItems();
+    }
+  }
+
+  get config(): AppConfig {
+    return this.configService.config;
+  }
+
+  private loadAllCacheItems(): void {
     this.loadUserSettings();
     this.loadCasesData();
     this.loadFinanceData();
@@ -79,10 +117,6 @@ export class SettingsService {
     this.loadPartiesData();
     this.loadTags();
     this.loadWorkStorageSettings();
-  }
-
-  get config(): AppConfig {
-    return this.configService.config;
   }
 
   public loadArchiveSettings(): void {
@@ -199,12 +233,15 @@ export class SettingsService {
     let olddata2: string | null | UserSettingsStorage = localStorage.getItem(`${this.config.storage.prefix}user`);
     if (olddata2) {
       olddata2 = <UserSettingsStorage>JSON.parse(olddata2);
-      this.updateUser(olddata2.user, false);
+      if (olddata2.version != undefined && olddata2.version == this.expectedVersions.userData) {
+        this.updateUser(olddata2.user, false);
         this.updateWorkProps(olddata2.work, false);
+      }
     }
     let url = this.configService.config.api.baseUrl + '/user/settings';
     this.authService.queryApi(url).subscribe((reply) => {
       if (reply.success && reply.payload != null) {
+        reply.payload['version'] = this.expectedVersions.userData;
         this.updateUser(<User>reply.payload['user']);
         this.updateWorkProps(<WorkProperties>reply.payload['work']);
         localStorage.setItem(`${this.config.storage.prefix}user`, JSON.stringify(reply.payload));
@@ -261,6 +298,7 @@ export class SettingsService {
     });
     return subject;
   }
+
   public setTimeout(timeout: any): void {
     if (this.componentRefresher)
       clearTimeout(this.componentRefresher);
@@ -1177,6 +1215,7 @@ export interface TagsStorage {
 export interface UserSettingsStorage {
   user: User;
   work: WorkProperties;
+  version?: number;
 }
 
 export interface WorkResponse {

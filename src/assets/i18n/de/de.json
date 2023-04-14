@@ -698,7 +698,15 @@
       "btnTitle": "Navigation anzeigen"
     },
     "switchLocale": {
-      "btnTitle": "Ändern der Anzeigesprache"
+      "btnTitle": "Ändern der Anzeigesprache",
+      "smTitle": "Sprache"
+    },
+    "user": {
+      "btnTitle": "Benutzerprofil {0}",
+      "userProfileLink": "Profil anzeigen",
+      "userSettingsLink": "Einstellungen",
+      "clearCacheLink": "Cache leeren",
+      "logoutLink": "Abmelden"
     },
     "workitems": {
       "leads": "Leads",
@@ -710,7 +718,8 @@
   "notepad": {
     "title": "Notizen",
     "filterPlaceholder": "Filtern",
-    "markdownGuide": "Formatierung mit Markdown"
+    "markdownGuide": "Formatierung mit Markdown",
+    "notYetSaved": "Speichern in {0}s."
   },
   "partyroles": {
     "authority": "Behörde",

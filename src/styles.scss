@@ -238,11 +238,20 @@ form {
   min-height: 50%;
 }
 
-.navbar.navbar-sm {
-  .navbar-nav .nav-link {
-    font-size: 92%;
-    padding-top: 0;
-    padding-bottom: 0;
+.navbar {
+  &.navbar-dark {
+    .dropdown-menu {
+      .dropdown-divider {
+        border-color:rgba(255, 255, 255, .55);
+      }
+    }
+  }
+  &.navbar-sm {
+    .navbar-nav .nav-link {
+      font-size: 92%;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
   }
 }
 
