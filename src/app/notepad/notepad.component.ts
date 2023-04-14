@@ -148,6 +148,7 @@ export class NotepadComponent implements OnInit {
         show: true,
       }, ...this.notes
     ];
+    this.sortedNotes = [...this.notes];
     this.edit(this.notes[0]);
   }
 
@@ -176,7 +177,7 @@ export class NotepadComponent implements OnInit {
       clearTimeout(this.debounceSave);
     if (force)
       this.submitChanges(callback);
-    else {
+    else if (this.editItemFormgroup.valid) {
       this.dirty = true;
       this.saveIntervalLeftSeconds = this.saveIntervalSeconds;
       this.debounceSave = setTimeout(() => this.saveTimer(callback), 1000);
@@ -242,6 +243,10 @@ export class NotepadComponent implements OnInit {
       if (subject !== null) {
         this.saving = false;
         this.dirty = false;
+        if (subject !== true && subject !== false) {
+          if (this.editNote!.id === 0)
+            this.editNote!.id = (<Note>subject).id;
+        }
         if (callback)
           callback();
       }
