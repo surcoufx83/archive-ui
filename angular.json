@@ -32,7 +32,11 @@
             "assets": [
               "./src/favicon.ico",
               "./src/assets",
-              { "glob": "**/*", "input": "./node_modules/ng2-pdfjs-viewer/pdfjs", "output": "/assets/pdfjs" }
+              {
+                "glob": "**/*",
+                "input": "./node_modules/ng2-pdfjs-viewer/pdfjs",
+                "output": "/assets/pdfjs"
+              }
             ],
             "styles": [
               "./src/styles.scss",
@@ -64,7 +68,15 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "optimization": {
+                "fonts": true,
+                "scripts": true,
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": false
+                }
+              }
             },
             "development": {
               "buildOptimizer": false,
@@ -111,7 +123,11 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              { "glob": "**/*", "input": "node_modules/ng2-pdfjs-viewer/pdfjs", "output": "/assets/pdfjs" }
+              {
+                "glob": "**/*",
+                "input": "node_modules/ng2-pdfjs-viewer/pdfjs",
+                "output": "/assets/pdfjs"
+              }
             ],
             "styles": [
               "src/styles.scss",
