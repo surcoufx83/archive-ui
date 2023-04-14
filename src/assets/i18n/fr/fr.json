@@ -235,10 +235,10 @@
         "message": "Cet enregistrement a déjà été supprimé."
       },
       "deletion": {
-        "title": "Löschen bestätigen",
-        "message": "Bist du sicher, dass die Notiz gelöscht werden soll?",
-        "closeModal": "Dialog schließen",
-        "confirm": "Ja, löschen!",
+        "title": "Confirmer la suppression",
+        "message": "Êtes-vous sûr de vouloir supprimer le mémo ?",
+        "closeModal": "Fermer le dialogue",
+        "confirm": "Oui, supprimer !",
         "cancel": "Retour"
       },
       "save": {
@@ -699,14 +699,14 @@
     },
     "switchLocale": {
       "btnTitle": "Changer la langue d'affichage",
-      "smTitle": "Sprache"
+      "smTitle": "Langue"
     },
     "user": {
-      "btnTitle": "Benutzerprofil {0}",
-      "userProfileLink": "Profil anzeigen",
+      "btnTitle": "Profil de l'utilisateur {0}",
+      "userProfileLink": "Afficher le profil",
       "userSettingsLink": "Paramètres",
-      "clearCacheLink": "Cache leeren",
-      "logoutLink": "Abmelden"
+      "clearCacheLink": "Effacer le cache",
+      "logoutLink": "Se déconnecter"
     },
     "workitems": {
       "leads": "Leads",
@@ -719,7 +719,7 @@
     "title": "Notes",
     "filterPlaceholder": "Filtrer",
     "markdownGuide": "Mise en forme avec Markdown",
-    "notYetSaved": "Speichern in {0}s."
+    "notYetSaved": "Sauvegarde dans {0} secondes."
   },
   "partyroles": {
     "authority": "Autorité",
