@@ -723,9 +723,9 @@
   },
   "notifications": {
     "filecreated": {
-      "title": "Neue Datei",
-      "message": "Die neue Datei {1} wurde soeben dem Archiv hinzugefügt.",
-      "action": "Öffnen"
+      "title": "Nouveau fichier",
+      "message": "Le nouveau fichier {1} vient d'être ajouté à l'archive.",
+      "action": "Ouvrir"
     }
   },
   "partyroles": {
