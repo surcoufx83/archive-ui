@@ -721,6 +721,13 @@
     "markdownGuide": "Mise en forme avec Markdown",
     "notYetSaved": "Sauvegarde dans {0} secondes."
   },
+  "notifications": {
+    "filecreated": {
+      "title": "Neue Datei",
+      "message": "Die neue Datei {1} wurde soeben dem Archiv hinzugefügt.",
+      "action": "Öffnen"
+    }
+  },
   "partyroles": {
     "authority": "Autorité",
     "bank": "Banque",
