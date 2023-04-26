@@ -770,7 +770,7 @@ export class SettingsService {
       if (notifications[i].id == id) {
         notifications.splice(i, 1);
         let url: string = this.config.api.baseUrl + `/notification/read/${id}`;
-        this.authService.updateApi(url, {}).subscribe((r) => { console.log(r) });
+        this.authService.updateApi(url, {}).subscribe(() => { });
         break;
       }
     }

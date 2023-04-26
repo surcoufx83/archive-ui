@@ -52,7 +52,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   _showNotifications(): void {
-    console.log(this.notifications);
     if (this.notifications.length > 0) {
       let n: ServerNotification = this.notifications.splice(0, 1)[0];
       switch (n.type) {
