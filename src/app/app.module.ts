@@ -49,7 +49,7 @@ import { LogoutComponent } from './logout/logout.component';
 import { ReadingsComponent } from './meters/readings/readings.component';
 import { NotepadComponent } from './notepad/notepad.component';
 import { SearchComponent } from './search/search.component';
-import { SettingsService } from './user/settings/settings.service';
+import { SettingsService } from './utils/settings.service';
 import { ButtonComponent } from './utils/button/button.component';
 import { DummyComponent } from './utils/dummy/dummy.component';
 import { H2Component } from './utils/h2/h2.component';
@@ -84,6 +84,7 @@ import { WorkComponent } from './work/work.component';
 import { NavbarComponent } from './utils/navbar/navbar.component';
 import { TooltipDirective } from './utils/tooltip.directive';
 import { ConfirmDeletionComponent } from './dialog/confirm-deletion/confirm-deletion.component';
+import { StorageService } from './utils/storage.service';
 
 registerLocaleData(localeDe);
 
@@ -185,6 +186,7 @@ registerLocaleData(localeDe);
     { provide: I18nService, multi: false, },
     { provide: ToastsService, multi: false, },
     { provide: AuthService, multi: false, },
+    { provide: StorageService, multi: false, },
     { provide: SettingsService, multi: false, },
   ],
   bootstrap: [

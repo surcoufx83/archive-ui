@@ -6,7 +6,7 @@ import { Note, UserSettings } from 'src/app/if';
 import { AuthService } from '../auth.service';
 import { AppConfig, ConfigService } from '../config.service';
 import { I18nService } from '../i18n.service';
-import { SettingsService } from '../user/settings/settings.service';
+import { SettingsService } from '../utils/settings.service';
 import { FormatService } from '../utils/format.service';
 import { ViewportScroller } from '@angular/common';
 

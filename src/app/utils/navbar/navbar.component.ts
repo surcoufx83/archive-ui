@@ -3,7 +3,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { AppConfig, ConfigService, NavbarItem } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
 import { User } from 'src/app/if';
-import { SettingsService } from 'src/app/user/settings/settings.service';
+import { SettingsService } from 'src/app/utils/settings.service';
 
 @Component({
   selector: 'app-navbar',

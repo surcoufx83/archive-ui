@@ -4,7 +4,7 @@ import { AuthService } from 'src/app/auth.service';
 import { AppConfig, ConfigService } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
 import { UserSettings } from 'src/app/if';
-import { SettingsService } from 'src/app/user/settings/settings.service';
+import { SettingsService } from 'src/app/utils/settings.service';
 
 @Component({
   selector: 'app-manager',

@@ -818,9 +818,11 @@ export interface WorkHoliday {
 export interface WorkLead {
   id: number;
   completed: boolean;
+  created: string;
   date_accepted: null | string;
   date_completed: null | string;
   date_reported: string;
+  deleted: string | null;
   cpo: WorkLeadCpo;
   customer: null | WorkCustomer;
   customerid: null | number;
@@ -834,6 +836,7 @@ export interface WorkLead {
   project_name: string;
   project_description: string;
   sales: string;
+  updated: string;
   userid: number;
 }
 
@@ -883,12 +886,15 @@ export interface WorkMonth {
 
 export interface WorkOffCategory {
   calendarcolor: WorkCalendarColor;
+  created: string;
+  deleted: string | null;
   icon: string;
   iconcolor: string;
   id: number;
   name: string;
   quickselect: boolean;
   rowcolor: string;
+  updated: string;
   userid: number;
 }
 
@@ -896,27 +902,24 @@ export interface WorkProject {
   created: string;
   customer: WorkCustomer;
   customerid: number;
+  deleted: string | null;
   disabled: boolean;
   id: number;
   lastusage: string | null;
   name: string;
+  updated: string;
   userid: number;
-}
-
-export interface WorkProperties {
-  customers: WorkCustomer[];
-  leads: WorkLead[];
-  offCategories: WorkOffCategory[];
-  projects: WorkProject[];
-  timeCategories: WorkTimeCategory[];
 }
 
 export interface WorkTimeCategory {
   calendarcolor: WorkCalendarColor;
+  created: string;
+  deleted: string | null;
   icon: string;
   iconcolor: string;
   id: number;
   name: string;
   rowcolor: string;
+  updated: string;
   userid: number;
 }

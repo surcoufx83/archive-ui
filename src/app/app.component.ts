@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from './auth.service';
 import { AppConfig, ConfigService } from './config.service';
-import { SettingsService } from './user/settings/settings.service';
+import { SettingsService } from './utils/settings.service';
 import { ToastsService } from './utils/toasts.service';
 import { ServerNotification } from './if';
 import { I18nService } from './i18n.service';
