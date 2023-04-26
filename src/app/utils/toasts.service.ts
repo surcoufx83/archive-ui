@@ -12,9 +12,10 @@ export class ToastsService {
     this.toast$.next(toast);
   }
 
-  public confirm(title: string, message: string) : void {
+  public confirm(title: string, message: string, actions?: ToastLink[], duration?: number) : void {
     this.add({
-      disposeTime: 2500,
+      actions: actions,
+      disposeTime: duration ?? 2500,
       icon: 'fa-regular fa-circle-check',
       message: message,
       title: title,
@@ -22,9 +23,10 @@ export class ToastsService {
     });
   }
 
-  public error(title: string, message: string) : void {
+  public error(title: string, message: string, actions?: ToastLink[], duration?: number) : void {
     this.add({
-      disposeTime: 10000,
+      actions: actions,
+      disposeTime: duration ?? 10000,
       icon: 'fa-regular fa-circle-xmark',
       message: message,
       title: title,
@@ -33,8 +35,9 @@ export class ToastsService {
     });
   }
 
-  public fatal(title: string, message: string) : void {
+  public fatal(title: string, message: string, actions?: ToastLink[], duration?: number) : void {
     this.add({
+      actions: actions,
       closable: false,
       disposable: false,
       icon: 'fa-solid fa-triangle-exclamation',
@@ -45,9 +48,10 @@ export class ToastsService {
     });
   }
 
-  public warn(title: string, message: string) : void {
+  public warn(title: string, message: string, actions?: ToastLink[], duration?: number) : void {
     this.add({
-      disposeTime: 5000,
+      actions: actions,
+      disposeTime: duration ?? 5000,
       icon: 'fa-regular fa-circle-xmark',
       message: message,
       title: title,
@@ -59,6 +63,7 @@ export class ToastsService {
 }
 
 export interface Toast {
+  actions?: ToastLink[];
   closable?: boolean;
   disposable?: boolean;
   disposeTime?: number;
@@ -67,4 +72,10 @@ export interface Toast {
   title: string;
   type?: string;
   when?: Date;
+}
+
+export interface ToastLink {
+  icon?: string;
+  title: string;
+  url: string[];
 }

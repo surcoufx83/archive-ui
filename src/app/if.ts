@@ -497,6 +497,17 @@ export interface SepaMandateData {
   reference: string;
 }
 
+export interface ServerNotification {
+  id: number;
+  created: string;
+  read: string | null;
+  refdata: string | null;
+  refid: number | null;
+  type: string;
+  updated: string;
+  userid: number;
+}
+
 export interface Session {
   token: string;
   username: string;

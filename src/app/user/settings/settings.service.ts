@@ -18,6 +18,7 @@ import {
   PartyContact,
   PartyRole,
   SepaMandate,
+  ServerNotification,
   Stock,
   StockApi,
   Tag,
@@ -86,6 +87,7 @@ export class SettingsService {
     clearTimeout(this.casesynctimeout);
     clearTimeout(this.financesynctimeout);
     clearTimeout(this.notepadsynctimeout);
+    clearTimeout(this.notificationssynctimeout);
     clearTimeout(this.partiessynctimeout);
     clearTimeout(this.tagssynctimeout);
     clearTimeout(this.worksynctimeout);
@@ -117,6 +119,7 @@ export class SettingsService {
     this.loadPartiesData();
     this.loadTags();
     this.loadWorkStorageSettings();
+    this.syncNotifications()
   }
 
   public loadArchiveSettings(): void {
@@ -432,6 +435,9 @@ export class SettingsService {
 
   private notepadItems: BehaviorSubject<{ [key: number]: Note }> = new BehaviorSubject<{ [key: number]: Note }>({});
   notepadItems$ = this.notepadItems.asObservable();
+
+  private notifications: BehaviorSubject<ServerNotification[]> = new BehaviorSubject<ServerNotification[]>([]);
+  notifications$ = this.notifications.asObservable();
 
   private parties: BehaviorSubject<{ [key: number]: Party }> = new BehaviorSubject<{ [key: number]: Party }>({});
   parties$ = this.parties.asObservable();
@@ -755,6 +761,37 @@ export class SettingsService {
         this.saveNotepad();
       }
       this.notepadsynctimeout = setTimeout(() => { this.syncNotepad(); }, 15000);
+    });
+  }
+
+  public onNotificationShown(id: number): void {
+    let notifications = [...this.notifications.value];
+    for (let i = 0; i < notifications.length; i++) {
+      if (notifications[i].id == id) {
+        notifications.splice(i, 1);
+        let url: string = this.config.api.baseUrl + `/notification/read/${id}`;
+        this.authService.updateApi(url, {}).subscribe((r) => { console.log(r) });
+        break;
+      }
+    }
+    this.notifications.next(notifications);
+  }
+
+  private notificationssynctimeout: any = null;
+  private syncNotifications(): void {
+    if (this.notificationssynctimeout != null) {
+      clearTimeout(this.notificationssynctimeout);
+      this.notificationssynctimeout = null;
+    }
+    let url: string = this.config.api.baseUrl + '/notifications';
+    this.authService.queryApi(url).subscribe((reply) => {
+      if (reply.success && reply.payload != undefined) {
+        const payload: NotificationsResponse = <NotificationsResponse>reply.payload;
+        let notifications = [...this.notifications.value];
+        payload.items.forEach((i) => notifications.push(i));
+        this.notifications.next(notifications);
+      }
+      this.notificationssynctimeout = setTimeout(() => { this.syncNotifications(); }, 15000);
     });
   }
 
@@ -1178,6 +1215,10 @@ export interface NotepadStorage {
   notes: Note[];
   ts: number;
   version: number;
+}
+
+export interface NotificationsResponse {
+  items: ServerNotification[];
 }
 
 export interface PartiesResponse {
