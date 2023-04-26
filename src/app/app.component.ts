@@ -10,7 +10,7 @@ import { I18nService } from './i18n.service';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  providers: [ SettingsService ]
+  providers: [SettingsService]
 })
 export class AppComponent implements OnInit, OnDestroy {
 
@@ -18,13 +18,12 @@ export class AppComponent implements OnInit, OnDestroy {
   private sub?: any;
 
   constructor(private authService: AuthService,
-              private configService: ConfigService,
-              private settings: SettingsService,
-              private toasts: ToastsService,
-              private i18nService: I18nService)
-  { }
+    private configService: ConfigService,
+    private settings: SettingsService,
+    private toasts: ToastsService,
+    private i18nService: I18nService) { }
 
-  get config() : AppConfig {
+  get config(): AppConfig {
     return this.configService.config;
   }
 
@@ -32,7 +31,7 @@ export class AppComponent implements OnInit, OnDestroy {
     return this.i18nService.i18n(key, params);
   }
 
-  get isLoggedin() : boolean {
+  get isLoggedin(): boolean {
     return this.authService.isLoggedin;
   }
 
@@ -42,7 +41,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.settings.notifications$.subscribe((notifications) => this.notifications = [ ...notifications ]);
+    this.settings.notifications$.subscribe((notifications) => this.notifications = [...notifications]);
     this.showNotifications();
   }
 
