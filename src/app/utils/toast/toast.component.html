@@ -10,4 +10,11 @@
     <div class="toast-body">
         {{ toast.message }}
     </div>
+    <div class="toast-body toast-actions fs-8" *ngIf="toast.actions">
+        <ng-container *ngFor="let action of toast.actions">
+            <a [routerLink]="action.url">
+                <app-icon [iconClass]="action.icon" [marginEnd]="1" *ngIf="action.icon"></app-icon> {{ action.title }}
+            </a>
+        </ng-container>
+    </div>
 </div>

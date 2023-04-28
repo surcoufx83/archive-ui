@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { format } from 'date-fns';
-import { UserSettings, WorkLead, WorkProperties } from 'src/app/if';
+import { UserSettings, WorkLead } from 'src/app/if';
 import { AuthService } from '../../../auth.service';
 import { AppConfig, ConfigService } from '../../../config.service';
 import { I18nService } from '../../../i18n.service';
-import { SettingsService } from '../../../user/settings/settings.service';
+import { SettingsService } from '../../../utils/settings.service';
 
 @Component({
   selector: 'app-lead',
@@ -15,10 +15,9 @@ import { SettingsService } from '../../../user/settings/settings.service';
 export class WorkLeadComponent implements OnInit {
 
   busy: boolean = false;
-  lead?: WorkLead;
+  lead?: WorkLead | null;
   leadLoading: boolean = false;
-  usersettingsObj: UserSettings|null = null;
-  workpropsObj: WorkProperties|null = null;
+  usersettingsObj: UserSettings | null = null;
 
   constructor(private authService: AuthService,
     private configService: ConfigService,
@@ -29,16 +28,13 @@ export class WorkLeadComponent implements OnInit {
     this.userSettings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
     });
-    this.userSettings.workprops$.subscribe((workprops) => {
-      this.workpropsObj = workprops;
-    });
   }
 
   get config(): AppConfig {
     return this.configService.config;
   }
 
-  f(date: Date|string, form: string): string {
+  f(date: Date | string, form: string): string {
     if (typeof date === 'string')
       date = new Date(date);
     return format(date, form, { locale: this.i18nService.DateLocale });
@@ -56,70 +52,14 @@ export class WorkLeadComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       this.busy = true;
       if (params.has('id')) {
-        let url = this.configService.config.api.baseUrl + '/work/lead/' + (params.get('id') ?? 0);
-        this.authService.queryApi(url).subscribe(reply => {
-          if (reply.success && reply.payload != null) {
-            this.update(reply.payload['lead'], false);
-          }
-          this.busy = false;
-        });
-      } else {
-        this.update({
-          id: 0,
-          completed: false,
-          date_accepted: null,
-          date_completed: null,
-          date_reported: (new Date()).toISOString(),
-          cpo: { cpo_projectno: '', cpo_projectname: '' },
-          customer: null,
-          customerid: null,
-          customer_name: '',
-          incentive: {
-            isincentive: false,
-            incentive_completed: false,
-            incentive_gross_value: 0.0,
-            incentive_net_value: 0.0,
-            incentive_paid: null,
-            incentive_splitfactor: 100.0,
-            incentive_value: 0.0
-          },
-          lead: {
-            islead: false,
-            lead_no: '',
-            lead_text: '',
-            opp_no: '',
-            state: '',
-            contract_value: 0.0,
-            lead_gross_value: 0.0,
-            lead_net_value: 0.0,
-            lead_paid: null,
-            lead_completed: false
-          },
-          paid: false,
-          party: null,
-          partyid: null,
-          products: '',
-          project_name: '',
-          project_description: '',
-          sales: '',
-          userid: 1
-        }, false);
-        this.busy = false;
+        this.lead = this.userSettings.getWorkLead(+params.get('id')!);
       }
     });
   }
 
-  update(lead: WorkLead, push: boolean) : void {
+  update(lead: WorkLead, push: boolean): void {
     console.log('WorkLeadComponent', 'update()', lead, push);
-    if (this.workpropsObj != undefined) {
-      for(let i = 0; i < this.workpropsObj.leads.length; i++) {
-        if (this.workpropsObj.leads[i].id === lead.id) {
-          this.workpropsObj.leads[i] = lead;
-          this.userSettings.updateWorkProps(this.workpropsObj, push);
-        }
-      }
-    }
-    this.lead = lead;
+
   }
 
 }

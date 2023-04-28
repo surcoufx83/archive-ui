@@ -28,7 +28,7 @@
       <div class="col-lg-2 d-none d-lg-block">{{ i18n('leads.table.head.completed') }}</div>
       <div class="col-lg-2 d-none d-lg-block">{{ i18n('leads.table.head.payed') }}</div>
     </div>
-    <ng-container *ngIf="workpropsObj != undefined">
+    <ng-container>
       <ng-container *ngFor="let lead of leads; let i = index;">
         <div (click)="goto(lead)"
           [ngClass]="['flex-table-body row pointer', (lead.paid ? '' : (lead.completed ? 'danger' : 'warning'))]">

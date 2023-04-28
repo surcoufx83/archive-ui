@@ -2,11 +2,11 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { addDays, differenceInMinutes, format, parseISO, set, setHours, subDays } from 'date-fns';
 import { AuthService } from '../../auth.service';
-import { SettingsService } from '../../user/settings/settings.service';
+import { SettingsService } from '../../utils/settings.service';
 
 import { ViewportScroller } from '@angular/common';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
-import { RecentBooking, UserSettings, WorkCustomer, WorkDay, WorkDayBooking, WorkProject, WorkProperties, WorkTimeCategory } from 'src/app/if';
+import { RecentBooking, UserSettings, WorkCustomer, WorkDay, WorkDayBooking, WorkProject, WorkTimeCategory } from 'src/app/if';
 import { AppConfig, ConfigService } from '../../config.service';
 import { I18nService } from '../../i18n.service';
 
@@ -36,7 +36,6 @@ export class WorkDayComponent implements OnInit {
   actualDate: string = this.f(new Date(), 'yyyy-MM-dd');
   isToday: boolean = true;
   usersettingsObj: UserSettings | null = null;
-  workprops: WorkProperties | null = null;
 
   createCustomer = new UntypedFormGroup({
     'name': new UntypedFormControl('', { validators: Validators.required }),
@@ -53,13 +52,8 @@ export class WorkDayComponent implements OnInit {
     this.userSettings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
     });
-    this.userSettings.workprops$.subscribe((props) => {
-      if (props != null) {
-        this.workprops = props;
-        this.categories = props.timeCategories.sort((a, b) => this.i18n('work.timecategories.' + a.name) > this.i18n('work.timecategories.' + b.name) ? 1 : this.i18n('work.timecategories.' + a.name) === this.i18n('work.timecategories.' + b.name) ? 0 : -1);
-      }
-    });
-    this.userSettings.customers$.subscribe((customers) => {
+    this.userSettings.workTimeCategories$.subscribe((categories) => this.categories = Object.values(categories).sort((a, b) => this.i18n('work.timecategories.' + a.name) > this.i18n('work.timecategories.' + b.name) ? 1 : this.i18n('work.timecategories.' + a.name) === this.i18n('work.timecategories.' + b.name) ? 0 : -1));
+    this.userSettings.workCustomers$.subscribe((customers) => {
       this.customers = Object.values(customers).sort((a, b) => a.name.toLocaleLowerCase() > b.name.toLocaleLowerCase() ? 1 : -1);
     });
     setTimeout(() => { this.refreshRecentBookings(); }, 1000);
@@ -72,7 +66,7 @@ export class WorkDayComponent implements OnInit {
   }
 
   category(id: number): WorkTimeCategory | undefined {
-    return this.workprops?.timeCategories.find(e => e.id == id);
+    return this.userSettings.getWorkTimeCategory(id) ?? undefined;
   }
 
   get config(): AppConfig {
@@ -108,7 +102,7 @@ export class WorkDayComponent implements OnInit {
   }
 
   customer(id: number): WorkCustomer | undefined {
-    return this.workprops?.customers.find(e => e.id == id);
+    return this.userSettings.getWorkCustomer(id) ?? undefined;
   }
 
   deleteBooking(item: WorkDayBooking): void {
@@ -199,7 +193,7 @@ export class WorkDayComponent implements OnInit {
   }
 
   onChangeCategory(): void {
-    if (!this.booking || !this.workprops)
+    if (!this.booking)
       return;
     if (this.bookingProps['timecategory'] == -1) {
       this.booking.timecategory = <WorkTimeCategory>{};
@@ -212,7 +206,7 @@ export class WorkDayComponent implements OnInit {
 
   onChangeCustomer(): void {
     this.projects = [];
-    if (!this.booking || !this.workprops)
+    if (!this.booking)
       return;
     if (this.bookingProps['customer'] == -1) {
       this.booking.customer = null;
@@ -221,13 +215,11 @@ export class WorkDayComponent implements OnInit {
     }
     this.booking.customer = this.customers[this.bookingProps['customer']];
     this.booking.customerid = this.customers[this.bookingProps['customer']].id;
-    this.projects = this.workprops.projects.filter((e) => {
-      return !e.disabled && +e.customerid === (<WorkDayBooking>this.booking).customerid;
-    }).sort((a, b) => a.name > b.name ? 1 : a.name === b.name ? 0 : -1);
+    this.projects = this.userSettings.getWorkProjects(this.booking.customerid) ?? [];
   }
 
   onChangeProject(): void {
-    if (!this.booking || !this.workprops)
+    if (!this.booking)
       return;
     if (this.bookingProps['project'] == -1) {
       this.booking.project = null;
@@ -323,7 +315,7 @@ export class WorkDayComponent implements OnInit {
   }
 
   project(id: number): WorkProject | undefined {
-    return this.workprops?.projects.find(e => e.id == id);
+    return this.userSettings.getWorkProject(id) ?? undefined;
   }
 
   pushUserSettings(): void {

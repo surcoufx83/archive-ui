@@ -133,7 +133,7 @@
                           name="file-tags" [placeholder]="i18n('file.main.tagsInputPlaceholder')"
                           [(ngModel)]="filetagInput">
                         <datalist id="file-tags-options">
-                          <option *ngFor="let tag of tags" [value]="tag.value">
+                          <option *ngFor="let tag of tags" [value]="'► ' + tag.value">
                         </datalist>
                       </form>
                     </div>

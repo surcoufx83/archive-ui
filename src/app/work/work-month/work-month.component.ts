@@ -3,12 +3,12 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarMonthViewDay } from 'angular-calendar';
 import { add, differenceInMinutes, format, getDate, getMonth, getYear, isAfter, isBefore, isSameDay, isSameMonth, parseISO, sub } from 'date-fns';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { ApiReply, UserSettings, WorkDay, WorkDayBooking, WorkMonth, WorkOffCategory, WorkProperties } from 'src/app/if';
+import { ApiReply, UserSettings, WorkDay, WorkDayBooking, WorkMonth, WorkOffCategory } from 'src/app/if';
 import { EventColor } from '../../../../node_modules/calendar-utils/calendar-utils';
 import { AuthService } from '../../auth.service';
 import { AppConfig, ConfigService } from '../../config.service';
 import { I18nService } from '../../i18n.service';
-import { SettingsService } from '../../user/settings/settings.service';
+import { SettingsService } from '../../utils/settings.service';
 
 @Component({
   selector: 'app-work-month',
@@ -35,7 +35,6 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
   dayObjs: { [key: number]: WorkDay } = {};
   monthObj?: WorkMonth;
   usersettingsObj: UserSettings | null = null;
-  workprops: WorkProperties | null = null;
 
   offdayDroppableEvents: CalendarEvent[] = [];
 
@@ -46,12 +45,9 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
     private router: Router,
     private userSettings: SettingsService) {
     this.userSettings.settings$.subscribe((settings) => this.usersettingsObj = settings);
-    this.userSettings.workprops$.subscribe((props) => {
-      if (props == null)
-        return;
-      this.workprops = props;
+    this.userSettings.workOfftimeCategories$.subscribe((categories) => {
       this.offdayDroppableEvents = [];
-      for (const offcat of props.offCategories) {
+      for (const offcat of Object.values(categories)) {
         this.offdayDroppableEvents.push({
           title: this.i18n('work.offcategories.' + offcat.name),
           start: new Date(),

@@ -9,7 +9,7 @@ import { ToastsService } from 'src/app/utils/toasts.service';
 import { AuthService } from '../../auth.service';
 import { AppConfig, ConfigService } from '../../config.service';
 import { I18nService } from '../../i18n.service';
-import { SettingsService } from '../../user/settings/settings.service';
+import { SettingsService } from '../../utils/settings.service';
 import { SelectedItem } from '../folder-browser-dialog/folder-browser-dialog.component';
 
 @Component({
@@ -90,8 +90,8 @@ export class FileComponent implements OnInit {
       this.clients.sort((a, b) => { return a.name1 > b.name1 ? 1 : a.name1 < b.name1 ? -1 : 0 });
     });
     this.userSettings.contacts$.subscribe((contacts) => { this.contacts = Object.values(contacts); });
-    this.userSettings.contacttypes$.subscribe((contacttypes) => { this.contacttypes = Object.values(contacttypes); });
-    this.userSettings.casefiletypes$.subscribe((filetypes) => {
+    this.userSettings.contactTypes$.subscribe((contacttypes) => { this.contacttypes = Object.values(contacttypes); });
+    this.userSettings.caseFileTypes$.subscribe((filetypes) => {
       this.filetypes = [];
       for (let key in filetypes) {
         let item = filetypes[key];

@@ -18,6 +18,7 @@ import {
   PartyContact,
   PartyRole,
   SepaMandate,
+  ServerNotification,
   Stock,
   StockApi,
   Tag,
@@ -27,17 +28,66 @@ import {
   WarehouseRoom,
   WarehouseSpace,
   WorkCustomer,
-  WorkProperties
+  WorkLead,
+  WorkOffCategory,
+  WorkProject,
+  WorkTimeCategory
 } from 'src/app/if';
 import { WarehouseReply } from 'src/app/warehouse/warehouse.component';
-import { AuthService } from '../../auth.service';
-import { AppConfig, ConfigService } from '../../config.service';
+import { AuthService } from '../auth.service';
+import { AppConfig, ConfigService } from '../config.service';
+import { StorageService } from './storage.service';
+
+const cases = 'cases';
+const client = 'client';
+const finance = 'finance';
+const notes = 'notes';
+const notifications = 'notifications';
+const parties = 'parties';
+const tags = 'tags';
+const user = 'user';
+const work = 'work';
 
 @Injectable()
 export class SettingsService {
 
   private archiveLoaded: boolean = false;
-  private componentRefresher: any;
+
+  private addresses: BehaviorSubject<{ [key: number]: Address }> = new BehaviorSubject<{ [key: number]: Address }>({});
+  addresses$ = this.addresses.asObservable();
+
+  private banks: BehaviorSubject<{ [key: number]: Party }> = new BehaviorSubject<{ [key: number]: Party }>({});
+  banks$ = this.banks.asObservable();
+
+  private bankAccounts: BehaviorSubject<{ [key: number]: BankAccount }> = new BehaviorSubject<{ [key: number]: BankAccount }>({});
+  bankAccounts$ = this.bankAccounts.asObservable();
+
+  private caseChilds: BehaviorSubject<{ [key: number]: number[] }> = new BehaviorSubject<{ [key: number]: number[] }>({});
+  caseChilds$ = this.caseChilds.asObservable();
+
+  private caseFileStatus: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
+  caseFileStatus$ = this.caseFileStatus.asObservable();
+
+  private caseFileTypes: BehaviorSubject<{ [key: number]: CaseFiletype }> = new BehaviorSubject<{ [key: number]: CaseFiletype }>({});
+  caseFileTypes$ = this.caseFileTypes.asObservable();
+
+  private caseRoots: BehaviorSubject<number[]> = new BehaviorSubject<number[]>([]);
+  caseRoots$ = this.caseRoots.asObservable();
+
+  private cases: BehaviorSubject<{ [key: number]: Case }> = new BehaviorSubject<{ [key: number]: Case }>({});
+  cases$ = this.cases.asObservable();
+
+  private caseStatus: BehaviorSubject<{ [key: number]: CaseStatus }> = new BehaviorSubject<{ [key: number]: CaseStatus }>({});
+  caseStatus$ = this.caseStatus.asObservable();
+
+  private caseTypes: BehaviorSubject<{ [key: number]: CaseType }> = new BehaviorSubject<{ [key: number]: CaseType }>({});
+  caseTypes$ = this.caseTypes.asObservable();
+
+  private classes: BehaviorSubject<Class[]> = new BehaviorSubject<Class[]>([]);
+  classes$ = this.classes.asObservable();
+
+  private clients: BehaviorSubject<{ [key: number]: Party }> = new BehaviorSubject<{ [key: number]: Party }>({});
+  clients$ = this.clients.asObservable();
 
   private clientSettings: BehaviorSubject<ClientSettings> = new BehaviorSubject<ClientSettings>({
     casesettings: {
@@ -46,33 +96,79 @@ export class SettingsService {
     }
   });
   clientSettings$ = this.clientSettings.asObservable();
-  private clientSettingsStorage: string = 'userSettings';
 
-  private casesstorage: string = this.config.storage.prefix + 'casesData';
-  private casessync: number = 0;
-  private financestorage: string = this.config.storage.prefix + 'financeData';
-  private financesync: number = 0;
-  private notepadstorage: string = this.config.storage.prefix + 'notepadData';
-  private notepadsync: number = 0;
-  private partiesstorage: string = this.config.storage.prefix + 'partiesData';
-  private partiessync: number = 0;
-  private tagsstorage: string = this.config.storage.prefix + 'tagsData';
-  private tagssync: number = 0;
-  private workstorage: string = this.config.storage.prefix + 'workData';
-  private worksync: number = 0;
+  private contacts: BehaviorSubject<{ [key: number]: PartyContact }> = new BehaviorSubject<{ [key: number]: PartyContact }>({});
+  contacts$ = this.contacts.asObservable();
 
-  private expectedVersions = {
-    casesData: 2,
-    financeData: 1,
-    notepadData: 2,
-    partiesData: 1,
-    tagsData: 1,
-    userData: 1,
-    workData: 1,
-  };
+  private contactTypes: BehaviorSubject<{ [key: number]: ContactType }> = new BehaviorSubject<{ [key: number]: ContactType }>({});
+  contactTypes$ = this.contactTypes.asObservable();
+
+  private countries: BehaviorSubject<Country[]> = new BehaviorSubject<Country[]>([]);
+  countries$ = this.countries.asObservable();
+
+  private currencies: BehaviorSubject<Currency[]> = new BehaviorSubject<Currency[]>([]);
+  currencies$ = this.currencies.asObservable();
+
+  private expenseCategories: BehaviorSubject<{ [key: number]: ExpenseCategory }> = new BehaviorSubject<{ [key: number]: ExpenseCategory }>({});
+  expenseCategories$ = this.expenseCategories.asObservable();
+
+  private expenseTypes: BehaviorSubject<{ [key: number]: ExpenseType }> = new BehaviorSubject<{ [key: number]: ExpenseType }>({});
+  expenseTypes$ = this.expenseTypes.asObservable();
+
+  private notepadItems: BehaviorSubject<{ [key: number]: Note }> = new BehaviorSubject<{ [key: number]: Note }>({});
+  notepadItems$ = this.notepadItems.asObservable();
+
+  private notifications: BehaviorSubject<ServerNotification[]> = new BehaviorSubject<ServerNotification[]>([]);
+  notifications$ = this.notifications.asObservable();
+
+  private parties: BehaviorSubject<{ [key: number]: Party }> = new BehaviorSubject<{ [key: number]: Party }>({});
+  parties$ = this.parties.asObservable();
+
+  private roles: BehaviorSubject<{ [key: number]: PartyRole }> = new BehaviorSubject<{ [key: number]: PartyRole }>({});
+  roles$ = this.roles.asObservable();
+
+  private sepaMandates: BehaviorSubject<{ [key: number]: SepaMandate }> = new BehaviorSubject<{ [key: number]: SepaMandate }>({});
+  sepaMandates$ = this.sepaMandates.asObservable();
+
+  private settings: BehaviorSubject<UserSettings | null> = new BehaviorSubject<UserSettings | null>(null);
+  settings$ = this.settings.asObservable();
+
+  private stocks: BehaviorSubject<{ [key: number]: Stock }> = new BehaviorSubject<{ [key: number]: Stock }>({});
+  stocks$ = this.stocks.asObservable();
+
+  private stocksApis: BehaviorSubject<{ [key: number]: StockApi }> = new BehaviorSubject<{ [key: number]: StockApi }>({});
+  stocksApis$ = this.stocksApis.asObservable();
+
+  private tags: BehaviorSubject<{ [key: number]: Tag }> = new BehaviorSubject<{ [key: number]: Tag }>({});
+  tags$ = this.tags.asObservable();
+
+  private user: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
+  user$ = this.user.asObservable();
+
+  private warehouseRooms: BehaviorSubject<WarehouseRoom[] | null> = new BehaviorSubject<WarehouseRoom[] | null>(null);
+  warehouseRooms$ = this.warehouseRooms.asObservable();
+
+  private warehouseSpaces: BehaviorSubject<{ [key: number]: WarehouseSpace } | null> = new BehaviorSubject<{ [key: number]: WarehouseSpace } | null>(null);
+  warehouseSpaces$ = this.warehouseSpaces.asObservable();
+
+  private workCustomers: BehaviorSubject<{ [key: number]: WorkCustomer }> = new BehaviorSubject<{ [key: number]: WorkCustomer }>({});
+  workCustomers$ = this.workCustomers.asObservable();
+
+  private workLeads: BehaviorSubject<{ [key: number]: WorkLead }> = new BehaviorSubject<{ [key: number]: WorkLead }>({});
+  workLeads$ = this.workLeads.asObservable();
+
+  private workOfftimeCategories: BehaviorSubject<{ [key: number]: WorkOffCategory }> = new BehaviorSubject<{ [key: number]: WorkOffCategory }>({});
+  workOfftimeCategories$ = this.workOfftimeCategories.asObservable();
+
+  private workProjects: BehaviorSubject<{ [key: number]: WorkProject }> = new BehaviorSubject<{ [key: number]: WorkProject }>({});
+  workProjects$ = this.workProjects.asObservable();
+
+  private workTimeCategories: BehaviorSubject<{ [key: number]: WorkTimeCategory }> = new BehaviorSubject<{ [key: number]: WorkTimeCategory }>({});
+  workTimeCategories$ = this.workTimeCategories.asObservable();
 
   constructor(private authService: AuthService,
-    private configService: ConfigService) {
+    private configService: ConfigService,
+    private storageService: StorageService) {
     this.loadAllCacheItems();
     this.authService.isLoggedIn.subscribe((state) => {
       if (state != undefined && state === false) {
@@ -83,21 +179,7 @@ export class SettingsService {
   }
 
   public clearCache(reload: boolean = true): void {
-    clearTimeout(this.casesynctimeout);
-    clearTimeout(this.financesynctimeout);
-    clearTimeout(this.notepadsynctimeout);
-    clearTimeout(this.partiessynctimeout);
-    clearTimeout(this.tagssynctimeout);
-    clearTimeout(this.worksynctimeout);
-    clearTimeout(this.componentRefresher);
-    localStorage.removeItem(this.casesstorage);
-    localStorage.removeItem(this.financestorage);
-    localStorage.removeItem(this.notepadstorage);
-    localStorage.removeItem(this.partiesstorage);
-    localStorage.removeItem(this.tagsstorage);
-    localStorage.removeItem(this.workstorage);
-    localStorage.removeItem(this.clientSettingsStorage);
-    localStorage.removeItem(`${this.config.storage.prefix}user`);
+    this.storageService.clearCache();
     this.archiveLoaded = false;
     if (reload) {
       this.loadArchiveSettings();
@@ -116,7 +198,8 @@ export class SettingsService {
     this.loadNotepadData();
     this.loadPartiesData();
     this.loadTags();
-    this.loadWorkStorageSettings();
+    this.loadWork();
+    this.syncNotifications()
   }
 
   public loadArchiveSettings(): void {
@@ -135,116 +218,84 @@ export class SettingsService {
   }
 
   private loadCasesData(): void {
-    let olddata: string | null | CasesStorage = localStorage.getItem(this.casesstorage);
+    let olddata: string | null | CasesStorage = this.storageService.load(cases);
     if (olddata) {
       olddata = <CasesStorage>JSON.parse(olddata);
-      if (olddata.version === this.expectedVersions.casesData) {
-        this.cases.next(olddata.cases);
-        this.casechilds.next(olddata.casechilds);
-        this.casefiletypes.next(olddata.casefiletypes);
-        this.caseroots.next(olddata.rootcases);
-        this.caseStatus.next(olddata.casestatus);
-        this.caseTypes.next(olddata.casetypes);
-        this.casessync = olddata.ts;
-      }
+      this.cases.next(olddata.cases);
+      this.caseChilds.next(olddata.casechilds);
+      this.caseFileTypes.next(olddata.casefiletypes);
+      this.caseRoots.next(olddata.rootcases);
+      this.caseStatus.next(olddata.casestatus);
+      this.caseTypes.next(olddata.casetypes);
     }
     this.syncCases();
   }
 
   private loadFinanceData(): void {
-    let olddata: string | null | FinanceStorage = localStorage.getItem(this.financestorage);
+    let olddata: string | null | FinanceStorage = this.storageService.load(finance);
     if (olddata) {
       olddata = <FinanceStorage>JSON.parse(olddata);
-      if (olddata.version === this.expectedVersions.financeData) {
-        this.bankAccounts.next(olddata.bankAccounts);
-        this.countries.next(olddata.countries);
-        this.currencies.next(olddata.currencies);
-        this.expenseCategories.next(olddata.expenseCategories);
-        this.expenseTypes.next(olddata.expenseTypes);
-        this.sepaMandates.next(olddata.sepaMandates);
-        this.stocks.next(olddata.stocks);
-        this.stocksApis.next(olddata.stocksApis);
-        this.financesync = olddata.ts;
-      }
+      this.bankAccounts.next(olddata.bankAccounts);
+      this.countries.next(olddata.countries);
+      this.currencies.next(olddata.currencies);
+      this.expenseCategories.next(olddata.expenseCategories);
+      this.expenseTypes.next(olddata.expenseTypes);
+      this.sepaMandates.next(olddata.sepaMandates);
+      this.stocks.next(olddata.stocks);
+      this.stocksApis.next(olddata.stocksApis);
     }
     this.syncFinance();
   }
 
   private loadNotepadData(): void {
-    let olddata: string | null | NotepadStorage = localStorage.getItem(this.notepadstorage);
+    let olddata: string | null | NotepadStorage = this.storageService.load(notes);
     if (olddata) {
       olddata = <NotepadStorage>JSON.parse(olddata);
-      if (olddata.version === this.expectedVersions.notepadData) {
-        this.notepadItems.next(olddata.notes);
-        this.notepadsync = olddata.ts;
-      }
+      this.notepadItems.next(olddata.notes);
     }
     this.syncNotepad();
   }
 
   private loadPartiesData(): void {
-    let olddata: string | null | PartiesStorage = localStorage.getItem(this.partiesstorage);
+    let olddata: string | null | PartiesStorage = this.storageService.load(parties);
     if (olddata) {
       olddata = <PartiesStorage>JSON.parse(olddata);
-      if (olddata.version === this.expectedVersions.partiesData) {
-        this.addresses.next(olddata.addresses);
-        this.banks.next(olddata.banks);
-        this.clients.next(olddata.clients);
-        this.contacts.next(olddata.contacts);
-        this.contacttypes.next(olddata.contacttypes);
-        this.parties.next(olddata.parties);
-        this.roles.next(olddata.roles);
-        this.partiessync = olddata.ts;
-      }
+      this.addresses.next(olddata.addresses);
+      this.banks.next(olddata.banks);
+      this.clients.next(olddata.clients);
+      this.contacts.next(olddata.contacts);
+      this.contactTypes.next(olddata.contacttypes);
+      this.parties.next(olddata.parties);
+      this.roles.next(olddata.roles);
     }
     this.syncParties();
   }
 
   private loadTags(): void {
-    let olddata: string | null | TagsStorage = localStorage.getItem(this.tagsstorage);
+    let olddata: string | null | TagsStorage = this.storageService.load(tags);
     if (olddata) {
       olddata = <TagsStorage>JSON.parse(olddata);
-      if (olddata.version === this.expectedVersions.tagsData) {
-        this.tags.next(olddata.tags);
-        this.tagssync = olddata.ts;
-      }
+      this.tags.next(olddata.tags);
     }
     this.syncTags();
   }
 
-  private loadWorkStorageSettings(): void {
-    let olddata: string | null | WorkStorage = localStorage.getItem(this.workstorage);
-    if (olddata) {
-      olddata = <WorkStorage>JSON.parse(olddata);
-      if (olddata.version === this.expectedVersions.workData) {
-        this.customers.next(olddata.customers);
-        this.worksync = olddata.ts;
-      }
-    }
-    this.syncWork();
-  }
-
   public loadUserSettings(): void {
-    let olddata: string | null | ClientSettings = localStorage.getItem(this.clientSettingsStorage);
+    let olddata: string | null | ClientSettings = this.storageService.load(client);
     if (olddata) {
       olddata = <ClientSettings>JSON.parse(olddata);
       this.clientSettings.next(olddata);
     }
-    let olddata2: string | null | UserSettingsStorage = localStorage.getItem(`${this.config.storage.prefix}user`);
+    let olddata2: string | null | UserSettingsStorage = this.storageService.load(user);
     if (olddata2) {
       olddata2 = <UserSettingsStorage>JSON.parse(olddata2);
-      if (olddata2.version != undefined && olddata2.version == this.expectedVersions.userData) {
-        this.updateUser(olddata2.user, false);
-        this.updateWorkProps(olddata2.work, false);
-      }
+      this.updateUser(olddata2.user, false);
     }
-    let url = this.configService.config.api.baseUrl + '/user/settings';
-    this.authService.queryApi(url).subscribe((reply) => {
+    this.authService.queryApi(this.storageService.getSyncUrl(user)).subscribe((reply) => {
       if (reply.success && reply.payload != null) {
-        reply.payload['version'] = this.expectedVersions.userData;
+        reply.payload['version'] = this.storageService.getExpectedStorageVersion(user);
         this.updateUser(<User>reply.payload['user']);
-        this.updateWorkProps(<WorkProperties>reply.payload['work']);
-        localStorage.setItem(`${this.config.storage.prefix}user`, JSON.stringify(reply.payload));
+        this.storageService.save(user, reply.payload);
       }
     });
   }
@@ -299,23 +350,22 @@ export class SettingsService {
     return subject;
   }
 
-  public setTimeout(timeout: any): void {
-    if (this.componentRefresher)
-      clearTimeout(this.componentRefresher);
-    this.componentRefresher = timeout;
+  private loadWork(): void {
+    let olddata: string | null | WorkStorage = this.storageService.load(work);
+    if (olddata) {
+      olddata = <WorkStorage>JSON.parse(olddata);
+      this.workCustomers.next(olddata.customers);
+      this.workLeads.next(olddata.leads);
+      this.workOfftimeCategories.next(olddata.offCategories);
+      this.workProjects.next(olddata.projects);
+      this.workTimeCategories.next(olddata.timeCategories);
+    }
+    this.syncWork();
   }
 
-  private addresses: BehaviorSubject<{ [key: number]: Address }> = new BehaviorSubject<{ [key: number]: Address }>({});
-  addresses$ = this.addresses.asObservable();
-
-  private banks: BehaviorSubject<{ [key: number]: Party }> = new BehaviorSubject<{ [key: number]: Party }>({});
-  banks$ = this.banks.asObservable();
-
-  private bankAccounts: BehaviorSubject<{ [key: number]: BankAccount }> = new BehaviorSubject<{ [key: number]: BankAccount }>({});
-  bankAccounts$ = this.bankAccounts.asObservable();
-
-  private cases: BehaviorSubject<{ [key: number]: Case }> = new BehaviorSubject<{ [key: number]: Case }>({});
-  cases$ = this.cases.asObservable();
+  public setTimeout(timeout: any): void {
+    this.storageService.setTimeout('comp', timeout);
+  }
 
   getCase(id: number | null): Case | null {
     if (id == null)
@@ -339,40 +389,25 @@ export class SettingsService {
     return false;
   }
 
-  private casechilds: BehaviorSubject<{ [key: number]: number[] }> = new BehaviorSubject<{ [key: number]: number[] }>({});
-  casechilds$ = this.casechilds.asObservable();
-
   getCaseChilds(id: number): number[] {
-    if (!this.casechilds.value[id])
+    if (!this.caseChilds.value[id])
       return [];
-    let childs = this.casechilds.value[id];
+    let childs = this.caseChilds.value[id];
     childs.sort((a, b) => this.getCase(a)!.casepath > this.getCase(b)!.casepath ? 1 : this.getCase(a)!.casepath < this.getCase(b)!.casepath ? -1 : 0);
     return childs;
   }
 
   hasChildCases(id: number): boolean {
-    return this.casechilds.value[id] != undefined && this.casechilds.value[id].length > 0;
+    return this.caseChilds.value[id] != undefined && this.caseChilds.value[id].length > 0;
   }
-
-  private caseroots: BehaviorSubject<number[]> = new BehaviorSubject<number[]>([]);
-  caseroots$ = this.caseroots.asObservable();
-
-  private caseFileStatus: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
-  caseFileStatus$ = this.caseFileStatus.asObservable();
-
-  private casefiletypes: BehaviorSubject<{ [key: number]: CaseFiletype }> = new BehaviorSubject<{ [key: number]: CaseFiletype }>({});
-  casefiletypes$ = this.casefiletypes.asObservable();
 
   getCaseFiletype(id: number | null): CaseFiletype | null {
     if (id == null)
       return null;
-    if (this.casefiletypes.value[id])
-      return this.casefiletypes.value[id];
+    if (this.caseFileTypes.value[id])
+      return this.caseFileTypes.value[id];
     return null;
   }
-
-  private caseStatus: BehaviorSubject<{ [key: number]: CaseStatus }> = new BehaviorSubject<{ [key: number]: CaseStatus }>({});
-  caseStatus$ = this.caseStatus.asObservable();
 
   getCaseStatus(id: number | null): CaseStatus | null {
     if (id == null)
@@ -382,9 +417,6 @@ export class SettingsService {
     return null;
   }
 
-  private caseTypes: BehaviorSubject<{ [key: number]: CaseType }> = new BehaviorSubject<{ [key: number]: CaseType }>({});
-  caseTypes$ = this.caseTypes.asObservable();
-
   getCaseType(id: number | null): CaseType | null {
     if (id == null)
       return null;
@@ -392,24 +424,6 @@ export class SettingsService {
       return this.caseTypes.value[id];
     return null;
   }
-
-  private classes: BehaviorSubject<Class[]> = new BehaviorSubject<Class[]>([]);
-  classes$ = this.classes.asObservable();
-
-  private clients: BehaviorSubject<{ [key: number]: Party }> = new BehaviorSubject<{ [key: number]: Party }>({});
-  clients$ = this.clients.asObservable();
-
-  private contacts: BehaviorSubject<{ [key: number]: PartyContact }> = new BehaviorSubject<{ [key: number]: PartyContact }>({});
-  contacts$ = this.contacts.asObservable();
-
-  private contacttypes: BehaviorSubject<{ [key: number]: ContactType }> = new BehaviorSubject<{ [key: number]: ContactType }>({});
-  contacttypes$ = this.contacttypes.asObservable();
-
-  private countries: BehaviorSubject<Country[]> = new BehaviorSubject<Country[]>([]);
-  countries$ = this.countries.asObservable();
-
-  private currencies: BehaviorSubject<Currency[]> = new BehaviorSubject<Currency[]>([]);
-  currencies$ = this.currencies.asObservable();
 
   getCurrency(id: number | null): Currency | null {
     if (id == null)
@@ -421,33 +435,6 @@ export class SettingsService {
     return null;
   }
 
-  private customers: BehaviorSubject<{ [key: number]: WorkCustomer }> = new BehaviorSubject<{ [key: number]: WorkCustomer }>({});
-  customers$ = this.customers.asObservable();
-
-  private expenseCategories: BehaviorSubject<{ [key: number]: ExpenseCategory }> = new BehaviorSubject<{ [key: number]: ExpenseCategory }>({});
-  expenseCategories$ = this.expenseCategories.asObservable();
-
-  private expenseTypes: BehaviorSubject<{ [key: number]: ExpenseType }> = new BehaviorSubject<{ [key: number]: ExpenseType }>({});
-  expenseTypes$ = this.expenseTypes.asObservable();
-
-  private notepadItems: BehaviorSubject<{ [key: number]: Note }> = new BehaviorSubject<{ [key: number]: Note }>({});
-  notepadItems$ = this.notepadItems.asObservable();
-
-  private parties: BehaviorSubject<{ [key: number]: Party }> = new BehaviorSubject<{ [key: number]: Party }>({});
-  parties$ = this.parties.asObservable();
-
-  private roles: BehaviorSubject<{ [key: number]: PartyRole }> = new BehaviorSubject<{ [key: number]: PartyRole }>({});
-  roles$ = this.roles.asObservable();
-
-  private sepaMandates: BehaviorSubject<{ [key: number]: SepaMandate }> = new BehaviorSubject<{ [key: number]: SepaMandate }>({});
-  sepaMandates$ = this.sepaMandates.asObservable();
-
-  private settings: BehaviorSubject<UserSettings | null> = new BehaviorSubject<UserSettings | null>(null);
-  settings$ = this.settings.asObservable();
-
-  private stocks: BehaviorSubject<{ [key: number]: Stock }> = new BehaviorSubject<{ [key: number]: Stock }>({});
-  stocks$ = this.stocks.asObservable();
-
   getStock(id: number | null): Stock | null {
     if (id == null)
       return null;
@@ -455,9 +442,6 @@ export class SettingsService {
       return this.stocks.value[id];
     return null;
   }
-
-  private stocksApis: BehaviorSubject<{ [key: number]: StockApi }> = new BehaviorSubject<{ [key: number]: StockApi }>({});
-  stocksApis$ = this.stocksApis.asObservable();
 
   getStocksApi(id: number | null): StockApi | null {
     if (id == null)
@@ -467,18 +451,9 @@ export class SettingsService {
     return null;
   }
 
-  private tags: BehaviorSubject<{ [key: number]: Tag }> = new BehaviorSubject<{ [key: number]: Tag }>({});
-  tags$ = this.tags.asObservable();
-
   getTag(id: number): Tag | null {
     return this.tags.value[id] ?? null;
   }
-
-  private user: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
-  user$ = this.user.asObservable();
-
-  private warehouseRooms: BehaviorSubject<WarehouseRoom[] | null> = new BehaviorSubject<WarehouseRoom[] | null>(null);
-  warehouseRooms$ = this.warehouseRooms.asObservable();
 
   getWarehouseRoom(id: number): WarehouseRoom | null {
     if (this.warehouseRooms.value == undefined)
@@ -490,11 +465,46 @@ export class SettingsService {
     return null;
   }
 
-  private warehouseSpaces: BehaviorSubject<{ [key: number]: WarehouseSpace } | null> = new BehaviorSubject<{ [key: number]: WarehouseSpace } | null>(null);
-  warehouseSpaces$ = this.warehouseSpaces.asObservable();
+  getWorkCustomer(id: number | null): WorkCustomer | null {
+    if (id == null)
+      return null;
+    if (this.workCustomers.value[id])
+      return this.workCustomers.value[id];
+    return null;
+  }
 
-  private workprops: BehaviorSubject<WorkProperties | null> = new BehaviorSubject<WorkProperties | null>(null);
-  workprops$ = this.workprops.asObservable();
+  getWorkLead(id: number | null): WorkLead | null {
+    if (id == null)
+      return null;
+    if (this.workLeads.value[id])
+      return this.workLeads.value[id];
+    return null;
+  }
+
+  getWorkProject(id: number | null): WorkProject | null {
+    if (id == null)
+      return null;
+    if (this.workProjects.value[id])
+      return this.workProjects.value[id];
+    return null;
+  }
+
+  getWorkProjects(customerid: number | null): WorkProject[] | null {
+    if (customerid == null)
+      return null;
+    let projects = Object.values(this.workProjects.value).filter((e) => {
+      return !e.disabled && +e.customerid === customerid;
+    }).sort((a, b) => a.name > b.name ? 1 : a.name === b.name ? 0 : -1);
+    return null;
+  }
+
+  getWorkTimeCategory(id: number | null): WorkTimeCategory | null {
+    if (id == null)
+      return null;
+    if (this.workTimeCategories.value[id])
+      return this.workTimeCategories.value[id];
+    return null;
+  }
 
   private postCommon(method: string, item: any, urlitem: string, listing: any[], subject: BehaviorSubject<boolean | any | null>,
     callback: Function) {
@@ -601,24 +611,23 @@ export class SettingsService {
   }
 
   private saveCases(): void {
-    localStorage.setItem(this.casesstorage, JSON.stringify({
-      casechilds: this.casechilds.value,
-      casefiletypes: this.casefiletypes.value,
+    this.storageService.save(cases, {
+      casechilds: this.caseChilds.value,
+      casefiletypes: this.caseFileTypes.value,
       cases: this.cases.value,
       casestatus: this.caseStatus.value,
       casetypes: this.caseTypes.value,
-      rootcases: this.caseroots.value,
-      ts: this.casessync,
-      version: this.expectedVersions.casesData,
-    }));
+      rootcases: this.caseRoots.value,
+    });
   }
 
   private saveClientSettings(): void {
-    localStorage.setItem(this.clientSettingsStorage, JSON.stringify(this.clientSettings.value));
+    this.storageService.setLastSync(client);
+    this.storageService.save(client, this.clientSettings.value);
   }
 
   private saveFinance(): void {
-    localStorage.setItem(this.financestorage, JSON.stringify({
+    this.storageService.save(finance, {
       bankAccounts: this.bankAccounts.value,
       countries: this.countries.value,
       currencies: this.currencies.value,
@@ -627,47 +636,41 @@ export class SettingsService {
       sepaMandates: this.sepaMandates.value,
       stocks: this.stocks.value,
       stocksApis: this.stocksApis.value,
-      ts: this.financesync,
-      version: this.expectedVersions.financeData,
-    }));
+    });
   }
 
   private saveNotepad(): void {
-    localStorage.setItem(this.notepadstorage, JSON.stringify({
+    this.storageService.save(notes, {
       notes: this.notepadItems.value,
-      ts: this.notepadsync,
-      version: this.expectedVersions.notepadData,
-    }));
+    });
   }
 
   private saveParties(): void {
-    localStorage.setItem(this.partiesstorage, JSON.stringify({
+    this.storageService.save(parties, {
       addresses: this.addresses.value,
       banks: this.banks.value,
       clients: this.clients.value,
       contacts: this.contacts.value,
-      contacttypes: this.contacttypes.value,
+      contacttypes: this.contactTypes.value,
       parties: this.parties.value,
       roles: this.roles.value,
-      ts: this.partiessync,
-      version: this.expectedVersions.partiesData,
-    }));
+    });
   }
 
   private saveTags(): void {
-    localStorage.setItem(this.tagsstorage, JSON.stringify({
+    this.storageService.save(tags, {
       tags: this.tags.value,
-      ts: this.tagssync,
-      version: this.expectedVersions.tagsData,
-    }));
+    });
   }
 
   private saveWork(): void {
-    localStorage.setItem(this.workstorage, JSON.stringify({
-      customers: this.customers.value,
-      ts: this.casessync,
-      version: this.expectedVersions.workData,
-    }));
+    this.storageService.save(work, {
+      customers: this.workCustomers.value,
+      leads: this.workLeads.value,
+      offCategories: this.workOfftimeCategories.value,
+      projects: this.workProjects.value,
+      timeCategories: this.workTimeCategories.value,
+    });
   }
 
   showCasesInDeletion(newvalue: boolean): void {
@@ -688,39 +691,28 @@ export class SettingsService {
     }
   }
 
-  private casesynctimeout: any = null;
   private syncCases(): void {
-    if (this.casesynctimeout != null) {
-      clearTimeout(this.casesynctimeout);
-      this.casesynctimeout = null;
-    }
-    let url: string = this.config.api.baseUrl + '/cases' + (this.casessync > 0 ? '/' + this.casessync : '');
-    this.casessync = Math.floor(Date.now() / 1000);
-    this.authService.queryApi(url).subscribe((reply) => {
+    this.storageService.clearTimeout(cases);
+    this.authService.queryApi(this.storageService.getSyncUrl(cases)).subscribe((reply) => {
       if (reply.success && reply.payload != undefined) {
         let response = <CasesResponse>reply.payload;
         this.updateCaseFiletypes(response.casefiletypes);
         this.updateCaseStatus(response.casestatus);
         this.updateCaseTypes(response.casetypes);
         this.updateCases(response.cases);
+        this.storageService.setLastSync(cases);
         this.saveCases();
       }
-      this.casesynctimeout = setTimeout(() => { this.syncCases(); }, 30000);
+      this.storageService.setTimeout(cases, setTimeout(() => { this.syncCases(); }, this.storageService.getSyncInterval(cases)));
     });
   }
 
-  private financesynctimeout: any = null;
   public resyncFinance(): void {
     this.syncFinance();
   }
   private syncFinance(): void {
-    if (this.financesynctimeout != null) {
-      clearTimeout(this.financesynctimeout);
-      this.financesynctimeout = null;
-    }
-    let url: string = this.config.api.baseUrl + '/finance' + (this.financesync > 0 ? '/' + this.financesync : '');
-    this.financesync = Math.floor(Date.now() / 1000);
-    this.authService.queryApi(url).subscribe((reply) => {
+    this.storageService.clearTimeout(finance);
+    this.authService.queryApi(this.storageService.getSyncUrl(finance)).subscribe((reply) => {
       if (reply.success && reply.payload != undefined) {
         let response = <FinanceResponse>reply.payload;
         this.updateBankAccounts(response.accounts);
@@ -731,42 +723,58 @@ export class SettingsService {
         this.updateSepaMandates(response.sepaMandates);
         this.updateStocks(response.stocks);
         this.updateStocksApis(response.stocksApis);
+        this.storageService.setLastSync(finance);
         this.saveFinance();
       }
-      this.financesynctimeout = setTimeout(() => { this.syncFinance(); }, 30000);
+      this.storageService.setTimeout(finance, setTimeout(() => { this.syncFinance(); }, this.storageService.getSyncInterval(finance)));
     });
   }
 
-  private notepadsynctimeout: any = null;
   public resyncNotepad(): void {
     this.syncNotepad();
   }
   private syncNotepad(): void {
-    if (this.notepadsynctimeout != null) {
-      clearTimeout(this.notepadsynctimeout);
-      this.notepadsynctimeout = null;
-    }
-    let url: string = this.config.api.baseUrl + '/notes' + (this.notepadsync > 0 ? '/' + this.notepadsync : '');
-    this.notepadsync = Math.floor(Date.now() / 1000);
-    this.authService.queryApi(url).subscribe((reply) => {
+    this.storageService.clearTimeout(notes);
+    this.authService.queryApi(this.storageService.getSyncUrl(notes)).subscribe((reply) => {
       if (reply.success && reply.payload != undefined) {
         let response = <NotepadResponse>reply.payload;
         this.updateNotes(response.notes);
+        this.storageService.setLastSync(notes);
         this.saveNotepad();
       }
-      this.notepadsynctimeout = setTimeout(() => { this.syncNotepad(); }, 15000);
+      this.storageService.setTimeout(notes, setTimeout(() => { this.syncNotepad(); }, this.storageService.getSyncInterval(notes)));
     });
   }
 
-  private partiessynctimeout: any = null;
-  private syncParties(): void {
-    if (this.partiessynctimeout != null) {
-      clearTimeout(this.partiessynctimeout);
-      this.partiessynctimeout = null;
+  public onNotificationShown(id: number): void {
+    let notifications = [...this.notifications.value];
+    for (let i = 0; i < notifications.length; i++) {
+      if (notifications[i].id == id) {
+        notifications.splice(i, 1);
+        let url: string = this.config.api.baseUrl + `/notification/read/${id}`;
+        this.authService.updateApi(url, {}).subscribe(() => { });
+        break;
+      }
     }
-    let url: string = this.config.api.baseUrl + '/parties' + (this.partiessync > 0 ? '/' + this.partiessync : '');
-    this.partiessync = Math.floor(Date.now() / 1000);
-    this.authService.queryApi(url).subscribe((reply) => {
+    this.notifications.next(notifications);
+  }
+
+  private syncNotifications(): void {
+    this.storageService.clearTimeout(notifications);
+    this.authService.queryApi(this.storageService.getSyncUrl(notifications)).subscribe((reply) => {
+      if (reply.success && reply.payload != undefined) {
+        const payload: NotificationsResponse = <NotificationsResponse>reply.payload;
+        let notifications = [...this.notifications.value];
+        payload.items.forEach((i) => notifications.push(i));
+        this.notifications.next(notifications);
+      }
+      this.storageService.setTimeout(notifications, setTimeout(() => { this.syncNotifications(); }, this.storageService.getSyncInterval(notifications)));
+    });
+  }
+
+  private syncParties(): void {
+    this.storageService.clearTimeout(parties);
+    this.authService.queryApi(this.storageService.getSyncUrl(parties)).subscribe((reply) => {
       if (reply.success && reply.payload != undefined) {
         let response = <PartiesResponse>reply.payload;
         this.updateAddresses(response.addresses);
@@ -776,47 +784,42 @@ export class SettingsService {
         this.updateContactTypes(response.contacttypes);
         this.updateParties(response.parties);
         this.updateRoles(response.roles);
+        this.storageService.setLastSync(parties);
         this.saveParties();
       }
-      this.partiessynctimeout = setTimeout(() => { this.syncParties(); }, 15000);
+      this.storageService.setTimeout(parties, setTimeout(() => { this.syncParties(); }, this.storageService.getSyncInterval(parties)));
     });
   }
 
-  private tagssynctimeout: any = null;
   public syncTags(): void {
-    if (this.tagssynctimeout != null) {
-      clearTimeout(this.tagssynctimeout);
-      this.tagssynctimeout = null;
-    }
-    let url: string = this.config.api.baseUrl + '/tags' + (this.tagssync > 0 ? '/' + this.tagssync : '');
-    this.tagssync = Math.floor(Date.now() / 1000);
-    this.authService.queryApi(url).subscribe((reply) => {
+    this.storageService.clearTimeout(tags);
+    this.authService.queryApi(this.storageService.getSyncUrl(tags)).subscribe((reply) => {
       if (reply.success && reply.payload != undefined) {
         let response = <TagsResponse>reply.payload;
-        if (response.tags.length > 0)
+        if (response.tags.length > 0) {
           this.updateTags(response.tags);
-        this.saveTags();
+          this.storageService.setLastSync(tags);
+          this.saveTags();
+        }
       }
-      this.tagssynctimeout = setTimeout(() => { this.syncTags(); }, 30000);
+      this.storageService.setTimeout(tags, setTimeout(() => { this.syncTags(); }, this.storageService.getSyncInterval(tags)));
     });
   }
 
-
-  private worksynctimeout: any = null;
   private syncWork(): void {
-    if (this.worksynctimeout != null) {
-      clearTimeout(this.worksynctimeout);
-      this.worksynctimeout = null;
-    }
-    let url: string = this.config.api.baseUrl + '/work' + (this.worksync > 0 ? '/' + this.worksync : '');
-    this.worksync = Math.floor(Date.now() / 1000);
-    this.authService.queryApi(url).subscribe((reply) => {
+    this.storageService.clearTimeout(work);
+    this.authService.queryApi(this.storageService.getSyncUrl(work)).subscribe((reply) => {
       if (reply.success && reply.payload != undefined) {
         let response = <WorkResponse>reply.payload;
-        this.updateCustomers(response.customers);
+        this.updateWorkCustomers(response.customers);
+        this.updateWorkLeads(response.leads);
+        this.updateWorkOffCategories(response.offCategories);
+        this.updateWorkProjects(response.projects);
+        this.updateWorkTimeCategories(response.timeCategories);
+        this.storageService.setLastSync(work);
         this.saveWork();
       }
-      this.worksynctimeout = setTimeout(() => { this.syncWork(); }, 30000);
+      this.storageService.setTimeout(work, setTimeout(() => { this.syncWork(); }, this.storageService.getSyncInterval(work)));
     });
   }
 
@@ -842,14 +845,14 @@ export class SettingsService {
   private updateCaseFiletypes(items: CaseFiletype[]): void {
     if (items.length == 0)
       return;
-    let temp = this.casefiletypes.value;
+    let temp = this.caseFileTypes.value;
     items.forEach((cs) => {
       if (cs.deleted == null)
         temp[cs.id] = cs;
       else
         delete temp[cs.id];
     });
-    this.casefiletypes.next(temp);
+    this.caseFileTypes.next(temp);
   }
 
   private updateCases(cases: Case[]): void {
@@ -895,8 +898,8 @@ export class SettingsService {
       }
     });
     rootcases.sort((a, b) => cases[a].title > cases[b].title ? 1 : -1);
-    this.casechilds.next(casechilds);
-    this.caseroots.next(rootcases);
+    this.caseChilds.next(casechilds);
+    this.caseRoots.next(rootcases);
     this.syncCases();
   }
 
@@ -943,9 +946,9 @@ export class SettingsService {
   }
 
   private updateContactTypes(contacttypes: ContactType[]) {
-    let temp = { ...this.contacttypes.value };
+    let temp = { ...this.contactTypes.value };
     contacttypes.forEach((a) => this._updateCommon(temp, a));
-    this.contacttypes.next(temp);
+    this.contactTypes.next(temp);
   }
 
   private updateCountries(countries: Country[]) {
@@ -956,10 +959,34 @@ export class SettingsService {
     this.currencies.next(currencies);
   }
 
-  private updateCustomers(customers: WorkCustomer[]) {
-    let temp = { ...this.customers.value };
+  private updateWorkCustomers(customers: WorkCustomer[]) {
+    let temp = { ...this.workCustomers.value };
     customers.forEach((a) => this._updateCommon(temp, a));
-    this.customers.next(temp);
+    this.workCustomers.next(temp);
+  }
+
+  private updateWorkLeads(leads: WorkLead[]) {
+    let temp = { ...this.workLeads.value };
+    leads.forEach((a) => this._updateCommon(temp, a));
+    this.workLeads.next(temp);
+  }
+
+  private updateWorkProjects(items: WorkProject[]) {
+    let temp = { ...this.workProjects.value };
+    items.forEach((a) => this._updateCommon(temp, a));
+    this.workProjects.next(temp);
+  }
+
+  private updateWorkOffCategories(items: WorkOffCategory[]) {
+    let temp = { ...this.workOfftimeCategories.value };
+    items.forEach((a) => this._updateCommon(temp, a));
+    this.workOfftimeCategories.next(temp);
+  }
+
+  private updateWorkTimeCategories(items: WorkTimeCategory[]) {
+    let temp = { ...this.workTimeCategories.value };
+    items.forEach((a) => this._updateCommon(temp, a));
+    this.workTimeCategories.next(temp);
   }
 
   private updateNotes(notes: Note[]) {
@@ -1036,7 +1063,7 @@ export class SettingsService {
   updateCustomer(customeritem: WorkCustomer): BehaviorSubject<WorkCustomer | null> {
     let subject = new BehaviorSubject<WorkCustomer | null>(null);
     this.postCommon(customeritem.id == 0 ? 'create' : 'update', customeritem,
-      'customer', Object.values(this.customers.value), subject, (c: WorkCustomer[]) => this.updateCustomers(c));
+      'customer', Object.values(this.workCustomers.value), subject, (c: WorkCustomer[]) => this.updateWorkCustomers(c));
     return subject;
   }
 
@@ -1102,14 +1129,6 @@ export class SettingsService {
   updateUser(user: User, push: boolean = false) {
     this.user.next(user);
     this.updateSettings(user.settings, push);
-  }
-
-  updateWorkProps(props: WorkProperties, push: boolean = false) {
-    this.workprops.next(props);
-    if (push) {
-      let url = this.configService.config.api.baseUrl + '/work/settings';
-      this.authService.updateApi(url, { workSettings: props });
-    }
   }
 
 }
@@ -1180,6 +1199,10 @@ export interface NotepadStorage {
   version: number;
 }
 
+export interface NotificationsResponse {
+  items: ServerNotification[];
+}
+
 export interface PartiesResponse {
   addresses: Address[];
   banks: Party[];
@@ -1214,16 +1237,23 @@ export interface TagsStorage {
 
 export interface UserSettingsStorage {
   user: User;
-  work: WorkProperties;
   version?: number;
 }
 
 export interface WorkResponse {
   customers: WorkCustomer[];
+  leads: WorkLead[];
+  offCategories: WorkOffCategory[];
+  projects: WorkProject[];
+  timeCategories: WorkTimeCategory[];
 }
 
 export interface WorkStorage {
   customers: WorkCustomer[];
+  leads: WorkLead[];
+  offCategories: WorkOffCategory[];
+  projects: WorkProject[];
+  timeCategories: WorkTimeCategory[];
   ts: number;
   version: number;
 }

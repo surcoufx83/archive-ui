@@ -5,7 +5,7 @@ import { AuthService } from 'src/app/auth.service';
 import { AppConfig, ConfigService } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
 import { Case, CaseStatus, CaseType, File, Party, UserSettings } from 'src/app/if';
-import { SettingsService } from 'src/app/user/settings/settings.service';
+import { SettingsService } from 'src/app/utils/settings.service';
 import { FormatService } from 'src/app/utils/format.service';
 
 @Component({
@@ -135,7 +135,7 @@ export class CaseComponent implements OnInit {
       this.showDeleted = settings.casesettings.showCasesInDeletion;
       this.showInRetention = settings.casesettings.showCasesInRetention;
     });
-    this.userSettings.casechilds$.subscribe((childs) => {
+    this.userSettings.caseChilds$.subscribe((childs) => {
       if (this.case)
         this.childs = this.userSettings.getCaseChilds(this.case.id);
     });

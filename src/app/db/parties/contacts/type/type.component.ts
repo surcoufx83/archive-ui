@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AppConfig, ConfigService } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
-import { SettingsService } from 'src/app/user/settings/settings.service';
+import { SettingsService } from 'src/app/utils/settings.service';
 import { ToastsService } from 'src/app/utils/toasts.service';
 import { ContactType, UserSettings } from 'src/app/if';
 
@@ -34,7 +34,7 @@ export class DbContactTypeComponent implements OnInit {
     this.userSettings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
     });
-    this.userSettings.contacttypes$.subscribe((ctypes) => {
+    this.userSettings.contactTypes$.subscribe((ctypes) => {
       this.ctypes = Object.values(ctypes);
       this.ctypes.forEach((item) => { item.i18nname = this.i18n('contacttypes.' + item.name) });
       this.sort();

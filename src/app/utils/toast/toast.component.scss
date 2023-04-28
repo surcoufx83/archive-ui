@@ -23,4 +23,9 @@
             border-bottom-color: rgba(var(--bs-dark-rgb), var(--bs-text-opacity));
         }
     }
+
+    .toast-actions {
+        background-color: rgba(0, 0, 0, .03);
+        border-top: 1px solid rgba(0, 0, 0, .176);
+    }
 }
