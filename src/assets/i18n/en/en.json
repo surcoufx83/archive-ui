@@ -721,6 +721,13 @@
     "markdownGuide": "Formatting using Markdown",
     "notYetSaved": "Saving in {0} seconds."
   },
+  "notifications": {
+    "filecreated": {
+      "title": "New file",
+      "message": "The new file {1} has just been added to the archive.",
+      "action": "Open"
+    }
+  },
   "partyroles": {
     "authority": "Authority",
     "bank": "Bank",

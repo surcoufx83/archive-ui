@@ -721,6 +721,13 @@
     "markdownGuide": "Mise en forme avec Markdown",
     "notYetSaved": "Sauvegarde dans {0} secondes."
   },
+  "notifications": {
+    "filecreated": {
+      "title": "Nouveau fichier",
+      "message": "Le nouveau fichier {1} vient d'être ajouté à l'archive.",
+      "action": "Ouvrir"
+    }
+  },
   "partyroles": {
     "authority": "Autorité",
     "bank": "Banque",
