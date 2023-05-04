@@ -492,10 +492,9 @@ export class SettingsService {
   getWorkProjects(customerid: number | null): WorkProject[] | null {
     if (customerid == null)
       return null;
-    let projects = Object.values(this.workProjects.value).filter((e) => {
+    return Object.values(this.workProjects.value).filter((e) => {
       return !e.disabled && +e.customerid === customerid;
     }).sort((a, b) => a.name > b.name ? 1 : a.name === b.name ? 0 : -1);
-    return null;
   }
 
   getWorkTimeCategory(id: number | null): WorkTimeCategory | null {
