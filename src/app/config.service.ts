@@ -31,7 +31,6 @@ export class ConfigService {
       .toPromise()
       .then(config => {
         this.appConfig = <AppConfig>config;
-        this.appConfig.api.startUrl = this.startUrl;
         this.appConfig.icons = DefaultIcons;
         this.appConfig.loaded = true;
       });
@@ -45,7 +44,6 @@ export class ConfigService {
 
 export interface ApiConfig {
   baseUrl: string;
-  startUrl: string;
 }
 
 export interface AppConfig {
