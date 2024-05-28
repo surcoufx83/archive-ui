@@ -40,17 +40,14 @@ import { WorkCustomersComponent } from './work/settings/customers/customers.comp
 import { WorkDayComponent } from './work/work-day/work-day.component';
 import { WorkMonthComponent } from './work/work-month/work-month.component';
 import { WorkComponent } from './work/work.component';
+import { Notepad2Component } from './notepad2/notepad2.component';
+import { NoteComponent } from './notepad2/note/note.component';
+import { WorkYearComponent } from './work/work-year/work-year.component';
 
 const routes: Routes = [
   { path: 'account', component: AccountComponent, canActivate: [SessionGuard] },
-  {
-    path: 'case/:id', component: CaseComponent, canActivate: [SessionGuard], children: [
-      { path: 'childs', component: DummyComponent },
-      { path: 'files', component: DummyComponent },
-      { path: 'times', component: DummyComponent },
-      { path: '', component: DummyComponent },
-    ]
-  },
+  { path: 'case/:id/:view', component: CaseComponent, canActivate: [SessionGuard] },
+  { path: 'case/:id', component: CaseComponent, canActivate: [SessionGuard] },
   { path: 'cases', component: CasesComponent, canActivate: [SessionGuard] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [SessionGuard] },
   {
@@ -85,6 +82,8 @@ const routes: Routes = [
     path: 'finance', component: FinanceComponent, canActivate: [SessionGuard], children: [
       { path: 'accounts', component: AccountsComponent, canActivate: [SessionGuard] },
       { path: 'stocks', component: StocksComponent, canActivate: [SessionGuard] },
+      { path: 'stocks/:id/transactions', component: StocksComponent, canActivate: [SessionGuard] },
+      { path: 'stocks/transactions', component: StocksComponent, canActivate: [SessionGuard] },
       { path: 'taxes/:year', component: TaxComponent, canActivate: [SessionGuard] },
     ]
   },
@@ -92,6 +91,11 @@ const routes: Routes = [
   { path: 'login/oauth2', component: Oauth2CallbackComponent, canActivate: [SessionGuard] },
   { path: 'logout', component: LogoutComponent, canActivate: [SessionGuard] },
   { path: 'notepad', component: NotepadComponent, canActivate: [SessionGuard] },
+  {
+    path: 'notepad2', component: Notepad2Component, canActivate: [SessionGuard], pathMatch: 'full', children: [
+      { path: 'note/:id', component: NoteComponent, canActivate: [SessionGuard] },
+    ]
+  },
   { path: 'price-comparison', component: PriceComparisonComponent, canActivate: [SessionGuard] },
   { path: 'readings', component: ReadingsComponent, canActivate: [SessionGuard], pathMatch: 'full' },
   { path: 'receipts', component: ReceiptsComponent, canActivate: [SessionGuard] },
@@ -111,6 +115,8 @@ const routes: Routes = [
       { path: 'lead/:id', component: WorkLeadComponent, canActivate: [SessionGuard] },
       { path: 'month', component: WorkMonthComponent, canActivate: [SessionGuard] },
       { path: 'month/:year/:month', component: WorkMonthComponent, canActivate: [SessionGuard] },
+      { path: 'year', component: WorkYearComponent, canActivate: [SessionGuard] },
+      { path: 'year/:year', component: WorkYearComponent, canActivate: [SessionGuard] },
       {
         path: 'settings', children: [
           { path: 'customer/:id', component: WorkCustomerComponent, canActivate: [SessionGuard] },
@@ -125,7 +131,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { anchorScrolling: 'enabled', useHash: true })],
+  imports: [RouterModule.forRoot(routes, { anchorScrolling: 'enabled' })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

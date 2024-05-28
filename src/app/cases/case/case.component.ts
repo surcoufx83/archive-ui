@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { format } from 'date-fns';
 import { AuthService } from 'src/app/auth.service';
 import { AppConfig, ConfigService } from 'src/app/config.service';
@@ -7,13 +7,14 @@ import { I18nService } from 'src/app/i18n.service';
 import { Case, CaseStatus, CaseType, File, Party, UserSettings } from 'src/app/if';
 import { SettingsService } from 'src/app/utils/settings.service';
 import { FormatService } from 'src/app/utils/format.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-case',
   templateUrl: './case.component.html',
   styleUrls: ['./case.component.scss']
 })
-export class CaseComponent implements OnInit {
+export class CaseComponent implements OnDestroy, OnInit {
 
   activeRouteChild: string = '';
   busy: boolean = false;
@@ -34,6 +35,8 @@ export class CaseComponent implements OnInit {
   listOfClients: Party[] = [];
   listOfParties: Party[] = [];
 
+  subscriptions: Subscription[] = [];
+
   constructor(private authService: AuthService,
     private configService: ConfigService,
     private i18nService: I18nService,
@@ -41,19 +44,21 @@ export class CaseComponent implements OnInit {
     private userSettings: SettingsService,
     public formatService: FormatService,
     public router: Router) {
-    this.userSettings.settings$.subscribe((settings) => {
+    this.subscriptions.push(this.userSettings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
-    });
-    this.i18nService.loaded.subscribe((v) => {
+    }));
+    this.subscriptions.push(this.i18nService.loaded.subscribe((v) => {
       if (v === true) {
         this.listOfCaseStatus = this.listOfCaseStatus.sort((a, b) => this.i18n('casestatus.' + a.name) > this.i18n('casestatus.' + b.name) ? 1 : -1);
         this.listOfCaseTypes = this.listOfCaseTypes.sort((a, b) => this.i18n('casetype.' + a.name) > this.i18n('casetype.' + b.name) ? 1 : -1);
       }
-    });
-    this.route.url.subscribe((url) => {
-      this.activeRouteChild = this.route.firstChild && this.route.firstChild.routeConfig && this.route.firstChild.routeConfig.path ? this.route.firstChild.routeConfig.path : '';
-      this.i18nService.setTitle(`case.pagetitle_${this.activeRouteChild}`, [this.case?.title]);
-    });
+    }));
+    this.subscriptions.push(this.router.events.subscribe((e) => {
+      if (e instanceof NavigationEnd) {
+        this.activeRouteChild = this.route.snapshot.url.length == 3 ? this.route.snapshot.url[2].path : '';
+        this.loadCase(+this.route.snapshot.url[1].path);
+      }
+    }));
     this.i18nService.setTitle('case.pagetitleNocase');
   }
 
@@ -80,7 +85,8 @@ export class CaseComponent implements OnInit {
   }
 
   getCase(id: number | null): Case | null {
-    return this.userSettings.getCase(id);
+    const tempcase = this.userSettings.getCase(id);
+    return tempcase == null ? null : { ...tempcase };
   }
 
   getChilds(id: number): number[] {
@@ -104,13 +110,15 @@ export class CaseComponent implements OnInit {
   }
 
   private loadCase(id: number | null, obj: Case | null = null): void {
+    if (this.caseid === id)
+      return;
     this.caseid = id;
     this.casefiles = [];
     if (this.caseid != null) {
       if (obj != null)
-        this.case = obj;
-      else if (this.cases[this.caseid])
-        this.case = { ...this.cases[this.caseid] };
+        this.case = { ...obj };
+      else
+        this.case = this.getCase(this.caseid);
       if (this.case) {
         this.i18nService.setTitle(`case.pagetitle_${this.activeRouteChild}`, [this.case.title]);
         this.case.parentid = this.case.parentid ?? -1;
@@ -123,46 +131,44 @@ export class CaseComponent implements OnInit {
         let url = `${this.config.api.baseUrl}/case/${this.case.id}/files`;
         this.authService.queryApi(url).subscribe((reply) => {
           if (reply.success && reply.payload && reply.payload['files']) {
-            this.casefiles = <File[]>reply.payload['files'];
+            this.casefiles = (<File[]>reply.payload['files']).sort((a, b) => a.name > b.name ? 1 : -1);
           }
         });
       }
     }
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.subscriptions = [];
+  }
+
   ngOnInit(): void {
-    this.userSettings.clientSettings$.subscribe((settings) => {
+    this.subscriptions.push(this.userSettings.clientSettings$.subscribe((settings) => {
       this.showDeleted = settings.casesettings.showCasesInDeletion;
       this.showInRetention = settings.casesettings.showCasesInRetention;
-    });
-    this.userSettings.caseChilds$.subscribe((childs) => {
+    }));
+    this.subscriptions.push(this.userSettings.caseChilds$.subscribe((childs) => {
       if (this.case)
         this.childs = this.userSettings.getCaseChilds(this.case.id);
-    });
-    this.userSettings.cases$.subscribe((cases) => {
+    }));
+    this.subscriptions.push(this.userSettings.cases$.subscribe((cases) => {
       this.cases = cases;
       this.listOfCases = Object.values(cases).sort((a, b) => a.casepath > b.casepath ? 1 : -1);
       this.loadCase(this.caseid);
-    });
-    this.userSettings.caseStatus$.subscribe((items) => {
+    }));
+    this.subscriptions.push(this.userSettings.caseStatus$.subscribe((items) => {
       this.listOfCaseStatus = Object.values(items).sort((a, b) => this.i18n('casestatus.' + a.name) > this.i18n('casestatus.' + b.name) ? 1 : -1);
-    });
-    this.userSettings.caseTypes$.subscribe((items) => {
+    }));
+    this.subscriptions.push(this.userSettings.caseTypes$.subscribe((items) => {
       this.listOfCaseTypes = Object.values(items).sort((a, b) => this.i18n('casetype.' + a.name) > this.i18n('casetype.' + b.name) ? 1 : -1);
-    });
-    this.userSettings.clients$.subscribe((items) => {
+    }));
+    this.subscriptions.push(this.userSettings.clients$.subscribe((items) => {
       this.listOfClients = Object.values(items).sort((a, b) => a.name1.toLocaleLowerCase() > b.name1.toLocaleLowerCase() ? 1 : -1);
-    });
-    this.userSettings.parties$.subscribe((items) => {
+    }));
+    this.subscriptions.push(this.userSettings.parties$.subscribe((items) => {
       this.listOfParties = Object.values(items).sort((a, b) => a.name1.toLocaleLowerCase() > b.name1.toLocaleLowerCase() ? 1 : -1);
-    });
-    this.route.paramMap.subscribe((params) => {
-      if (params.has('id')) {
-        let casetemp = params.get('id');
-        if (casetemp)
-          this.loadCase(+casetemp);
-      }
-    });
+    }));
   }
 
   showCase(c: Case): boolean {

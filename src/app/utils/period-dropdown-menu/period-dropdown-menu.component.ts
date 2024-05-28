@@ -9,7 +9,8 @@ import { I18nService } from 'src/app/i18n.service';
 })
 export class PeriodDropdownMenuComponent implements OnInit {
 
-  @Input('period') period: Duration|null = null;
+  @Input({ required: true }) period: Duration | null = null;
+  @Input({ required: true }) idprefix!: string;
   @Output() changed = new EventEmitter();
 
   constructor(private configService: ConfigService,

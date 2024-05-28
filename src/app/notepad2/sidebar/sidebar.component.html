@@ -1,0 +1,8 @@
+<div class="d-flex h-100 flex-column justify-content-between">
+    <div>a</div>
+    <div [ngClass]="{'notepad-item mt-5': true, expanded: expanded}">
+        <button (click)="onSwitchExpanded.emit()">
+            <app-icon [iconClass]="expanded ? 'fa-solid fa-angles-left' : 'fa-solid fa-angles-right'" [marginEnd]="expanded ? 2 : 0"></app-icon><ng-container *ngIf="expanded">{{ i18n('notepad2.hideSidebar') }}</ng-container>
+        </button>
+    </div>
+</div>

@@ -11,6 +11,12 @@
                             <app-icon [iconClass]="config.icons['receipt']"></app-icon>
                             {{ i18n('stocks.updateRates') }}
                         </button>
+                        <a class="ms-2" [routerLink]="['/finance', 'stocks', 'transactions']">
+                            <button type="button" class="btn btn-sm btn-outline-primary">
+                                <app-icon [iconClass]="config.icons['file']"></app-icon>
+                                {{ i18n('stocks.transactionsLink') }}
+                            </button>
+                        </a>
                     </ol>
                 </nav>
             </div>
@@ -130,6 +136,11 @@
         <div class="col-12 col-md-6 col-lg-4">
             <strong>{{ i18n('stocks.api') }}:</strong> {{ api(stock.api)?.name ?? i18n('common.none') }}
         </div>
+        <div class="col-12 col-md-6 col-lg-4">
+            <strong>{{ i18n('stocks.ordercount') }}:</strong> {{ stock.ordercount }}
+            (<a class="fs-7" [routerLink]="['/finance', 'stocks', stock.id, 'transactions']">{{ i18n('common.goto')
+                }}</a>)
+        </div>
     </div>
     <div class="flex-table-body row">
         <div class="col-12 col-md-6 col-lg-4">
@@ -190,27 +201,38 @@
                         </li>
                         <ng-container *ngFor="let value of currentRates.values">
                             <li class="list-group-item" *ngIf="value.stock.api == null || !currentSkipWithApi">
-                                <div class="d-flex justify-content-between">
-                                    <div class="d-flex flex-column">
+                                <div class="d-flex flex-column">
+                                    <div class="d-flex flex-row justify-content-between align-items-top mb-2">
                                         <strong>{{ value.stock.name }}</strong>
-                                        <span class="fs-8">
-                                            <span class="pointer user-select-all" [title]="i18n('stocks.isin')">{{
-                                                value.stock.isin }}</span><span
-                                                *ngIf="value.stock.symbol != null && value.stock.symbol != ''">
-                                                / <span class="pointer user-select-all" [title]="i18n('stocks.symbol')">{{
-                                                    value.stock.symbol
-                                                    }}</span>
-                                            </span>
-                                        </span>
-                                    </div>
-                                    <div class="text-end ms-2">
-                                        <div class="input-group" style="width: 160px;">
-                                            <input type="number" min="0" max="99999999" [step]="4" [(ngModel)]="value.value"
-                                                [name]="'input-value-' + value.stockid"
-                                                class="form-control form-control-sm text-end">
-                                            <span class="input-group-text fs-8 text-serif fw-bold px-2"
-                                                style="width: 52px;">{{ currency(value.stock.currency).sign
+                                        <div class="d-flex flex-column text-end fs-8">
+                                            <span *ngIf="value.stock.isin != ''"
+                                                class="pointer user-select-all text-nowrap"
+                                                [title]="i18n('stocks.isinWithValue', [value.stock.isin])">
+                                                <strong>{{ i18n('stocks.isin') }}:</strong> {{ value.stock.isin
                                                 }}</span>
+                                            <span *ngIf="value.stock.symbol != null && value.stock.symbol != ''"
+                                                class="pointer user-select-all text-nowrap"
+                                                [title]="i18n('stocks.symbolWithValue', [value.stock.symbol])">
+                                                <strong>{{ i18n('stocks.symbol') }}:</strong> {{ value.stock.symbol
+                                                }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col col-6 px-2 fs-8 align-self-end">
+                                            {{ i18n('stocks.rate3', [formatService.fcur(value.stock.current.rate,
+                                            currency(value.stock.currency)),
+                                            formatService.fdate(value.stock.current.date, 'P') ]) }}
+                                        </div>
+                                        <div class="col col-6 px-2">
+                                            <div class="input-group" style="width: 100%;">
+                                                <input type="number" min="0" [(ngModel)]="value.value"
+                                                    [id]="'input-value-' + value.stockid"
+                                                    [name]="'input-value-' + value.stockid"
+                                                    class="form-control form-control-sm text-end">
+                                                <span class="input-group-text fs-8 text-serif fw-bold px-2"
+                                                    style="width: 52px;">{{ currency(value.stock.currency).sign
+                                                    }}</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -219,7 +241,8 @@
                     </ul>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button #closeRatesModalButton type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ i18n('common.cancel')
+                    <button #closeRatesModalButton type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{
+                        i18n('common.cancel')
                         }}</button>
                     <button type="submit" class="btn btn-success" [disabled]="savingRates">
                         <app-icon [iconClass]="config.icons[savingRates ? 'busy' : 'save']"></app-icon>

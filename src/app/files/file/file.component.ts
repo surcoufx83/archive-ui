@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { saveAs } from 'file-saver-es';
-import { Address, ButtonType, Case, CaseFiletype, Class, ContactType, File, Page, Party, PartyContact, Tag, UserSettings, Version } from 'src/app/if';
+import { Address, ButtonType, Case, Class, ContactType, File, Page, Party, PartyContact, Tag, UserSettings, Version } from 'src/app/if';
 import { FileService } from 'src/app/utils/file.service';
 import { FormatService } from 'src/app/utils/format.service';
 import { ToastsService } from 'src/app/utils/toasts.service';
@@ -45,7 +45,6 @@ export class FileComponent implements OnInit {
   clients: Party[] = [];
   contacts: PartyContact[] = [];
   contacttypes: ContactType[] = [];
-  filetypes: CaseFiletype[] = [];
   parties: Party[] = [];
   tags: Tag[] = [];
 
@@ -91,15 +90,6 @@ export class FileComponent implements OnInit {
     });
     this.userSettings.contacts$.subscribe((contacts) => { this.contacts = Object.values(contacts); });
     this.userSettings.contactTypes$.subscribe((contacttypes) => { this.contacttypes = Object.values(contacttypes); });
-    this.userSettings.caseFileTypes$.subscribe((filetypes) => {
-      this.filetypes = [];
-      for (let key in filetypes) {
-        let item = filetypes[key];
-        item.i18nname = this.i18n('casefiletypes.' + item.name);
-        this.filetypes.push(item);
-      }
-      this.filetypes.sort((a, b) => { return a.i18nname > b.i18nname ? 1 : a.i18nname < b.i18nname ? -1 : 0 });
-    });
     this.userSettings.parties$.subscribe((parties) => {
       this.parties = Object.values(parties);
       this.parties.sort((a, b) => { return a.name1 > b.name1 ? 1 : a.name1 < b.name1 ? -1 : 0 });
@@ -344,12 +334,6 @@ export class FileComponent implements OnInit {
 
   setCaseFilestatus(): void {
     this.changes['filestatus'] = this.file!.case_filestatus;
-    this.submitFile();
-  }
-
-  setCaseFiletypeId(): void {
-    this.file!.case_filetype = this.filetypes.find(item => item.id == this.file?.case_filetypeid) ?? null;
-    this.changes['filetypeid'] = this.file!.case_filetypeid != null ? +this.file!.case_filetypeid : null;
     this.submitFile();
   }
 

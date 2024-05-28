@@ -5,6 +5,10 @@ import { Locale } from 'date-fns';
 import { de, enUS, fr } from 'date-fns/locale';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { L10nArchiveLocale } from './l10n/l10n.types';
+import { L10nArchiveDeLocale } from './l10n/locales/de';
+import { L10nArchiveEnLocale } from './l10n/locales/en';
+import { L10nArchiveFrLocale } from './l10n/locales/fr';
 import { ToastsService } from './utils/toasts.service';
 
 @Injectable({
@@ -18,7 +22,7 @@ export class I18nService {
   public currentLocale = this.currentLocale_.asObservable();
   public defaultLocale: string = 'en';
   public loaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  private entries: { [key: string]: { [key: string]: string | string[] } } = {};
+  private entries: { [key: string]: { [key: string]: string | string[] } } = { en: {}, de: {}, fr: {} };
 
   get DateLocale(): Locale {
     switch (this.locale) {
@@ -51,27 +55,27 @@ export class I18nService {
     }
     if (this.availableLocales.indexOf(this.currentLocale_.value) == -1)
       this.currentLocale_.next(this.defaultLocale);
-    this.loadStrings(environment.i18nFallback);
   }
 
   private loadStrings(locale: string) {
-    if (this.entries[locale] != undefined)
-      return;
-    this.entries[locale] = {};
-    this.http.get('/assets/i18n/' + locale + '/' + locale + '.json').subscribe({
-      next: (strings: any) => {
-        if (strings) {
-          Object.entries(strings).forEach((e) => {
-            this.iterateStrings(locale, '', e[0], <I18nEntry>e[1]);
-          });
-          if (locale === this.currentLocale_.value)
-            this.loaded.next(true);
-        }
-      },
-      error: () => {
-        this.toastService.fatal('Application error', 'Error retrieving localization files!');
-      }
+    let templocale: L10nArchiveLocale | null = null;
+    switch (locale) {
+      case 'de':
+        templocale = { ...L10nArchiveDeLocale };
+        break;
+      case 'fr':
+        templocale = { ...L10nArchiveFrLocale };
+        break;
+      case 'en':
+      default:
+        templocale = { ...L10nArchiveEnLocale };
+        break;
+    }
+
+    Object.entries(<I18nEntry>templocale).forEach((e) => {
+      this.iterateStrings(locale, '', e[0], <I18nEntry>e[1]);
     });
+    this.loaded.next(true);
   }
 
   private iterateStrings(locale: string, parentkey: string, key: string, content: I18nEntry): void {
@@ -133,7 +137,7 @@ export class I18nService {
 }
 
 export interface I18nEntry {
-  [key: string]: I18nEntry | string;
+  [key: string]: I18nEntry | string | string[];
 }
 
 export interface LocalesStorage {

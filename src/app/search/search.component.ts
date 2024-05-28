@@ -20,7 +20,7 @@ export class SearchComponent implements OnInit {
   busy: boolean = false;
   debounce: any = null;
   resultcount: number = 0;
-  resultgroupcount: {[key: string]: number} = {};
+  resultgroupcount: { [key: string]: number } = {};
   resultgroups: string[] = ['tags', 'notes', 'cases', 'files', 'pages', 'directories', 'accounts'];
   phrase: string = '';
   searchactive: string[] = [];
@@ -91,8 +91,8 @@ export class SearchComponent implements OnInit {
         this.searchphrase = params.get('phrase') ?? '';
         this.searchtoken = params.get('token') ?? '';
         this.urltoken = params.get('token') ?? '';
-        this.onSearch(false, (params.get('token') ?? ''));
-      }, 100);
+        this.onSearch(params.get('token') != null, (params.get('token') ?? ''));
+      }, 1);
     });
   }
 

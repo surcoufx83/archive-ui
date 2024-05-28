@@ -1,0 +1,8 @@
+<div class="d-flex vh-calc-100">
+    <div [ngClass]="{'sidebar-body': true, expanded: expanded}">
+        <app-notepad2-sidebar [expanded]="expanded" (onSwitchExpanded)="expanded = !expanded"></app-notepad2-sidebar>
+    </div>
+    <div class="flex-grow-1 px-2">
+        <app-notepad2-note></app-notepad2-note>
+    </div>
+</div>

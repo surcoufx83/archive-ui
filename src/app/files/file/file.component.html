@@ -225,17 +225,6 @@
                   </div>
                   <div class="col-6 mb-3">
                     <div class="form-group">
-                      <label for="file-case-filetype" class="form-label">{{ i18n('file.classify.caseFiletype')
-                        }}</label>
-                      <select class="form-select" id="file-case-filetype" name="file-case-filetype"
-                        [(ngModel)]="file.case_filetypeid" (change)="setCaseFiletypeId();">
-                        <option [value]="null">{{ i18n('common.select.pickOne') }}</option>
-                        <option *ngFor="let item of filetypes" [value]="item.id">{{ item.i18nname }}</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-6 mb-3">
-                    <div class="form-group">
                       <label for="file-case-filestatus" class="form-label">{{ i18n('file.classify.caseFilestatus')
                         }}</label>
                       <select class="form-select" id="file-case-filestatus" name="file-case-filestatus"
@@ -323,7 +312,8 @@
               </div>
               <div class="col-12 col-lg-6 mb-3">
                 <div class="ratio-2x3">
-                  <ng-container *ngIf="getViewer() == 'embeddedObject'" [ngTemplateOutlet]="embeddedObject"></ng-container>
+                  <ng-container *ngIf="getViewer() == 'embeddedObject'"
+                    [ngTemplateOutlet]="embeddedObject"></ng-container>
                 </div>
               </div>
             </div>

@@ -1,1 +1,62 @@
-<p>work-year works!</p>
+<ng-container *ngIf="usersettingsObj != undefined">
+
+    <div class="container pt-4 pt-md-2 mb-2">
+        <app-h2 [title]="i18n('workyear.pagetitle')" [busy]="busy"
+            [btn1]="nextYear > 0 ? i18n('workyear.addYear.btnText', ['' + nextYear]) : ''"
+            [btn1css]="nextYear > 0 ? 'btn btn-sm btn-outline-primary' : ''"
+            (btn1Clicked)="onAddYear(nextYear)"></app-h2>
+
+        <div class=" flex-table">
+            <div class="flex-table-head row">
+                <div class="col-10">{{i18n('workyear.table.yearHeader.year')}}</div>
+                <div class="col-2 text-end">{{i18n('workyear.table.yearHeader.closetime')}}</div>
+            </div>
+            <ng-container *ngFor="let year of years">
+                <div class="flex-table-body row" [id]="'work-year-' + year">
+                    <div class="col-10 pointer" (click)="yearMonthsVisible[year] = !yearMonthsVisible[year]">
+                        <app-icon
+                            [iconClass]="yearMonthsVisible[year] ? config.icons['go-down'] : config.icons['go-right']"
+                            [marginEnd]="2"></app-icon>
+                        {{ year }}
+                        <span *ngIf="yearMonthCount[year] < 12" class="ms-4 text-warning fst-italic">
+                            <app-icon [iconClass]="config.icons['error']" [marginEnd]="1"></app-icon>
+                            {{i18n('workyear.incompleteYear.warnMessage')}}
+                            <button class="btn btn-sm btn-outline-primary ms-2"
+                                (click)="onCompleteYear(year); $event.stopPropagation()">
+                                {{i18n('workyear.incompleteYear.btnText')}}
+                            </button>
+                        </span>
+                    </div>
+                    <div class="col-2 text-end">{{ fd(yearClosingTime[year]) }}</div>
+                </div>
+                <div [id]="'work-year-' + year + '-months'"
+                    [ngClass]="{ 'flex-table-group month-group': true, 'expanded': yearMonthsVisible[year] }">
+                    <div class="flex-table-head row">
+                        <div class="col-3">{{i18n('workyear.table.monthHeader.month')}}</div>
+                        <div class="col-1">{{i18n('workyear.table.monthHeader.days')}}</div>
+                        <div class="col-1">{{i18n('workyear.table.monthHeader.holidays')}}</div>
+                        <div class="col-1">{{i18n('workyear.table.monthHeader.weekenddays')}}</div>
+                        <div class="col-2 text-end">{{i18n('workyear.table.monthHeader.starttime')}}</div>
+                        <div class="col-2 text-end">{{i18n('workyear.table.monthHeader.diftime')}}</div>
+                        <div class="col-2 text-end">{{i18n('workyear.table.monthHeader.closetime')}}</div>
+                    </div>
+                    <div class="flex-table-body row" *ngFor="let month of yearMonths[year]"
+                        [id]="'work-year-' + year + '-month-' + month.month">
+                        <div class="col-3">
+                            <a [routerLink]="['/work', 'month', year, month.month]">
+                                {{ month.month }}) {{ f(month.datefrom, 'LLLL') }}
+                            </a>
+                        </div>
+                        <div class="col-1">{{ month.days }}</div>
+                        <div class="col-1">{{ month.holidays }}</div>
+                        <div class="col-1">{{ month.weekenddays }}</div>
+                        <div class="col-2 text-end">{{ fd(month.timestart) }}</div>
+                        <div class="col-2 text-end">{{ fd(month.timedif) }}</div>
+                        <div class="col-2 text-end">{{ fd(month.timeclose) }}</div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+
+</ng-container>

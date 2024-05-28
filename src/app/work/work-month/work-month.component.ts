@@ -4,7 +4,7 @@ import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarMonthViewDay } f
 import { add, differenceInMinutes, format, getDate, getMonth, getYear, isAfter, isBefore, isSameDay, isSameMonth, parseISO, sub } from 'date-fns';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { ApiReply, UserSettings, WorkDay, WorkDayBooking, WorkMonth, WorkOffCategory } from 'src/app/if';
-import { EventColor } from '../../../../node_modules/calendar-utils/calendar-utils';
+import { EventColor } from 'calendar-utils/calendar-utils';
 import { AuthService } from '../../auth.service';
 import { AppConfig, ConfigService } from '../../config.service';
 import { I18nService } from '../../i18n.service';

@@ -6,6 +6,7 @@ import { AppConfig, ConfigService } from '../config.service';
 import { I18nService } from '../i18n.service';
 import { SettingsService } from '../utils/settings.service';
 import { FormatService } from '../utils/format.service';
+import { HttpStatusCode } from '@angular/common/http';
 
 @Component({
   selector: 'app-home',
@@ -15,8 +16,10 @@ import { FormatService } from '../utils/format.service';
 export class HomeComponent implements OnInit, OnDestroy {
 
   busy: boolean = false;
+  etag?: string;
   inactivecases: Case[] = [];
-  newfiles: File[] = [];
+  inboxfiles: File[] = [];
+  recentfiles: File[] = [];
   updatetimeout: any;
   usersettingsObj: UserSettings | null = null;
   stats?: HomeStats;
@@ -33,12 +36,14 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.userSettings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
     });
-    let olddata: string|null|HomeStorage = localStorage.getItem(this.storagename);
+    let olddata: string | null | HomeStorage = localStorage.getItem(this.storagename);
     if (olddata) {
       olddata = <HomeStorage>JSON.parse(olddata);
       this.inactivecases = olddata.inactivecases;
-      this.newfiles = olddata.inboxfiles;
+      this.inboxfiles = olddata.inboxfiles;
+      this.recentfiles = olddata.recentfiles;
       this.stats = olddata.stats;
+      this.etag = olddata.etag;
     }
     this.i18nService.setTitle('home.title');
   }
@@ -50,7 +55,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   i18n(key: string, params: string[] = []): string {
     return this.i18nService.i18n(key, params);
   }
-  
+
   ngOnDestroy(): void {
     if (this.updatetimeout)
       clearTimeout(this.updatetimeout);
@@ -62,28 +67,22 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   update(): void {
     this.busy = true;
-    let url: string = this.config.api.baseUrl + '/home' + (this.when > 0 ? '/' + this.when : '');
-    let clean = this.when == 0;
+    let url: string = this.config.api.baseUrl + '/home';
     this.when = Math.floor(Date.now() / 1000);
-    this.authService.queryApi(url).subscribe((reply) => {
-      if (reply.success && reply.payload != undefined) {
+    this.authService.queryApi(url, undefined, this.etag).subscribe((reply) => {
+      if (reply.status == HttpStatusCode.Ok && reply.success && reply.payload != undefined) {
         let response = <HomeResponse>reply.payload;
-        if (clean) {
-          this.inactivecases = response.inactivecases;
-          this.newfiles = response.inboxfiles;
-        } else {
-          response.inactivecases.forEach((a) => { this.update_addInactiveCase(a); });
-
-          response.inboxfiles.forEach((a) => { this.update_addFile(a); });
-          if (response.inboxfiles.length > 0)
-            this.newfiles = this.newfiles.sort((a, b) => { return a.mtime < b.mtime ? 1 : a.mtime > b.mtime ? -1 : 0 });
-
-        }
+        this.inactivecases = response.inactivecases;
+        this.inboxfiles = response.inboxfiles;
+        this.recentfiles = response.recentfiles;
         this.stats = response.stats;
-        localStorage.setItem(this.storagename, JSON.stringify({
+        this.etag = reply.etag;
+        localStorage.setItem(this.storagename, JSON.stringify(<HomeStorage>{
           inactivecases: this.inactivecases,
-          inboxfiles: this.newfiles,
-          stats: this.stats
+          inboxfiles: this.inboxfiles,
+          recentfiles: this.recentfiles,
+          stats: this.stats,
+          etag: reply.etag,
         }));
       }
       this.busy = false;
@@ -107,16 +106,16 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   update_addFile(f: File): void {
     let changeindex = -1;
-    for (let i = 0; i < this.newfiles.length - 1; i++) {
-      if (this.newfiles[i].id == f.id) {
+    for (let i = 0; i < this.inboxfiles.length - 1; i++) {
+      if (this.inboxfiles[i].id == f.id) {
         changeindex = i;
         break;
       }
     }
     if (changeindex > -1)
-      this.newfiles[changeindex] = f;
+      this.inboxfiles[changeindex] = f;
     else
-      this.newfiles.push(f);
+      this.inboxfiles.push(f);
   }
 
 }
@@ -124,12 +123,13 @@ export class HomeComponent implements OnInit, OnDestroy {
 export interface HomeResponse {
   inactivecases: Case[];
   inboxfiles: File[];
+  recentfiles: File[];
   stats: HomeStats;
 }
 
 export interface HomeStats {
   general: HomeGeneralStats;
-  newfiles: HomeNewFilesStats;
+  newfiles: HomeinboxfilesStats;
 }
 
 export interface HomeGeneralStats {
@@ -160,7 +160,7 @@ export interface HomeGeneralStats {
   totalspace: number;
 }
 
-export interface HomeNewFilesStats {
+export interface HomeinboxfilesStats {
   count: number;
   month: number;
   newest: string;
@@ -171,5 +171,7 @@ export interface HomeNewFilesStats {
 export interface HomeStorage {
   inactivecases: Case[];
   inboxfiles: File[];
+  recentfiles: File[];
   stats: HomeStats;
+  etag?: string;
 }

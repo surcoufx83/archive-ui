@@ -4,7 +4,6 @@ import {
   Address,
   BankAccount,
   Case,
-  CaseFiletype,
   CaseStatus,
   CaseType,
   Class,
@@ -67,9 +66,6 @@ export class SettingsService {
 
   private caseFileStatus: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
   caseFileStatus$ = this.caseFileStatus.asObservable();
-
-  private caseFileTypes: BehaviorSubject<{ [key: number]: CaseFiletype }> = new BehaviorSubject<{ [key: number]: CaseFiletype }>({});
-  caseFileTypes$ = this.caseFileTypes.asObservable();
 
   private caseRoots: BehaviorSubject<number[]> = new BehaviorSubject<number[]>([]);
   caseRoots$ = this.caseRoots.asObservable();
@@ -223,7 +219,6 @@ export class SettingsService {
       olddata = <CasesStorage>JSON.parse(olddata);
       this.cases.next(olddata.cases);
       this.caseChilds.next(olddata.casechilds);
-      this.caseFileTypes.next(olddata.casefiletypes);
       this.caseRoots.next(olddata.rootcases);
       this.caseStatus.next(olddata.casestatus);
       this.caseTypes.next(olddata.casetypes);
@@ -401,14 +396,6 @@ export class SettingsService {
     return this.caseChilds.value[id] != undefined && this.caseChilds.value[id].length > 0;
   }
 
-  getCaseFiletype(id: number | null): CaseFiletype | null {
-    if (id == null)
-      return null;
-    if (this.caseFileTypes.value[id])
-      return this.caseFileTypes.value[id];
-    return null;
-  }
-
   getCaseStatus(id: number | null): CaseStatus | null {
     if (id == null)
       return null;
@@ -492,10 +479,9 @@ export class SettingsService {
   getWorkProjects(customerid: number | null): WorkProject[] | null {
     if (customerid == null)
       return null;
-    let projects = Object.values(this.workProjects.value).filter((e) => {
+    return Object.values(this.workProjects.value).filter((e) => {
       return !e.disabled && +e.customerid === customerid;
     }).sort((a, b) => a.name > b.name ? 1 : a.name === b.name ? 0 : -1);
-    return null;
   }
 
   getWorkTimeCategory(id: number | null): WorkTimeCategory | null {
@@ -613,7 +599,6 @@ export class SettingsService {
   private saveCases(): void {
     this.storageService.save(cases, {
       casechilds: this.caseChilds.value,
-      casefiletypes: this.caseFileTypes.value,
       cases: this.cases.value,
       casestatus: this.caseStatus.value,
       casetypes: this.caseTypes.value,
@@ -696,7 +681,6 @@ export class SettingsService {
     this.authService.queryApi(this.storageService.getSyncUrl(cases)).subscribe((reply) => {
       if (reply.success && reply.payload != undefined) {
         let response = <CasesResponse>reply.payload;
-        this.updateCaseFiletypes(response.casefiletypes);
         this.updateCaseStatus(response.casestatus);
         this.updateCaseTypes(response.casetypes);
         this.updateCases(response.cases);
@@ -765,7 +749,11 @@ export class SettingsService {
       if (reply.success && reply.payload != undefined) {
         const payload: NotificationsResponse = <NotificationsResponse>reply.payload;
         let notifications = [...this.notifications.value];
-        payload.items.forEach((i) => notifications.push(i));
+        let notificationIds = notifications.map(a => a.id);
+        payload.items.forEach((i) => {
+          if (!notificationIds.includes(i.id))
+            notifications.push(i);
+        });
         this.notifications.next(notifications);
       }
       this.storageService.setTimeout(notifications, setTimeout(() => { this.syncNotifications(); }, this.storageService.getSyncInterval(notifications)));
@@ -841,20 +829,6 @@ export class SettingsService {
     banks.forEach((a) => this._updateCommon(temp, a));
     this.banks.next(temp);
   }
-
-  private updateCaseFiletypes(items: CaseFiletype[]): void {
-    if (items.length == 0)
-      return;
-    let temp = this.caseFileTypes.value;
-    items.forEach((cs) => {
-      if (cs.deleted == null)
-        temp[cs.id] = cs;
-      else
-        delete temp[cs.id];
-    });
-    this.caseFileTypes.next(temp);
-  }
-
   private updateCases(cases: Case[]): void {
     if (cases.length == 0)
       return;
@@ -1135,7 +1109,6 @@ export class SettingsService {
 
 export interface CasesResponse {
   cases: Case[];
-  casefiletypes: CaseFiletype[];
   casestatus: CaseStatus[];
   casetypes: CaseType[];
 }
@@ -1143,7 +1116,6 @@ export interface CasesResponse {
 export interface CasesStorage {
   rootcases: number[];
   casechilds: { [key: number]: number[] };
-  casefiletypes: { [key: number]: CaseFiletype };
   cases: { [key: number]: Case };
   casestatus: { [key: number]: CaseStatus };
   casetypes: { [key: number]: CaseType };

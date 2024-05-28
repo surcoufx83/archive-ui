@@ -1,0 +1,23 @@
+div.notepad-item {
+    background-color: #B4B8BB;
+    height: 48px;
+    display: flex;
+    flex-direction: row;
+    padding-left: .5rem;
+    padding-right: .5rem;
+    border-top: 1px solid rgba(33, 37, 41, .1);
+
+    button {
+        background-color: transparent;
+        border: 0!important;
+        text-align: center;
+        width: 100%;
+    }
+
+    &.expanded {
+        button {
+            text-align: left!important;
+        }
+    }
+
+}

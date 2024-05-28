@@ -7,7 +7,7 @@
     <div class="container pt-4 pt-md-2 mb-2">
         <ul class="nav nav-tabs case-nav-group">
             <li class="nav-item">
-                <a [ngClass]="[activeRouteChild == '' ? 'nav-link active text-primary' : 'nav-link text-muted']"
+                <a [ngClass]="[activeRouteChild == '' ? 'nav-link active' : 'nav-link']"
                     [routerLink]="['/case', case.id]">
                     <app-icon [iconClass]="config.icons['info']" [marginEnd]="1"
                         addCssClasses="d-none d-md-inline-block"></app-icon>
@@ -15,7 +15,7 @@
                 </a>
             </li>
             <li class="nav-item ms-1" *ngIf="haschilds(case.id)">
-                <a [ngClass]="[activeRouteChild == 'childs' ? 'nav-link active text-primary' : 'nav-link text-muted']"
+                <a [ngClass]="[activeRouteChild == 'childs' ? 'nav-link active' : 'nav-link']"
                     [routerLink]="['/case', case.id, 'childs']">
                     <app-icon [iconClass]="config.icons['cases']" [marginEnd]="1"
                         addCssClasses="d-none d-md-inline-block"></app-icon>
@@ -23,7 +23,7 @@
                 </a>
             </li>
             <li class="nav-item ms-1">
-                <a [ngClass]="[activeRouteChild == 'times' ? 'nav-link active text-primary' : 'nav-link text-muted']"
+                <a [ngClass]="[activeRouteChild == 'times' ? 'nav-link active' : 'nav-link']"
                     [routerLink]="['/case', case.id, 'times']">
                     <app-icon [iconClass]="config.icons['stopwatch']" [marginEnd]="1"
                         addCssClasses="d-none d-md-inline-block"></app-icon>
@@ -31,7 +31,7 @@
                 </a>
             </li>
             <li class="nav-item ms-1">
-                <a [ngClass]="[activeRouteChild == 'files' ? 'nav-link active text-primary' : 'nav-link text-muted']"
+                <a [ngClass]="[activeRouteChild == 'files' ? 'nav-link active' : 'nav-link']"
                     [routerLink]="['/case', case.id, 'files']">
                     <app-icon [iconClass]="config.icons['folder']" [marginEnd]="1"
                         addCssClasses="d-none d-md-inline-block"></app-icon>
@@ -263,6 +263,7 @@
                                             <app-icon [iconClass]="config.icons['edit']"></app-icon>
                                         </button>
                                         <app-period-dropdown-menu [period]="case.period.minperiod"
+                                            idprefix="case-period-minperiod"
                                             (changed)="case.period.minperiod = $event;updateCase();">
                                         </app-period-dropdown-menu>
                                     </div>
@@ -283,6 +284,7 @@
                                             <app-icon [iconClass]="config.icons['edit']"></app-icon>
                                         </button>
                                         <app-period-dropdown-menu [period]="case.period.period"
+                                            idprefix="case-period-period"
                                             (changed)="case.period.period = $event;updateCase();">
                                         </app-period-dropdown-menu>
                                     </div>
@@ -304,6 +306,7 @@
                                             <app-icon [iconClass]="config.icons['edit']"></app-icon>
                                         </button>
                                         <app-period-dropdown-menu [period]="case.period.terminationperiod"
+                                            idprefix="case-period-termination"
                                             (changed)="case.period.terminationperiod = $event;updateCase();">
                                         </app-period-dropdown-menu>
                                     </div>

@@ -2,6 +2,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { registerLocaleData } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import localeDe from '@angular/common/locales/de';
+import localeFr from '@angular/common/locales/fr';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -85,8 +86,13 @@ import { NavbarComponent } from './utils/navbar/navbar.component';
 import { TooltipDirective } from './utils/tooltip.directive';
 import { ConfirmDeletionComponent } from './dialog/confirm-deletion/confirm-deletion.component';
 import { StorageService } from './utils/storage.service';
+import { StockOrdersComponent } from './finance/stock-orders/stock-orders.component';
+import { Notepad2Component } from './notepad2/notepad2.component';
+import { SidebarComponent } from './notepad2/sidebar/sidebar.component';
+import { NoteComponent } from './notepad2/note/note.component';
 
 registerLocaleData(localeDe);
+registerLocaleData(localeFr);
 
 @NgModule({
   declarations: [
@@ -157,6 +163,10 @@ registerLocaleData(localeDe);
     NavbarComponent,
     TooltipDirective,
     ConfirmDeletionComponent,
+    StockOrdersComponent,
+    Notepad2Component,
+    SidebarComponent,
+    NoteComponent,
   ],
   imports: [
     AppRoutingModule,

@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse, HttpStatusCode } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
@@ -60,13 +60,15 @@ export class AuthService implements OnInit {
     return (this.session != undefined);
   }
 
-  private get header(): HttpHeaders {
-    let header = new HttpHeaders();
+  private get header(): { [key: string]: string } {
+    /* let header = new HttpHeaders();
     if (this.config.auth.basic.enabled)
       header = header.append('Authorization', 'Basic ' + window.btoa(this.config.auth.basic.user + ':' + this.config.auth.basic.password));
     if (this.session)
-      header = header.append('AuthToken', this.session.token);
-    return header;
+      return { AuthToken: this.session.token }; */
+    return { AuthToken: this.session?.token || '' };
+    /* header = header.append('AuthToken', this.session.token);
+  return header; */
   }
 
   get isLoggedin(): boolean {
@@ -96,12 +98,14 @@ export class AuthService implements OnInit {
         } else {
           reply.next({
             success: false,
+            status: response.status
           });
         }
       },
       (error) => {
         reply.next({
           success: false,
+          status: error.status
         });
       }
     );
@@ -125,11 +129,11 @@ export class AuthService implements OnInit {
       return reply;
     }
     if (this.isLoggedin) {
-      reply.next({ success: false });
+      reply.next({ success: false, status: HttpStatusCode.TooEarly });
       return reply;
     }
     if (hostconfig.state !== state) {
-      reply.next({ success: false });
+      reply.next({ success: false, status: HttpStatusCode.TooEarly });
       return reply;
     }
     let formdata = new FormData();
@@ -146,13 +150,13 @@ export class AuthService implements OnInit {
           location.replace('/home');
           return;
         } else {
-          reply.next({ success: false });
+          reply.next({ success: false, status: response.status });
           this.toastService.error(this.i18nService.i18n('authService.apiError.title'),
             this.i18nService.i18n('authService.apiError.message', [response.error ?? '']));
         }
       },
       (e: HttpErrorResponse) => {
-        reply.next({ success: false });
+        reply.next({ success: false, status: e.status });
         this.toastService.error(this.i18nService.i18n('authService.apiError.title'),
           this.i18nService.i18n('authService.apiError.message', [e.statusText]));
       }
@@ -170,23 +174,43 @@ export class AuthService implements OnInit {
       setTimeout(() => { this.ping(); }, 60000);
   }
 
-  public queryApi(url: string, payload: any = {}): Subject<ApiReply> {
+  public queryApi(url: string, payload: any = {}, etag?: string): Subject<ApiReply> {
     let reply: Subject<ApiReply> = new Subject<ApiReply>();
     if (this.session == undefined) {
-      reply.next({ success: false });
+      reply.next({ success: false, status: HttpStatusCode.TooEarly });
       return reply;
     }
-    this.http.get<HttpResponse<ApiReply>>(url, { headers: this.header, observe: 'response' }).subscribe({
+    let tempheader = { ...this.header };
+    if (etag)
+      tempheader['If-None-Match'] = etag;
+    this.http.get(url, { headers: tempheader, observe: 'response' }).subscribe({
       next: (response) => {
+        let etagarr = /^([wW]\/)?\"?(?<etag>[^"]+)\"?$/.exec(response.headers.get('Etag') ?? '');
+        let etag = undefined;
+        if (etagarr != null && etagarr.groups != undefined && etagarr.groups['etag'] != undefined)
+          etag = etagarr.groups['etag'];
         if (response.status === 204)
-          reply.next({ success: true, errno: response.status });
-        else
-          reply.next(<ApiReply><unknown>(response.body));
+          reply.next({ success: true, errno: response.status, etag: etag, status: response.status });
+        else {
+          let tempreply = <ApiReply><unknown>(response.body);
+          tempreply.etag = etag;
+          tempreply.status = response.status;
+          reply.next(tempreply);
+        }
         reply.complete();
       },
       error: (e: HttpErrorResponse) => {
+        if (e.status == HttpStatusCode.NotModified) {
+          reply.next({ success: true, status: e.status });
+          reply.complete();
+          return;
+        }
         console.log(e);
-        reply.next({ success: false });
+        let etagarr = /^([wW]\/)?\"?(?<etag>[^"]+)\"?$/.exec(e.headers.get('Etag') ?? '');
+        let etag = undefined;
+        if (etagarr != null && etagarr.groups != undefined && etagarr.groups['etag'] != undefined)
+          etag = etagarr.groups['etag'];
+        reply.next({ success: false, etag: etag, status: e.status });
         reply.complete();
         this.toastService.error(this.i18nService.i18n('authService.apiError.title'),
           this.i18nService.i18n('authService.apiError.message', [e.statusText]));
@@ -201,13 +225,13 @@ export class AuthService implements OnInit {
   public updateApi(url: string, payload: any = {}): Subject<ApiReply> {
     let reply: Subject<ApiReply> = new Subject<ApiReply>();
     if (this.session == undefined) {
-      reply.next({ success: false });
+      reply.next({ success: false, status: HttpStatusCode.TooEarly });
       return reply;
     }
     this.http.post<ApiReply>(url, payload, { headers: this.header }).subscribe({
       next: (response) => reply.next(response),
       error: (e: HttpErrorResponse) => {
-        reply.next({ success: false });
+        reply.next({ success: false, status: e.status });
         if (e.status === 304) {
           this.toastService.confirm(this.i18nService.i18n('authService.notModified.title'),
             this.i18nService.i18n('authService.notModified.message', [e.statusText]));

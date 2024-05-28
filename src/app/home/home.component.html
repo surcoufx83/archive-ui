@@ -6,15 +6,15 @@
   <div class="d-flex flex-column flex-lg-row justify-content-between align-items-top pt-4 pt-md-2 mb-2">
     <div class="flex-grow-1">
 
-      <div class="card mb-3" *ngIf="newfiles.length > 0">
+      <div class="card mb-3" *ngIf="inboxfiles.length > 0">
         <div class="card-header">
           <h5 class="mb-0">
             <app-icon [iconClass]="config.icons['star']" [fixedWidth]="true"></app-icon>
             {{ i18n('home.inbox.title') }}
           </h5>
         </div>
-        <ul class="list-group flush hover rounded-0 " *ngIf="newfiles.length > 0">
-          <ng-container *ngFor="let file of newfiles;">
+        <ul class="list-group flush hover rounded-0 " *ngIf="inboxfiles.length > 0">
+          <ng-container *ngFor="let file of inboxfiles;">
             <a [ngClass]="['fix-border list-group-item', 'py-2', 'pe-2', 'border-start-0 border-end-0']"
               [routerLink]="['/file', file.id]">
               <file-list-item [file]="file" [showButtons]="false">
@@ -40,6 +40,25 @@
         </div>
 
       </div>
+
+      <div class="card mb-3" *ngIf="recentfiles.length > 0">
+        <div class="card-header">
+          <h5 class="mb-0">
+            <app-icon [iconClass]="config.icons['star']" [fixedWidth]="true"></app-icon>
+            {{ i18n('home.recentFiles.title') }}
+          </h5>
+        </div>
+        <ul class="list-group flush hover rounded-0 ">
+          <ng-container *ngFor="let file of recentfiles;">
+            <a [ngClass]="['fix-border list-group-item', 'py-2', 'pe-2', 'border-start-0 border-end-0']"
+              [routerLink]="['/file', file.id]">
+              <file-list-item [file]="file" [showButtons]="true">
+              </file-list-item>
+            </a>
+          </ng-container>
+        </ul>
+      </div>
+
     </div>
 
     <div class="ms-lg-3 stats-box">
@@ -140,8 +159,8 @@
               <li class="list-group-item px-0 pb-0">
                 <div class="px-2">
                   {{ i18n('home.stats.files1', [ formatService.fnumber(stats.general.file_count),
-                  formatService.fnumber(stats.general.dir_count),
-                  formatService.filesize(stats.general.file_size_total, 0, 2) ]) }}
+                  formatService.fnumber(stats.general.dir_count), formatService.filesize(stats.general.file_size_total,
+                  0, 2) ]) }}
                   {{ i18n('home.stats.files3', [ formatService.fnumber(stats.newfiles.count) ]) }}
                 </div>
                 <div class="card-footer px-2 py-1 fs-7">

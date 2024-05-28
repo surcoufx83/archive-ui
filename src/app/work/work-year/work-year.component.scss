@@ -1,0 +1,11 @@
+div.month-group {
+    max-height: 0;
+    transition: max-height .15s ease-out;
+    overflow: hidden;
+
+    &.expanded {
+        max-height: 1000px;
+        transition: max-height .25s ease-in;
+    }
+
+}

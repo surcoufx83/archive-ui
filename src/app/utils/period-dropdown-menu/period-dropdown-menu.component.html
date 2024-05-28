@@ -1,7 +1,7 @@
 <ul class="dropdown-menu dropdown-menu-end pb-0" style="min-width: 200px;">
     <li class="dropdown-item" *ngIf="period">
         <div class="d-flex align-items-center justify-content-between">
-            <input type="number" id="case-period-minperiod-years" name="case-period-minperiod-years"
+            <input type="number" [id]="idprefix + '-dropdown-years'" [name]="idprefix + '-dropdown-years'"
                 class="form-control text-end" [(ngModel)]="period!.years" min="0" max="99" style="width: 84px;"
                 (change)="change();">
             <span class="ms-2">{{ i18n(period.years == 1 ?
@@ -11,7 +11,7 @@
     </li>
     <li class="dropdown-item" *ngIf="period">
         <div class="d-flex align-items-center justify-content-between">
-            <input type="number" id="case-period-minperiod-months" name="case-period-minperiod-months"
+            <input type="number" [id]="idprefix + '-dropdown-months'" [name]="idprefix + '-dropdown-months'"
                 class="form-control text-end" [(ngModel)]="period!.months" min="0" max="99" style="width: 84px;"
                 (change)="change();">
             <span class="ms-2">{{ i18n(period.months == 1 ?
@@ -21,7 +21,7 @@
     </li>
     <li class="dropdown-item" *ngIf="period">
         <div class="d-flex align-items-center justify-content-between">
-            <input type="number" id="case-period-minperiod-days" name="case-period-minperiod-days"
+            <input type="number" [id]="idprefix + '-dropdown-days'" [name]="idprefix + '-dropdown-days'"
                 class="form-control text-end" [(ngModel)]="period!.days" min="0" max="99" style="width: 84px;"
                 (change)="change();">
             <span class="ms-2">{{ i18n(period.days == 1 ?
@@ -34,7 +34,7 @@
     </li>
     <li class="dropdown-item" *ngIf="period">
         <div class="d-flex align-items-center justify-content-between">
-            <input type="number" id="case-period-minperiod-hours" name="case-period-minperiod-hours"
+            <input type="number" [id]="idprefix + '-dropdown-hours'" [name]="idprefix + '-dropdown-hours'"
                 class="form-control text-end" [(ngModel)]="period!.hours" min="0" max="99" style="width: 84px;"
                 (change)="change();">
             <span class="ms-2">{{ i18n(period.hours == 1 ?
@@ -44,7 +44,7 @@
     </li>
     <li class="dropdown-item" *ngIf="period">
         <div class="d-flex align-items-center justify-content-between">
-            <input type="number" id="case-period-minperiod-minutes" name="case-period-minperiod-minutes"
+            <input type="number" [id]="idprefix + '-dropdown-minutes'" [name]="idprefix + '-dropdown-minutes'"
                 class="form-control text-end" [(ngModel)]="period!.minutes" min="0" max="99" style="width: 84px;"
                 (change)="change();">
             <span class="ms-2">{{ i18n(period.minutes == 1 ?
@@ -54,7 +54,7 @@
     </li>
     <li class="dropdown-item" *ngIf="period">
         <div class="d-flex align-items-center justify-content-between">
-            <input type="number" id="case-period-minperiod-seconds" name="case-period-minperiod-seconds"
+            <input type="number" [id]="idprefix + '-dropdown-seconds'" [name]="idprefix + '-dropdown-seconds'"
                 class="form-control text-end" [(ngModel)]="period!.seconds" min="0" max="99" style="width: 84px;"
                 (change)="change();">
             <span class="ms-2">{{ i18n(period.seconds == 1 ?

@@ -37,7 +37,9 @@ export class NavbarComponent {
           });
         });
         this.navbarLocales = temp.sort((a, b) => a.isDefault ? -1 : b.isDefault ? 1 : a.i18nTitle > b.i18nTitle ? 1 : -1);
-        sub.unsubscribe();
+        setTimeout(() => {
+          sub?.unsubscribe();
+        }, 1);
       }
     });
     this.i18nService.currentLocale.subscribe((l) => this.currentLocale = l);

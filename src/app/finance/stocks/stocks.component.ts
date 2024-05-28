@@ -1,18 +1,19 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { format } from 'date-fns';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { format, getDate, parseISO } from 'date-fns';
 import { AuthService } from 'src/app/auth.service';
 import { AppConfig, ConfigService } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
 import { ApiReply, Currency, Stock, StockApi } from 'src/app/if';
 import { SettingsService } from 'src/app/utils/settings.service';
 import { FormatService } from 'src/app/utils/format.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-stocks',
   templateUrl: './stocks.component.html',
   styleUrls: ['./stocks.component.scss']
 })
-export class StocksComponent implements OnInit {
+export class StocksComponent implements OnDestroy, OnInit {
 
   showMoreId: number = 0;
   sortColumns: string[] = ['difrel', 'name'];
@@ -26,6 +27,8 @@ export class StocksComponent implements OnInit {
   currentSkipWithApi: boolean = true;
   savingRates: boolean = false;
   @ViewChild('closeRatesModalButton') closeRatesModalButton?: ElementRef;
+
+  subscription?: Subscription;
 
   constructor(private authService: AuthService,
     private configService: ConfigService,
@@ -49,7 +52,8 @@ export class StocksComponent implements OnInit {
       values: [],
     };
     let temp = [...this.stocksStore];
-    temp.sort((a, b) => a.name.toLocaleLowerCase() > b.name.toLocaleLowerCase() ? 1 : -1).forEach((s) => record.values.push({ stockid: s.id, stock: s, value: '' }));
+    temp.sort((a, b) => a.name.toLocaleLowerCase() > b.name.toLocaleLowerCase() ? 1 : -1)
+      .forEach((s) => record.values.push({ stockid: s.id, stock: s, value: '' }));
     this.currentRates = record;
   }
 
@@ -61,15 +65,19 @@ export class StocksComponent implements OnInit {
     return this.i18nService.i18n(key, params);
   }
 
+  ngOnDestroy(): void {
+    if (this.subscription)
+      this.subscription.unsubscribe();
+  }
+
   ngOnInit(): void {
-    this.userSettings.stocks$.subscribe((stocks) => {
+    this.subscription = this.userSettings.stocks$.subscribe((stocks) => {
       this.stocksStore = Object.values(stocks);
       this.sort();
       let bought = 0, current = 0;
       this.stocks.forEach((s) => {
         bought += s.bought.value;
         current += s.current.value;
-
       });
       this.valueBought = bought;
       this.valueCurrent = current;

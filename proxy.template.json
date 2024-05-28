@@ -1,6 +1,6 @@
 {
   "/api": {
-    "target": "https://your-domain.com",
+    "target": "https://your-domain.com/",
     "changeOrigin": true,
     "secure": true
   }

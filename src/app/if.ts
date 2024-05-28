@@ -1,3 +1,5 @@
+import { HttpStatusCode } from "@angular/common/http";
+
 export interface Address {
   id: number;
   city: string;
@@ -22,9 +24,11 @@ export interface ApiReply {
   success: boolean;
   errno?: number;
   error?: string;
+  etag?: string;
   payload?: { [key: string]: string | any; };
   redirect?: boolean;
   redirectTo?: string;
+  status: HttpStatusCode;
 }
 
 export interface BankAccount {
@@ -76,17 +80,6 @@ export interface Case {
   taxyear: number | null;
   title: string;
   typeid: number
-}
-
-export interface CaseFiletype {
-  id: number;
-  created: string;
-  deleted: string | null;
-  icon: string;
-  iconcolor: string;
-  modified: string;
-  name: string;
-  i18nname: string;
 }
 
 export interface CaseNotification {
@@ -255,8 +248,6 @@ export interface File {
   case_filedescription: string | null;
   case_filename: string | null;
   case_filestatus: string | null;
-  case_filetype: CaseFiletype | null;
-  case_filetypeid: number | null;
   case_pintop: boolean;
   class: Class | null;
   classid: number | null;
@@ -529,6 +520,7 @@ export interface Stock {
   isin: string;
   lastcheck: string | null;
   name: string;
+  ordercount: number;
   symbol: string | null;
   updated: string;
   wkn: string;
@@ -882,6 +874,7 @@ export interface WorkMonth {
   userid: number;
   weekenddays: number;
   year: number;
+  uiCreating?: boolean;
 }
 
 export interface WorkOffCategory {
