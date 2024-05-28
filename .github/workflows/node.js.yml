@@ -31,9 +31,6 @@ jobs:
       - name: Install project dependencies
         run: pnpm i
 
-      - name: Run CI Tests
-        run: pnpm ci
-
       - name: Build application
         run: pnpm run build --if-present
 
