@@ -746,7 +746,10 @@ export const L10nArchiveEnLocale: L10nArchiveLocale = {
     },
     notepad2: {
         title: "Notes",
-        hideSidebar: "Hide"
+        noNoteSelected: {
+            title: "Your Notebook",
+            introduction: "Select one of the notes from the bar on the left to read or edit it. Notes can now also be marked as private and will only be visible to the owner."
+        }
     },
     notifications: {
         filecreated: {

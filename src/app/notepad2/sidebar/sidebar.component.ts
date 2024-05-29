@@ -15,6 +15,9 @@ export class SidebarComponent {
 
   @Input({ required: true }) notes!: Note[];
 
+  deleteNote?: Note;
+  deleteSaving: boolean = false;
+
   constructor(
     private formatService: FormatService,
     private i18nService: I18nService,
@@ -31,14 +34,12 @@ export class SidebarComponent {
     return this.i18nService.i18n(key, params);
   }
 
-  onDeleteBtnClicked(note: Note, $event: MouseEvent): void {
-    this.preventDefaultEvents($event);
-
-  }
-
-  onEditBtnClicked(note: Note, $event: MouseEvent): void {
-    this.preventDefaultEvents($event);
-
+  onDeletionConfirmed(note: Note): void {
+    if (this.deleteSaving || !this.deleteNote)
+      return;
+    this.deleteSaving = true;
+    let newnote: Note = { ...this.deleteNote };
+    this.settingsService.deleteNote(newnote).pipe(first()).subscribe((r) => console.log(r));
   }
 
   onPinnedBtnClicked(note: Note, $event: MouseEvent): void {

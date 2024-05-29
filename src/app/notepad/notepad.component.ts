@@ -145,6 +145,7 @@ export class NotepadComponent implements OnInit {
         updated: (new Date()).toISOString(),
         deldate: null,
         pinned: false,
+        private: false,
         show: true,
       }, ...this.notes
     ];

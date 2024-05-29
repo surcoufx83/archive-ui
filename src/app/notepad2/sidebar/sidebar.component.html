@@ -1,15 +1,22 @@
 <div class="sidebar-container h-100 w-100 overflow-y-auto">
-    <div>Filter...</div>
+    <div>Filter... TODO <!-- Todo ---></div>
     @for (noteItem of notes; track $index) {
     <a class="d-flex justify-content-between align-items-center w-100 notepad-item text-reset text-decoration-none"
-        [routerLink]="[ '/notepad2' ]" [queryParams]="{ note: noteItem.id, subject: furl(noteItem.title)}">
+        [routerLink]="[ '/notepad2' ]" [queryParams]="{ id: noteItem.id, subject: furl(noteItem.title)}">
         <div class="text-truncate py-1">{{ noteItem.title }}</div>
         <div class="action-items d-flex align-items-center">
-            <button class="item btn btn-sm btn-outline-primary py-1 ms-1" (click)="onEditBtnClicked(noteItem, $event)">
-                <app-icon class="fa-solid fa-pen-to-square"></app-icon>
-            </button>
-            <button class="item btn btn-sm btn-outline-danger py-1 ms-1" (click)="onDeleteBtnClicked(noteItem, $event)">
-                <app-icon class="fa-solid fa-trash"></app-icon>
+            <a [routerLink]="[ '/notepad2' ]"
+                [queryParams]="{ id: noteItem.id, subject: furl(noteItem.title), editor: true}"
+                (click)="preventDefaultEvents($event)">
+                <button class="item btn btn-sm btn-outline-primary py-1 ms-1">
+                    <app-icon class="fa-solid fa-pen-to-square"></app-icon>
+                </button>
+            </a>
+            <button class="item btn btn-sm btn-outline-danger py-1 ms-1" data-bs-toggle="modal"
+                data-bs-target="#confirm-deletion-modal" (click)="deleteNote = noteItem" [disabled]="deleteSaving">
+                <app-icon
+                    [iconClass]="'fa-solid' + (deleteNote?.id != noteItem.id ? ' fa-trash' : '') + (deleteNote?.id == noteItem.id ? ' fa-spinner' : '')"
+                    [spin]="deleteSaving && deleteNote?.id == noteItem.id"></app-icon>
             </button>
             <button
                 [ngClass]="{ 'item btn btn-sm py-1 ms-1': true, always: noteItem.pinned, 'btn-outline-secondary': !noteItem.pinned }"
@@ -20,3 +27,6 @@
     </a>
     }
 </div>
+
+<confirm-deletion [title]="i18n('common.confirm.deletion.title')" [question]="i18n('common.confirm.deletion.message')"
+    (confirm)="deleteNote ? onDeletionConfirmed(deleteNote) : null"></confirm-deletion>

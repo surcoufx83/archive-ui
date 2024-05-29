@@ -746,7 +746,10 @@ export const L10nArchiveDeLocale: L10nArchiveLocale = {
     },
     notepad2: {
         title: "Notizen",
-        hideSidebar: "Ausblenden"
+        noNoteSelected: {
+            title: "Dein Notizbuch",
+            introduction: "Wähle eine der Notizen aus der Leiste links aus, um diese zu lesen oder bearbeiten. Notizen können nun auch privat markiert werden und werden damit nur noch dem Besitzer angezeigt."
+        }
     },
     notifications: {
         filecreated: {

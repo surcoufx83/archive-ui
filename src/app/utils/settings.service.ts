@@ -187,6 +187,12 @@ export class SettingsService {
     return this.configService.config;
   }
 
+  deleteNote(note: Note): Subject<Note | boolean> {
+    let subject = new Subject<Note | boolean>();
+    this.postCommon('delete', note, 'note', Object.values(this.notepadItems.value), subject, (n: Note[]) => this.updateNotes(n));
+    return subject;
+  }
+
   private loadAllCacheItems(): void {
     this.loadUserSettings();
     this.loadCasesData();
@@ -422,6 +428,15 @@ export class SettingsService {
     return null;
   }
 
+  getNote(id: number | null): Note | null {
+    console.log('getNote', id)
+    if (id == null)
+      return null;
+    if (this.notepadItems.value[id])
+      return this.notepadItems.value[id];
+    return null;
+  }
+
   getStock(id: number | null): Stock | null {
     if (id == null)
       return null;
@@ -492,7 +507,7 @@ export class SettingsService {
     return null;
   }
 
-  private postCommon(method: string, item: any, urlitem: string, listing: any[], subject: BehaviorSubject<boolean | any | null> | Subject<any | boolean>,
+  private postCommon(method: 'create' | 'update' | 'delete', item: any, urlitem: string, listing: any[], subject: BehaviorSubject<boolean | any | null> | Subject<any | boolean>,
     callback: Function) {
 
     let url = this.configService.config.api.baseUrl + '/' + urlitem + '/';
@@ -508,6 +523,10 @@ export class SettingsService {
         let newitem = null;
         if (method != 'delete' && reply.payload)
           newitem = reply.payload[urlitem];
+        else if (method == 'delete') {
+          newitem = { ...item };
+          newitem.deldate = Date.now();
+        }
         if (item.id > 0) {
           let removei = -1;
           for (let i = 0; i < listing.length; i++) {
@@ -518,7 +537,7 @@ export class SettingsService {
           }
           if (removei > -1) {
             if (method == 'delete')
-              listing.splice(removei, 1);
+              listing.splice(removei, 1, newitem);
             else
               listing.splice(removei, 1, newitem);
           }
