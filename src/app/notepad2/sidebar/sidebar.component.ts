@@ -1,5 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { AuthService } from 'src/app/auth.service';
 import { I18nService } from 'src/app/i18n.service';
+import { Note } from 'src/app/if';
+import { FormatService } from 'src/app/utils/format.service';
+import { SettingsService } from 'src/app/utils/settings.service';
 
 @Component({
   selector: 'app-notepad2-sidebar',
@@ -8,17 +12,48 @@ import { I18nService } from 'src/app/i18n.service';
 })
 export class SidebarComponent {
 
-  @Input({ required: true }) expanded!: boolean;
-  @Output() onSwitchExpanded = new EventEmitter();
+  @Input({ required: true }) notes!: Note[];
 
   constructor(
+    private formatService: FormatService,
     private i18nService: I18nService,
-    ) {
-      this.i18nService.setTitle('notepad2.title');
+    private settingsService: SettingsService,
+  ) {
+    this.i18nService.setTitle('notepad2.title');
+  }
+
+  furl(inputStr: string): string {
+    return this.formatService.furl(inputStr);
   }
 
   i18n(key: string, params: string[] = []): string {
     return this.i18nService.i18n(key, params);
+  }
+
+  onDeleteBtnClicked(note: Note, $event: MouseEvent): void {
+    $event.stopImmediatePropagation();
+    $event.stopPropagation();
+    $event.preventDefault();
+
+  }
+
+  onEditBtnClicked(note: Note, $event: MouseEvent): void {
+    $event.stopImmediatePropagation();
+    $event.stopPropagation();
+    $event.preventDefault();
+
+  }
+
+  onPinnedBtnClicked(note: Note, $event: MouseEvent): void {
+    $event.stopImmediatePropagation();
+    $event.stopPropagation();
+    $event.preventDefault();
+    let newnote: Note = { ...note };
+    newnote.pinned = !newnote.pinned;
+    let tempsub = this.settingsService.updateNote(newnote).subscribe((n) => {
+      if (n != null)
+        tempsub.unsubscribe();
+    });
   }
 
 }

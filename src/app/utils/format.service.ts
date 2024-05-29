@@ -95,4 +95,8 @@ export class FormatService {
     return (+n).toLocaleString(this.i18nService.Locale, { minimumFractionDigits: fd, maximumFractionDigits: md }) + '%';
   }
 
+  furl(inputStr: string): string {
+    return inputStr.replace(/[^a-zA-Z0-9\-]/ig, '-').replace(/\-+/ig, '-').replace(/^\-|\-$/ig, '');
+  }
+
 }
