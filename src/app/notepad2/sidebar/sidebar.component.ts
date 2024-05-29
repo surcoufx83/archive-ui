@@ -31,29 +31,29 @@ export class SidebarComponent {
   }
 
   onDeleteBtnClicked(note: Note, $event: MouseEvent): void {
-    $event.stopImmediatePropagation();
-    $event.stopPropagation();
-    $event.preventDefault();
+    this.preventDefaultEvents($event);
 
   }
 
   onEditBtnClicked(note: Note, $event: MouseEvent): void {
-    $event.stopImmediatePropagation();
-    $event.stopPropagation();
-    $event.preventDefault();
+    this.preventDefaultEvents($event);
 
   }
 
   onPinnedBtnClicked(note: Note, $event: MouseEvent): void {
-    $event.stopImmediatePropagation();
-    $event.stopPropagation();
-    $event.preventDefault();
+    this.preventDefaultEvents($event);
     let newnote: Note = { ...note };
     newnote.pinned = !newnote.pinned;
     let tempsub = this.settingsService.updateNote(newnote).subscribe((n) => {
       if (n != null)
         tempsub.unsubscribe();
     });
+  }
+
+  preventDefaultEvents($event: MouseEvent): void {
+    $event.stopImmediatePropagation();
+    $event.stopPropagation();
+    $event.preventDefault();
   }
 
 }
