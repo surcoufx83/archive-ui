@@ -492,7 +492,7 @@ export class SettingsService {
     return null;
   }
 
-  private postCommon(method: string, item: any, urlitem: string, listing: any[], subject: BehaviorSubject<boolean | any | null>,
+  private postCommon(method: string, item: any, urlitem: string, listing: any[], subject: BehaviorSubject<boolean | any | null> | Subject<any | boolean>,
     callback: Function) {
 
     let url = this.configService.config.api.baseUrl + '/' + urlitem + '/';
@@ -1053,8 +1053,8 @@ export class SettingsService {
     this.expenseTypes.next(temp);
   }
 
-  updateNote(note: Note): BehaviorSubject<Note | null | boolean> {
-    let subject = new BehaviorSubject<Note | null | boolean>(null);
+  updateNote(note: Note): Subject<Note | boolean> {
+    let subject = new Subject<Note | boolean>();
     this.postCommon(note.id == 0 ? 'create' : 'update', note,
       'note', Object.values(this.notepadItems.value), subject, (n: Note[]) => this.updateNotes(n));
     return subject;

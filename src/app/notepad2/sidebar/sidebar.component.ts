@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { first } from 'rxjs';
 import { AuthService } from 'src/app/auth.service';
 import { I18nService } from 'src/app/i18n.service';
 import { Note } from 'src/app/if';
@@ -44,10 +45,7 @@ export class SidebarComponent {
     this.preventDefaultEvents($event);
     let newnote: Note = { ...note };
     newnote.pinned = !newnote.pinned;
-    let tempsub = this.settingsService.updateNote(newnote).subscribe((n) => {
-      if (n != null)
-        tempsub.unsubscribe();
-    });
+    this.settingsService.updateNote(newnote).pipe(first()).subscribe();
   }
 
   preventDefaultEvents($event: MouseEvent): void {
