@@ -1,6 +1,5 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { first } from 'rxjs';
-import { AuthService } from 'src/app/auth.service';
 import { I18nService } from 'src/app/i18n.service';
 import { Note } from 'src/app/if';
 import { FormatService } from 'src/app/utils/format.service';
@@ -38,8 +37,10 @@ export class SidebarComponent {
     if (this.deleteSaving || !this.deleteNote)
       return;
     this.deleteSaving = true;
-    let newnote: Note = { ...this.deleteNote };
-    this.settingsService.deleteNote(newnote).pipe(first()).subscribe((r) => console.log(r));
+    this.settingsService.deleteNote({ ...this.deleteNote }).pipe(first()).subscribe(() => {
+      this.deleteNote = undefined;
+      this.deleteSaving = false;
+    });
   }
 
   onPinnedBtnClicked(note: Note, $event: MouseEvent): void {
