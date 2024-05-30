@@ -1,9 +1,10 @@
-import { Component, OnDestroy, OnInit, WritableSignal, signal } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { SettingsService } from '../utils/settings.service';
-import { Note } from '../if';
-import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
+import type { OnDestroy, OnInit, WritableSignal } from '@angular/core';
+import { Component, signal } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import type { Subscription } from 'rxjs';
 import { I18nService } from '../i18n.service';
+import type { Note } from '../if';
+import { SettingsService } from '../utils/settings.service';
 
 @Component({
   selector: 'app-notepad2',

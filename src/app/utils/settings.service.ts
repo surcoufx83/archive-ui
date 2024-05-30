@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
-import {
+import type {
   Address,
   BankAccount,
   Case,
@@ -32,7 +32,7 @@ import {
   WorkProject,
   WorkTimeCategory
 } from 'src/app/if';
-import { WarehouseReply } from 'src/app/warehouse/warehouse.component';
+import type { WarehouseReply } from 'src/app/warehouse/warehouse.component';
 import { AuthService } from '../auth.service';
 import { AppConfig, ConfigService } from '../config.service';
 import { StorageService } from './storage.service';
@@ -369,7 +369,7 @@ export class SettingsService {
   }
 
   getCase(id: number | null): Case | null {
-    return id != null && this.cases.value[id] ? this.cases.value[id] : null;
+    return id !== null && this.cases.value[id] ? this.cases.value[id] : null;
   }
 
   hasParentCaseWithId(caseid: number, parentid: number): boolean {
@@ -399,11 +399,11 @@ export class SettingsService {
   }
 
   getCaseStatus(id: number | null): CaseStatus | null {
-    return id != null && this.caseStatus.value[id] ? this.caseStatus.value[id] : null;
+    return id !== null && this.caseStatus.value[id] ? this.caseStatus.value[id] : null;
   }
 
   getCaseType(id: number | null): CaseType | null {
-    return id != null && this.caseTypes.value[id] ? this.caseTypes.value[id] : null;
+    return id !== null && this.caseTypes.value[id] ? this.caseTypes.value[id] : null;
   }
 
   getCurrency(id: number | null): Currency | null {
@@ -417,15 +417,15 @@ export class SettingsService {
   }
 
   getNote(id: number | null): Note | null {
-    return id != null && this.notepadItems.value[id] ? this.notepadItems.value[id] : null;
+    return id !== null && this.notepadItems.value[id] ? this.notepadItems.value[id] : null;
   }
 
   getStock(id: number | null): Stock | null {
-    return id != null && this.stocks.value[id] ? this.stocks.value[id] : null;
+    return id !== null && this.stocks.value[id] ? this.stocks.value[id] : null;
   }
 
   getStocksApi(id: number | null): StockApi | null {
-    return id != null && this.stocksApis.value[id] ? this.stocksApis.value[id] : null;
+    return id !== null && this.stocksApis.value[id] ? this.stocksApis.value[id] : null;
   }
 
   getTag(id: number): Tag | null {
@@ -443,15 +443,15 @@ export class SettingsService {
   }
 
   getWorkCustomer(id: number | null): WorkCustomer | null {
-    return id != null && this.workCustomers.value[id] ? this.workCustomers.value[id] : null;
+    return id !== null && this.workCustomers.value[id] ? this.workCustomers.value[id] : null;
   }
 
   getWorkLead(id: number | null): WorkLead | null {
-    return id != null && this.workLeads.value[id] ? this.workLeads.value[id] : null;
+    return id !== null && this.workLeads.value[id] ? this.workLeads.value[id] : null;
   }
 
   getWorkProject(id: number | null): WorkProject | null {
-    return id != null && this.workProjects.value[id] ? this.workProjects.value[id] : null;
+    return id !== null && this.workProjects.value[id] ? this.workProjects.value[id] : null;
   }
 
   getWorkProjects(customerid: number | null): WorkProject[] | null {
@@ -463,7 +463,7 @@ export class SettingsService {
   }
 
   getWorkTimeCategory(id: number | null): WorkTimeCategory | null {
-    return id != null && this.workTimeCategories.value[id] ? this.workTimeCategories.value[id] : null;
+    return id !== null && this.workTimeCategories.value[id] ? this.workTimeCategories.value[id] : null;
   }
 
   private postCommon(method: 'create' | 'update' | 'delete', item: any, urlitem: string, listing: any[], subject: BehaviorSubject<boolean | any | null> | Subject<any | boolean>,

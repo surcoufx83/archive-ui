@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { first } from 'rxjs';
 import { I18nService } from 'src/app/i18n.service';
-import { Note } from 'src/app/if';
+import type { Note } from 'src/app/if';
 import { FormatService } from 'src/app/utils/format.service';
 import { SettingsService } from 'src/app/utils/settings.service';
 
@@ -45,7 +45,7 @@ export class SidebarComponent {
 
   onPinnedBtnClicked(note: Note, $event: MouseEvent): void {
     this.preventDefaultEvents($event);
-    let newnote: Note = { ...note };
+    const newnote: Note = { ...note };
     newnote.pinned = !newnote.pinned;
     this.settingsService.updateNote(newnote).pipe(first()).subscribe();
   }
