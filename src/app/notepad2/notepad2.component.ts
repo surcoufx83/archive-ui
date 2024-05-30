@@ -37,10 +37,7 @@ export class Notepad2Component implements OnDestroy, OnInit {
       this.notes.set(Object.values(newNotes).sort((a, b) => `${a.pinned ? '0' : '9'}${a.title.toLocaleLowerCase()}`.localeCompare(`${b.pinned ? '0' : '9'}${b.title.toLocaleLowerCase()}`, undefined, { numeric: true })));
     }));
     this.subs.push(this.route.queryParamMap.subscribe((map) => {
-      if (map.has('id'))
-        this.selectedNote = this.settingsService.getNote(+map.get('id')!) ?? undefined;
-      else
-        this.selectedNote = undefined;
+      this.selectedNote = map.has('id') ? this.settingsService.getNote(+map.get('id')!) ?? undefined : undefined;
       this.editMode = map.has('editor');
     }));
   }

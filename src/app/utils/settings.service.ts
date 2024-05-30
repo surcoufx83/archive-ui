@@ -369,11 +369,7 @@ export class SettingsService {
   }
 
   getCase(id: number | null): Case | null {
-    if (id == null)
-      return null;
-    if (this.cases.value[id])
-      return this.cases.value[id];
-    return null;
+    return id != null && this.cases.value[id] ? this.cases.value[id] : null;
   }
 
   hasParentCaseWithId(caseid: number, parentid: number): boolean {
@@ -394,7 +390,7 @@ export class SettingsService {
     if (!this.caseChilds.value[id])
       return [];
     let childs = this.caseChilds.value[id];
-    childs.sort((a, b) => this.getCase(a)!.casepath > this.getCase(b)!.casepath ? 1 : this.getCase(a)!.casepath < this.getCase(b)!.casepath ? -1 : 0);
+    childs.sort((a, b) => this.getCase(a)!.casepath.toLocaleLowerCase().localeCompare(this.getCase(b)!.casepath.toLocaleLowerCase(), undefined, { numeric: true }));
     return childs;
   }
 
@@ -403,19 +399,11 @@ export class SettingsService {
   }
 
   getCaseStatus(id: number | null): CaseStatus | null {
-    if (id == null)
-      return null;
-    if (this.caseStatus.value[id])
-      return this.caseStatus.value[id];
-    return null;
+    return id != null && this.caseStatus.value[id] ? this.caseStatus.value[id] : null;
   }
 
   getCaseType(id: number | null): CaseType | null {
-    if (id == null)
-      return null;
-    if (this.caseTypes.value[id])
-      return this.caseTypes.value[id];
-    return null;
+    return id != null && this.caseTypes.value[id] ? this.caseTypes.value[id] : null;
   }
 
   getCurrency(id: number | null): Currency | null {
@@ -429,28 +417,15 @@ export class SettingsService {
   }
 
   getNote(id: number | null): Note | null {
-    console.log('getNote', id)
-    if (id == null)
-      return null;
-    if (this.notepadItems.value[id])
-      return this.notepadItems.value[id];
-    return null;
+    return id != null && this.notepadItems.value[id] ? this.notepadItems.value[id] : null;
   }
 
   getStock(id: number | null): Stock | null {
-    if (id == null)
-      return null;
-    if (this.stocks.value[id])
-      return this.stocks.value[id];
-    return null;
+    return id != null && this.stocks.value[id] ? this.stocks.value[id] : null;
   }
 
   getStocksApi(id: number | null): StockApi | null {
-    if (id == null)
-      return null;
-    if (this.stocksApis.value[id])
-      return this.stocksApis.value[id];
-    return null;
+    return id != null && this.stocksApis.value[id] ? this.stocksApis.value[id] : null;
   }
 
   getTag(id: number): Tag | null {
@@ -468,27 +443,15 @@ export class SettingsService {
   }
 
   getWorkCustomer(id: number | null): WorkCustomer | null {
-    if (id == null)
-      return null;
-    if (this.workCustomers.value[id])
-      return this.workCustomers.value[id];
-    return null;
+    return id != null && this.workCustomers.value[id] ? this.workCustomers.value[id] : null;
   }
 
   getWorkLead(id: number | null): WorkLead | null {
-    if (id == null)
-      return null;
-    if (this.workLeads.value[id])
-      return this.workLeads.value[id];
-    return null;
+    return id != null && this.workLeads.value[id] ? this.workLeads.value[id] : null;
   }
 
   getWorkProject(id: number | null): WorkProject | null {
-    if (id == null)
-      return null;
-    if (this.workProjects.value[id])
-      return this.workProjects.value[id];
-    return null;
+    return id != null && this.workProjects.value[id] ? this.workProjects.value[id] : null;
   }
 
   getWorkProjects(customerid: number | null): WorkProject[] | null {
@@ -500,11 +463,7 @@ export class SettingsService {
   }
 
   getWorkTimeCategory(id: number | null): WorkTimeCategory | null {
-    if (id == null)
-      return null;
-    if (this.workTimeCategories.value[id])
-      return this.workTimeCategories.value[id];
-    return null;
+    return id != null && this.workTimeCategories.value[id] ? this.workTimeCategories.value[id] : null;
   }
 
   private postCommon(method: 'create' | 'update' | 'delete', item: any, urlitem: string, listing: any[], subject: BehaviorSubject<boolean | any | null> | Subject<any | boolean>,
