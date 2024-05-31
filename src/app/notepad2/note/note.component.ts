@@ -1,4 +1,5 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import type { OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { first } from 'rxjs';
 import { I18nService } from 'src/app/i18n.service';
 import type { Note } from 'src/app/if';
