@@ -91,11 +91,7 @@ const routes: Routes = [
   { path: 'login/oauth2', component: Oauth2CallbackComponent, canActivate: [SessionGuard] },
   { path: 'logout', component: LogoutComponent, canActivate: [SessionGuard] },
   { path: 'notepad', component: NotepadComponent, canActivate: [SessionGuard] },
-  {
-    path: 'notepad2', component: Notepad2Component, canActivate: [SessionGuard], pathMatch: 'full', children: [
-      { path: 'note/:id', component: NoteComponent, canActivate: [SessionGuard] },
-    ]
-  },
+  { path: 'notepad2', component: Notepad2Component, canActivate: [SessionGuard] },
   { path: 'price-comparison', component: PriceComparisonComponent, canActivate: [SessionGuard] },
   { path: 'readings', component: ReadingsComponent, canActivate: [SessionGuard], pathMatch: 'full' },
   { path: 'receipts', component: ReceiptsComponent, canActivate: [SessionGuard] },

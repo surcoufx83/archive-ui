@@ -1,1 +1,86 @@
-<p>note works!</p>
+<div class="d-flex justify-content-between align-items-center">
+    @if (editMode) {
+    <input type="text" class="form-control w-100" [(ngModel)]="editableNote!.title" (keyup)="onKeyUpTitle()"
+        autocomplete="off">
+    }
+    @else {
+    <h5 class="text-truncate">
+        {{ editableNote?.title }}
+    </h5>
+    }
+</div>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="text-truncate fs-8 pointer"
+        [title]="i18n('notepad2.note.lastModified', [fdate(editableNote?.updated ?? null, 'Pp')])">
+        {{ i18n('notepad2.note.lastModified', [fdist(editableNote?.updated ?? null, true)]) }}
+    </div>
+</div>
+<div class="row">
+    <div [ngClass]="{ 'd-none': !editMode, 'col col-6': editMode }">
+        @if (editableNote) {
+        <div class="d-flex align-items-center justify-content-between mb-1">
+            <div class="d-flex align-items-center mb-1">
+                <div class="border border-secondary rounded">
+                    <button type="button" class="btn btn-dark btn-sm" (click)="onPressFormatter(editor, 'bold')"
+                        [title]="i18n('notepad2.textEditor.textBold')">
+                        <app-icon class="fa-solid fa-bold"></app-icon>
+                    </button>
+                    <button type="button" class="btn btn-dark btn-sm" (click)="onPressFormatter(editor, 'italic')"
+                        [title]="i18n('notepad2.textEditor.textItalic')">
+                        <app-icon class="fa-solid fa-italic"></app-icon>
+                    </button>
+                    <button type="button" class="btn btn-dark btn-sm"
+                        (click)="onPressFormatter(editor, 'strikethrough')"
+                        [title]="i18n('notepad2.textEditor.textStrikethrough')">
+                        <app-icon class="fa-solid fa-strikethrough"></app-icon>
+                    </button>
+                </div>
+                <div class="border border-secondary rounded ms-1">
+                    <button type="button" [ngClass]="{ 'btn btn-dark btn-sm': true, active: editorCurrentLineProps.ul }"
+                        (click)="onPressList(editor, 'ul')" [title]="i18n('notepad2.textEditor.makeUList')">
+                        <app-icon class="fa-solid fa-list-ul"></app-icon>
+                    </button>
+                    <button type="button" [ngClass]="{ 'btn btn-dark btn-sm': true, active: editorCurrentLineProps.ol }"
+                        (click)="onPressList(editor, 'ol')" [title]="i18n('notepad2.textEditor.makeOList')">
+                        <app-icon class="fa-solid fa-list-ol"></app-icon>
+                    </button>
+                    <button type="button" class="btn btn-dark btn-sm" [disabled]="editorCurrentLineProps.level < 1"
+                        (click)="onPressLevelChange(editor, '-')" [title]="i18n('notepad2.textEditor.reduceLevel')">
+                        <app-icon class="fa-solid fa-outdent"></app-icon>
+                    </button>
+                    <button type="button" class="btn btn-dark btn-sm"
+                        [disabled]="!editorCurrentLineProps.ol && !editorCurrentLineProps.ul"
+                        (click)="onPressLevelChange(editor, '+')" [title]="i18n('notepad2.textEditor.increaseLevel')">
+                        <app-icon class="fa-solid fa-indent"></app-icon>
+                    </button>
+                </div>
+                <div class="border border-secondary rounded ms-1">
+                    <button type="button" class="btn btn-dark btn-sm" (click)="onPressBracketKey(editor, '[')"
+                        [title]="i18n('notepad2.textEditor.makeLink')">
+                        <app-icon class="fa-solid fa-link"></app-icon>
+                    </button>
+                </div>
+            </div>
+            <div class="d-flex align-items-center mb-1">
+                <button type="button"
+                    [ngClass]="{ 'btn btn-sm transition-opacity': true, 'opacity-100': saving, 'opacity-0': !saving }">
+                    <app-icon class="fa-solid fa-floppy-disk text-warning"></app-icon>
+                </button>
+                <a [routerLink]="['/notepad2']" [queryParams]="{ id: note.id, subject: furl(note.title) }">
+                    <button type="button" class="btn btn-sm">
+                        <app-icon class="fa-solid fa-x"></app-icon>
+                    </button>
+                </a>
+            </div>
+        </div>
+        <textarea class="form-control font-monospace fs-7" style="width: 100%;" ngPreserveWhitespaces #editor
+            [(ngModel)]="editableContent" [rows]="editableContent.split('\n').length + 2"
+            (keydown)="onKeyDown($event, editor)" (keyup)="onKeyUp($event, editor)"
+            (mouseup)="onMouseClick($event, editor)" autocomplete="off"></textarea>
+        }
+    </div>
+    <div [ngClass]="{ 'col': true, 'col-12': !editMode, 'col-6': editMode }"
+        [ngStyle]="{ 'padding-top': editMode ? '45px' : '0' }">
+        <markdown ngPreserveWhitespaces [data]="previewContent"></markdown>
+    </div>
+</div>

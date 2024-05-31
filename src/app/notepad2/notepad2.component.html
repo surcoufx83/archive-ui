@@ -1,8 +1,17 @@
-<div class="d-flex vh-calc-100">
-    <div [ngClass]="{'sidebar-body': true, expanded: expanded}">
-        <app-notepad2-sidebar [expanded]="expanded" (onSwitchExpanded)="expanded = !expanded"></app-notepad2-sidebar>
+<div class="main-container d-flex vh-calc-100">
+    <div class="sidebar-body">
+        <app-notepad2-sidebar [notes]="notes()"></app-notepad2-sidebar>
     </div>
-    <div class="flex-grow-1 px-2">
-        <app-notepad2-note></app-notepad2-note>
+    <div class="notes-body flex-grow-1 px-4 py-3">
+        @if (selectedNote) {
+        <app-notepad2-note [note]="selectedNote" [editMode]="editMode"></app-notepad2-note>
+        }
+        @else {
+        <!-- Translation todo! -->
+        <h5>{{ i18n('notepad2.noNoteSelected.title') }}</h5>
+        <p>
+            {{ i18n('notepad2.noNoteSelected.introduction') }}
+        </p>
+        }
     </div>
 </div>

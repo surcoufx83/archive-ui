@@ -41,11 +41,12 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular/build:application",
           "options": {
-            "outputPath": "dist/archive-ui",
+            "outputPath": {
+              "base": "dist/archive-ui"
+            },
             "index": "src/index.html",
-            "main": "src/main.ts",
             "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
@@ -67,7 +68,8 @@
             "scripts": [
               "./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
               "./node_modules/marked/marked.min.js"
-            ]
+            ],
+            "browser": "src/main.ts"
           },
           "configurations": {
             "production": {
@@ -100,9 +102,7 @@
               }
             },
             "development": {
-              "buildOptimizer": false,
               "optimization": false,
-              "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
@@ -111,19 +111,19 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "archive-ui:build:production"
+              "buildTarget": "archive-ui:build:production"
             },
             "development": {
-              "browserTarget": "archive-ui:build:development"
+              "buildTarget": "archive-ui:build:development"
             }
           },
           "defaultConfiguration": "development",
           "options": {
-            "browserTarget": "archive-ui:build",
-            "proxyConfig": "proxy.json"
+            "proxyConfig": "proxy.json",
+            "buildTarget": "archive-ui:build"
           }
         }
       }

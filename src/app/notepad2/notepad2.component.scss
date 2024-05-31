@@ -1,16 +1,5 @@
 .sidebar-body {
-    background-color: #D3D5D7;
-
-    &.expanded {
-        min-width: 250px;
-    }
-
-    &:not(.expanded) {
-        width: 48px;
-    }
-
-}
-
-.vh-calc-100 {
-    min-height: calc(100vh - 80px);
+    background-color: rgba($color: #ffffff, $alpha: 0.03);
+    height: calc(100vh - 80px);
+    width: 360px;
 }

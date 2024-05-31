@@ -150,9 +150,6 @@ export class StocksComponent implements OnDestroy, OnInit {
         return a.current.dif.rel == b.current.dif.rel ? 0 :
           a.current.dif.rel > b.current.dif.rel ? -1 : 1;
 
-      case 'iscrypto':
-        return a.iscrypto === b.iscrypto ? 0 : a.iscrypto > b.iscrypto ? 1 : -1;
-
       case 'isin':
         return a.isin.toLocaleLowerCase() == b.isin.toLocaleLowerCase() ? 0 :
           a.isin.toLocaleLowerCase() > b.isin.toLocaleLowerCase() ? 1 : -1;

@@ -746,7 +746,24 @@ export const L10nArchiveFrLocale: L10nArchiveLocale = {
     },
     notepad2: {
         title: "Notes",
-        hideSidebar: "Hide"
+        filterPlaceholder: "🔍 Rechercher une note...",
+        noNoteSelected: {
+            title: "Votre carnet",
+            introduction: "Sélectionnez l'une des notes dans la barre de gauche pour la lire ou la modifier. Les notes peuvent désormais être marquées comme privées et ne seront visibles que par le propriétaire."
+        },
+        note: {
+            lastModified: "Dernière modification : {0}"
+        },
+        textEditor: {
+            increaseLevel: "Indenter la liste d'un niveau",
+            makeLink: "Insérer un lien à la position actuelle",
+            makeOList: "Transformer la ligne actuelle en un élément de liste",
+            makeUList: "Transformer la ligne actuelle en un élément de liste numérotée",
+            reduceLevel: "Désindenter la liste d'un niveau",
+            textBold: "Mettre le texte en gras",
+            textItalic: "Mettre le texte en italique",
+            textStrikethrough: "Barrer le texte"
+        }
     },
     notifications: {
         filecreated: {

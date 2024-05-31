@@ -318,6 +318,7 @@ export interface Note {
   content: string;
   deldate: string | null;
   pinned: boolean;
+  private: boolean;
   show: boolean;
   title: string;
   updated: string;

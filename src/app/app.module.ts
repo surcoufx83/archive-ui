@@ -1,6 +1,6 @@
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { registerLocaleData } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import localeDe from '@angular/common/locales/de';
 import localeFr from '@angular/common/locales/fr';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
@@ -30,6 +30,7 @@ import { DbManagerComponent } from './db/manager/manager.component';
 import { DbContactTypeComponent } from './db/parties/contacts/type/type.component';
 import { DbPartyComponent } from './db/parties/party/party.component';
 import { DbRoleComponent } from './db/parties/role/role.component';
+import { ConfirmDeletionComponent } from './dialog/confirm-deletion/confirm-deletion.component';
 import { FileListItemComponent } from './files/file-list-item/file-list-item.component';
 import { FileComponent } from './files/file/file.component';
 import { FilesComponent } from './files/files/files.component';
@@ -40,6 +41,7 @@ import { PriceComparisonComponent } from './finance/price-comparison/price-compa
 import { ReceiptComponent } from './finance/receipt/receipt.component';
 import { ReceiptsComponent } from './finance/receipts/receipts.component';
 import { ShoppingComponent } from './finance/shopping/shopping.component';
+import { StockOrdersComponent } from './finance/stock-orders/stock-orders.component';
 import { StocksComponent } from './finance/stocks/stocks.component';
 import { TaxComponent } from './finance/tax/tax.component';
 import { HomeComponent } from './home/home.component';
@@ -49,8 +51,10 @@ import { Oauth2CallbackComponent } from './login/oauth2-callback/oauth2-callback
 import { LogoutComponent } from './logout/logout.component';
 import { ReadingsComponent } from './meters/readings/readings.component';
 import { NotepadComponent } from './notepad/notepad.component';
+import { NoteComponent } from './notepad2/note/note.component';
+import { Notepad2Component } from './notepad2/notepad2.component';
+import { SidebarComponent } from './notepad2/sidebar/sidebar.component';
 import { SearchComponent } from './search/search.component';
-import { SettingsService } from './utils/settings.service';
 import { ButtonComponent } from './utils/button/button.component';
 import { DummyComponent } from './utils/dummy/dummy.component';
 import { H2Component } from './utils/h2/h2.component';
@@ -58,13 +62,17 @@ import { H3Component } from './utils/h3/h3.component';
 import { H4Component } from './utils/h4/h4.component';
 import { H5Component } from './utils/h5/h5.component';
 import { IconComponent } from './utils/icon/icon.component';
+import { NavbarComponent } from './utils/navbar/navbar.component';
 import { PeriodDropdownMenuComponent } from './utils/period-dropdown-menu/period-dropdown-menu.component';
+import { SettingsService } from './utils/settings.service';
 import { SorterIconComponent } from './utils/sorter-icon/sorter-icon.component';
+import { StorageService } from './utils/storage.service';
 import { SubNavbarComponent } from './utils/sub-navbar/sub-navbar.component';
 import { TagComponent } from './utils/tag/tag.component';
 import { ToastContainerComponent } from './utils/toast-container/toast-container.component';
 import { ToastComponent } from './utils/toast/toast.component';
 import { ToastsService } from './utils/toasts.service';
+import { TooltipDirective } from './utils/tooltip.directive';
 import { UiBusyIndicatorComponent } from './utils/ui-busy-indicator/ui-busy-indicator.component';
 import { UiCenteredBusyIndicatorComponent } from './utils/ui-centered-busy-indicator/ui-centered-busy-indicator.component';
 import { StorageRoomComponent } from './warehouse/storage-room/storage-room.component';
@@ -82,125 +90,117 @@ import { WorkDayComponent } from './work/work-day/work-day.component';
 import { WorkMonthComponent } from './work/work-month/work-month.component';
 import { WorkYearComponent } from './work/work-year/work-year.component';
 import { WorkComponent } from './work/work.component';
-import { NavbarComponent } from './utils/navbar/navbar.component';
-import { TooltipDirective } from './utils/tooltip.directive';
-import { ConfirmDeletionComponent } from './dialog/confirm-deletion/confirm-deletion.component';
-import { StorageService } from './utils/storage.service';
-import { StockOrdersComponent } from './finance/stock-orders/stock-orders.component';
-import { Notepad2Component } from './notepad2/notepad2.component';
-import { SidebarComponent } from './notepad2/sidebar/sidebar.component';
-import { NoteComponent } from './notepad2/note/note.component';
 
 registerLocaleData(localeDe);
 registerLocaleData(localeFr);
 
 @NgModule({
-  declarations: [
-    AccountComponent,
-    AccountsComponent,
-    AppComponent,
-    ButtonComponent,
-    CaseComponent,
-    CasesComponent,
-    CaseListItemComponent,
-    DashboardComponent,
-    DbClassesComponent,
-    DbContactTypeComponent,
-    DbCountriesComponent,
-    DbCurrenciesComponent,
-    DbExtensionsComponent,
-    DbManagerComponent,
-    DbPartyComponent,
-    DbRoleComponent,
-    DbRootdirComponent,
-    DummyComponent,
-    FileComponent,
-    FilesComponent,
-    FileListItemComponent,
-    FinanceComponent,
-    FolderBrowserDialogComponent,
-    H2Component,
-    H3Component,
-    H4Component,
-    H5Component,
-    HomeComponent,
-    IconComponent,
-    LoginComponent,
-    LogoutComponent,
-    NotepadComponent,
-    Oauth2CallbackComponent,
-    PeriodDropdownMenuComponent,
-    PriceComparisonComponent,
-    ReadingsComponent,
-    ReceiptComponent,
-    ReceiptsComponent,
-    SearchComponent,
-    ShoppingComponent,
-    SorterIconComponent,
-    StocksComponent,
-    StorageRoomComponent,
-    SubNavbarComponent,
-    TagComponent,
-    TaxComponent,
-    ToastComponent,
-    ToastContainerComponent,
-    UiBusyIndicatorComponent,
-    UiCenteredBusyIndicatorComponent,
-    WarehouseComponent,
-    WorkCalendarComponent,
-    WorkComponent,
-    WorkCustomerComponent,
-    WorkCustomersComponent,
-    WorkDayComponent,
-    WorkHolidaysComponent,
-    WorkLeadComponent,
-    WorkLeadsComponent,
-    WorkMonthComponent,
-    WorkOffCategoriesComponent,
-    WorkProjectsComponent,
-    WorkTimeCategoriesComponent,
-    WorkYearComponent,
-    NavbarComponent,
-    TooltipDirective,
-    ConfirmDeletionComponent,
-    StockOrdersComponent,
-    Notepad2Component,
-    SidebarComponent,
-    NoteComponent,
-  ],
-  imports: [
-    AppRoutingModule,
-    BrowserModule,
-    BrowserAnimationsModule,
-    CalendarModule.forRoot({
-      provide: DateAdapter,
-      useFactory: adapterFactory,
-    }),
-    DragDropModule,
-    FormsModule,
-    HttpClientModule,
-    MarkdownModule.forRoot(),
-    NgxEchartsModule.forRoot({
-      echarts: () => import('echarts')
-    }),
-    NgChartsModule,
-    ReactiveFormsModule,
-  ],
-  providers: [
-    {
-      provide: APP_INITIALIZER,
-      deps: [ConfigService],
-      multi: true,
-      useFactory: (configService: ConfigService) => () => configService.loadAppConfig()
-    },
-    { provide: I18nService, multi: false, },
-    { provide: ToastsService, multi: false, },
-    { provide: AuthService, multi: false, },
-    { provide: StorageService, multi: false, },
-    { provide: SettingsService, multi: false, },
-  ],
-  bootstrap: [
-    AppComponent
-  ]
+    declarations: [
+        AccountComponent,
+        AccountsComponent,
+        AppComponent,
+        ButtonComponent,
+        CaseComponent,
+        CasesComponent,
+        CaseListItemComponent,
+        DashboardComponent,
+        DbClassesComponent,
+        DbContactTypeComponent,
+        DbCountriesComponent,
+        DbCurrenciesComponent,
+        DbExtensionsComponent,
+        DbManagerComponent,
+        DbPartyComponent,
+        DbRoleComponent,
+        DbRootdirComponent,
+        DummyComponent,
+        FileComponent,
+        FilesComponent,
+        FileListItemComponent,
+        FinanceComponent,
+        FolderBrowserDialogComponent,
+        H2Component,
+        H3Component,
+        H4Component,
+        H5Component,
+        HomeComponent,
+        IconComponent,
+        LoginComponent,
+        LogoutComponent,
+        NotepadComponent,
+        Oauth2CallbackComponent,
+        PeriodDropdownMenuComponent,
+        PriceComparisonComponent,
+        ReadingsComponent,
+        ReceiptComponent,
+        ReceiptsComponent,
+        SearchComponent,
+        ShoppingComponent,
+        SorterIconComponent,
+        StocksComponent,
+        StorageRoomComponent,
+        SubNavbarComponent,
+        TagComponent,
+        TaxComponent,
+        ToastComponent,
+        ToastContainerComponent,
+        UiBusyIndicatorComponent,
+        UiCenteredBusyIndicatorComponent,
+        WarehouseComponent,
+        WorkCalendarComponent,
+        WorkComponent,
+        WorkCustomerComponent,
+        WorkCustomersComponent,
+        WorkDayComponent,
+        WorkHolidaysComponent,
+        WorkLeadComponent,
+        WorkLeadsComponent,
+        WorkMonthComponent,
+        WorkOffCategoriesComponent,
+        WorkProjectsComponent,
+        WorkTimeCategoriesComponent,
+        WorkYearComponent,
+        NavbarComponent,
+        TooltipDirective,
+        ConfirmDeletionComponent,
+        StockOrdersComponent,
+        Notepad2Component,
+        SidebarComponent,
+        NoteComponent,
+    ],
+    bootstrap: [
+        AppComponent
+    ],
+    imports: [
+        AppRoutingModule,
+        BrowserModule,
+        BrowserAnimationsModule,
+        CalendarModule.forRoot({
+            provide: DateAdapter,
+            useFactory: adapterFactory,
+        }),
+        DragDropModule,
+        FormsModule,
+        MarkdownModule.forRoot(),
+        NgxEchartsModule.forRoot({
+            echarts: () => import('echarts')
+        }),
+        NgChartsModule,
+        ReactiveFormsModule
+    ],
+    providers: [
+        {
+            provide: APP_INITIALIZER,
+            deps: [ConfigService],
+            multi: true,
+            useFactory: (configService: ConfigService) => () => configService.loadAppConfig()
+        },
+        { provide: I18nService, multi: false, },
+        { provide: ToastsService, multi: false, },
+        { provide: AuthService, multi: false, },
+        { provide: StorageService, multi: false, },
+        { provide: SettingsService, multi: false, },
+        provideHttpClient(withInterceptorsFromDi()),
+    ]
 })
 export class AppModule { }
