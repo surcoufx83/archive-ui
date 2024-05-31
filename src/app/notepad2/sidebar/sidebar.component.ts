@@ -43,7 +43,7 @@ export class SidebarComponent implements OnChanges {
   }
 
   onChangeFilter(): void {
-    let expr = this.filterExpr.toLocaleLowerCase().trim();
+    const expr = this.filterExpr.toLocaleLowerCase().trim();
     if (expr === '') {
       this.filteredNotes = [...this.notes];
       return;
