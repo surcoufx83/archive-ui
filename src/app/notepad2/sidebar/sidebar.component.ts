@@ -18,6 +18,8 @@ export class SidebarComponent implements OnChanges {
   deleteSaving: boolean = false;
   filteredNotes: Note[] = [];
   filterExpr: string = '';
+  privateNoteId: number = 0;
+  privateSaving: boolean = false;
 
   constructor(
     private formatService: FormatService,
@@ -56,6 +58,20 @@ export class SidebarComponent implements OnChanges {
     this.settingsService.deleteNote({ ...this.deleteNote }).pipe(first()).subscribe(() => {
       this.deleteNote = undefined;
       this.deleteSaving = false;
+    });
+  }
+
+  onMarkPrivateBtnClicked(note: Note, $event: MouseEvent): void {
+    if (this.privateSaving)
+      return;
+    this.privateSaving = true;
+    this.privateNoteId = note.id;
+    this.preventDefaultEvents($event);
+    const newnote: Note = { ...note };
+    newnote.private = !newnote.private;
+    this.settingsService.updateNote(newnote).pipe(first()).subscribe(() => {
+      this.privateNoteId = 0;
+      this.privateSaving = false;
     });
   }
 

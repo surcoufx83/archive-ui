@@ -22,6 +22,12 @@
                     [spin]="deleteSaving && deleteNote?.id == noteItem.id"></app-icon>
             </button>
             <button
+                [ngClass]="{ 'item btn btn-sm py-1 ms-1': true, always: noteItem.private, 'btn-outline-secondary': !noteItem.private }"
+                (click)="onMarkPrivateBtnClicked(noteItem, $event)">
+                <app-icon
+                    [iconClass]="'fa-solid fa-shield-halved' + (noteItem.private ? ' text-success' : '')"></app-icon>
+            </button>
+            <button
                 [ngClass]="{ 'item btn btn-sm py-1 ms-1': true, always: noteItem.pinned, 'btn-outline-secondary': !noteItem.pinned }"
                 (click)="onPinnedBtnClicked(noteItem, $event)">
                 <app-icon [iconClass]="'fa-solid fa-thumbtack' + (noteItem.pinned ? ' text-success' : '')"></app-icon>
