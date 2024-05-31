@@ -741,10 +741,24 @@ export type L10nArchiveLocale = {
     },
     notepad2: {
         title: string,
+        filterPlaceholder: string,
         noNoteSelected: {
             title: string,
             introduction: string,
         },
+        note: {
+            lastModified: string,
+        },
+        textEditor: {
+            increaseLevel: string,
+            makeLink: string,
+            makeOList: string,
+            makeUList: string,
+            reduceLevel: string,
+            textBold: string,
+            textItalic: string,
+            textStrikethrough: string,
+        }
     },
     notifications: {
         filecreated: {

@@ -14,7 +14,7 @@ import { SettingsService } from '../utils/settings.service';
 export class Notepad2Component implements OnDestroy, OnInit {
 
   notes: WritableSignal<Note[]> = signal([]);
-  selectedNote?: Note;
+  selectedNote: Note | null = null;
   editMode: boolean = false;
 
   subs: Subscription[] = [];
@@ -36,11 +36,22 @@ export class Notepad2Component implements OnDestroy, OnInit {
   ngOnInit(): void {
     this.subs.push(this.settingsService.notepadItems$.subscribe((newNotes) => {
       this.notes.set(Object.values(newNotes).sort((a, b) => `${a.pinned ? '0' : '9'}${a.title.toLocaleLowerCase()}`.localeCompare(`${b.pinned ? '0' : '9'}${b.title.toLocaleLowerCase()}`, undefined, { numeric: true })));
+      if (this.selectedNote)
+        this.ngOnInitLoadSelectedNote(this.selectedNote.id);
     }));
     this.subs.push(this.route.queryParamMap.subscribe((map) => {
-      this.selectedNote = map.has('id') ? this.settingsService.getNote(+map.get('id')!) ?? undefined : undefined;
+      const tempid = map.get('id');
+      if (tempid)
+        this.ngOnInitLoadSelectedNote(+tempid);
+      else
+        this.selectedNote = null;
       this.editMode = map.has('editor');
     }));
+  }
+
+  ngOnInitLoadSelectedNote(id: number): void {
+    const tempnote = this.settingsService.getNote(id);
+    this.selectedNote = tempnote ? { ...tempnote } : null;
   }
 
 }

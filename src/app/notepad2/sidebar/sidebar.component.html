@@ -1,6 +1,9 @@
 <div class="sidebar-container h-100 w-100 overflow-y-auto">
-    <div>Filter... TODO <!-- Todo ---></div>
-    @for (noteItem of notes; track $index) {
+    <div>
+        <input type="text" class="form-control w-100 rounded-0" [(ngModel)]="filterExpr" (keyup)="onChangeFilter()"
+            [placeholder]="i18n('notepad2.filterPlaceholder')" autocomplete="off">
+    </div>
+    @for (noteItem of filteredNotes; track $index) {
     <a class="d-flex justify-content-between align-items-center w-100 notepad-item text-reset text-decoration-none"
         [routerLink]="[ '/notepad2' ]" [queryParams]="{ id: noteItem.id, subject: furl(noteItem.title)}">
         <div class="text-truncate py-1">{{ noteItem.title }}</div>

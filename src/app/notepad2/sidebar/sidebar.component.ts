@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { first } from 'rxjs';
 import { I18nService } from 'src/app/i18n.service';
 import type { Note } from 'src/app/if';
@@ -10,12 +10,14 @@ import { SettingsService } from 'src/app/utils/settings.service';
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnChanges {
 
   @Input({ required: true }) notes!: Note[];
 
   deleteNote?: Note;
   deleteSaving: boolean = false;
+  filteredNotes: Note[] = [];
+  filterExpr: string = '';
 
   constructor(
     private formatService: FormatService,
@@ -31,6 +33,20 @@ export class SidebarComponent {
 
   i18n(key: string, params: string[] = []): string {
     return this.i18nService.i18n(key, params);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['notes'])
+      this.onChangeFilter();
+  }
+
+  onChangeFilter(): void {
+    let expr = this.filterExpr.toLocaleLowerCase().trim();
+    if (expr === '') {
+      this.filteredNotes = [...this.notes];
+      return;
+    }
+    this.filteredNotes = this.notes.filter((note) => note.title.toLocaleLowerCase().includes(expr) || note.content.toLocaleLowerCase().includes(expr));
   }
 
   onDeletionConfirmed(note: Note): void {

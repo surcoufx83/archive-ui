@@ -746,9 +746,23 @@ export const L10nArchiveDeLocale: L10nArchiveLocale = {
     },
     notepad2: {
         title: "Notizen",
+        filterPlaceholder: "🔍 Notiz suchen...",
         noNoteSelected: {
             title: "Dein Notizbuch",
             introduction: "Wähle eine der Notizen aus der Leiste links aus, um diese zu lesen oder bearbeiten. Notizen können nun auch privat markiert werden und werden damit nur noch dem Besitzer angezeigt."
+        },
+        note: {
+            lastModified: "Zuletzt geändert: {0}"
+        },
+        textEditor: {
+            increaseLevel: "Liste eine Ebene weiter einrücken",
+            makeLink: "Link einfügen an der aktuellen Stelle",
+            makeOList: "Aktuelle Zeile in einen Listenpunkt wandeln",
+            makeUList: "Aktuelle Zeile in einen nummerierten Listenpunkt wandeln",
+            reduceLevel: "Liste eine Ebene zurück",
+            textBold: "Text fett markieren",
+            textItalic: "Text kursiv schreiben",
+            textStrikethrough: "Text durchstreichen"
         }
     },
     notifications: {
