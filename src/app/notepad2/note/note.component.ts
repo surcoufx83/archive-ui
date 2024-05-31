@@ -96,9 +96,19 @@ export class NoteComponent implements OnChanges, OnDestroy, OnInit {
     if (!changes['note'])
       return;
     if (!this.editableNote || changes['note'].firstChange || changes['note'].currentValue.id != changes['note'].previousValue.id) {
+      // Other note selected by user, modify current note.
       this.editableNote = { ...this.note };
       this.editableContent = `${this.editableNote.content}`;
       this.previewContent = `${this.editableNote.content}`;
+    }
+    else if (this.editableNote && changes['note'].currentValue.id === changes['note'].previousValue.id) {
+      // If note already loaded, update metadata only, not title and content as this will break current editing.
+      this.editableNote.deldate = this.note.deldate;
+      this.editableNote.pinned = this.note.pinned;
+      this.editableNote.private = this.note.private;
+      this.editableNote.show = this.note.show;
+      this.editableNote.updated = this.note.updated;
+      this.editableNote.variant = this.note.variant;
     }
   }
 
