@@ -742,6 +742,7 @@ export type L10nArchiveLocale = {
     notepad2: {
         title: string,
         filterPlaceholder: string,
+        toggleSidebar: string,
         noNoteSelected: {
             title: string,
             introduction: string,

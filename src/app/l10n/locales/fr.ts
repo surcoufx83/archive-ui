@@ -747,6 +747,7 @@ export const L10nArchiveFrLocale: L10nArchiveLocale = {
     notepad2: {
         title: "Notes",
         filterPlaceholder: "🔍 Rechercher une note...",
+        toggleSidebar: "Basculer la barre latérale",
         noNoteSelected: {
             title: "Votre carnet",
             introduction: "Sélectionnez l'une des notes dans la barre de gauche pour la lire ou la modifier. Les notes peuvent désormais être marquées comme privées et ne seront visibles que par le propriétaire."

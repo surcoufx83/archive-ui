@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Injectable({
   providedIn: 'root'
@@ -10,12 +11,16 @@ export class ConfigService {
     loaded: false,
     icons: DefaultIcons
   };
+  private isMobile$: boolean;
   private startUrl: string = '';
-
   private cache: { [key: string]: any } = {};
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private deviceService: DeviceDetectorService
+  ) {
     this.startUrl = location.href.substr(location.href.indexOf('#') + 1);
+    this.isMobile$ = deviceService.isMobile() || deviceService.isTablet();
   }
 
   get config(): AppConfig {
@@ -24,6 +29,10 @@ export class ConfigService {
 
   getCacheItem(key: string): any | null {
     return this.cache[key];
+  }
+
+  isMobile(): boolean {
+    return this.isMobile$;
   }
 
   loadAppConfig() {

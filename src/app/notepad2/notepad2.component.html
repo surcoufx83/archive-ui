@@ -1,17 +1,26 @@
-<div class="main-container d-flex vh-calc-100">
-    <div class="sidebar-body">
-        <app-notepad2-sidebar [notes]="notes()"></app-notepad2-sidebar>
+<div class="d-flex flex-column">
+    @if (isMobile) {
+    <div class="sidebar-toggle d-flex justify-content-end p-2">
+        <button type="button" class="btn btn-dark btn-sm" (click)="sidebarOpen = !sidebarOpen">
+            <app-icon [iconClass]="'fa-regular fa-' + (sidebarOpen ? 'eye-slash' : 'eye')" [marginEnd]="1"></app-icon>
+            {{ i18n('notepad2.toggleSidebar') }}
+        </button>
     </div>
-    <div class="notes-body flex-grow-1 px-4 py-3">
-        @if (selectedNote) {
-        <app-notepad2-note [note]="selectedNote" [editMode]="editMode"></app-notepad2-note>
-        }
-        @else {
-        <!-- Translation todo! -->
-        <h5>{{ i18n('notepad2.noNoteSelected.title') }}</h5>
-        <p>
-            {{ i18n('notepad2.noNoteSelected.introduction') }}
-        </p>
-        }
+    }
+    <div class="main-container d-flex vh-calc-100">
+        <div [ngClass]="{ 'sidebar-body': true, 'd-none': !sidebarOpen }">
+            <app-notepad2-sidebar [notes]="notes()"></app-notepad2-sidebar>
+        </div>
+        <div [ngClass]="{ 'notes-body flex-grow-1 px-4 py-3': true, 'd-none': isMobile && sidebarOpen }">
+            @if (selectedNote) {
+            <app-notepad2-note [note]="selectedNote" [editMode]="editMode"></app-notepad2-note>
+            }
+            @else {
+            <h5>{{ i18n('notepad2.noNoteSelected.title') }}</h5>
+            <p>
+                {{ i18n('notepad2.noNoteSelected.introduction') }}
+            </p>
+            }
+        </div>
     </div>
 </div>

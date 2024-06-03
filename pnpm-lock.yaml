@@ -68,6 +68,9 @@ importers:
       ng2-charts:
         specifier: ^3.1.2
         version: 3.1.2(@angular/common@18.0.1(@angular/core@18.0.1(rxjs@7.8.1)(zone.js@0.14.6))(rxjs@7.8.1))(@angular/core@18.0.1(rxjs@7.8.1)(zone.js@0.14.6))(chart.js@3.9.1)(rxjs@7.8.1)
+      ngx-device-detector:
+        specifier: ^7.0.0
+        version: 7.0.0(@angular/common@18.0.1(@angular/core@18.0.1(rxjs@7.8.1)(zone.js@0.14.6))(rxjs@7.8.1))(@angular/core@18.0.1(rxjs@7.8.1)(zone.js@0.14.6))
       ngx-echarts:
         specifier: ^8.0.1
         version: 8.0.1(echarts@5.5.0)
@@ -1945,6 +1948,12 @@ packages:
       '@angular/core': '>=11.0.0'
       chart.js: ^3.4.0
       rxjs: ^6.5.3 || ^7.4.0
+
+  ngx-device-detector@7.0.0:
+    resolution: {integrity: sha512-6IQZLlB31wQecbFr/5YyBfoj9zXgLz/2UHHrslgBnWIzbgdnjfEYSiwqXiJlBC9wIxMvM/BLEIQlxnl3MseQ5g==}
+    peerDependencies:
+      '@angular/common': ^17.0.0
+      '@angular/core': ^17.0.0
 
   ngx-echarts@8.0.1:
     resolution: {integrity: sha512-CP+WnCcnMCNpCL9BVmDIZmhGSVPnkJhhFbQEKt0nrwV0L6d4QTAGZ+e4y6G1zTTFKkIMPHpaO0nhtDRgSXAW/w==}
@@ -4585,6 +4594,12 @@ snapshots:
       chart.js: 3.9.1
       lodash-es: 4.17.21
       rxjs: 7.8.1
+      tslib: 2.6.2
+
+  ngx-device-detector@7.0.0(@angular/common@18.0.1(@angular/core@18.0.1(rxjs@7.8.1)(zone.js@0.14.6))(rxjs@7.8.1))(@angular/core@18.0.1(rxjs@7.8.1)(zone.js@0.14.6)):
+    dependencies:
+      '@angular/common': 18.0.1(@angular/core@18.0.1(rxjs@7.8.1)(zone.js@0.14.6))(rxjs@7.8.1)
+      '@angular/core': 18.0.1(rxjs@7.8.1)(zone.js@0.14.6)
       tslib: 2.6.2
 
   ngx-echarts@8.0.1(echarts@5.5.0):
