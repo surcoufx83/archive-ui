@@ -2,6 +2,7 @@ import type { OnDestroy, OnInit, WritableSignal } from '@angular/core';
 import { Component, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import type { Subscription } from 'rxjs';
+import { ConfigService } from 'src/app/config.service';
 import { I18nService } from '../i18n.service';
 import type { Note } from '../if';
 import { SettingsService } from '../utils/settings.service';
@@ -13,17 +14,23 @@ import { SettingsService } from '../utils/settings.service';
 })
 export class Notepad2Component implements OnDestroy, OnInit {
 
+  editMode: boolean = false;
+  isMobile: boolean;
   notes: WritableSignal<Note[]> = signal([]);
   selectedNote: Note | null = null;
-  editMode: boolean = false;
+  sidebarOpen: boolean;
 
   subs: Subscription[] = [];
 
   constructor(
+    configService: ConfigService,
     private i18nService: I18nService,
     private settingsService: SettingsService,
     private route: ActivatedRoute,
-  ) { }
+  ) {
+    this.isMobile = configService.isMobile();
+    this.sidebarOpen = true;
+  }
 
   i18n(key: string, params: string[] = []): string {
     return this.i18nService.i18n(key, params);
@@ -52,6 +59,8 @@ export class Notepad2Component implements OnDestroy, OnInit {
   ngOnInitLoadSelectedNote(id: number): void {
     const tempnote = this.settingsService.getNote(id);
     this.selectedNote = tempnote ? { ...tempnote } : null;
+    if (this.isMobile)
+      this.sidebarOpen = false;
   }
 
 }

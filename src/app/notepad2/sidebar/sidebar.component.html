@@ -1,4 +1,4 @@
-<div class="sidebar-container h-100 w-100 overflow-y-auto">
+<div class="sidebar-container h-100 w-100 overflow-y-auto" [attr.data-mobile]="isMobile">
     <div>
         <input type="text" class="form-control w-100 rounded-0" [(ngModel)]="filterExpr" (keyup)="onChangeFilter()"
             [placeholder]="i18n('notepad2.filterPlaceholder')" autocomplete="off">
