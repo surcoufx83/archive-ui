@@ -23,7 +23,15 @@ export class SearchComponent implements OnInit {
   resultgroupcount: { [key: string]: number } = {};
   resultgroups: string[] = ['tags', 'notes', 'cases', 'files', 'pages', 'directories', 'accounts'];
   phrase: string = '';
-  searchactive: string[] = [];
+  searchactive: { [key: string]: boolean } = {
+    'tags': false,
+    'notes': false,
+    'cases': false,
+    'files': false,
+    'pages': false,
+    'directories': false,
+    'accounts': false,
+  };
   searchphrase: string = '';
   searchresults: SearchResults = {};
   searchgroups: SearchGroupDefinition[] = [];
@@ -125,7 +133,7 @@ export class SearchComponent implements OnInit {
     for (let i = 0; i < this.searchgroups.length; i++) {
       let group = this.searchgroups[i];
       if (group['active'] === true) {
-        this.searchactive.push(group['groupName']);
+        this.searchactive[group['groupName']] = true;
         let url = this.config.api.baseUrl + group['searchPath'];
         this.authService.updateApi(url, { search: phrase }).subscribe((reply) => {
           if (reply.success && reply.payload != null) {
@@ -153,10 +161,11 @@ export class SearchComponent implements OnInit {
                 break;
             }
           }
-          this.searchactive.splice(this.searchactive.indexOf(group['groupName']));
-          let $this = this;
+          this.searchactive[group['groupName']] = false;
           clearTimeout(this.debounce);
-          this.debounce = setTimeout(function () { $this.onSearchCompleted(formSubmit); }, 200);
+          this.debounce = setTimeout(() => {
+            this.onSearchCompleted(formSubmit);
+          }, 200);
         });
       }
     }
@@ -170,10 +179,10 @@ export class SearchComponent implements OnInit {
       this.resultcount += this.resultgroupcount[key];
     }
     this.configService.setCacheItem('search__' + this.searchphrase + this.searchtoken, this.searchresults);
-    if (this.urltoken !== this.searchtoken) {
+    this.busy = Object.entries(this.searchactive).filter((keyvalue) => keyvalue[1] === true).length > 0;
+    if (!this.busy && this.urltoken !== this.searchtoken) {
       this.router.navigate(['/search', this.searchphrase, this.searchtoken]);
     }
-    this.busy = false;
   }
 
   get tags(): string[] {
