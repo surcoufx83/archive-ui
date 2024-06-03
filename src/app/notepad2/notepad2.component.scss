@@ -2,6 +2,10 @@
     background-color: rgba($color: #ffffff, $alpha: 0.03);
     height: calc(100vh - 80px);
     width: 360px;
+
+    &[data-mobile="true"] {
+        width: 100%;
+    }
 }
 
 .sidebar-toggle {

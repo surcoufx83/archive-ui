@@ -8,8 +8,8 @@
     </div>
     }
     <div class="main-container d-flex vh-calc-100">
-        <div [ngClass]="{ 'sidebar-body': true, 'd-none': !sidebarOpen }">
-            <app-notepad2-sidebar [notes]="notes()"></app-notepad2-sidebar>
+        <div [ngClass]="{ 'sidebar-body': true, 'd-none': !sidebarOpen }" [attr.data-mobile]="isMobile">
+            <app-notepad2-sidebar [notes]="notes()" [isOpen]="sidebarOpen" [isMobile]="isMobile"></app-notepad2-sidebar>
         </div>
         <div [ngClass]="{ 'notes-body flex-grow-1 px-4 py-3': true, 'd-none': isMobile && sidebarOpen }">
             @if (selectedNote) {

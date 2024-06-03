@@ -18,4 +18,10 @@
         }
     }
 
+    &[data-mobile="true"] {
+
+        .notepad-item .action-items> :not(.always) {
+            display: inline-block !important;
+        }
+    }
 }

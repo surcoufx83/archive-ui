@@ -13,6 +13,8 @@ import { SettingsService } from 'src/app/utils/settings.service';
 })
 export class SidebarComponent implements OnChanges {
 
+  @Input({ required: true }) isMobile!: boolean;
+  @Input({ required: true }) isOpen!: boolean;
   @Input({ required: true }) notes!: Note[];
 
   deleteNote?: Note;

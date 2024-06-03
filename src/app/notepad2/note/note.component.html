@@ -16,7 +16,7 @@
     </div>
 </div>
 <div class="row">
-    <div [ngClass]="{ 'd-none': !editMode, 'col col-6': editMode }">
+    <div [ngClass]="{ 'd-none': !editMode, 'col col-12 col-lg-6': editMode }">
         @if (editableNote) {
         <div class="d-flex align-items-center justify-content-between mb-1">
             <div class="d-flex align-items-center mb-1">
@@ -79,7 +79,7 @@
             (mouseup)="onMouseClick($event, editor)" autocomplete="off"></textarea>
         }
     </div>
-    <div [ngClass]="{ 'col': true, 'col-12': !editMode, 'col-6': editMode }"
+    <div [ngClass]="{ 'col': true, 'col-12': !editMode, 'col-12 col-lg-6': editMode }"
         [ngStyle]="{ 'padding-top': editMode ? '45px' : '0' }">
         <markdown ngPreserveWhitespaces [data]="previewContent"></markdown>
     </div>
