@@ -1,13 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { format } from 'date-fns';
+import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth.service';
 import { AppConfig, ConfigService } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
 import { Case, CaseStatus, CaseType, File, Party, UserSettings } from 'src/app/if';
-import { SettingsService } from 'src/app/utils/settings.service';
 import { FormatService } from 'src/app/utils/format.service';
-import { Subscription } from 'rxjs';
+import { SettingsService } from 'src/app/utils/settings.service';
 
 @Component({
   selector: 'app-case',

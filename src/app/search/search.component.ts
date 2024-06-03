@@ -6,8 +6,8 @@ import { File, UserSettings } from 'src/app/if';
 import { AuthService } from '../auth.service';
 import { AppConfig, ConfigService } from '../config.service';
 import { I18nService } from '../i18n.service';
-import { SettingsService } from '../utils/settings.service';
 import { FormatService } from '../utils/format.service';
+import { SettingsService } from '../utils/settings.service';
 import { SearchResultAccountItem, SearchResultCaseItem, SearchResultDirectoryItem, SearchResultFileItem, SearchResultNoteItem, SearchResultPageItem, SearchResults } from './searchresult';
 
 @Component({
@@ -23,15 +23,7 @@ export class SearchComponent implements OnInit {
   resultgroupcount: { [key: string]: number } = {};
   resultgroups: string[] = ['tags', 'notes', 'cases', 'files', 'pages', 'directories', 'accounts'];
   phrase: string = '';
-  searchactive: { [key: string]: boolean } = {
-    'tags': false,
-    'notes': false,
-    'cases': false,
-    'files': false,
-    'pages': false,
-    'directories': false,
-    'accounts': false,
-  };
+  searchactive: { [key: string]: boolean } = Object.fromEntries(this.resultgroups.map(group => [group, false]));
   searchphrase: string = '';
   searchresults: SearchResults = {};
   searchgroups: SearchGroupDefinition[] = [];
@@ -179,7 +171,7 @@ export class SearchComponent implements OnInit {
       this.resultcount += this.resultgroupcount[key];
     }
     this.configService.setCacheItem('search__' + this.searchphrase + this.searchtoken, this.searchresults);
-    this.busy = Object.entries(this.searchactive).filter((keyvalue) => keyvalue[1] === true).length > 0;
+    this.busy = Object.values(this.searchactive).some(value => value);
     if (!this.busy && this.urltoken !== this.searchtoken) {
       this.router.navigate(['/search', this.searchphrase, this.searchtoken]);
     }
