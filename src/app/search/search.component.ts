@@ -26,7 +26,7 @@ export class SearchComponent implements OnDestroy, OnInit {
   resultgroupcount: { [key: string]: number } = {};
   resultgroups: string[] = ['tags', 'notes', 'cases', 'files', 'pages', 'directories', 'accounts'];
   phrase: string = '';
-  searchactive: string[] = [];
+  searchactive: { [key: string]: boolean } = Object.fromEntries(this.resultgroups.map(group => [group, false]));
   searchphrase: string = '';
   searchresults: SearchResults = {};
   searchgroups: SearchGroupDefinition[] = [];
@@ -129,8 +129,8 @@ export class SearchComponent implements OnDestroy, OnInit {
     for (let i = 0; i < this.searchgroups.length; i++) {
       let group = this.searchgroups[i];
       if (group['active'] === true) {
-        this.searchactive.push(group['groupName']);
-        let url = `${environment.api.baseUrl}/${group['searchPath']}`;
+        this.searchactive[group['groupName']] = true;
+        let url = this.config.api.baseUrl + group['searchPath'];
         this.authService.updateApi(url, { search: phrase }).pipe(first()).subscribe((reply) => {
           if (reply.success && reply.payload != null) {
             switch (group['groupName']) {
@@ -157,10 +157,11 @@ export class SearchComponent implements OnDestroy, OnInit {
                 break;
             }
           }
-          this.searchactive.splice(this.searchactive.indexOf(group['groupName']));
-          let $this = this;
+          this.searchactive[group['groupName']] = false;
           clearTimeout(this.debounce);
-          this.debounce = setTimeout(function () { $this.onSearchCompleted(formSubmit); }, 200);
+          this.debounce = setTimeout(() => {
+            this.onSearchCompleted(formSubmit);
+          }, 200);
         });
       }
     }
@@ -174,10 +175,10 @@ export class SearchComponent implements OnDestroy, OnInit {
       this.resultcount += this.resultgroupcount[key];
     }
     this.configService.setCacheItem('search__' + this.searchphrase + this.searchtoken, this.searchresults);
-    if (this.urltoken !== this.searchtoken) {
+    this.busy = Object.values(this.searchactive).some(value => value);
+    if (!this.busy && this.urltoken !== this.searchtoken) {
       this.router.navigate(['/search', this.searchphrase, this.searchtoken]);
     }
-    this.busy = false;
   }
 
   get tags(): string[] {

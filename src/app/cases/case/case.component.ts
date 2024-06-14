@@ -112,7 +112,8 @@ export class CaseComponent implements OnDestroy, OnInit {
         let url = `${environment.api.baseUrl}/case/${this.case.id}/files`;
         this.authService.queryApi(url).subscribe((reply) => {
           if (reply.success && reply.payload && reply.payload['files']) {
-            this.casefiles = (<File[]>reply.payload['files']).sort((a, b) => a.name > b.name ? 1 : -1);
+            // sort files by name desc if both filenames start with date, else sort ascending
+            this.casefiles = (<File[]>reply.payload['files']).sort((a, b) => (a.name.startsWith('20') && b.name.startsWith('20')) ? a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase()) * -1 : a.name.toLocaleLowerCase().localeCompare(b.name.toLocaleLowerCase()));
           }
         });
       }
