@@ -1,6 +1,4 @@
 <toast-container></toast-container>
 
-<ng-container *ngIf="config != undefined">
-    <app-navbar *ngIf="isLoggedin"></app-navbar>
-    <router-outlet></router-outlet>
-</ng-container>
+<app-navbar *ngIf="isLoggedin"></app-navbar>
+<router-outlet></router-outlet>

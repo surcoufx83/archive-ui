@@ -34,7 +34,7 @@
           <div class="col-12 col-md-9 col-lg-6">
             <div class="form-group">
               <button type="submit" class="form-control btn btn-primary" [disabled]="busy">
-                <app-icon [iconClass]="config.icons['busy']" [marginEnd]="1" *ngIf="busy"></app-icon>
+                <app-icon [iconClass]="icons['busy']" [marginEnd]="1" *ngIf="busy"></app-icon>
                 {{ i18n('search.setup.runSearch') }}
               </button>
             </div>
@@ -59,7 +59,7 @@
             <ui-busy-indicator *ngIf="busy"></ui-busy-indicator>
             <button type="button" class="btn btn-sm btn-secondary" (click)="showHistoric = !showHistoric;"
               [title]="i18n('search.result.showHistoricTooltip')">
-              <app-icon [iconClass]="config.icons[showHistoric ? 'toggle-on' : 'toggle-off']" [marginEnd]="1">
+              <app-icon [iconClass]="icons[showHistoric ? 'toggle-on' : 'toggle-off']" [marginEnd]="1">
               </app-icon>
               {{ i18n('search.result.showHistoric') }}
             </button>
@@ -186,7 +186,7 @@
   <ul class="list-group" *ngIf="searchresults.tags">
     <li class="list-group-item d-flex flex-column" *ngFor="let tagname of tags;">
       <div class="d-flex flex-row">
-        <app-icon [iconClass]="config.icons['tag']" [marginEnd]="2"></app-icon>
+        <app-icon [iconClass]="icons['tag']" [marginEnd]="2"></app-icon>
         <span>{{ tagname }}</span>
       </div>
       <ul class="list-group list-group-flush">

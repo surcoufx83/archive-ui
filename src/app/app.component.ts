@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { environment } from 'src/environments/environment.dev';
 import { AuthService } from './auth.service';
-import { AppConfig, ConfigService } from './config.service';
+import { I18nService } from './i18n.service';
+import { ServerNotification } from './if';
 import { SettingsService } from './utils/settings.service';
 import { ToastsService } from './utils/toasts.service';
-import { ServerNotification } from './if';
-import { I18nService } from './i18n.service';
 
 @Component({
   selector: 'app-root',
@@ -15,17 +16,14 @@ import { I18nService } from './i18n.service';
 export class AppComponent implements OnInit, OnDestroy {
 
   private notifications: ServerNotification[] = [];
-  private sub?: any;
+  private notificationsTimeout?: any;
+  private notificationsSub?: Subscription;
 
   constructor(private authService: AuthService,
-    private configService: ConfigService,
     private settings: SettingsService,
     private toasts: ToastsService,
-    private i18nService: I18nService) { }
-
-  get config(): AppConfig {
-    return this.configService.config;
-  }
+    private i18nService: I18nService
+  ) { }
 
   i18n(key: string, params: string[] = []): string {
     return this.i18nService.i18n(key, params);
@@ -36,19 +34,18 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.sub)
-      clearTimeout(this.sub);
+    clearTimeout(this.notificationsTimeout);
+    this.notificationsSub?.unsubscribe();
   }
 
   ngOnInit(): void {
-    this.settings.notifications$.subscribe((notifications) => this.notifications = [...notifications]);
+    this.notificationsSub = this.settings.notifications$.subscribe((notifications) => this.notifications = [...notifications]);
     this.showNotifications();
   }
 
   showNotifications(): void {
-    if (this.sub)
-      clearTimeout(this.sub);
-    this.sub = setTimeout(() => { this._showNotifications() }, 2000);
+    clearTimeout(this.notificationsTimeout);
+    this.notificationsTimeout = setTimeout(() => { this._showNotifications() }, 2000);
   }
 
   _showNotifications(): void {
@@ -60,7 +57,7 @@ export class AppComponent implements OnInit, OnDestroy {
             this.i18n(`notifications.${n.type}.title`, ['' + n.refid, n.refdata!]),
             this.i18n(`notifications.${n.type}.message`, ['' + n.refid, n.refdata!]),
             [{
-              icon: this.config.icons['goto'],
+              icon: environment.icons['goto'],
               title: this.i18n(`notifications.${n.type}.action`),
               url: ['/file', '' + n.refid]
             }],

@@ -1,36 +1,35 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { format } from 'date-fns';
+import { Subscription } from 'rxjs';
 import { Case, CaseStatus, UserSettings } from 'src/app/if';
-import { AuthService } from '../auth.service';
-import { AppConfig, ConfigService } from '../config.service';
+import { environment } from 'src/environments/environment.dev';
 import { I18nService } from '../i18n.service';
-import { SettingsService } from '../utils/settings.service';
 import { FormatService } from '../utils/format.service';
+import { SettingsService } from '../utils/settings.service';
 
 @Component({
   selector: 'app-cases',
   templateUrl: './cases.component.html',
   styleUrls: ['./cases.component.scss']
 })
-export class CasesComponent implements OnInit {
+export class CasesComponent implements OnDestroy, OnInit {
 
-  cases: { [key: number]: Case } = {};
   casechilds: { [key: number]: number[] } = {};
+  cases: { [key: number]: Case } = {};
+  icons = environment.icons;
   rootcases: number[] = [];
   showDeleted: boolean = false;
   showInRetention: boolean = false;
+  subscriptions: Subscription[] = [];
   usersettingsObj: UserSettings | null = null;
 
-  constructor(private authService: AuthService,
-    private configService: ConfigService,
+  constructor(
     private i18nService: I18nService,
-    public router: Router,
     private userSettings: SettingsService,
-    public formatService: FormatService) {
-    this.userSettings.settings$.subscribe((settings) => {
-      this.usersettingsObj = settings;
-    });
+    public formatService: FormatService,
+    public router: Router,
+  ) {
     this.userSettings.loadArchiveSettings();
     this.i18nService.setTitle('cases.pagetitle');
   }
@@ -39,11 +38,11 @@ export class CasesComponent implements OnInit {
     return this.cases[id];
   }
 
-  changeShowDeleted(switchvalue: boolean) : void {
+  changeShowDeleted(switchvalue: boolean): void {
     this.userSettings.showCasesInDeletion(switchvalue);
   }
 
-  changeShowRetention(switchvalue: boolean) : void {
+  changeShowRetention(switchvalue: boolean): void {
     this.userSettings.showCasesInRetention(switchvalue);
   }
 
@@ -51,10 +50,6 @@ export class CasesComponent implements OnInit {
     let childs = this.casechilds[id];
     childs.sort((a, b) => this.case(a).casepath > this.case(b).casepath ? 1 : this.case(a).casepath < this.case(b).casepath ? -1 : 0);
     return childs;
-  }
-
-  get config(): AppConfig {
-    return this.configService.config;
   }
 
   getCaseStatus(id: number | null): CaseStatus | null {
@@ -75,14 +70,19 @@ export class CasesComponent implements OnInit {
     return this.i18nService.i18n(key, params);
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
+
   ngOnInit(): void {
-    this.userSettings.clientSettings$.subscribe((settings) => {
+    this.subscriptions.push(this.userSettings.settings$.subscribe((settings) => this.usersettingsObj = settings));
+    this.subscriptions.push(this.userSettings.clientSettings$.subscribe((settings) => {
       this.showDeleted = settings.casesettings.showCasesInDeletion;
       this.showInRetention = settings.casesettings.showCasesInRetention;
-    });
-    this.userSettings.cases$.subscribe((cases) => { this.cases = cases; });
-    this.userSettings.caseChilds$.subscribe((childs) => { this.casechilds = childs; });
-    this.userSettings.caseRoots$.subscribe((roots) => { this.rootcases = roots; });
+    }));
+    this.subscriptions.push(this.userSettings.cases$.subscribe((cases) => { this.cases = cases; }));
+    this.subscriptions.push(this.userSettings.caseChilds$.subscribe((childs) => { this.casechilds = childs; }));
+    this.subscriptions.push(this.userSettings.caseRoots$.subscribe((roots) => { this.rootcases = roots; }));
   }
 
   showCase(c: Case): boolean {

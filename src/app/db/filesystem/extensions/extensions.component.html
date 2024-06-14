@@ -1,6 +1,6 @@
 <div class="container pt-4 pt-md-2 mb-2">
     <app-h2 [title]="i18n('db.extensions.title')" [busy]="busy" [btn1]="i18n('common.back')"
-        [btn1css]="'btn btn-sm btn-outline-primary'" [btn1icon]="config.icons['go-left']" [btn1link]="'/db'">
+        [btn1css]="'btn btn-sm btn-outline-primary'" [btn1icon]="icons['go-left']" [btn1link]="'/db'">
     </app-h2>
 </div>
 
@@ -8,10 +8,10 @@
     <div class="container pt-4 pt-md-2 mb-2" *ngIf="edititem">
         <div class="card">
             <app-h4 [containercss]="'card-header'" [title]="i18n('db.extensions.editor.title')" [busy]="saving"
-                [btn1]="i18n('common.save')" [btn1css]="'btn btn-sm btn-success'" [btn1icon]="config.icons['save']"
+                [btn1]="i18n('common.save')" [btn1css]="'btn btn-sm btn-success'" [btn1icon]="icons['save']"
                 (btn1Clicked)="submit(f)" [btn2css]="edititem.id > 0 ? 'btn btn-sm btn-outline-danger' : ''"
-                [btn2icon]="edititem.id > 0 ? config.icons['delete'] : ''" (btn2Clicked)="delete(edititem)"
-                [xshow]="true" (xClicked)="edititem = undefined"></app-h4>
+                [btn2icon]="edititem.id > 0 ? icons['delete'] : ''" (btn2Clicked)="delete(edititem)" [xshow]="true"
+                (xClicked)="edititem = undefined"></app-h4>
             <div class="card-body">
                 <form #f="ngForm" (submit)="submit(f)" ngNativeValidate>
 
@@ -67,10 +67,12 @@
                             <div class="form-group">
                                 <label for="extension-returnMimetype" class="form-label">{{
                                     i18n('db.extensions.editor.returnMimetype') }}</label>
-                                <select class="form-select" id="extension-returnMimetype" name="extension-returnMimetype"
-                                    [(ngModel)]="edititem.convert.returnMimetype">
-                                    <option value="" [selected]="edititem.convert.returnMimetype == ''">{{ i18n('common.select.pickedNone') }}</option>
-                                    <option *ngFor="let mt of mimetypes" [value]="mt.mimetype" [selected]="mt.mimetype === edititem.convert.returnMimetype">{{ mt.mimetype }}
+                                <select class="form-select" id="extension-returnMimetype"
+                                    name="extension-returnMimetype" [(ngModel)]="edititem.convert.returnMimetype">
+                                    <option value="" [selected]="edititem.convert.returnMimetype == ''">{{
+                                        i18n('common.select.pickedNone') }}</option>
+                                    <option *ngFor="let mt of mimetypes" [value]="mt.mimetype"
+                                        [selected]="mt.mimetype === edititem.convert.returnMimetype">{{ mt.mimetype }}
                                     </option>
                                 </select>
                             </div>

@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { AppConfig, ConfigService } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
 import { Case, CaseStatus, CaseType } from 'src/app/if';
-import { SettingsService } from 'src/app/utils/settings.service';
 import { FormatService } from 'src/app/utils/format.service';
+import { SettingsService } from 'src/app/utils/settings.service';
+import { environment } from 'src/environments/environment.dev';
 
 @Component({
   selector: 'case-list-item',
@@ -14,32 +14,31 @@ export class CaseListItemComponent {
 
   @Input() case!: Case;
   @Input() gotoButton: boolean = false;
-  @Input() relevance: number|null = null;
+  @Input() relevance: number | null = null;
   @Output() clicked = new EventEmitter();
   @Output() gotoClicked = new EventEmitter();
 
-  constructor(private configService: ConfigService,
+  icons = environment.icons;
+
+  constructor(
     private i18nService: I18nService,
     public formatService: FormatService,
-    private settingsService: SettingsService) { }
+    private settingsService: SettingsService
+  ) { }
 
-  btnClick() : void {
+  btnClick(): void {
     this.gotoClicked.emit();
   }
 
-  click() : void {
+  click(): void {
     this.clicked.emit();
   }
 
-  get config(): AppConfig {
-    return this.configService.config;
-  }
-
-  getCaseStatus(id: number|null) : CaseStatus|null {
+  getCaseStatus(id: number | null): CaseStatus | null {
     return this.settingsService.getCaseStatus(id);
   }
 
-  getCaseType(id: number|null) : CaseType|null {
+  getCaseType(id: number | null): CaseType | null {
     return this.settingsService.getCaseType(id);
   }
 

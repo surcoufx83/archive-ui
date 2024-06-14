@@ -1,31 +1,34 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { AppConfig, ConfigService } from 'src/app/config.service';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Subscription, first } from 'rxjs';
 import { I18nService } from 'src/app/i18n.service';
+import { Class, UserSettings } from 'src/app/if';
 import { SettingsService } from 'src/app/utils/settings.service';
 import { ToastsService } from 'src/app/utils/toasts.service';
-import { Class, UserSettings } from 'src/app/if';
+import { environment } from 'src/environments/environment.dev';
 
 @Component({
   selector: 'app-classes',
   templateUrl: './classes.component.html',
   styleUrls: ['./classes.component.scss']
 })
-export class DbClassesComponent implements OnInit {
+export class DbClassesComponent implements OnDestroy, OnInit {
 
   @ViewChild('editor') editor?: ElementRef;
 
   busy: boolean = false;
-  saving: boolean = false;
   classes: Class[] = [];
   editclass?: Class;
-  usersettingsObj: UserSettings | null = null;
+  icons = environment.icons;
+  saving: boolean = false;
   sortAsc: boolean = true;
   sortBy: string = 'name';
-  storagename: string = this.config.storage.prefix + 'dbclassesData';
+  storagename: string = `${environment.localStoragePrefix}dbclassesData`;
+  subscriptions: Subscription[] = [];
   timeout?: any = undefined;
+  usersettingsObj: UserSettings | null = null;
   when: number = 0;
 
-  constructor(private configService: ConfigService,
+  constructor(
     private i18nService: I18nService,
     private userSettings: SettingsService,
     private toastService: ToastsService) {
@@ -35,27 +38,13 @@ export class DbClassesComponent implements OnInit {
       this.sort();
     }
     this.userSettings.loadArchiveSettings();
-    this.userSettings.settings$.subscribe((settings) => {
-      this.usersettingsObj = settings;
-    });
-    this.userSettings.classes$.subscribe((classes) => {
-      if (classes.length == 0)
-        return;
-      this.classes = classes;
-      this.classes.forEach((item) => { item.name = this.i18n('classify.classes.' + item.techname) });
-      this.sort();
-      localStorage.setItem(this.storagename, JSON.stringify({ items: this.classes }));
-    });
-  }
 
-  get config(): AppConfig {
-    return this.configService.config;
   }
 
   delete(item: Class) {
     if (confirm(this.i18n('common.confirm.askDeletion', [item.name]))) {
       this.saving = true;
-      this.userSettings.deleteClass(item).subscribe((e) => {
+      this.userSettings.deleteClass(item).pipe(first()).subscribe((e) => {
         if (e) {
           this.toastService.confirm(this.i18nService.i18n('common.confirm.delete.title'),
             this.i18nService.i18n('common.confirm.delete.message'));
@@ -83,7 +72,20 @@ export class DbClassesComponent implements OnInit {
     return this.i18nService.i18n(key, params);
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
+
   ngOnInit(): void {
+    this.subscriptions.push(this.userSettings.settings$.subscribe((settings) => this.usersettingsObj = settings));
+    this.subscriptions.push(this.userSettings.classes$.subscribe((classes) => {
+      if (classes.length == 0)
+        return;
+      this.classes = classes;
+      this.classes.forEach((item) => { item.name = this.i18n('classify.classes.' + item.techname) });
+      this.sort();
+      localStorage.setItem(this.storagename, JSON.stringify({ items: this.classes }));
+    }));
   }
 
   sort(field?: string, asc?: boolean): void {
@@ -113,7 +115,7 @@ export class DbClassesComponent implements OnInit {
     if (!this.editclass)
       return;
     this.saving = true;
-    this.userSettings.updateClass(this.editclass).subscribe((reply) => {
+    this.userSettings.updateClass(this.editclass).pipe(first()).subscribe((reply) => {
       if (reply != null)
         this.editclass!.id = reply.id;
       this.saving = false;

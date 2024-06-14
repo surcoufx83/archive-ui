@@ -8,12 +8,12 @@
                     <ol class="breadcrumb d-flex align-items-center h-100 mb-0 flex-fill flex-nowrap">
                         <button type="button" class="btn btn-sm btn-outline-primary" (click)="createNewRates()"
                             data-bs-toggle="modal" data-bs-target="#rate-input-modal">
-                            <app-icon [iconClass]="config.icons['receipt']"></app-icon>
+                            <app-icon [iconClass]="icons['receipt']"></app-icon>
                             {{ i18n('stocks.updateRates') }}
                         </button>
                         <a class="ms-2" [routerLink]="['/finance', 'stocks', 'transactions']">
                             <button type="button" class="btn btn-sm btn-outline-primary">
-                                <app-icon [iconClass]="config.icons['file']"></app-icon>
+                                <app-icon [iconClass]="icons['file']"></app-icon>
                                 {{ i18n('stocks.transactionsLink') }}
                             </button>
                         </a>
@@ -71,7 +71,7 @@
         <div class="col-6 col-md-4 col-lg-3">
             <div class="d-flex justify-content-between">
                 <div class="grow-1 text-truncate">
-                    <app-icon [iconClass]="config.icons[stock.iscrypto ? 'crypto' : 'stocks']" [marginEnd]="1"
+                    <app-icon [iconClass]="icons[stock.iscrypto ? 'crypto' : 'stocks']" [marginEnd]="1"
                         [fixedWidth]="true" [addCssClasses]="[ 'd-inline-block', 'd-md-none', 'd-lg-inline-block' ]">
                     </app-icon>
                     {{ stock.name }}
@@ -80,7 +80,7 @@
                     <button
                         [ngClass]="{ 'btn btn-sm ms-1': true, 'btn-outline-secondary': stock.id != showMoreId, 'btn-outline-success': stock.id == showMoreId }"
                         (click)="showMoreId = stock.id == showMoreId ? 0 : stock.id">
-                        <app-icon [iconClass]="config.icons[stock.id == showMoreId ? 'close' : 'preview']"
+                        <app-icon [iconClass]="icons[stock.id == showMoreId ? 'close' : 'preview']"
                             [fixedWidth]="true"></app-icon>
                     </button>
                 </div>
@@ -245,7 +245,7 @@
                         i18n('common.cancel')
                         }}</button>
                     <button type="submit" class="btn btn-success" [disabled]="savingRates">
-                        <app-icon [iconClass]="config.icons[savingRates ? 'busy' : 'save']"></app-icon>
+                        <app-icon [iconClass]="icons[savingRates ? 'busy' : 'save']"></app-icon>
                         {{ i18n('common.save') }}
                     </button>
                 </div>

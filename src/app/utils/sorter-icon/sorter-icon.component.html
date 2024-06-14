@@ -1,4 +1,4 @@
 <span (click)="onClick(); $event.stopPropagation();">
-    <app-icon [iconClass]="config.icons[sortAsc ? 'sortasc' : 'sortdesc']" [marginEnd]="1" [fontSize]="7"
+    <app-icon [iconClass]="icons[sortAsc ? 'sortasc' : 'sortdesc']" [marginEnd]="1" [fontSize]="7"
         [addCssClasses]="['pointer', columnName == sortBy ? 'text-primary' : 'text-muted']"></app-icon>
 </span>

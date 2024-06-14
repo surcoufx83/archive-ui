@@ -1,8 +1,9 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse, HttpStatusCode } from '@angular/common/http';
-import { Injectable, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { HttpClient, HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { AppConfig, ConfigService } from './config.service';
+import { environment } from 'src/environments/environment.dev';
+import { EnvironmentOAuth2Provider } from 'src/environments/types';
+import { ConfigService } from './config.service';
 import { I18nService } from './i18n.service';
 import { ApiReply, Session } from './if';
 import { ToastsService } from './utils/toasts.service';
@@ -10,18 +11,24 @@ import { ToastsService } from './utils/toasts.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService implements OnInit {
+export class AuthService {
 
   private loggedin: BehaviorSubject<boolean | undefined> = new BehaviorSubject<boolean | undefined>(undefined);
   public isLoggedIn = this.loggedin.asObservable();
+  private oauthProvider: EnvironmentOAuth2Provider;
   private session?: Session;
-  private storeName: string = 'ArcApiv2__Session';
+  private storeName: string = `${environment}Session`;
 
-  constructor(private configService: ConfigService,
+  constructor(
+    configService: ConfigService,
     private http: HttpClient,
-    private router: Router,
     private toastService: ToastsService,
     private i18nService: I18nService) {
+    if (!Object.keys(environment.api.auth.oauth2Providers).includes(location.hostname)) {
+      throw new Error(`The app configuration does not include the current hostname. Therefore this website will not work.`);
+    }
+    else
+      this.oauthProvider = environment.api.auth.oauth2Providers[location.hostname];
     let localSession: Session | string | null = localStorage.getItem(this.storeName);
     if (localSession != null) {
       localSession = <Session>JSON.parse(localSession);
@@ -35,10 +42,6 @@ export class AuthService implements OnInit {
     if (this.loggedin.value == undefined)
       this.loggedin.next(false);
     setTimeout(() => { this.ping(); }, 60000);
-  }
-
-  private get config(): AppConfig {
-    return this.configService.config;
   }
 
   public download(url: string): Subject<any> {
@@ -61,29 +64,19 @@ export class AuthService implements OnInit {
   }
 
   private get header(): { [key: string]: string } {
-    /* let header = new HttpHeaders();
-    if (this.config.auth.basic.enabled)
-      header = header.append('Authorization', 'Basic ' + window.btoa(this.config.auth.basic.user + ':' + this.config.auth.basic.password));
-    if (this.session)
-      return { AuthToken: this.session.token }; */
     return { AuthToken: this.session?.token || '' };
-    /* header = header.append('AuthToken', this.session.token);
-  return header; */
   }
 
   get isLoggedin(): boolean {
     return this.loggedin.value ?? false;
   }
 
-  /**
-   * login
-   */
   public login(username: string, password: string): Subject<ApiReply> {
     let reply: Subject<ApiReply> = new Subject<ApiReply>();
     let formdata = new FormData();
     formdata.append('archauth_login_username', username);
     formdata.append('archauth_login_password', password);
-    let url = this.config.auth.authUrl;
+    let url = `${environment.api.baseUrl}/auth/login`;
     this.http.post<ApiReply>(url, formdata).subscribe(
       (response) => {
         if (response.success && response.payload != undefined) {
@@ -112,39 +105,32 @@ export class AuthService implements OnInit {
     return reply;
   }
 
-  /**
-   * logout
-   */
   public logout() {
     localStorage.removeItem(this.storeName);
     this.session = undefined;
     this.loggedin.next(false);
-    this.router.navigate(['login']);
+    location.replace('/login');
   }
 
   public processOauth2Redirect(state: string, code: string): Subject<ApiReply> {
     let reply: Subject<ApiReply> = new Subject<ApiReply>();
-    let hostconfig = this.config.auth.oauth2.items[window.location.host];
-    if (!hostconfig) {
-      return reply;
-    }
     if (this.isLoggedin) {
       reply.next({ success: false, status: HttpStatusCode.TooEarly });
       return reply;
     }
-    if (hostconfig.state !== state) {
+    if (this.oauthProvider.state !== state) {
       reply.next({ success: false, status: HttpStatusCode.TooEarly });
       return reply;
     }
     let formdata = new FormData();
     formdata.append('archauth_oauth2_code', code);
     formdata.append('archauth_oauth2_state', state);
-    this.http.post<ApiReply>(hostconfig.tokenEndpoint, formdata).subscribe(
+    this.http.post<ApiReply>(`${environment.api.baseUrl}/auth/oauth2`, formdata).subscribe(
       (response) => {
         if (response.success && response.payload != undefined) {
           this.session = {
             token: response.payload['token'],
-            username: hostconfig.state
+            username: this.oauthProvider.state
           };
           localStorage.setItem(this.storeName, JSON.stringify(this.session));
           location.replace('/home');
@@ -166,7 +152,7 @@ export class AuthService implements OnInit {
 
   private ping(): void {
     if (this.isLoggedin) {
-      this.queryApi(this.config.api.baseUrl + '/ping').subscribe(() => {
+      this.queryApi(`${environment.api.baseUrl}/ping`).subscribe(() => {
         setTimeout(() => { this.ping(); }, 600000);
       });
     }
@@ -249,11 +235,7 @@ export class AuthService implements OnInit {
   }
 
   public updateApi2(urlpart: string, payload: any = {}): Subject<ApiReply> {
-    return this.updateApi(`${this.configService.config.api.baseUrl}/${urlpart}`, payload);
-  }
-
-  ngOnInit(): void {
-
+    return this.updateApi(`${environment.api.baseUrl}/${urlpart}`, payload);
   }
 
 }

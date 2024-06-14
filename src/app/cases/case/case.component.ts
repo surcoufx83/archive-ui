@@ -1,13 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { format } from 'date-fns';
+import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/auth.service';
-import { AppConfig, ConfigService } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
 import { Case, CaseStatus, CaseType, File, Party, UserSettings } from 'src/app/if';
-import { SettingsService } from 'src/app/utils/settings.service';
 import { FormatService } from 'src/app/utils/format.service';
-import { Subscription } from 'rxjs';
+import { SettingsService } from 'src/app/utils/settings.service';
+import { environment } from 'src/environments/environment.dev';
 
 @Component({
   selector: 'app-case',
@@ -19,46 +19,31 @@ export class CaseComponent implements OnDestroy, OnInit {
   activeRouteChild: string = '';
   busy: boolean = false;
   case: Case | null = null;
-  cases: { [key: number]: Case } = {};
   casefiles: File[] = [];
   caseid: number | null = null;
-  childs: number[] = [];
+  cases: { [key: number]: Case } = {};
   changes: { [key: string]: any } = {};
-  showDeleted: boolean = false;
-  showInRetention: boolean = false;
-  storagename: string = this.config.storage.prefix + 'casesData';
-  usersettingsObj: UserSettings | null = null;
-
+  childs: number[] = [];
+  icons = environment.icons;
   listOfCases: Case[] = [];
   listOfCaseStatus: CaseStatus[] = [];
   listOfCaseTypes: CaseType[] = [];
   listOfClients: Party[] = [];
   listOfParties: Party[] = [];
-
+  showDeleted: boolean = false;
+  showInRetention: boolean = false;
+  storagename: string = `${environment.localStoragePrefix}casesData`;
   subscriptions: Subscription[] = [];
+  usersettingsObj: UserSettings | null = null;
 
-  constructor(private authService: AuthService,
-    private configService: ConfigService,
+  constructor(
+    private authService: AuthService,
     private i18nService: I18nService,
     private route: ActivatedRoute,
     private userSettings: SettingsService,
     public formatService: FormatService,
-    public router: Router) {
-    this.subscriptions.push(this.userSettings.settings$.subscribe((settings) => {
-      this.usersettingsObj = settings;
-    }));
-    this.subscriptions.push(this.i18nService.loaded.subscribe((v) => {
-      if (v === true) {
-        this.listOfCaseStatus = this.listOfCaseStatus.sort((a, b) => this.i18n('casestatus.' + a.name) > this.i18n('casestatus.' + b.name) ? 1 : -1);
-        this.listOfCaseTypes = this.listOfCaseTypes.sort((a, b) => this.i18n('casetype.' + a.name) > this.i18n('casetype.' + b.name) ? 1 : -1);
-      }
-    }));
-    this.subscriptions.push(this.router.events.subscribe((e) => {
-      if (e instanceof NavigationEnd) {
-        this.activeRouteChild = this.route.snapshot.url.length == 3 ? this.route.snapshot.url[2].path : '';
-        this.loadCase(+this.route.snapshot.url[1].path);
-      }
-    }));
+    public router: Router,
+  ) {
     this.i18nService.setTitle('case.pagetitleNocase');
   }
 
@@ -68,10 +53,6 @@ export class CaseComponent implements OnDestroy, OnInit {
 
   changeShowRetention(switchvalue: boolean): void {
     this.userSettings.showCasesInRetention(switchvalue);
-  }
-
-  get config(): AppConfig {
-    return this.configService.config;
   }
 
   duration(duration: Duration | null): string {
@@ -128,7 +109,7 @@ export class CaseComponent implements OnDestroy, OnInit {
         this.case.period.period = this.case.period.period ?? {};
         this.case.period.minperiod = this.case.period.minperiod ?? {};
         this.case.period.terminationperiod = this.case.period.terminationperiod ?? {};
-        let url = `${this.config.api.baseUrl}/case/${this.case.id}/files`;
+        let url = `${environment.api.baseUrl}/case/${this.case.id}/files`;
         this.authService.queryApi(url).subscribe((reply) => {
           if (reply.success && reply.payload && reply.payload['files']) {
             this.casefiles = (<File[]>reply.payload['files']).sort((a, b) => a.name > b.name ? 1 : -1);
@@ -144,6 +125,21 @@ export class CaseComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
+    this.subscriptions.push(this.userSettings.settings$.subscribe((settings) => {
+      this.usersettingsObj = settings;
+    }));
+    this.subscriptions.push(this.i18nService.loaded.subscribe((v) => {
+      if (v === true) {
+        this.listOfCaseStatus = this.listOfCaseStatus.sort((a, b) => this.i18n('casestatus.' + a.name) > this.i18n('casestatus.' + b.name) ? 1 : -1);
+        this.listOfCaseTypes = this.listOfCaseTypes.sort((a, b) => this.i18n('casetype.' + a.name) > this.i18n('casetype.' + b.name) ? 1 : -1);
+      }
+    }));
+    this.subscriptions.push(this.router.events.subscribe((e) => {
+      if (e instanceof NavigationEnd) {
+        this.activeRouteChild = this.route.snapshot.url.length == 3 ? this.route.snapshot.url[2].path : '';
+        this.loadCase(+this.route.snapshot.url[1].path);
+      }
+    }));
     this.subscriptions.push(this.userSettings.clientSettings$.subscribe((settings) => {
       this.showDeleted = settings.casesettings.showCasesInDeletion;
       this.showInRetention = settings.casesettings.showCasesInRetention;

@@ -1,30 +1,26 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AppConfig, ConfigService } from 'src/app/config.service';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { I18nService } from 'src/app/i18n.service';
+import { environment } from 'src/environments/environment.dev';
 
 @Component({
   selector: 'app-period-dropdown-menu',
   templateUrl: './period-dropdown-menu.component.html',
   styleUrls: ['./period-dropdown-menu.component.scss']
 })
-export class PeriodDropdownMenuComponent implements OnInit {
+export class PeriodDropdownMenuComponent {
 
   @Input({ required: true }) period: Duration | null = null;
   @Input({ required: true }) idprefix!: string;
   @Output() changed = new EventEmitter();
 
-  constructor(private configService: ConfigService,
-    private i18nService: I18nService) { }
+  icons = environment.icons;
 
-  ngOnInit(): void {
-  }
+  constructor(
+    private i18nService: I18nService
+  ) { }
 
   change(): void {
     this.changed.emit(this.period);
-  }
-
-  get config(): AppConfig {
-    return this.configService.config;
   }
 
   i18n(key: string, params: string[] = []): string {

@@ -1,6 +1,6 @@
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { registerLocaleData } from '@angular/common';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import localeDe from '@angular/common/locales/de';
 import localeFr from '@angular/common/locales/fr';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
@@ -10,6 +10,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { NgChartsModule } from 'ng2-charts';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { MarkdownModule } from 'ngx-markdown';
 import { AccountComponent } from './account/account.component';
@@ -50,7 +51,6 @@ import { LoginComponent } from './login/login.component';
 import { Oauth2CallbackComponent } from './login/oauth2-callback/oauth2-callback.component';
 import { LogoutComponent } from './logout/logout.component';
 import { ReadingsComponent } from './meters/readings/readings.component';
-import { NotepadComponent } from './notepad/notepad.component';
 import { NoteComponent } from './notepad2/note/note.component';
 import { Notepad2Component } from './notepad2/notepad2.component';
 import { SidebarComponent } from './notepad2/sidebar/sidebar.component';
@@ -90,7 +90,6 @@ import { WorkDayComponent } from './work/work-day/work-day.component';
 import { WorkMonthComponent } from './work/work-month/work-month.component';
 import { WorkYearComponent } from './work/work-year/work-year.component';
 import { WorkComponent } from './work/work.component';
-import { DeviceDetectorService } from 'ngx-device-detector';
 
 registerLocaleData(localeDe);
 registerLocaleData(localeFr);
@@ -102,8 +101,9 @@ registerLocaleData(localeFr);
         AppComponent,
         ButtonComponent,
         CaseComponent,
-        CasesComponent,
         CaseListItemComponent,
+        CasesComponent,
+        ConfirmDeletionComponent,
         DashboardComponent,
         DbClassesComponent,
         DbContactTypeComponent,
@@ -116,8 +116,8 @@ registerLocaleData(localeFr);
         DbRootdirComponent,
         DummyComponent,
         FileComponent,
-        FilesComponent,
         FileListItemComponent,
+        FilesComponent,
         FinanceComponent,
         FolderBrowserDialogComponent,
         H2Component,
@@ -128,7 +128,9 @@ registerLocaleData(localeFr);
         IconComponent,
         LoginComponent,
         LogoutComponent,
-        NotepadComponent,
+        NavbarComponent,
+        NoteComponent,
+        Notepad2Component,
         Oauth2CallbackComponent,
         PeriodDropdownMenuComponent,
         PriceComparisonComponent,
@@ -137,7 +139,9 @@ registerLocaleData(localeFr);
         ReceiptsComponent,
         SearchComponent,
         ShoppingComponent,
+        SidebarComponent,
         SorterIconComponent,
+        StockOrdersComponent,
         StocksComponent,
         StorageRoomComponent,
         SubNavbarComponent,
@@ -145,6 +149,7 @@ registerLocaleData(localeFr);
         TaxComponent,
         ToastComponent,
         ToastContainerComponent,
+        TooltipDirective,
         UiBusyIndicatorComponent,
         UiCenteredBusyIndicatorComponent,
         WarehouseComponent,
@@ -161,48 +166,37 @@ registerLocaleData(localeFr);
         WorkProjectsComponent,
         WorkTimeCategoriesComponent,
         WorkYearComponent,
-        NavbarComponent,
-        TooltipDirective,
-        ConfirmDeletionComponent,
-        StockOrdersComponent,
-        Notepad2Component,
-        SidebarComponent,
-        NoteComponent,
     ],
     bootstrap: [
-        AppComponent
+        AppComponent,
     ],
     imports: [
         AppRoutingModule,
-        BrowserModule,
         BrowserAnimationsModule,
-        CalendarModule.forRoot({
-            provide: DateAdapter,
-            useFactory: adapterFactory,
-        }),
+        BrowserModule,
+        CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory, }),
         DragDropModule,
         FormsModule,
         MarkdownModule.forRoot(),
-        NgxEchartsModule.forRoot({
-            echarts: () => import('echarts')
-        }),
         NgChartsModule,
-        ReactiveFormsModule
+        NgxEchartsModule.forRoot({ echarts: () => import('echarts') }),
+        ReactiveFormsModule,
     ],
     providers: [
-        { provide: DeviceDetectorService },
+        { provide: DeviceDetectorService, multi: false },
+        { provide: ConfigService, multi: false },
+        { provide: I18nService, multi: false },
+        { provide: StorageService, multi: false },
+        { provide: ToastsService, multi: false },
+        provideHttpClient(withInterceptorsFromDi()),
         {
             provide: APP_INITIALIZER,
-            deps: [ConfigService, DeviceDetectorService],
-            multi: true,
-            useFactory: (configService: ConfigService) => () => configService.loadAppConfig()
+            deps: [ConfigService, DeviceDetectorService, HttpClient, I18nService, StorageService, ToastsService],
+            multi: false,
+            useFactory: (configService: ConfigService) => configService.init()
         },
-        { provide: I18nService, multi: false, },
-        { provide: ToastsService, multi: false, },
-        { provide: AuthService, multi: false, },
-        { provide: StorageService, multi: false, },
-        { provide: SettingsService, multi: false, },
-        provideHttpClient(withInterceptorsFromDi()),
+        { provide: AuthService, multi: false, deps: [ConfigService, HttpClient, ToastsService] },
+        { provide: SettingsService, multi: false },
     ]
 })
 export class AppModule { }

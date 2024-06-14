@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { format } from 'date-fns';
+import { Subscription } from 'rxjs';
 import { UserSettings, WorkLead } from 'src/app/if';
-import { AuthService } from '../../auth.service';
-import { AppConfig, ConfigService } from '../../config.service';
+import { environment } from 'src/environments/environment.dev';
 import { I18nService } from '../../i18n.service';
 import { SettingsService } from '../../utils/settings.service';
 
@@ -12,29 +12,21 @@ import { SettingsService } from '../../utils/settings.service';
   templateUrl: './leads.component.html',
   styleUrls: ['./leads.component.scss']
 })
-export class WorkLeadsComponent implements OnInit {
+export class WorkLeadsComponent implements OnDestroy, OnInit {
 
   busy: boolean = false;
+  icons = environment.icons;
   leads: WorkLead[] = [];
   leadsLoading: boolean = false;
+  subscriptions: Subscription[] = [];
   usersettingsObj: UserSettings | null = null;
 
-  constructor(private authService: AuthService,
-    private configService: ConfigService,
+  constructor(
     private i18nService: I18nService,
+    private router: Router,
     private userSettings: SettingsService,
-    private router: Router) {
-    this.userSettings.settings$.subscribe((settings) => {
-      this.usersettingsObj = settings;
-    });
-    this.userSettings.workLeads$.subscribe((leads) => {
-      this.leads = Object.values(leads).sort((a, b) => (b.date_reported > a.date_reported ? 1 : -1));
-    });
+  ) {
     this.i18nService.setTitle('leads.title');
-  }
-
-  get config(): AppConfig {
-    return this.configService.config;
   }
 
   f(date: Date | string, form: string): string {
@@ -55,8 +47,15 @@ export class WorkLeadsComponent implements OnInit {
     return this.i18nService.Locale;
   }
 
-  ngOnInit(): void {
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
 
+  ngOnInit(): void {
+    this.subscriptions.push(this.userSettings.settings$.subscribe((settings) => this.usersettingsObj = settings));
+    this.subscriptions.push(this.userSettings.workLeads$.subscribe((leads) => {
+      this.leads = Object.values(leads).sort((a, b) => (b.date_reported > a.date_reported ? 1 : -1));
+    }));
   }
 
 }

@@ -27,10 +27,9 @@ import { LoginComponent } from './login/login.component';
 import { Oauth2CallbackComponent } from './login/oauth2-callback/oauth2-callback.component';
 import { LogoutComponent } from './logout/logout.component';
 import { ReadingsComponent } from './meters/readings/readings.component';
-import { NotepadComponent } from './notepad/notepad.component';
+import { Notepad2Component } from './notepad2/notepad2.component';
 import { SearchComponent } from './search/search.component';
 import { SessionGuard } from './session-guard.guard';
-import { DummyComponent } from './utils/dummy/dummy.component';
 import { StorageRoomComponent } from './warehouse/storage-room/storage-room.component';
 import { WarehouseComponent } from './warehouse/warehouse.component';
 import { WorkLeadComponent } from './work/leads/lead/lead.component';
@@ -39,10 +38,8 @@ import { WorkCustomerComponent } from './work/settings/customers/customer/custom
 import { WorkCustomersComponent } from './work/settings/customers/customers.component';
 import { WorkDayComponent } from './work/work-day/work-day.component';
 import { WorkMonthComponent } from './work/work-month/work-month.component';
-import { WorkComponent } from './work/work.component';
-import { Notepad2Component } from './notepad2/notepad2.component';
-import { NoteComponent } from './notepad2/note/note.component';
 import { WorkYearComponent } from './work/work-year/work-year.component';
+import { WorkComponent } from './work/work.component';
 
 const routes: Routes = [
   { path: 'account', component: AccountComponent, canActivate: [SessionGuard] },
@@ -90,8 +87,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [SessionGuard], pathMatch: 'full' },
   { path: 'login/oauth2', component: Oauth2CallbackComponent, canActivate: [SessionGuard] },
   { path: 'logout', component: LogoutComponent, canActivate: [SessionGuard] },
-  { path: 'notepad', component: NotepadComponent, canActivate: [SessionGuard] },
-  { path: 'notepad2', component: Notepad2Component, canActivate: [SessionGuard] },
+  { path: 'notepad', component: Notepad2Component, canActivate: [SessionGuard] },
   { path: 'price-comparison', component: PriceComparisonComponent, canActivate: [SessionGuard] },
   { path: 'readings', component: ReadingsComponent, canActivate: [SessionGuard], pathMatch: 'full' },
   { path: 'receipts', component: ReceiptsComponent, canActivate: [SessionGuard] },

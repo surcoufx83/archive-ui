@@ -194,6 +194,7 @@ export const L10nArchiveDeLocale: L10nArchiveLocale = {
             Job_PaySlip: "Lohnzettel",
             Job_PaySlip2: "Lohnzettel",
             Legal_Deed: "Beglaubigte Urkunde",
+            Legal_LayJudge_CompensationForm: "Schöffe: Entschädigungsformular",
             Legal_LayJudge_InvitationTrial: "Schöffe: Einladung Hauptverhandlung",
             Legal_LayJudge_ReservedDates: "Schöffe: Mögliche Termine im Jahr",
             Legal_Mandate: "Vollmacht, Mandat",

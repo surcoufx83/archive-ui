@@ -1,13 +1,14 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { saveAs } from 'file-saver-es';
+import { Subscription, first } from 'rxjs';
 import { Address, ButtonType, Case, Class, ContactType, File, Page, Party, PartyContact, Tag, UserSettings, Version } from 'src/app/if';
 import { FileService } from 'src/app/utils/file.service';
 import { FormatService } from 'src/app/utils/format.service';
 import { ToastsService } from 'src/app/utils/toasts.service';
+import { environment } from 'src/environments/environment.dev';
 import { AuthService } from '../../auth.service';
-import { AppConfig, ConfigService } from '../../config.service';
+import { ConfigService } from '../../config.service';
 import { I18nService } from '../../i18n.service';
 import { SettingsService } from '../../utils/settings.service';
 import { SelectedItem } from '../folder-browser-dialog/folder-browser-dialog.component';
@@ -17,48 +18,48 @@ import { SelectedItem } from '../folder-browser-dialog/folder-browser-dialog.com
   templateUrl: './file.component.html',
   styleUrls: ['./file.component.scss']
 })
-export class FileComponent implements OnInit {
+export class FileComponent implements OnDestroy, OnInit {
 
-  @ViewChild('imgViewer') imgViewer?: ElementRef;
-  @ViewChild('htmlViewer') htmlViewer?: ElementRef;
   @ViewChild('embeddedObjectElement') objectViewer?: ElementRef;
+  @ViewChild('htmlViewer') htmlViewer?: ElementRef;
+  @ViewChild('imgViewer') imgViewer?: ElementRef;
 
+  addresses: Address[] = [];
+  ai_classifiedAddress: Address | null = null;
+  ai_classifiedAddressConfidence: number = 0.0;
+  ai_classifiedAs: Class | null = null;
+  ai_classifiedCase: Case | null = null;
+  ai_classifiedCaseConfidence: number = 0.0;
+  ai_classifiedConfidence: number = 0.0;
+  ai_classifiedDate: string[] = [];
   busy: boolean = false;
+  casefilestatus: string[] = [];
+  cases: Case[] = [];
   changes: { [key: string]: any } = {};
+  classes: Class[] = [];
+  clients: Party[] = [];
+  contacts: PartyContact[] = [];
+  contacttypes: ContactType[] = [];
   debounce?: any;
   file?: File;
   filecontent?: Blob;
   fileid: number = -1;
   filetagInput: string = '';
   guessing: boolean = false;
+  icons = environment.icons;
   maxyear: number = new Date().getFullYear();
+  parties: Party[] = [];
   recentVersion: Version | null | undefined;
+  showMoveToFolderBrowser: boolean = false;
+  subscriptions: Subscription[] = [];
+  tags: Tag[] = [];
   textcontent: string[] = [];
   updating: boolean = false;
   usersettingsObj: UserSettings | null = null;
   view: string = '';
 
-  addresses: Address[] = [];
-  cases: Case[] = [];
-  casefilestatus: string[] = [];
-  classes: Class[] = [];
-  clients: Party[] = [];
-  contacts: PartyContact[] = [];
-  contacttypes: ContactType[] = [];
-  parties: Party[] = [];
-  tags: Tag[] = [];
-
-  ai_classifiedAs: Class | null = null;
-  ai_classifiedConfidence: number = 0.0;
-  ai_classifiedAddress: Address | null = null;
-  ai_classifiedAddressConfidence: number = 0.0;
-  ai_classifiedCase: Case | null = null;
-  ai_classifiedCaseConfidence: number = 0.0;
-  ai_classifiedDate: string[] = [];
-
-  showMoveToFolderBrowser: boolean = false;
-
-  constructor(private authService: AuthService,
+  constructor(
+    private authService: AuthService,
     private configService: ConfigService,
     private i18nService: I18nService,
     private route: ActivatedRoute,
@@ -67,47 +68,15 @@ export class FileComponent implements OnInit {
     public formatService: FormatService,
     private fileService: FileService,
     private toastService: ToastsService,
-    private sanitizer: DomSanitizer) {
+  ) {
     this.userSettings.loadArchiveSettings();
-    this.userSettings.settings$.subscribe((settings) => { this.usersettingsObj = settings; });
-    this.userSettings.addresses$.subscribe((addresses) => {
-      this.addresses = Object.values(addresses);
-      this.addresses.sort((a, b) => { return (a.name1 + a.street + a.zip + a.city).toLowerCase() > (b.name1 + b.street + b.zip + b.city).toLowerCase() ? 1 : (a.name1 + a.street + a.zip + a.city).toLowerCase() < (b.name1 + b.street + b.zip + b.city).toLowerCase() ? -1 : 0 });
-    });
-    this.userSettings.cases$.subscribe((cases) => {
-      this.cases = Object.values(cases);
-      this.cases.sort((a, b) => { return a.casepath > b.casepath ? 1 : a.casepath < b.casepath ? -1 : 0 });
-    });
-    this.userSettings.caseFileStatus$.subscribe((status) => { this.casefilestatus = status; });
-    this.userSettings.classes$.subscribe((classes) => {
-      this.classes = classes;
-      this.classes.forEach((item) => { item.name = this.i18n('classify.classes.' + item.techname) });
-      this.classes.sort((a, b) => { return a.name > b.name ? 1 : a.name < b.name ? -1 : 0 });
-    });
-    this.userSettings.clients$.subscribe((clients) => {
-      this.clients = Object.values(clients);
-      this.clients.sort((a, b) => { return a.name1 > b.name1 ? 1 : a.name1 < b.name1 ? -1 : 0 });
-    });
-    this.userSettings.contacts$.subscribe((contacts) => { this.contacts = Object.values(contacts); });
-    this.userSettings.contactTypes$.subscribe((contacttypes) => { this.contacttypes = Object.values(contacttypes); });
-    this.userSettings.parties$.subscribe((parties) => {
-      this.parties = Object.values(parties);
-      this.parties.sort((a, b) => { return a.name1 > b.name1 ? 1 : a.name1 < b.name1 ? -1 : 0 });
-    });
-    this.userSettings.tags$.subscribe((tags) => {
-      this.tags = Object.values(tags).sort((a, b) => a.value > b.value ? 1 : -1);
-    });
-  }
-
-  get config(): AppConfig {
-    return this.configService.config;
   }
 
   delete(file: File): void {
     if (window.confirm(this.i18n('file.housekeeping.delete.confirm'))) {
       this.busy = true;
-      let url = this.config.api.baseUrl + '/file/' + file.id + '/delete';
-      this.authService.updateApi(url, {}).subscribe((reply) => {
+      let url = `${environment.api.baseUrl}/file/${file.id}/delete`;
+      this.authService.updateApi(url, {}).pipe(first()).subscribe((reply) => {
         if (reply.success) {
           this.file = undefined;
           this.nextFile();
@@ -131,7 +100,7 @@ export class FileComponent implements OnInit {
     if (this.file == null)
       return;
     let file = this.file;
-    this.authService.download(this.fileurl).subscribe(blob => saveAs(blob, file.name));
+    this.authService.download(this.fileurl).pipe(first()).subscribe(blob => saveAs(blob, file.name));
   }
 
   private downloadFile(id: number): void {
@@ -145,10 +114,9 @@ export class FileComponent implements OnInit {
       }
     }
     if (this.recentVersion != undefined) {
-      let url = this.config.api.baseUrl + '/file/' + id + '/download';
-      this.authService.download(url).subscribe(async (reply) => {
+      let url = `${environment.api.baseUrl}/file/${id}/download`;
+      this.authService.download(url).pipe(first()).subscribe(async (reply) => {
         this.filecontent = reply;
-        console.log(this.getViewer())
         if (this.getViewer() === 'html' && this.htmlViewer != undefined) {
           let document = this.htmlViewer.nativeElement.contentWindow.document;
           document.open();
@@ -176,7 +144,7 @@ export class FileComponent implements OnInit {
   }
 
   get fileurl(): string {
-    return this.config.api.baseUrl + '/file/' + this.file?.id + '/download';
+    return `${environment.api.baseUrl}/file/${this.file?.id}/download`;
   }
 
   getTag(id: number): Tag | null {
@@ -207,9 +175,11 @@ export class FileComponent implements OnInit {
   }
 
   guess(): void {
-    let url = this.config.api.baseUrl + '/file/' + this.file!.id + '/guess';
+    if (!this.file)
+      return;
+    let url = `${environment.api.baseUrl}/file/${this.file.id}/guess`;
     this.guessing = true;
-    this.authService.updateApi(url, { classid: this.file!.classid }).subscribe((reply) => {
+    this.authService.updateApi(url, { classid: this.file!.classid }).pipe(first()).subscribe((reply) => {
       if (reply && reply.payload && reply.payload['class']) {
         if (reply.payload['address']['address']) {
           this.ai_classifiedAddress = <Address>reply.payload['address']['address'];
@@ -261,8 +231,8 @@ export class FileComponent implements OnInit {
       this.downloadFile(this.file.id);
       return;
     }
-    let url = this.config.api.baseUrl + '/file/' + id;
-    this.authService.queryApi(url).subscribe((reply) => {
+    let url = `${environment.api.baseUrl}/file/${id}`;
+    this.authService.queryApi(url).pipe(first()).subscribe((reply) => {
       if (reply.success && reply.payload != undefined) {
         this.file = <File>reply.payload['file'];
         this.fileid = this.file.id;
@@ -280,10 +250,8 @@ export class FileComponent implements OnInit {
   moveTo(e: SelectedItem): void {
     console.log(e);
     if (e.clickedButton == ButtonType.Ok && this.file && e.selectedFolder) {
-      let url = this.config.api.baseUrl + '/file/' + this.file.id + '/move';
-      this.authService.updateApi(url, {
-        folder: e.selectedFolder.id
-      }).subscribe((reply) => {
+      let url = `${environment.api.baseUrl}/file/${this.file.id}/move`;
+      this.authService.updateApi(url, { folder: e.selectedFolder.id }).pipe(first()).subscribe((reply) => {
         if (reply.success && reply.payload && reply.payload['file']) {
           this.file = <File>reply.payload['file'];
           let key = 'file__' + this.file.id;
@@ -296,8 +264,8 @@ export class FileComponent implements OnInit {
   }
 
   nextFile(): void {
-    let url = this.config.api.baseUrl + '/file/next';
-    this.authService.queryApi(url).subscribe((reply) => {
+    let url = `${environment.api.baseUrl}/file/next`;
+    this.authService.queryApi(url).pipe(first()).subscribe((reply) => {
       if (reply.errno === 204) {
         this.toastService.warn(this.i18nService.i18n('file.errors.noNextFile.title'),
           this.i18nService.i18n('file.errors.noNextFile.message'));
@@ -317,15 +285,47 @@ export class FileComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
+
   ngOnInit(): void {
-    this.route.paramMap.subscribe((params: ParamMap) => {
+    this.subscriptions.push(this.route.paramMap.subscribe((params: ParamMap) => {
       let showview = params.get('view');
       this.view = showview ?? '';
       let id = params.get('id');
       if (!id)
         return;
       this.loadFile(+id);
-    });
+    }));
+    this.subscriptions.push(this.userSettings.settings$.subscribe((settings) => this.usersettingsObj = settings));
+    this.subscriptions.push(this.userSettings.addresses$.subscribe((addresses) => {
+      this.addresses = Object.values(addresses);
+      this.addresses.sort((a, b) => { return (a.name1 + a.street + a.zip + a.city).toLowerCase() > (b.name1 + b.street + b.zip + b.city).toLowerCase() ? 1 : (a.name1 + a.street + a.zip + a.city).toLowerCase() < (b.name1 + b.street + b.zip + b.city).toLowerCase() ? -1 : 0 });
+    }));
+    this.subscriptions.push(this.userSettings.cases$.subscribe((cases) => {
+      this.cases = Object.values(cases);
+      this.cases.sort((a, b) => { return a.casepath > b.casepath ? 1 : a.casepath < b.casepath ? -1 : 0 });
+    }));
+    this.subscriptions.push(this.userSettings.caseFileStatus$.subscribe((status) => { this.casefilestatus = status; }));
+    this.subscriptions.push(this.userSettings.classes$.subscribe((classes) => {
+      this.classes = classes;
+      this.classes.forEach((item) => { item.name = this.i18n('classify.classes.' + item.techname) });
+      this.classes.sort((a, b) => { return a.name > b.name ? 1 : a.name < b.name ? -1 : 0 });
+    }));
+    this.subscriptions.push(this.userSettings.clients$.subscribe((clients) => {
+      this.clients = Object.values(clients);
+      this.clients.sort((a, b) => { return a.name1 > b.name1 ? 1 : a.name1 < b.name1 ? -1 : 0 });
+    }));
+    this.subscriptions.push(this.userSettings.contacts$.subscribe((contacts) => { this.contacts = Object.values(contacts); }));
+    this.subscriptions.push(this.userSettings.contactTypes$.subscribe((contacttypes) => { this.contacttypes = Object.values(contacttypes); }));
+    this.subscriptions.push(this.userSettings.parties$.subscribe((parties) => {
+      this.parties = Object.values(parties);
+      this.parties.sort((a, b) => { return a.name1 > b.name1 ? 1 : a.name1 < b.name1 ? -1 : 0 });
+    }));
+    this.subscriptions.push(this.userSettings.tags$.subscribe((tags) => {
+      this.tags = Object.values(tags).sort((a, b) => a.value > b.value ? 1 : -1);
+    }));
   }
 
   get pages(): Page[] | null {
@@ -362,14 +362,14 @@ export class FileComponent implements OnInit {
   }
 
   submitFile(): void {
+    if (Object.keys(this.changes).length == 0 || !this.file)
+      return;
     if (this.debounce)
       clearTimeout(this.debounce);
-    if (Object.keys(this.changes).length == 0)
-      return;
     this.debounce = setTimeout(() => {
       this.updating = true;
-      let url = this.config.api.baseUrl + '/file/' + this.file!.id;
-      this.authService.updateApi(url, this.changes).subscribe((reply) => {
+      let url = `${environment.api.baseUrl}/file/${this.file!.id}/guess`;
+      this.authService.updateApi(url, this.changes).pipe(first()).subscribe((reply) => {
         this.updating = false;
       });
     }, 500);
@@ -385,8 +385,8 @@ export class FileComponent implements OnInit {
         return;
       }
     });
-    let url: string = `${this.config.api.baseUrl}/file/${this.file.id}/tags/add`;
-    this.authService.updateApi(url, { id: tagid, value: this.filetagInput }).subscribe((reply) => {
+    let url: string = `${environment.api.baseUrl}/file/${this.file.id}/tags/add`;
+    this.authService.updateApi(url, { id: tagid, value: this.filetagInput }).pipe(first()).subscribe((reply) => {
       if (reply.success && reply.payload && reply.payload['file']) {
         this.userSettings.syncTags();
         this.file = <File>reply.payload['file'];
@@ -398,8 +398,8 @@ export class FileComponent implements OnInit {
   untagFile(tag: Tag): void {
     if (!this.file || this.file == null)
       return;
-    let url: string = `${this.config.api.baseUrl}/file/${this.file.id}/tags/${tag.id}/delete`;
-    this.authService.updateApi(url, {}).subscribe((reply) => {
+    let url: string = `${environment.api.baseUrl}/file/${this.file.id}/tags/${tag.id}/delete`;
+    this.authService.updateApi(url, {}).pipe(first()).subscribe((reply) => {
       if (reply.success && reply.payload && reply.payload['file'])
         this.file = <File>reply.payload['file'];
     });

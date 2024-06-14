@@ -1,7 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { ConfigService, AppConfig } from 'src/app/config.service';
-import { SelectedItem } from 'src/app/files/folder-browser-dialog/folder-browser-dialog.component';
 import { I18nService } from 'src/app/i18n.service';
+import { environment } from 'src/environments/environment.dev';
 
 @Component({
   selector: 'confirm-deletion',
@@ -16,18 +15,14 @@ export class ConfirmDeletionComponent {
   @Input() question: string = '';
   @Input() scrollable: boolean = false;
   @Input() title: string = '';
-  
   @Output() cancel = new EventEmitter();
   @Output() confirm = new EventEmitter();
-  
   @ViewChild('.modal') modal?: ElementRef;
 
-  constructor(private configService: ConfigService,
-    private i18nService: I18nService) {
-  }
+  icons = environment.icons;
 
-  get config(): AppConfig {
-    return this.configService.config;
+  constructor(
+    private i18nService: I18nService) {
   }
 
   i18n(key: string, params: string[] = []): string {

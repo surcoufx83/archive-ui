@@ -1,9 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { UserSettings } from 'src/app/if';
-import { AuthService } from '../auth.service';
-import { AppConfig, ConfigService, NavbarItem } from '../config.service';
+import { NavbarItem } from '../config.service';
 import { I18nService } from '../i18n.service';
 import { SettingsService } from '../utils/settings.service';
 
@@ -12,9 +10,8 @@ import { SettingsService } from '../utils/settings.service';
   templateUrl: './work.component.html',
   styleUrls: ['./work.component.scss']
 })
-export class WorkComponent implements OnInit {
+export class WorkComponent implements OnDestroy, OnInit {
 
-  settingsObj: UserSettings | null = null;
   navitems: NavbarItem[] = [
     {
       title: "navbar.workitems.today",
@@ -45,24 +42,28 @@ export class WorkComponent implements OnInit {
       link: "/work/settings"
     }
   ];
+  settingsObj: UserSettings | null = null;
+  subscriptions: Subscription[] = [];
 
-  constructor(private configService: ConfigService,
+  constructor(
     private i18nService: I18nService,
-    private settings: SettingsService) {
-    this.settings.settings$.subscribe((settings) => {
-      this.settingsObj = settings;
-    });
+    private settings: SettingsService
+  ) {
     this.i18nService.setTitle('work.pagetitle');
-  }
-
-  get config(): AppConfig {
-    return this.configService.config;
   }
 
   i18n(key: string): string {
     return this.i18nService.i18n(key);
   }
 
-  ngOnInit(): void { }
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
+
+  ngOnInit(): void {
+    this.subscriptions.push(this.settings.settings$.subscribe((settings) => {
+      this.settingsObj = settings;
+    }));
+  }
 
 }

@@ -1,12 +1,12 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { format, getDate, parseISO } from 'date-fns';
+import { format } from 'date-fns';
+import { Subscription, first } from 'rxjs';
 import { AuthService } from 'src/app/auth.service';
-import { AppConfig, ConfigService } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
 import { ApiReply, Currency, Stock, StockApi } from 'src/app/if';
-import { SettingsService } from 'src/app/utils/settings.service';
 import { FormatService } from 'src/app/utils/format.service';
-import { Subscription } from 'rxjs';
+import { SettingsService } from 'src/app/utils/settings.service';
+import { environment } from 'src/environments/environment.dev';
 
 @Component({
   selector: 'app-stocks',
@@ -15,35 +15,33 @@ import { Subscription } from 'rxjs';
 })
 export class StocksComponent implements OnDestroy, OnInit {
 
+  @ViewChild('closeRatesModalButton') closeRatesModalButton?: ElementRef;
+
+  currentRates: RateDate | null = null;
+  currentSkipWithApi: boolean = true;
+  icons = environment.icons;
+  savingRates: boolean = false;
   showMoreId: number = 0;
   sortColumns: string[] = ['difrel', 'name'];
   stocks: Stock[] = [];
   stocksStore: Stock[] = [];
+  subscription?: Subscription;
   valueBought: number = 0;
   valueCurrent: number = 0;
   valueDifAbs: number = 0;
   valueDifRel: number = 0;
-  currentRates: RateDate | null = null;
-  currentSkipWithApi: boolean = true;
-  savingRates: boolean = false;
-  @ViewChild('closeRatesModalButton') closeRatesModalButton?: ElementRef;
 
-  subscription?: Subscription;
-
-  constructor(private authService: AuthService,
-    private configService: ConfigService,
+  constructor(
+    private authService: AuthService,
     private i18nService: I18nService,
     private userSettings: SettingsService,
-    public formatService: FormatService) {
+    public formatService: FormatService
+  ) {
     this.i18nService.setTitle('stocks.pagetitle');
   }
 
   api(api: number | null): StockApi | null {
     return this.userSettings.getStocksApi(api);
-  }
-
-  get config(): AppConfig {
-    return this.configService.config;
   }
 
   createNewRates(keepdate?: boolean): void {
@@ -66,8 +64,7 @@ export class StocksComponent implements OnDestroy, OnInit {
   }
 
   ngOnDestroy(): void {
-    if (this.subscription)
-      this.subscription.unsubscribe();
+    this.subscription?.unsubscribe();
   }
 
   ngOnInit(): void {
@@ -90,7 +87,7 @@ export class StocksComponent implements OnDestroy, OnInit {
     if (this.savingRates || !record)
       return;
     this.savingRates = true;
-    this.authService.updateApi2('money/stocks/rates', record).subscribe((reply: ApiReply) => {
+    this.authService.updateApi2('money/stocks/rates', record).pipe(first()).subscribe((reply: ApiReply) => {
       this.savingRates = false;
       this.userSettings.resyncFinance();
       this.closeRatesModalButton?.nativeElement?.dispatchEvent(new MouseEvent('click', { bubbles: true }));

@@ -1,13 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { format } from 'date-fns';
+import { Subscription, first } from 'rxjs';
 import { AuthService } from 'src/app/auth.service';
-import { AppConfig, ConfigService } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
 import { Country, Currency, Party, Receipt, ReceiptArticle, ReceiptArticleCategory, TaxRate, UserSettings } from 'src/app/if';
-import { SettingsService } from 'src/app/utils/settings.service';
 import { FormatService } from 'src/app/utils/format.service';
+import { SettingsService } from 'src/app/utils/settings.service';
 import { ToastsService } from 'src/app/utils/toasts.service';
+import { environment } from 'src/environments/environment.dev';
 
 @Component({
   selector: 'app-receipts',
@@ -16,37 +17,36 @@ import { ToastsService } from 'src/app/utils/toasts.service';
 })
 export class ReceiptsComponent implements OnInit, OnDestroy {
 
-  activeArticleIndex: number = -1;
   activeArticleDropdownItems: ReceiptArticle[] = [];
   activeArticleDropdownPickIndex = -1;
+  activeArticleIndex: number = -1;
   articles: ReceiptArticle[] = [];
   busy: boolean = false;
-  storagename: string = this.config.storage.prefix + 'receiptsData';
   categories: ReceiptArticleCategory[] = [];
   clients: Party[] = [];
   countries: Country[] = [];
   currencies: Currency[] = [];
+  defaultCurrency: Currency | null = null;
+  icons = environment.icons;
   parties: Party[] = [];
   receipts: Receipt[] = [];
+  selectedReceipt: Receipt | null = null;
+  selectedTotals: ReceiptTotals = { items: 0, discount: 0, deposit: 0, singleprice: 0, gross: 0 };
+  storagename: string = `${environment.localStoragePrefix}receiptsData`;
+  subscriptions: Subscription[] = [];
   taxrates: TaxRate[] = [];
   updatetimeout: any;
   usersettingsObj: UserSettings | null = null;
   when: number = 0;
 
-  defaultCurrency: Currency | null = null;
-  selectedReceipt: Receipt | null = null;
-  selectedTotals: ReceiptTotals = { items: 0, discount: 0, deposit: 0, singleprice: 0, gross: 0 };
-
-  constructor(private authService: AuthService,
-    private configService: ConfigService,
+  constructor(
+    private authService: AuthService,
     private i18nService: I18nService,
     public router: Router,
     private userSettings: SettingsService,
     public formatService: FormatService,
-    private toastService: ToastsService) {
-    this.userSettings.settings$.subscribe((settings) => {
-      this.usersettingsObj = settings;
-    });
+    private toastService: ToastsService
+  ) {
     this.i18nService.setTitle('receipts.pagetitle');
     let olddata: string | null | ReceiptsStorage = localStorage.getItem(this.storagename);
     if (olddata) {
@@ -67,10 +67,6 @@ export class ReceiptsComponent implements OnInit, OnDestroy {
     if (filter.length === 1)
       return filter[0];
     return null;
-  }
-
-  get config(): AppConfig {
-    return this.configService.config;
   }
 
   f(date: Date | string, form: string): string {
@@ -131,13 +127,15 @@ export class ReceiptsComponent implements OnInit, OnDestroy {
       });
     }
   }
-  
+
   ngOnDestroy(): void {
     if (this.updatetimeout)
       clearTimeout(this.updatetimeout);
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
   ngOnInit(): void {
+    this.subscriptions.push(this.userSettings.settings$.subscribe((settings) => this.usersettingsObj = settings));
     this.update();
   }
 
@@ -224,7 +222,7 @@ export class ReceiptsComponent implements OnInit, OnDestroy {
     }
   }
 
-  saveLocalStorage() : void {
+  saveLocalStorage(): void {
     localStorage.setItem(this.storagename, JSON.stringify({
       articles: this.articles,
       categories: this.categories,
@@ -266,8 +264,8 @@ export class ReceiptsComponent implements OnInit, OnDestroy {
       items: this.selectedReceipt.items
     };
 
-    let url: string = this.config.api.baseUrl + '/fin/receipt/create';
-    this.authService.updateApi(url, payload).subscribe((reply) => {
+    let url: string = `${environment.api.baseUrl}/fin/receipt/create`;
+    this.authService.updateApi(url, payload).pipe(first()).subscribe((reply) => {
       if (reply.success && reply.payload) {
         let newreceipt: Receipt = <Receipt>reply.payload['receipt'];
         this.update_addReceipt(newreceipt);
@@ -292,8 +290,8 @@ export class ReceiptsComponent implements OnInit, OnDestroy {
     this.selectedReceipt = null;
     this.selectedTotals = { items: 0, discount: 0, deposit: 0, singleprice: 0, gross: 0 };
     this.selectedReceipt = receipt;
-    let url: string = this.config.api.baseUrl + '/fin/receipt/' + receipt.id + '/items';
-    this.authService.queryApi(url).subscribe((reply) => {
+    let url: string = `${environment.api.baseUrl}/fin/receipt/${receipt.id}/items`;
+    this.authService.queryApi(url).pipe(first()).subscribe((reply) => {
       if (reply.success && reply.payload != undefined && reply.payload['items']) {
         receipt.items = reply.payload['items'];
         this.saveLocalStorage();
@@ -321,10 +319,10 @@ export class ReceiptsComponent implements OnInit, OnDestroy {
 
   update(): void {
     this.busy = true;
-    let url: string = this.config.api.baseUrl + '/fin/receipts' + (this.when > 0 ? '/' + this.when : '');
+    let url: string = `${environment.api.baseUrl}/fin/receipts${this.when > 0 ? `/${this.when}` : ''}`;
     let clean = this.when == 0;
     this.when = Math.floor(Date.now() / 1000);
-    this.authService.queryApi(url).subscribe((reply) => {
+    this.authService.queryApi(url).pipe(first()).subscribe((reply) => {
       if (reply.success && reply.payload != undefined) {
         let response = <ReceiptsResponse>reply.payload;
         if (clean) {

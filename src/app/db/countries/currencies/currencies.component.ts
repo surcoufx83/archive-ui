@@ -1,61 +1,52 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { AppConfig, ConfigService } from 'src/app/config.service';
+import { Subscription, first } from 'rxjs';
 import { I18nService } from 'src/app/i18n.service';
+import { Currency, UserSettings } from 'src/app/if';
 import { SettingsService } from 'src/app/utils/settings.service';
 import { ToastsService } from 'src/app/utils/toasts.service';
-import { Currency, UserSettings } from 'src/app/if';
+import { environment } from 'src/environments/environment.dev';
 
 @Component({
   selector: 'app-currencies',
   templateUrl: './currencies.component.html',
   styleUrls: ['./currencies.component.scss']
 })
-export class DbCurrenciesComponent implements OnInit {
+export class DbCurrenciesComponent implements OnDestroy, OnInit {
 
   @ViewChild('editor') editor?: ElementRef;
 
   busy: boolean = false;
-  saving: boolean = false;
   currencies: Currency[] = [];
   editcurrency?: Currency;
-  usersettingsObj: UserSettings | null = null;
+  icons = environment.icons;
+  saving: boolean = false;
   sortAsc: boolean = true;
   sortBy: string = 'i18nname';
-  storagename: string = this.config.storage.prefix + 'dbcurrenciesData';
+  storagename: string = `${environment.localStoragePrefix}dbcurrenciesData`;
+  subscriptions: Subscription[] = [];
   timeout: any;
+  usersettingsObj: UserSettings | null = null;
   when: number = 0;
 
-  constructor(private configService: ConfigService,
+  constructor(
     private i18nService: I18nService,
     private userSettings: SettingsService,
-    private toastService: ToastsService) {
+    private toastService: ToastsService
+  ) {
     let olddata: string | null | DbCurrenciesStorage = localStorage.getItem(this.storagename);
     if (olddata) {
       this.currencies = (<DbCurrenciesStorage>JSON.parse(olddata)).items;
       this.sort();
     }
     this.userSettings.loadArchiveSettings();
-    this.userSettings.settings$.subscribe((settings) => {
-      this.usersettingsObj = settings;
-    });
-    this.userSettings.currencies$.subscribe((currencies) => {
-      if (currencies.length == 0)
-        return;
-      this.currencies = currencies;
-      this.sort();
-      localStorage.setItem(this.storagename, JSON.stringify({ items: this.currencies }));
-    });
-  }
 
-  get config(): AppConfig {
-    return this.configService.config;
   }
 
   delete(item: Currency) {
     if (confirm(this.i18n('common.confirm.askDeletion', [item.name]))) {
       this.saving = true;
-      this.userSettings.deleteCurrency(item).subscribe((e) => {
+      this.userSettings.deleteCurrency(item).pipe(first()).subscribe((e) => {
         if (e) {
           this.toastService.confirm(this.i18nService.i18n('common.confirm.delete.title'),
             this.i18nService.i18n('common.confirm.delete.message'));
@@ -82,7 +73,19 @@ export class DbCurrenciesComponent implements OnInit {
     return this.i18nService.i18n(key, params);
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
+
   ngOnInit(): void {
+    this.subscriptions.push(this.userSettings.settings$.subscribe((settings) => this.usersettingsObj = settings));
+    this.subscriptions.push(this.userSettings.currencies$.subscribe((currencies) => {
+      if (currencies.length == 0)
+        return;
+      this.currencies = currencies;
+      this.sort();
+      localStorage.setItem(this.storagename, JSON.stringify({ items: this.currencies }));
+    }));
   }
 
   sort(field?: string, asc?: boolean): void {
@@ -121,7 +124,7 @@ export class DbCurrenciesComponent implements OnInit {
     if (!this.editcurrency)
       return;
     this.saving = true;
-    this.userSettings.updateCurrency(this.editcurrency).subscribe((e) => {
+    this.userSettings.updateCurrency(this.editcurrency).pipe(first()).subscribe((e) => {
       if (e)
         this.toastService.confirm(this.i18nService.i18n('common.confirm.save.title'),
           this.i18nService.i18n('common.confirm.save.message'));

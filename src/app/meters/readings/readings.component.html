@@ -7,11 +7,11 @@
           <li [ngClass]="{'breadcrumb-item fade me-1 me-lg-2': true, 'show': busy}">
             <ui-busy-indicator></ui-busy-indicator>
           </li>
-          <app-button [title]="i18n('meter.title')" [css]="'btn btn-sm btn-outline-secondary'"
-            [icon]="config.icons['meter']" [link]="'/meter'"></app-button>
+          <app-button [title]="i18n('meter.title')" [css]="'btn btn-sm btn-outline-secondary'" [icon]="icons['meter']"
+            [link]="'/meter'"></app-button>
           <button type="button" class="btn btn-sm btn-outline-primary" (click)="newRecord()" data-bs-toggle="modal"
             data-bs-target="#exampleModal">
-            <app-icon [iconClass]="config.icons['add']"></app-icon>
+            <app-icon [iconClass]="icons['add']"></app-icon>
             {{ i18n('common.add') }}
           </button>
         </ol>
@@ -46,7 +46,7 @@
     <div class="card pointer" (click)="showmeter[meteritem.id] = !showmeter[meteritem.id]">
       <div class="card-header text-truncate px-2 py-1 border-bottom-0">
         <h6 class="mb-0 user-select-none">
-          <app-icon [iconClass]="config.icons[showmeter[meteritem.id] ? 'check' : 'check-no']"></app-icon>
+          <app-icon [iconClass]="icons[showmeter[meteritem.id] ? 'check' : 'check-no']"></app-icon>
           <strong class="ms-1">{{ meteritem?.name }}</strong>
           <span class="fs-8 ms-2" *ngIf="meteritem?.number != ''">{{ meteritem?.number }}</span>
         </h6>
@@ -98,7 +98,8 @@
                   <strong>{{ i18n('common.date') }}</strong>
                 </div>
                 <div class="text-end">
-                  <input type="date" [(ngModel)]="editRecord.date" name="input-date" class="form-control form-control-sm">
+                  <input type="date" [(ngModel)]="editRecord.date" name="input-date"
+                    class="form-control form-control-sm">
                 </div>
               </div>
             </li>
@@ -106,14 +107,17 @@
               <div class="d-flex justify-content-between">
                 <div>
                   <strong>{{ getMeter(value.meterid)!.name }}</strong>
-                  <span class="fs-8 ms-2" *ngIf="getMeter(value.meterid)!.number != ''">{{ getMeter(value.meterid)!.number
+                  <span class="fs-8 ms-2" *ngIf="getMeter(value.meterid)!.number != ''">{{
+                    getMeter(value.meterid)!.number
                     }}</span>
                 </div>
                 <div class="text-end">
                   <div class="input-group" style="width: 160px;">
                     <input type="number" min="0" max="99999999" [step]="getStep(getMeter(value.meterid)!)"
-                      [(ngModel)]="value.value" [name]="'input-value-' + value.meterid" class="form-control form-control-sm text-end">
-                    <span class="input-group-text fs-8 text-serif fw-bold px-2" style="width: 52px;">{{ getMeter(value.meterid)!.uom }}</span>
+                      [(ngModel)]="value.value" [name]="'input-value-' + value.meterid"
+                      class="form-control form-control-sm text-end">
+                    <span class="input-group-text fs-8 text-serif fw-bold px-2" style="width: 52px;">{{
+                      getMeter(value.meterid)!.uom }}</span>
                   </div>
                 </div>
               </div>
@@ -121,11 +125,11 @@
           </ul>
         </div>
         <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ i18n('common.cancel') }}</button>
-            <button type="submit" class="btn btn-success" [disabled]="saving">
-              <app-icon [iconClass]="config.icons[saving ? 'busy' : 'save']"></app-icon>
-              {{ i18n('common.save') }}
-            </button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ i18n('common.cancel') }}</button>
+          <button type="submit" class="btn btn-success" [disabled]="saving">
+            <app-icon [iconClass]="icons[saving ? 'busy' : 'save']"></app-icon>
+            {{ i18n('common.save') }}
+          </button>
         </div>
       </form>
     </div>

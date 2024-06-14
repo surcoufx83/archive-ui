@@ -17,41 +17,41 @@
                 <div class="modal-body flex-grow-1 py-1">
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item pointer" *ngIf="dir.parent" (click)="dir = dir.parent; reload();">
-                            <app-icon [iconClass]="config.icons['folder-up']" [marginEnd]="1"></app-icon>
+                            <app-icon [iconClass]="icons['folder-up']" [marginEnd]="1"></app-icon>
                             ..
                         </li>
                         <li class="list-group-item pointer" *ngFor="let item of folders"
                             (click)="dir = item; file = null; reload();">
-                            <app-icon [iconClass]="config.icons['folder']" [marginEnd]="1"></app-icon>
+                            <app-icon [iconClass]="icons['folder']" [marginEnd]="1"></app-icon>
                             {{ item.name }}
                         </li>
                         <ng-container *ngIf="showAddFolderBtn && !newfolderClicked">
                             <li class="list-group-item pointer"
                                 (click)="newfolderName = ''; newfolderClicked = !newfolderClicked;">
-                                <app-icon [iconClass]="config.icons['add']" [marginEnd]="1"></app-icon>
+                                <app-icon [iconClass]="icons['add']" [marginEnd]="1"></app-icon>
                                 {{ i18n('folderbrowser.newFolder.title') }}
                             </li>
                         </ng-container>
                         <ng-container *ngIf="showAddFolderBtn && newfolderClicked">
                             <li class="list-group-item">
                                 <div class="d-flex flex-row justify-content-between align-items-center">
-                                    <app-icon [iconClass]="config.icons['add']" [marginEnd]="1"></app-icon>
+                                    <app-icon [iconClass]="icons['add']" [marginEnd]="1"></app-icon>
                                     <input type="text" class="form-control form-control-sm" [(ngModel)]="newfolderName">
                                     <div class="d-flex flex-row align-items-center">
                                         <button type="button" class="btn btn-sm btn-primary ms-2"
                                             [disabled]="newfolderName == ''" (click)="saveNewFolder()">
-                                            <app-icon [iconClass]="config.icons['save']"></app-icon>
+                                            <app-icon [iconClass]="icons['save']"></app-icon>
                                         </button>
                                         <button type="button" class="btn btn-sm btn-secondary ms-2"
                                             (click)="cancelNewFolder()">
-                                            <app-icon [iconClass]="config.icons['close']"></app-icon>
+                                            <app-icon [iconClass]="icons['close']"></app-icon>
                                         </button>
                                     </div>
                                 </div>
                             </li>
                         </ng-container>
                         <li class="list-group-item pointer" *ngFor="let item of files" (click)="file = item;">
-                            <app-icon [iconClass]="config.icons['file']" [marginEnd]="1"></app-icon>
+                            <app-icon [iconClass]="icons['file']" [marginEnd]="1"></app-icon>
                             {{ item.name }}
                         </li>
                     </ul>

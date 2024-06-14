@@ -2,7 +2,7 @@
 
     <div class="container pt-4 pt-md-2 mb-2">
         <app-h2 [title]="i18n('receipts.title')" [busy]="busy" [btn1]="i18n('common.add')"
-            [btn1css]="'btn btn-sm btn-outline-primary'" [btn1icon]="config.icons['add']"
+            [btn1css]="'btn btn-sm btn-outline-primary'" [btn1icon]="icons['add']"
             (btn1Clicked)="new(); newItem();"></app-h2>
     </div>
 
@@ -74,10 +74,9 @@
                 </div>
                 <div class="col-12 container card p-1">
                     <app-h4 [title]="i18n('receipts.edit.title')" [containercss]="'card-header'"
-                        [btn1]="i18n('common.save')" [btn1css]="'btn btn-sm btn-success'"
-                        [btn1icon]="config.icons['save']" (btn1Clicked)="saveSelected(form, $event)"
-                        [btn2css]="'btn btn-sm btn-outline-secondary'" [btn2icon]="config.icons['delete']"
-                        (btn2Clicked)="onCancelEdit()"></app-h4>
+                        [btn1]="i18n('common.save')" [btn1css]="'btn btn-sm btn-success'" [btn1icon]="icons['save']"
+                        (btn1Clicked)="saveSelected(form, $event)" [btn2css]="'btn btn-sm btn-outline-secondary'"
+                        [btn2icon]="icons['delete']" (btn2Clicked)="onCancelEdit()"></app-h4>
                     <div class="card-body p-1 px-3 fs-7 mb-3">
                         <div class="row">
                             <div class="col-6 col-lg-3 mb-3">
@@ -131,7 +130,7 @@
                         </div>
                     </div>
                     <app-h4 [title]="i18n('receipts.items.title')" [containercss]="'card-header'"
-                        [btn1css]="'btn btn-sm btn-outline-primary'" [btn1icon]="config.icons['add']"
+                        [btn1css]="'btn btn-sm btn-outline-primary'" [btn1icon]="icons['add']"
                         (btn1Clicked)="newItem()"></app-h4>
                     <div class="card-body p-1 fs-7">
                         <div class="flex-table flex-table-sm">
@@ -170,7 +169,7 @@
                         <ng-container *ngIf="item.articleid && article(item.articleid)">
                             <button type="button" class="btn btn-sm btn-outline-secondary border-0 me-2"
                                 (click)="selectedReceipt.items.splice(i, 1);">
-                                <app-icon [iconClass]="config.icons['delete']"></app-icon>
+                                <app-icon [iconClass]="icons['delete']"></app-icon>
                             </button>
                             <div>
                                 <ng-container *ngTemplateOutlet="receiptArticle; context: { 'item': item }">
@@ -312,7 +311,7 @@
             <ng-container *ngIf="article(receiptitem.articleid)!.ean">,
                 {{ article(receiptitem.articleid)!.ean }}</ng-container>
             <ng-container *ngIf="article(receiptitem.articleid)!.organic">,
-                <app-icon [iconClass]="config.icons['organic']"></app-icon>
+                <app-icon [iconClass]="icons['organic']"></app-icon>
                 {{ i18n('receipts.items.organic') }}
             </ng-container>)
         </span>

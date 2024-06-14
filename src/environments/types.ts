@@ -10,6 +10,7 @@ export type Environment = {
             oauth2Providers: { [key: string]: EnvironmentOAuth2Provider }
         },
     },
+    icons: { [key: string]: string },
     l10n: {
         fallbackLocale: 'de' | 'en' | 'fr',
     },

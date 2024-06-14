@@ -194,6 +194,7 @@ export const L10nArchiveFrLocale: L10nArchiveLocale = {
             Job_PaySlip: "Fiche de paie",
             Job_PaySlip2: "Fiche de paie",
             Legal_Deed: "Document notarié",
+            Legal_LayJudge_CompensationForm: "Juge laïc: Formulaire de compensation",
             Legal_LayJudge_InvitationTrial: "Juge laïc : Invitation à l'audience principale",
             Legal_LayJudge_ReservedDates: "Juge laïc : Dates possibles dans l'année",
             Legal_Mandate: "Procuration, mandat",

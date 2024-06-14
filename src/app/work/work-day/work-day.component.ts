@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { addDays, differenceInMinutes, format, parseISO, set, setHours, subDays } from 'date-fns';
 import { AuthService } from '../../auth.service';
@@ -6,8 +6,9 @@ import { SettingsService } from '../../utils/settings.service';
 
 import { ViewportScroller } from '@angular/common';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { Subscription, first } from 'rxjs';
 import { RecentBooking, UserSettings, WorkCustomer, WorkDay, WorkDayBooking, WorkProject, WorkTimeCategory } from 'src/app/if';
-import { AppConfig, ConfigService } from '../../config.service';
+import { environment } from 'src/environments/environment.dev';
 import { I18nService } from '../../i18n.service';
 
 @Component({
@@ -15,49 +16,42 @@ import { I18nService } from '../../i18n.service';
   templateUrl: './work-day.component.html',
   styleUrls: ['./work-day.component.scss']
 })
-export class WorkDayComponent implements OnInit {
+export class WorkDayComponent implements OnDestroy, OnInit {
 
-  @ViewChild('focus') focusElement?: ElementRef;
   @ViewChild('createCustomerModalCloser') createCustomerModalCloserElement?: ElementRef;
+  @ViewChild('focus') focusElement?: ElementRef;
 
+  actualDate: string = this.f(new Date(), 'yyyy-MM-dd');
   booking?: WorkDayBooking;
   bookingProps: { [key: string]: number } = {};
   busy: boolean = false;
   categories: WorkTimeCategory[] = [];
-  customers: WorkCustomer[] = [];
-  day?: WorkDay;
-  livetrackingActive: boolean = false;
-  projects: WorkProject[] = [];
-  recentEntries: RecentBooking[] = [];
-  timepattern: RegExp = /^(?<hr>\d{1,2}):?(?<min>\d{2})$/;
-  today: Date = new Date();
-  tomorrow?: Date;
-  yesterday?: Date;
-  actualDate: string = this.f(new Date(), 'yyyy-MM-dd');
-  isToday: boolean = true;
-  usersettingsObj: UserSettings | null = null;
-
   createCustomer = new UntypedFormGroup({
     'name': new UntypedFormControl('', { validators: Validators.required }),
     'busy': new UntypedFormControl(false)
   });
+  customers: WorkCustomer[] = [];
+  day?: WorkDay;
+  icons = environment.icons;
+  isToday: boolean = true;
+  livetrackingActive: boolean = false;
+  projects: WorkProject[] = [];
+  recentEntries: RecentBooking[] = [];
+  subscriptions: Subscription[] = [];
+  timepattern: RegExp = /^(?<hr>\d{1,2}):?(?<min>\d{2})$/;
+  today: Date = new Date();
+  tomorrow?: Date;
+  usersettingsObj: UserSettings | null = null;
+  yesterday?: Date;
 
-  constructor(private authService: AuthService,
-    private configService: ConfigService,
+  constructor(
+    private authService: AuthService,
     private i18nService: I18nService,
     private route: ActivatedRoute,
     private router: Router,
     private userSettings: SettingsService,
-    private scroller: ViewportScroller) {
-    this.userSettings.settings$.subscribe((settings) => {
-      this.usersettingsObj = settings;
-    });
-    this.userSettings.workTimeCategories$.subscribe((categories) => this.categories = Object.values(categories).sort((a, b) => this.i18n('work.timecategories.' + a.name) > this.i18n('work.timecategories.' + b.name) ? 1 : this.i18n('work.timecategories.' + a.name) === this.i18n('work.timecategories.' + b.name) ? 0 : -1));
-    this.userSettings.workCustomers$.subscribe((customers) => {
-      this.customers = Object.values(customers).sort((a, b) => a.name.toLocaleLowerCase() > b.name.toLocaleLowerCase() ? 1 : -1);
-    });
-    setTimeout(() => { this.refreshRecentBookings(); }, 1000);
-  }
+    private scroller: ViewportScroller
+  ) { }
 
   get bookings(): WorkDayBooking[] {
     if (!this.day || this.day.bookings == null)
@@ -67,10 +61,6 @@ export class WorkDayComponent implements OnInit {
 
   category(id: number): WorkTimeCategory | undefined {
     return this.userSettings.getWorkTimeCategory(id) ?? undefined;
-  }
-
-  get config(): AppConfig {
-    return this.configService.config;
   }
 
   copyFromRecent(item: RecentBooking | WorkDayBooking): void {
@@ -106,8 +96,8 @@ export class WorkDayComponent implements OnInit {
   }
 
   deleteBooking(item: WorkDayBooking): void {
-    let url = this.config.api.baseUrl + '/work/bookings/' + item.id + '/delete';
-    this.authService.updateApi(url, {}).subscribe((reply) => {
+    let url = `${environment.api.baseUrl}/work/bookings/${item.id}/delete`;
+    this.authService.updateApi(url, {}).pipe(first()).subscribe((reply) => {
       if (reply.payload && reply.payload['day'])
         this.day = <WorkDay>reply.payload['day'];
       if (this.focusElement != undefined)
@@ -167,8 +157,18 @@ export class WorkDayComponent implements OnInit {
     this.bookingProps = {};
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
+
+
   ngOnInit(): void {
-    this.route.paramMap.subscribe((params) => {
+    this.subscriptions.push(this.userSettings.settings$.subscribe((settings) => this.usersettingsObj = settings));
+    this.subscriptions.push(this.userSettings.workTimeCategories$.subscribe((categories) => this.categories = Object.values(categories).sort((a, b) => this.i18n('work.timecategories.' + a.name) > this.i18n('work.timecategories.' + b.name) ? 1 : this.i18n('work.timecategories.' + a.name) === this.i18n('work.timecategories.' + b.name) ? 0 : -1)));
+    this.subscriptions.push(this.userSettings.workCustomers$.subscribe((customers) => {
+      this.customers = Object.values(customers).sort((a, b) => a.name.toLocaleLowerCase() > b.name.toLocaleLowerCase() ? 1 : -1);
+    }));
+    this.subscriptions.push(this.route.paramMap.subscribe((params) => {
       let date = 'today';
       if (!params.has('date')) {
         this.router.navigate(['/work', 'day', this.actualDate]);
@@ -176,7 +176,7 @@ export class WorkDayComponent implements OnInit {
       }
       date = params.get('date') ?? '';
       this.busy = true;
-      let url = this.config.api.baseUrl + '/work/' + date;
+      let url = `${environment.api.baseUrl}/work/${date}`;
       this.authService.queryApi(url).subscribe((reply) => {
         if (reply.success && reply.payload) {
           this.day = <WorkDay>reply.payload['day'];
@@ -189,7 +189,8 @@ export class WorkDayComponent implements OnInit {
         }
         this.busy = false;
       });
-    });
+    }));
+    setTimeout(() => { this.refreshRecentBookings(); }, 10);
   }
 
   onChangeCategory(): void {
@@ -256,7 +257,7 @@ export class WorkDayComponent implements OnInit {
       id: 0, name: this.createCustomer.get('name')!.value, created: "", deleted: null,
       disabled: false, lastusage: "", modified: "", userid: 0
     }
-    this.userSettings.updateCustomer(newcustomer).subscribe((customer) => {
+    this.userSettings.updateCustomer(newcustomer).pipe(first()).subscribe((customer) => {
       if (customer != null) {
         this.createCustomerModalCloserElement?.nativeElement.click();
         this.createCustomer.get('name')!.reset();
@@ -269,8 +270,8 @@ export class WorkDayComponent implements OnInit {
     if (this.busy || !this.day)
       return;
     this.busy = true;
-    let url = this.config.api.baseUrl + '/work/month/' + this.day.monthid + '/day/' + this.day.day + '/booking/create';
-    this.authService.updateApi(url, this.booking).subscribe((reply) => {
+    let url = `${environment.api.baseUrl}/work/month/${this.day.monthid}/day/${this.day.day}/booking/create`;
+    this.authService.updateApi(url, this.booking).pipe(first()).subscribe((reply) => {
       if (reply.success) {
         this.newBooking(this.day?.id);
         if (reply.payload && reply.payload['day'])
@@ -323,7 +324,7 @@ export class WorkDayComponent implements OnInit {
   }
 
   refreshRecentBookings(): void {
-    this.authService.queryApi(this.config.api.baseUrl + '/work/bookings/recent').subscribe((reply) => {
+    this.authService.queryApi(`${environment.api.baseUrl}/work/bookings/recent`).pipe(first()).subscribe((reply) => {
       if (reply.success && reply.payload && reply.payload['items'])
         this.recentEntries = <RecentBooking[]>reply.payload['items'];
       setTimeout(() => { this.refreshRecentBookings(); }, 60000);
