@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { format } from 'date-fns';
 import { saveAs } from 'file-saver-es';
+import { Subscription, first } from 'rxjs';
 import { File, UserSettings } from 'src/app/if';
+import { environment } from 'src/environments/environment.dev';
 import { AuthService } from '../auth.service';
-import { AppConfig, ConfigService } from '../config.service';
+import { ConfigService } from '../config.service';
 import { I18nService } from '../i18n.service';
 import { FormatService } from '../utils/format.service';
 import { SettingsService } from '../utils/settings.service';
@@ -15,10 +17,11 @@ import { SearchResultAccountItem, SearchResultCaseItem, SearchResultDirectoryIte
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss']
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent implements OnDestroy, OnInit {
 
   busy: boolean = false;
   debounce: any = null;
+  icons = environment.icons;
   resultcount: number = 0;
   resultgroupcount: { [key: string]: number } = {};
   resultgroups: string[] = ['tags', 'notes', 'cases', 'files', 'pages', 'directories', 'accounts'];
@@ -31,24 +34,24 @@ export class SearchComponent implements OnInit {
   showgroup: string = 'tags';
   showHistoric: boolean = false;
   storageVersion: number = 1;
+  subscriptions: Subscription[] = [];
   urltoken: string = '';
   usersettingsObj: UserSettings | null = null;
 
-  constructor(private authService: AuthService,
+  constructor(
+    private authService: AuthService,
     private configService: ConfigService,
-    public formatService: FormatService,
     private i18nService: I18nService,
     private route: ActivatedRoute,
+    private settings: SettingsService,
+    public formatService: FormatService,
     public router: Router,
-    private settings: SettingsService) {
-    this.settings.settings$.subscribe((settings) => {
-      this.usersettingsObj = settings;
-    });
-    let search: string | null | SearchStorage = localStorage.getItem(this.configService.config.storage.prefix + 'Search');
+  ) {
+    let search: string | null | SearchStorage = localStorage.getItem(`${environment.localStoragePrefix}Search`);
     if (search != null) {
       search = <SearchStorage>JSON.parse(search);
       if (this.storageVersion !== search.version) {
-        localStorage.setItem(this.configService.config.storage.prefix + 'Search', JSON.stringify(DefaultSearchItems));
+        localStorage.setItem(`${environment.localStoragePrefix}Search`, JSON.stringify(DefaultSearchItems));
         this.searchgroups = DefaultSearchItems.groups;
       }
       else
@@ -56,12 +59,8 @@ export class SearchComponent implements OnInit {
     }
   }
 
-  get config(): AppConfig {
-    return this.configService.config;
-  }
-
   download(item: SearchResultFileItem): void {
-    this.authService.download(this.fileurl(item)).subscribe(blob => saveAs(blob, item.file.name));
+    this.authService.download(this.fileurl(item)).pipe(first()).subscribe(blob => saveAs(blob, item.file.name));
   }
 
   f(date: Date | string, form: string): string {
@@ -71,7 +70,7 @@ export class SearchComponent implements OnInit {
   }
 
   fileurl(item: SearchResultFileItem): string {
-    return this.config.api.baseUrl + '/file/' + item.file.id + '/download';
+    return `${environment.api.baseUrl}/file/${item.file.id}/download`;
   }
 
   i18n(key: string, params: string[] = []): string {
@@ -82,8 +81,13 @@ export class SearchComponent implements OnInit {
     return this.i18nService.Locale;
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
+
   ngOnInit(): void {
-    this.route.paramMap.subscribe((params) => {
+    this.subscriptions.push(this.settings.settings$.subscribe((settings) => this.usersettingsObj = settings));
+    this.subscriptions.push(this.route.paramMap.subscribe((params) => {
       setTimeout(() => {
         this.reset();
         this.showgroup = params.get('tab') ?? 'tags';
@@ -93,7 +97,7 @@ export class SearchComponent implements OnInit {
         this.urltoken = params.get('token') ?? '';
         this.onSearch(params.get('token') != null, (params.get('token') ?? ''));
       }, 1);
-    });
+    }));
   }
 
   reset(): void {
@@ -109,7 +113,7 @@ export class SearchComponent implements OnInit {
       return;
     this.busy = true;
 
-    localStorage.setItem(this.configService.config.storage.prefix + 'Search', JSON.stringify(this.searchgroups));
+    localStorage.setItem(`${environment.localStoragePrefix}Search`, JSON.stringify(this.searchgroups));
 
     let storeitem = this.configService.getCacheItem('search__' + this.phrase + token);
     if (storeitem != null) {
@@ -127,7 +131,7 @@ export class SearchComponent implements OnInit {
       if (group['active'] === true) {
         this.searchactive[group['groupName']] = true;
         let url = this.config.api.baseUrl + group['searchPath'];
-        this.authService.updateApi(url, { search: phrase }).subscribe((reply) => {
+        this.authService.updateApi(url, { search: phrase }).pipe(first()).subscribe((reply) => {
           if (reply.success && reply.payload != null) {
             switch (group['groupName']) {
               case 'accounts':

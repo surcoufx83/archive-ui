@@ -1,54 +1,47 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { AppConfig, ConfigService } from 'src/app/config.service';
+import { ConfigService } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
 import { SettingsService } from 'src/app/utils/settings.service';
 import { ToastsService } from 'src/app/utils/toasts.service';
 import { ContactType, UserSettings } from 'src/app/if';
+import { environment } from 'src/environments/environment.dev';
+import { Subscription, first } from 'rxjs';
 
 @Component({
   selector: 'app-type',
   templateUrl: './type.component.html',
   styleUrls: ['./type.component.scss']
 })
-export class DbContactTypeComponent implements OnInit {
+export class DbContactTypeComponent implements OnDestroy, OnInit {
 
   @ViewChild('editor') editor?: ElementRef;
 
   busy: boolean = false;
-  saving: boolean = false;
   ctypes: ContactType[] = [];
   editctype?: ContactType;
-  usersettingsObj: UserSettings | null = null;
+  icons = environment.icons;
+  saving: boolean = false;
   sortAsc: boolean = true;
   sortBy: string = 'i18nname';
-  storagename: string = this.config.storage.prefix + 'dbctypesData';
+  storagename: string = `${environment.localStoragePrefix}dbctypesData`;
+  subscriptions: Subscription[] = [];
   timeout: any;
+  usersettingsObj: UserSettings | null = null;
   when: number = 0;
 
-  constructor(private configService: ConfigService,
+  constructor(
     private i18nService: I18nService,
     private userSettings: SettingsService,
-    private toastService: ToastsService) {
+    private toastService: ToastsService
+  ) {
     this.userSettings.loadArchiveSettings();
-    this.userSettings.settings$.subscribe((settings) => {
-      this.usersettingsObj = settings;
-    });
-    this.userSettings.contactTypes$.subscribe((ctypes) => {
-      this.ctypes = Object.values(ctypes);
-      this.ctypes.forEach((item) => { item.i18nname = this.i18n('contacttypes.' + item.name) });
-      this.sort();
-    });
-  }
-
-  get config(): AppConfig {
-    return this.configService.config;
   }
 
   delete(item: ContactType) {
     if (confirm(this.i18n('common.confirm.askDeletion', [item.name]))) {
       this.saving = true;
-      this.userSettings.deleteContactType(item).subscribe((e) => {
+      this.userSettings.deleteContactType(item).pipe(first()).subscribe((e) => {
         if (e) {
           this.toastService.confirm(this.i18nService.i18n('common.confirm.delete.title'),
             this.i18nService.i18n('common.confirm.delete.message'));
@@ -76,7 +69,17 @@ export class DbContactTypeComponent implements OnInit {
     return this.i18nService.i18n(key, params);
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
+
   ngOnInit(): void {
+    this.subscriptions.push(this.userSettings.settings$.subscribe((settings) => this.usersettingsObj = settings));
+    this.subscriptions.push(this.userSettings.contactTypes$.subscribe((ctypes) => {
+      this.ctypes = Object.values(ctypes);
+      this.ctypes.forEach((item) => { item.i18nname = this.i18n('contacttypes.' + item.name) });
+      this.sort();
+    }));
   }
 
   sort(field?: string, asc?: boolean): void {
@@ -110,7 +113,7 @@ export class DbContactTypeComponent implements OnInit {
     if (!this.editctype)
       return;
     this.saving = true;
-    this.userSettings.updateContactType(this.editctype).subscribe((e) => {
+    this.userSettings.updateContactType(this.editctype).pipe(first()).subscribe((e) => {
       if (e)
         this.toastService.confirm(this.i18nService.i18n('common.confirm.save.title'),
           this.i18nService.i18n('common.confirm.save.message'));

@@ -1,15 +1,13 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Locale } from 'date-fns';
 import { de, enUS, fr } from 'date-fns/locale';
 import { BehaviorSubject } from 'rxjs';
-import { environment } from 'src/environments/environment';
+import { environment } from 'src/environments/environment.dev';
 import { L10nArchiveLocale } from './l10n/l10n.types';
 import { L10nArchiveDeLocale } from './l10n/locales/de';
 import { L10nArchiveEnLocale } from './l10n/locales/en';
 import { L10nArchiveFrLocale } from './l10n/locales/fr';
-import { ToastsService } from './utils/toasts.service';
 
 @Injectable({
   providedIn: 'root'
@@ -40,9 +38,9 @@ export class I18nService {
     return this.locale;
   }
 
-  constructor(private http: HttpClient,
+  constructor(
     private titleService: Title,
-    private toastService: ToastsService) {
+  ) {
     this.currentLocale_.subscribe((locale) => {
       this.locale = locale;
       this.loadStrings(locale);
@@ -108,8 +106,8 @@ export class I18nService {
       }
       return str;
     }
-    if (locale != environment.i18nFallback)
-      return this.i18n_locale(environment.i18nFallback, key, params, i);
+    if (locale != environment.l10n.fallbackLocale)
+      return this.i18n_locale(environment.l10n.fallbackLocale, key, params, i);
     return `<I18n/${locale}: string '${key}' missing!>`;
   }
 

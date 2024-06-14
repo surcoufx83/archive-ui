@@ -1,8 +1,9 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { first } from 'rxjs';
 import { AuthService } from 'src/app/auth.service';
-import { AppConfig, ConfigService } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
 import { ButtonType, Directory, File } from 'src/app/if';
+import { environment } from 'src/environments/environment.dev';
 
 @Component({
   selector: 'folder-browser-dialog',
@@ -11,27 +12,29 @@ import { ButtonType, Directory, File } from 'src/app/if';
 })
 export class FolderBrowserDialogComponent implements OnInit {
 
+  @Input() cancelBtnTitle: string = this.i18nService.i18n('common.cancel');
+  @Input() initialFolder: Directory | null = null;
+  @Input() okBtnTitle: string = this.i18nService.i18n('common.save');
+  @Input() showAddFolderBtn: boolean = false;
+  @Input() showDirectories: boolean = true;
+  @Input() showFiles: boolean = false;
+  @Input() title: string = this.i18nService.i18n('folderbrowser.title');
+  @Output() select = new EventEmitter<SelectedItem>();
+  @ViewChild('modal') modal?: ElementRef;
+
   busy: boolean = false;
   dir!: Directory;
   file: File | null = null;
   files: File[] = [];
   folders: Directory[] = [];
-  @Input() initialFolder: Directory | null = null;
-  @Input() showDirectories: boolean = true;
-  @Input() showFiles: boolean = false;
-  @Input() showAddFolderBtn: boolean = false;
-  @Input() cancelBtnTitle: string = this.i18nService.i18n('common.cancel');
-  @Input() okBtnTitle: string = this.i18nService.i18n('common.save');
-  @Input() title: string = this.i18nService.i18n('folderbrowser.title');
-  @Output() select = new EventEmitter<SelectedItem>();
-  @ViewChild('modal') modal?: ElementRef;
-
+  icons = environment.icons;
   newfolderClicked: boolean = false;
   newfolderName: string = '';
 
-  constructor(private authService: AuthService,
-    private configService: ConfigService,
-    private i18nService: I18nService) { }
+  constructor(
+    private authService: AuthService,
+    private i18nService: I18nService
+  ) { }
 
   cancel(): void {
     this.select.emit({
@@ -41,13 +44,9 @@ export class FolderBrowserDialogComponent implements OnInit {
     });
   }
 
-  cancelNewFolder() : void {
+  cancelNewFolder(): void {
     this.newfolderClicked = false;
     this.newfolderName = '';
-  }
-
-  get config(): AppConfig {
-    return this.configService.config;
   }
 
   i18n(key: string, params: string[] = []): string {
@@ -68,11 +67,11 @@ export class FolderBrowserDialogComponent implements OnInit {
     this.files = [];
     this.folders = [];
     this.busy = true;
-    let url = this.configService.config.api.baseUrl + '/directories/' + this.dir.id + '/ls';
+    let url = `${environment.api.baseUrl}/directories/${this.dir.id}/ls`;
     this.authService.updateApi(url, {
       directories: this.showDirectories,
       files: this.showFiles
-    }).subscribe((reply) => {
+    }).pipe(first()).subscribe((reply) => {
       if (reply.success && reply.payload && reply.payload['items']) {
         this.files = (<File[]>reply.payload['items']['files']).sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 0);
         this.folders = (<Directory[]>reply.payload['items']['subdirs']).sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 0);
@@ -86,11 +85,11 @@ export class FolderBrowserDialogComponent implements OnInit {
   saveNewFolder(): void {
     if (this.newfolderName == '')
       return;
-    let url = this.configService.config.api.baseUrl + '/directories/' + this.dir.id + '/mkdir';
+    let url = `${environment.api.baseUrl}/directories/${this.dir.id}/mkdir`;
     this.busy = true;
     this.authService.updateApi(url, {
       name: this.newfolderName
-    }).subscribe((reply) => {
+    }).pipe(first()).subscribe((reply) => {
       if (reply.success && reply.payload && reply.payload['dir']) {
         this.dir = <Directory>reply.payload['dir'];
         this.reload();

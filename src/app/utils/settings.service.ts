@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, Subject, first } from 'rxjs';
 import type {
   Address,
   BankAccount,
@@ -33,8 +33,9 @@ import type {
   WorkTimeCategory
 } from 'src/app/if';
 import type { WarehouseReply } from 'src/app/warehouse/warehouse.component';
+import { environment } from 'src/environments/environment.dev';
 import { AuthService } from '../auth.service';
-import { AppConfig, ConfigService } from '../config.service';
+import { ConfigService } from '../config.service';
 import { StorageService } from './storage.service';
 
 const cases = 'cases';
@@ -162,9 +163,11 @@ export class SettingsService {
   private workTimeCategories: BehaviorSubject<{ [key: number]: WorkTimeCategory }> = new BehaviorSubject<{ [key: number]: WorkTimeCategory }>({});
   workTimeCategories$ = this.workTimeCategories.asObservable();
 
-  constructor(private authService: AuthService,
+  constructor(
+    private authService: AuthService,
     private configService: ConfigService,
-    private storageService: StorageService) {
+    private storageService: StorageService,
+  ) {
     this.loadAllCacheItems();
     this.authService.isLoggedIn.subscribe((state) => {
       if (state != undefined && state === false) {
@@ -181,10 +184,6 @@ export class SettingsService {
       this.loadArchiveSettings();
       this.loadAllCacheItems();
     }
-  }
-
-  get config(): AppConfig {
-    return this.configService.config;
   }
 
   deleteNote(note: Note): Subject<Note | boolean> {
@@ -208,7 +207,7 @@ export class SettingsService {
     if (this.archiveLoaded)
       return;
     this.archiveLoaded = true;
-    let url = this.configService.config.api.baseUrl + '/common/props';
+    let url = `${environment.api.baseUrl}/common/props`;
     this.authService.queryApi(url).subscribe((reply) => {
       if (reply.success && reply.payload != null) {
         this.updateClasses(reply.payload['classes']);
@@ -292,7 +291,7 @@ export class SettingsService {
       olddata2 = <UserSettingsStorage>JSON.parse(olddata2);
       this.updateUser(olddata2.user, false);
     }
-    this.authService.queryApi(this.storageService.getSyncUrl(user)).subscribe((reply) => {
+    this.authService.queryApi(this.storageService.getSyncUrl(user)).pipe(first()).subscribe((reply) => {
       if (reply.success && reply.payload != null) {
         reply.payload['version'] = this.storageService.getExpectedStorageVersion(user);
         this.updateUser(<User>reply.payload['user']);
@@ -303,7 +302,7 @@ export class SettingsService {
 
 
   public loadWarehouseEntities(): void {
-    this.authService.queryApi('api/warehouse').subscribe((reply) => {
+    this.authService.queryApi(`${environment.api.baseUrl}/warehouse`).pipe(first()).subscribe((reply) => {
       if (reply.success && reply.payload != undefined && reply.payload['rooms'] != undefined && reply.payload['spaces'] != undefined) {
         const payload = <WarehouseReply>reply.payload;
         let roomidmapper: { [key: number]: number } = {};
@@ -338,7 +337,7 @@ export class SettingsService {
 
   public loadWarehouseItems(room: WarehouseRoom): Subject<boolean | WarehouseItem[]> {
     let subject = new Subject<boolean | WarehouseItem[]>();
-    this.authService.queryApi(`api/warehouse/${room.id}/items`).subscribe((reply) => {
+    this.authService.queryApi(`${environment.api.baseUrl}/warehouse/${room.id}/items`).pipe(first()).subscribe((reply) => {
       if (reply.success && reply.payload != undefined && reply.payload['items'] != undefined) {
         subject.next(<WarehouseItem[]>reply.payload['items']);
         subject.complete();
@@ -469,15 +468,15 @@ export class SettingsService {
   private postCommon(method: 'create' | 'update' | 'delete', item: any, urlitem: string, listing: any[], subject: BehaviorSubject<boolean | any | null> | Subject<any | boolean>,
     callback: Function) {
 
-    let url = this.configService.config.api.baseUrl + '/' + urlitem + '/';
-    if (method == 'create')
+    let url = `${environment.api.baseUrl}/${urlitem}/${method == 'create' ? `create` : `${item.id}${method == 'delete' ? `/delete` : ``}`}`;
+    /* if (method == 'create')
       url += 'create';
     else
-      url += item.id + (method == 'delete' ? '/delete' : '');
+      url += item.id + (method == 'delete' ? '/delete' : ''); */
     let obj: { [key: string]: any } = {};
     if (method != 'delete')
       obj[urlitem] = item;
-    this.authService.updateApi(url, obj).subscribe((reply) => {
+    this.authService.updateApi(url, obj).pipe(first()).subscribe((reply) => {
       if (reply.success) {
         let newitem = null;
         if (method != 'delete' && reply.payload)
@@ -518,15 +517,16 @@ export class SettingsService {
 
   private postObject(method: string, item: any, urlitem: string, subject: BehaviorSubject<boolean | any | null>,
     callback: Function) {
-    let url = this.configService.config.api.baseUrl + '/' + urlitem + '/';
+    let url = `${environment.api.baseUrl}/${urlitem}/${method == 'create' ? `create` : `${item.id}${method == 'delete' ? `/delete` : ``}`}`;
+    /* let url = this.configService.config.api.baseUrl + '/' + urlitem + '/';
     if (method == 'create')
       url += 'create';
     else
-      url += item.id + (method == 'delete' ? '/delete' : '');
+      url += item.id + (method == 'delete' ? '/delete' : ''); */
     let obj: { [key: string]: any } = {};
     if (method != 'delete')
       obj[urlitem] = item;
-    this.authService.updateApi(url, obj).subscribe((reply) => {
+    this.authService.updateApi(url, obj).pipe(first()).subscribe((reply) => {
       if (reply.success) {
         let newitem = null;
         if (reply.payload) {
@@ -656,7 +656,7 @@ export class SettingsService {
 
   private syncCases(): void {
     this.storageService.clearTimeout(cases);
-    this.authService.queryApi(this.storageService.getSyncUrl(cases)).subscribe((reply) => {
+    this.authService.queryApi(this.storageService.getSyncUrl(cases)).pipe(first()).subscribe((reply) => {
       if (reply.success && reply.payload != undefined) {
         let response = <CasesResponse>reply.payload;
         this.updateCaseStatus(response.casestatus);
@@ -674,7 +674,7 @@ export class SettingsService {
   }
   private syncFinance(): void {
     this.storageService.clearTimeout(finance);
-    this.authService.queryApi(this.storageService.getSyncUrl(finance)).subscribe((reply) => {
+    this.authService.queryApi(this.storageService.getSyncUrl(finance)).pipe(first()).subscribe((reply) => {
       if (reply.success && reply.payload != undefined) {
         let response = <FinanceResponse>reply.payload;
         this.updateBankAccounts(response.accounts);
@@ -697,7 +697,7 @@ export class SettingsService {
   }
   private syncNotepad(): void {
     this.storageService.clearTimeout(notes);
-    this.authService.queryApi(this.storageService.getSyncUrl(notes)).subscribe((reply) => {
+    this.authService.queryApi(this.storageService.getSyncUrl(notes)).pipe(first()).subscribe((reply) => {
       if (reply.success && reply.payload != undefined) {
         let response = <NotepadResponse>reply.payload;
         this.updateNotes(response.notes);
@@ -713,7 +713,7 @@ export class SettingsService {
     for (let i = 0; i < notifications.length; i++) {
       if (notifications[i].id == id) {
         notifications.splice(i, 1);
-        let url: string = this.config.api.baseUrl + `/notification/read/${id}`;
+        let url: string = `${environment.api.baseUrl}/notification/read/${id}`;
         this.authService.updateApi(url, {}).subscribe(() => { });
         break;
       }
@@ -723,7 +723,7 @@ export class SettingsService {
 
   private syncNotifications(): void {
     this.storageService.clearTimeout(notifications);
-    this.authService.queryApi(this.storageService.getSyncUrl(notifications)).subscribe((reply) => {
+    this.authService.queryApi(this.storageService.getSyncUrl(notifications)).pipe(first()).subscribe((reply) => {
       if (reply.success && reply.payload != undefined) {
         const payload: NotificationsResponse = <NotificationsResponse>reply.payload;
         let notifications = [...this.notifications.value];
@@ -740,7 +740,7 @@ export class SettingsService {
 
   private syncParties(): void {
     this.storageService.clearTimeout(parties);
-    this.authService.queryApi(this.storageService.getSyncUrl(parties)).subscribe((reply) => {
+    this.authService.queryApi(this.storageService.getSyncUrl(parties)).pipe(first()).subscribe((reply) => {
       if (reply.success && reply.payload != undefined) {
         let response = <PartiesResponse>reply.payload;
         this.updateAddresses(response.addresses);
@@ -759,7 +759,7 @@ export class SettingsService {
 
   public syncTags(): void {
     this.storageService.clearTimeout(tags);
-    this.authService.queryApi(this.storageService.getSyncUrl(tags)).subscribe((reply) => {
+    this.authService.queryApi(this.storageService.getSyncUrl(tags)).pipe(first()).subscribe((reply) => {
       if (reply.success && reply.payload != undefined) {
         let response = <TagsResponse>reply.payload;
         if (response.tags.length > 0) {
@@ -774,7 +774,7 @@ export class SettingsService {
 
   private syncWork(): void {
     this.storageService.clearTimeout(work);
-    this.authService.queryApi(this.storageService.getSyncUrl(work)).subscribe((reply) => {
+    this.authService.queryApi(this.storageService.getSyncUrl(work)).pipe(first()).subscribe((reply) => {
       if (reply.success && reply.payload != undefined) {
         let response = <WorkResponse>reply.payload;
         this.updateWorkCustomers(response.customers);
@@ -1054,8 +1054,8 @@ export class SettingsService {
   updateSettings(settings: UserSettings, push: boolean = false) {
     this.settings.next(settings);
     if (push) {
-      let url = this.configService.config.api.baseUrl + '/user/settings';
-      this.authService.updateApi(url, { userSettings: settings });
+      let url = `${environment.api.baseUrl}/user/settings`;
+      this.authService.updateApi(url, { userSettings: settings }).pipe(first()).subscribe();
     }
   }
 

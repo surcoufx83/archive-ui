@@ -11,9 +11,10 @@
               <ui-busy-indicator *ngIf="busy"></ui-busy-indicator>
             </li>
             <li class="breadcrumb-item">
-              <a class="breadcrumb-item" *ngIf="yesterday != undefined" [routerLink]="['/work', 'day', f(yesterday, 'yyyy-MM-dd')]">
+              <a class="breadcrumb-item" *ngIf="yesterday != undefined"
+                [routerLink]="['/work', 'day', f(yesterday, 'yyyy-MM-dd')]">
                 <button type="button" class="btn btn-sm btn-outline-primary">
-                  <app-icon [iconClass]="config.icons['go-left']" [marginEnd]="1"></app-icon>
+                  <app-icon [iconClass]="icons['go-left']" [marginEnd]="1"></app-icon>
                   {{ f(yesterday, 'P') }}
                 </button>
               </a>
@@ -21,15 +22,16 @@
             <li class="breadcrumb-item" *ngIf="!isToday">
               <a class="breadcrumb-item" [routerLink]="['/work', 'day', actualDate]">
                 <button type="button" class="btn btn-sm btn-outline-primary">
-                  <app-icon [iconClass]="config.icons['rotate-left']" [marginEnd]="1"></app-icon>
+                  <app-icon [iconClass]="icons['rotate-left']" [marginEnd]="1"></app-icon>
                   {{ i18n('common.today') }}
                 </button>
               </a>
             </li>
             <li class="breadcrumb-item">
-              <a class="breadcrumb-item" *ngIf="tomorrow != undefined" [routerLink]="['/work', 'day', f(tomorrow, 'yyyy-MM-dd')]">
+              <a class="breadcrumb-item" *ngIf="tomorrow != undefined"
+                [routerLink]="['/work', 'day', f(tomorrow, 'yyyy-MM-dd')]">
                 <button type="button" class="btn btn-sm btn-outline-primary">
-                  <app-icon [iconClass]="config.icons['go-right']" [marginEnd]="1"></app-icon>
+                  <app-icon [iconClass]="icons['go-right']" [marginEnd]="1"></app-icon>
                   {{ f(tomorrow, 'P') }}
                 </button>
               </a>
@@ -50,7 +52,7 @@
         <div class="card">
           <div class="card-header">
             <h5 class="mb-0">
-              <app-icon [iconClass]="config.icons['info']" [marginEnd]="1"></app-icon>
+              <app-icon [iconClass]="icons['info']" [marginEnd]="1"></app-icon>
               {{ i18n('workday.daycard.title') }}
             </h5>
           </div>
@@ -141,7 +143,7 @@
                       </div>
                       <div>
                         <button class="btn btn-outline-danger" (click)="deleteBooking(item); $event.stopPropagation();">
-                          <app-icon [iconClass]="config.icons['delete']"></app-icon>
+                          <app-icon [iconClass]="icons['delete']"></app-icon>
                         </button>
                       </div>
                     </div>
@@ -170,7 +172,7 @@
                 (click)="usersettingsObj.work.livetracking.enabled = !usersettingsObj.work.livetracking.enabled; pushUserSettings();"
                 [title]="i18n('workday.tracking.livebtnTitle')">
                 <i
-                  [class]="config.icons[usersettingsObj.work.livetracking.enabled ? 'toggle-on' : 'toggle-off'] + ' me-1'"></i>
+                  [class]="icons[usersettingsObj.work.livetracking.enabled ? 'toggle-on' : 'toggle-off'] + ' me-1'"></i>
                 {{ i18n('workday.tracking.livebtn') }}
               </button>
             </li>
@@ -300,7 +302,7 @@
                 <div class="col-12 mb-3">
                   <div class="form-group">
                     <button type="submit" class="btn btn-primary" [disabled]="busy">
-                      <app-icon [iconClass]="config.icons[busy ? 'busy' : 'save']" [marginEnd]="1"></app-icon>
+                      <app-icon [iconClass]="icons[busy ? 'busy' : 'save']" [marginEnd]="1"></app-icon>
                       {{ i18n('common.save') }}
                     </button>
                   </div>

@@ -189,6 +189,7 @@ export type L10nArchiveLocale = {
             Job_PaySlip: string,
             Job_PaySlip2: string,
             Legal_Deed: string,
+            Legal_LayJudge_CompensationForm: string,
             Legal_LayJudge_InvitationTrial: string,
             Legal_LayJudge_ReservedDates: string,
             Legal_Mandate: string,

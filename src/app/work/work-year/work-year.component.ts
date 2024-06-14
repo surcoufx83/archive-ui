@@ -1,13 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { add, eachWeekendOfMonth, format, formatISO, formatRFC7231, getDaysInMonth, getMonth, getYear, sub } from 'date-fns';
-import { Subject, Subscription } from 'rxjs';
+import { add, eachWeekendOfMonth, format, formatISO, getDaysInMonth, getMonth, getYear, sub } from 'date-fns';
+import { Subject, Subscription, first } from 'rxjs';
 import { AuthService } from 'src/app/auth.service';
-import { AppConfig, ConfigService } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
 import { UserSettings, WorkMonth } from 'src/app/if';
 import { SettingsService } from 'src/app/utils/settings.service';
 import { ToastsService } from 'src/app/utils/toasts.service';
+import { environment } from 'src/environments/environment.dev';
 
 @Component({
   selector: 'app-work-year',
@@ -17,33 +16,26 @@ import { ToastsService } from 'src/app/utils/toasts.service';
 export class WorkYearComponent implements OnDestroy, OnInit {
 
   busy: boolean = false;
+  icons = environment.icons;
   loaded: boolean = false;
+  nextYear: number = 0;
+  subs: Subscription[] = [];
+  thisYear: number;
   usersettingsObj: UserSettings | null = null;
-  years: number[] = [];
-  yearMonths: { [key: number]: WorkMonth[] } = {};
+  yearBackup?: WorkMonth[];
   yearClosingTime: { [key: number]: number } = {};
   yearMonthCount: { [key: number]: number } = {};
+  yearMonths: { [key: number]: WorkMonth[] } = {};
   yearMonthsVisible: { [key: number]: boolean } = {};
-  nextYear: number = 0;
-  yearBackup?: WorkMonth[];
+  years: number[] = [];
 
-  thisYear: number;
-
-  subs: Subscription[] = [];
-
-  constructor(private authService: AuthService,
-    private configService: ConfigService,
+  constructor(
+    private authService: AuthService,
     private i18nService: I18nService,
-    private route: ActivatedRoute,
-    private router: Router,
+    private toastsService: ToastsService,
     private userSettings: SettingsService,
-    private toastsService: ToastsService) {
-    this.subs.push(this.userSettings.settings$.subscribe((settings) => this.usersettingsObj = settings));
+  ) {
     this.thisYear = getYear(Date.now());
-  }
-
-  get config(): AppConfig {
-    return this.configService.config;
   }
 
   f(date: Date | string, form: string): string {
@@ -71,8 +63,8 @@ export class WorkYearComponent implements OnDestroy, OnInit {
   ngOnInit(): void {
     this.busy = true;
     this.loaded = false;
-    let url = this.config.api.baseUrl + '/work/month';
-    this.authService.queryApi(url).subscribe((reply) => {
+    let url = `${environment.api.baseUrl}/work/month`;
+    this.authService.queryApi(url).pipe(first()).subscribe((reply) => {
       this.yearMonths = <{ [key: number]: WorkMonth[] }>reply.payload!['years'];
       this.busy = false;
       this.loaded = true;
@@ -85,6 +77,7 @@ export class WorkYearComponent implements OnDestroy, OnInit {
       this.years = Object.keys(this.yearMonths).sort((a, b) => +a - +b).map(x => +x);
       this.nextYear = Math.max(...this.years) + 1;
     });
+    this.subs.push(this.userSettings.settings$.subscribe((settings) => this.usersettingsObj = settings));
   }
 
   onAddYear(year: number): void {
@@ -124,7 +117,7 @@ export class WorkYearComponent implements OnDestroy, OnInit {
 
   private onCompleteYearMonth(year: number, i: number): Subject<boolean> {
     let subject = new Subject<boolean>();
-    const url = this.config.api.baseUrl + '/work/month/create';
+    const url = `${environment.api.baseUrl}/work/month/create`;
     const datefrom = new Date(year, i, 1, 12, 0, 0);
     const dateuntil = sub(add(new Date(year, i, 1, 12, 0, 0), { months: 1 }), { days: 1 });
     let month: WorkMonth = {
@@ -143,7 +136,7 @@ export class WorkYearComponent implements OnDestroy, OnInit {
       year: year,
       uiCreating: true
     };
-    this.authService.updateApi(url, month).subscribe((reply) => {
+    this.authService.updateApi(url, month).pipe(first()).subscribe((reply) => {
       if (reply.success) {
         month = { ...reply.payload!['month'] };
         this.yearMonths[year].push(month);

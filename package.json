@@ -3,19 +3,19 @@
   "version": "1.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --ssl --open",
+    "start": "ng serve --open",
     "build": "ng build"
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^18.0.1",
-    "@angular/common": "^18.0.1",
-    "@angular/compiler": "^18.0.1",
-    "@angular/core": "^18.0.1",
-    "@angular/forms": "^18.0.1",
-    "@angular/platform-browser": "^18.0.1",
-    "@angular/platform-browser-dynamic": "^18.0.1",
-    "@angular/router": "^18.0.1",
+    "@angular/animations": "^18.0.3",
+    "@angular/common": "^18.0.3",
+    "@angular/compiler": "^18.0.3",
+    "@angular/core": "^18.0.3",
+    "@angular/forms": "^18.0.3",
+    "@angular/platform-browser": "^18.0.3",
+    "@angular/platform-browser-dynamic": "^18.0.3",
+    "@angular/router": "^18.0.3",
     "@fortawesome/fontawesome-free": "^6.5.2",
     "angular-calendar": "^0.31.1",
     "angular-draggable-droppable": "^8.0.0",
@@ -32,16 +32,17 @@
     "ngx-echarts": "^8.0.1",
     "ngx-markdown": "^18.0.0",
     "rxjs": "~7.8.1",
-    "tslib": "^2.6.2",
-    "zone.js": "~0.14.6"
+    "tslib": "^2.6.3",
+    "zone.js": "~0.14.7"
   },
   "devDependencies": {
-    "@angular/build": "^18.0.2",
-    "@angular/cdk": "^18.0.1",
-    "@angular/cli": "^18.0.2",
-    "@angular/compiler-cli": "^18.0.1",
+    "@angular/build": "^18.0.4",
+    "@angular/cdk": "^18.0.3",
+    "@angular/cli": "^18.0.4",
+    "@angular/compiler-cli": "^18.0.3",
     "@types/file-saver-es": "^2.0.3",
     "@types/marked": "^4.3.2",
     "typescript": "~5.4.5"
-  }
+  },
+  "packageManager": "pnpm@9.3.0+sha512.ee7b93e0c2bd11409c6424f92b866f31d3ea1bef5fbe47d3c7500cdc3c9668833d2e55681ad66df5b640c61fa9dc25d546efa54d76d7f8bf54b13614ac293631"
 }

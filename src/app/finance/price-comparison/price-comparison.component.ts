@@ -1,40 +1,35 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { compareDesc, differenceInCalendarDays, parseISO, subMonths } from 'date-fns';
 import { EChartsOption } from 'echarts';
+import { Subscription, first } from 'rxjs';
 import { AuthService } from 'src/app/auth.service';
-import { AppConfig, ConfigService } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
 import { ApiReply, ReceiptArticle, UserSettings } from 'src/app/if';
-import { SettingsService } from 'src/app/utils/settings.service';
 import { FormatService } from 'src/app/utils/format.service';
-import { ToastsService } from 'src/app/utils/toasts.service';
+import { SettingsService } from 'src/app/utils/settings.service';
+import { environment } from 'src/environments/environment.dev';
 
 @Component({
   selector: 'app-price-comparison',
   templateUrl: './price-comparison.component.html',
   styleUrls: ['./price-comparison.component.scss']
 })
-export class PriceComparisonComponent implements OnInit {
+export class PriceComparisonComponent implements OnDestroy, OnInit {
 
-  articles: { [key: number]: ReceiptArticle } = {};
   articlecharts: { [key: number]: EChartsOption } = {};
+  articles: { [key: number]: ReceiptArticle } = {};
+  icons = environment.icons;
   items: ComparisonItem[][] = [];
+  subscriptions: Subscription[] = [];
   usersettingsObj: UserSettings | null = null;
 
-  constructor(private authService: AuthService,
-    private configService: ConfigService,
+  constructor(
+    private authService: AuthService,
     private i18nService: I18nService,
     private userSettings: SettingsService,
     public formatService: FormatService,
-    private toastService: ToastsService) {
-    this.userSettings.settings$.subscribe((settings) => {
-      this.usersettingsObj = settings;
-    });
+  ) {
     this.i18nService.setTitle('pricecomparison.title');
-  }
-
-  get config(): AppConfig {
-    return this.configService.config;
   }
 
   createChartData(items: { [key: number]: ComparisonItem[] }): void {
@@ -99,9 +94,14 @@ export class PriceComparisonComponent implements OnInit {
     return min;
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
+
   ngOnInit(): void {
-    let url: string = this.config.api.baseUrl + '/fin/comparison';
-    this.authService.queryApi(url).subscribe((reply: ApiReply) => {
+    this.subscriptions.push(this.userSettings.settings$.subscribe((settings) => this.usersettingsObj = settings));
+    let url: string = `${environment.api.baseUrl}/fin/comparison`;
+    this.authService.queryApi(url).pipe(first()).subscribe((reply: ApiReply) => {
       if (reply.success) {
         this.articles = (<ComparisonReply>reply.payload).articles;
         this.createChartData((<ComparisonReply>reply.payload).items);

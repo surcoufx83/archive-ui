@@ -1,12 +1,12 @@
-import { Component } from '@angular/core';
-import { ConfigService, AppConfig } from '../../config.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { environment } from 'src/environments/environment.dev';
 
 @Component({
   selector: 'ui-busy-indicator',
   templateUrl: './ui-busy-indicator.component.html',
   styleUrls: ['./ui-busy-indicator.component.scss']
 })
-export class UiBusyIndicatorComponent {
+export class UiBusyIndicatorComponent implements OnDestroy, OnInit {
 
   colorIndex: number = 0;
   colors: string[] = [
@@ -17,15 +17,19 @@ export class UiBusyIndicatorComponent {
     'text-info',
     'text-dark',
   ];
+  icons = environment.icons;
+  private intervalSubscription?: any;
 
-  constructor(private configService: ConfigService) {
-    setInterval(() => {
-      this.colorIndex = Math.floor(Math.random() * this.colors.length);
-    }, 3000);
+  constructor() { }
+
+  ngOnDestroy(): void {
+    clearInterval(this.intervalSubscription);
   }
 
-  get config() : AppConfig {
-    return this.configService.config;
+  ngOnInit(): void {
+    this.intervalSubscription = setInterval(() => {
+      this.colorIndex = Math.floor(Math.random() * this.colors.length);
+    }, 3000);
   }
 
 }

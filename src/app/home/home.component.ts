@@ -1,12 +1,13 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Case, File, UserSettings } from 'src/app/if';
-import { AuthService } from '../auth.service';
-import { AppConfig, ConfigService } from '../config.service';
-import { I18nService } from '../i18n.service';
-import { SettingsService } from '../utils/settings.service';
-import { FormatService } from '../utils/format.service';
 import { HttpStatusCode } from '@angular/common/http';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { first } from 'rxjs';
+import { Case, File, UserSettings } from 'src/app/if';
+import { environment } from 'src/environments/environment.dev';
+import { AuthService } from '../auth.service';
+import { I18nService } from '../i18n.service';
+import { FormatService } from '../utils/format.service';
+import { SettingsService } from '../utils/settings.service';
 
 @Component({
   selector: 'app-home',
@@ -17,22 +18,23 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   busy: boolean = false;
   etag?: string;
+  icons = environment.icons;
   inactivecases: Case[] = [];
   inboxfiles: File[] = [];
   recentfiles: File[] = [];
+  stats?: HomeStats;
+  storagename: string = `${environment.localStoragePrefix}homeData`;
   updatetimeout: any;
   usersettingsObj: UserSettings | null = null;
-  stats?: HomeStats;
-  storagename: string = this.config.storage.prefix + 'homeData';
   when: number = 0;
 
-  constructor(private authService: AuthService,
-    private configService: ConfigService,
+  constructor(
+    private authService: AuthService,
     private i18nService: I18nService,
-    private route: ActivatedRoute,
-    public router: Router,
     private userSettings: SettingsService,
-    public formatService: FormatService) {
+    public formatService: FormatService,
+    public router: Router,
+  ) {
     this.userSettings.settings$.subscribe((settings) => {
       this.usersettingsObj = settings;
     });
@@ -46,10 +48,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.etag = olddata.etag;
     }
     this.i18nService.setTitle('home.title');
-  }
-
-  get config(): AppConfig {
-    return this.configService.config;
   }
 
   i18n(key: string, params: string[] = []): string {
@@ -67,9 +65,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   update(): void {
     this.busy = true;
-    let url: string = this.config.api.baseUrl + '/home';
+    let url: string = `${environment.api.baseUrl}/home`;
     this.when = Math.floor(Date.now() / 1000);
-    this.authService.queryApi(url, undefined, this.etag).subscribe((reply) => {
+    this.authService.queryApi(url, undefined, this.etag).pipe(first()).subscribe((reply) => {
       if (reply.status == HttpStatusCode.Ok && reply.success && reply.payload != undefined) {
         let response = <HomeResponse>reply.payload;
         this.inactivecases = response.inactivecases;

@@ -13,14 +13,14 @@
                 <button type="button" class="form-control btn-sm btn-outline-secondary text-nowrap"
                     (click)="preview(); $event.stopPropagation();"
                     [title]="i18n('search.result.group.gotoPreviewTitle')">
-                    <app-icon [iconClass]="config.icons['preview']" addCssClasses="mx-1"></app-icon>
+                    <app-icon [iconClass]="icons['preview']" addCssClasses="mx-1"></app-icon>
                 </button>
             </div>
             <div *ngIf="showButtons && version && version.ext?.downloadable" class="ms-2 ms-lg-1">
                 <button type="button" class="form-control btn-sm btn-outline-secondary text-nowrap"
                     (click)="download(); $event.stopPropagation();"
                     [title]="i18n('search.result.group.downloadFileTitle')">
-                    <app-icon [iconClass]="config.icons['download']" addCssClasses="mx-1"></app-icon>
+                    <app-icon [iconClass]="icons['download']" addCssClasses="mx-1"></app-icon>
                 </button>
             </div>
         </div>
@@ -35,7 +35,7 @@
     <div class="ms-3" *ngIf="gotoButton">
         <a [routerLink]="['/file', file.id]">
             <button class="btn btn-sm btn-outline-primary">
-                <app-icon [iconClass]="config.icons['go-right']" addCssClasses="mx-2"></app-icon>
+                <app-icon [iconClass]="icons['go-right']" addCssClasses="mx-2"></app-icon>
             </button>
         </a>
     </div>

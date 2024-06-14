@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { format } from 'date-fns';
+import { Subscription } from 'rxjs';
 import { UserSettings, WorkLead } from 'src/app/if';
-import { AuthService } from '../../../auth.service';
-import { AppConfig, ConfigService } from '../../../config.service';
+import { environment } from 'src/environments/environment.dev';
 import { I18nService } from '../../../i18n.service';
 import { SettingsService } from '../../../utils/settings.service';
 
@@ -12,26 +12,20 @@ import { SettingsService } from '../../../utils/settings.service';
   templateUrl: './lead.component.html',
   styleUrls: ['./lead.component.scss']
 })
-export class WorkLeadComponent implements OnInit {
+export class WorkLeadComponent implements OnDestroy, OnInit {
 
   busy: boolean = false;
+  icons = environment.icons;
   lead?: WorkLead | null;
   leadLoading: boolean = false;
+  subscriptions: Subscription[] = [];
   usersettingsObj: UserSettings | null = null;
 
-  constructor(private authService: AuthService,
-    private configService: ConfigService,
+  constructor(
     private i18nService: I18nService,
-    private userSettings: SettingsService,
     private route: ActivatedRoute,
-    private router: Router) {
-    this.userSettings.settings$.subscribe((settings) => {
-      this.usersettingsObj = settings;
-    });
-  }
-
-  get config(): AppConfig {
-    return this.configService.config;
+    private userSettings: SettingsService,
+  ) {
   }
 
   f(date: Date | string, form: string): string {
@@ -48,13 +42,18 @@ export class WorkLeadComponent implements OnInit {
     return this.i18nService.Locale;
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
+
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
+    this.subscriptions.push(this.userSettings.settings$.subscribe((settings) => this.usersettingsObj = settings));
+    this.subscriptions.push(this.route.paramMap.subscribe(params => {
       this.busy = true;
       if (params.has('id')) {
         this.lead = this.userSettings.getWorkLead(+params.get('id')!);
       }
-    });
+    }));
   }
 
   update(lead: WorkLead, push: boolean): void {

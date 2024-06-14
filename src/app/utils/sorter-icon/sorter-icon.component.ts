@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { AppConfig, ConfigService } from 'src/app/config.service';
+import { environment } from 'src/environments/environment.dev';
 
 @Component({
   selector: 'app-sorter-icon',
@@ -12,11 +12,9 @@ export class SorterIconComponent {
   @Input() sortBy!: string;
   @Output() click = new EventEmitter();
 
-  constructor(private configService: ConfigService) { }
+  icons = environment.icons;
 
-  get config(): AppConfig {
-    return this.configService.config;
-  }
+  constructor() { }
 
   onClick(): void {
     this.click.emit();

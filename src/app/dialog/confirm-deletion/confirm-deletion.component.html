@@ -13,12 +13,12 @@
             <div class="modal-footer d-flex justify-content-between align-items-center">
                 <button *ngIf="cancelable" type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal"
                     (click)="cancel.emit()">
-                    <app-icon [iconClass]="config.icons['go-left']"></app-icon>
+                    <app-icon [iconClass]="icons['go-left']"></app-icon>
                     {{ i18n('common.confirm.deletion.cancel') }}
                 </button>
                 <button type="button" class="btn btn-sm btn-danger ms-2" data-bs-dismiss="modal"
                     (click)="confirm.emit()">
-                    <app-icon [iconClass]="config.icons['delete']"></app-icon>
+                    <app-icon [iconClass]="icons['delete']"></app-icon>
                     {{ i18n('common.confirm.deletion.confirm') }}
                 </button>
             </div>

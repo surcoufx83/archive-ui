@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment.dev';
 import { ConfigService } from '../config.service';
 
 @Injectable({
@@ -8,7 +9,9 @@ export class StorageService {
 
   private items: { [key: string]: StorageItem } = { ...defaultStorageSettingsitems };
 
-  constructor(private configService: ConfigService) {
+  constructor(
+    private configService: ConfigService
+  ) {
     this.loadSelf();
   }
 
@@ -43,7 +46,7 @@ export class StorageService {
   }
 
   private getStorageName(key: string): string {
-    return `${this.configService.config.storage.prefix}__${key}`;
+    return `${environment.localStoragePrefix}__${key}`;
   }
 
   public getSyncInterval(key: string): number {
@@ -57,7 +60,7 @@ export class StorageService {
       console.error(`StorageService.getSyncUrl(${key}): invalid param key.`);
       return 'false';
     }
-    return `${this.configService.config.api.baseUrl}${this.items[key].urlFragment}`
+    return `${environment.api.baseUrl}${this.items[key].urlFragment}`
       + (this.items[key].lastsync > 0 ? `/${Math.floor(this.items[key].lastsync / 1000)}` : '');
   }
 
@@ -75,7 +78,7 @@ export class StorageService {
     return localStorage.getItem(this.getStorageName(key));
   }
 
-  private loadSelf() : void {
+  private loadSelf(): void {
     let olddata: string | null = localStorage.getItem(this.getStorageName('inf'));
     let oldobj: { [key: string]: StorageItem } | null = olddata != null ? JSON.parse(olddata) : null;
     if (olddata != null && oldobj!['inf'].version == this.items['inf'].expectedVersion) {

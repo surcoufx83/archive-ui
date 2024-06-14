@@ -1,10 +1,11 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { AppConfig, ConfigService } from 'src/app/config.service';
+import { Subscription, first } from 'rxjs';
 import { I18nService } from 'src/app/i18n.service';
+import { Country, Currency, TaxRate, UserSettings } from 'src/app/if';
 import { SettingsService } from 'src/app/utils/settings.service';
 import { ToastsService } from 'src/app/utils/toasts.service';
-import { Country, Currency, TaxRate, UserSettings } from 'src/app/if';
+import { environment } from 'src/environments/environment.dev';
 import { DbCurrenciesStorage } from './currencies/currencies.component';
 
 @Component({
@@ -17,26 +18,25 @@ export class DbCountriesComponent implements OnInit, OnDestroy {
   @ViewChild('editor') editor?: ElementRef;
 
   busy: boolean = false;
-  saving: boolean = false;
   countries: Country[] = [];
-  editcountry?: Country;
   currencies: Currency[] = [];
-  usersettingsObj: UserSettings | null = null;
+  editcountry?: Country;
+  icons = environment.icons;
+  saving: boolean = false;
   sortAsc: boolean = true;
   sortBy: string = 'i18nname';
-  storagename: string = this.config.storage.prefix + 'dbcountriesData';
-  storagenameCurrency: string = this.config.storage.prefix + 'dbcurrenciesData';
+  storagename: string = `${environment.localStoragePrefix}dbcountriesData`;
+  storagenameCurrency: string = `${environment.localStoragePrefix}dbcurrenciesData`;
+  subscriptions: Subscription[] = [];
   timeout: any;
+  usersettingsObj: UserSettings | null = null;
   when: number = 0;
-  countriesSubscription: any;
-  currenciesSubscription: any;
-  settingsSubscription: any;
-  taxratesSubscription: any;
 
-  constructor(private configService: ConfigService,
+  constructor(
     private i18nService: I18nService,
     private userSettings: SettingsService,
-    private toastService: ToastsService) {
+    private toastService: ToastsService
+  ) {
     let olddata: string | null | DbCountriesStorage = localStorage.getItem(this.storagename);
     if (olddata) {
       this.countries = (<DbCountriesStorage>JSON.parse(olddata)).items;
@@ -51,14 +51,10 @@ export class DbCountriesComponent implements OnInit, OnDestroy {
 
   }
 
-  get config(): AppConfig {
-    return this.configService.config;
-  }
-
   delete(item: Country) {
     if (confirm(this.i18n('common.confirm.askDeletion', [item.name]))) {
       this.saving = true;
-      this.userSettings.deleteCountry(item).subscribe((e) => {
+      this.userSettings.deleteCountry(item).pipe(first()).subscribe((e) => {
         console.log(e)
         if (e) {
           this.toastService.confirm(this.i18nService.i18n('common.confirm.delete.title'),
@@ -87,30 +83,26 @@ export class DbCountriesComponent implements OnInit, OnDestroy {
     return this.i18nService.i18n(key, params);
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
+
   ngOnInit(): void {
-    this.settingsSubscription = this.userSettings.settings$.subscribe((settings) => {
-      this.usersettingsObj = settings;
-    });
-    this.countriesSubscription = this.userSettings.countries$.subscribe((countries) => {
+    this.subscriptions.push(this.userSettings.settings$.subscribe((settings) => this.usersettingsObj = settings));
+    this.subscriptions.push(this.userSettings.countries$.subscribe((countries) => {
       if (countries.length == 0)
         return;
       this.countries = countries;
       this.countries.forEach((item) => { item.i18nname = this.i18n('country.' + item.name); item.taxrates = this.sortTaxRates(item.taxrates) });
       this.sort();
       localStorage.setItem(this.storagename, JSON.stringify({ items: this.countries }));
-    });
-    this.currenciesSubscription = this.userSettings.currencies$.subscribe((currencies) => {
+    }));
+    this.subscriptions.push(this.userSettings.currencies$.subscribe((currencies) => {
       if (currencies.length == 0)
         return;
       this.currencies = currencies;
       this.sortCurrencies();
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.countriesSubscription?.unsubscribe();
-    this.currenciesSubscription?.unsubscribe();
-    this.settingsSubscription?.unsubscribe();
+    }));
   }
 
   sort(field?: string, asc?: boolean): void {
@@ -162,7 +154,7 @@ export class DbCountriesComponent implements OnInit, OnDestroy {
     if (!this.editcountry)
       return;
     this.saving = true;
-    this.userSettings.updateCountry(this.editcountry).subscribe((e) => {
+    this.userSettings.updateCountry(this.editcountry).pipe(first()).subscribe((e) => {
       if (e)
         this.toastService.confirm(this.i18nService.i18n('common.confirm.save.title'),
           this.i18nService.i18n('common.confirm.save.message'));

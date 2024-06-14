@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { AppConfig, ConfigService } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
 import { File, Version } from 'src/app/if';
 import { FileService } from 'src/app/utils/file.service';
 import { FormatService } from 'src/app/utils/format.service';
+import { environment } from 'src/environments/environment.dev';
 
 @Component({
   selector: 'file-list-item',
@@ -20,14 +20,16 @@ export class FileListItemComponent {
   @Output() clicked = new EventEmitter();
   @Output() previewClicked = new EventEmitter();
 
-  constructor(private configService: ConfigService, private i18nService: I18nService, public formatService: FormatService, private fileService: FileService) { }
+  icons = environment.icons;
+
+  constructor(
+    private i18nService: I18nService,
+    public formatService: FormatService,
+    private fileService: FileService
+  ) { }
 
   click(): void {
     this.clicked.emit();
-  }
-
-  get config(): AppConfig {
-    return this.configService.config;
   }
 
   download(): void {

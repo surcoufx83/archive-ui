@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { AppConfig, ConfigService } from 'src/app/config.service';
 import { Tag } from 'src/app/if';
+import { environment } from 'src/environments/environment.dev';
 
 @Component({
   selector: 'app-tag',
@@ -12,11 +12,9 @@ export class TagComponent {
   @Input() tag!: Tag;
   @Output() xclick = new EventEmitter();
 
-  constructor(private configService: ConfigService) { }
+  icons = environment.icons;
 
-  get config(): AppConfig {
-    return this.configService.config;
-  }
+  constructor() { }
 
   onXClick(): void {
     this.xclick.emit();

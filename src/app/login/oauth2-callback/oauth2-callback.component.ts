@@ -1,28 +1,31 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { environment } from 'src/environments/environment.dev';
 import { AuthService } from '../../auth.service';
-import { AppConfig, ConfigService } from '../../config.service';
 
 @Component({
   selector: 'app-oauth2-callback',
   templateUrl: './oauth2-callback.component.html',
   styleUrls: ['./oauth2-callback.component.scss']
 })
-export class Oauth2CallbackComponent implements OnInit {
+export class Oauth2CallbackComponent implements OnDestroy, OnInit {
 
-  constructor(private router: Router,
-              private route: ActivatedRoute,
-              private authService: AuthService,
-              private configService: ConfigService)
-  { }
+  private sub?: Subscription
 
-  get config() : AppConfig {
-    return this.configService.config;
+  constructor(
+    private authService: AuthService,
+    private route: ActivatedRoute,
+    private router: Router,
+  ) { }
+
+  ngOnDestroy(): void {
+    this.sub?.unsubscribe();
   }
 
   ngOnInit(): void {
-    this.route.queryParamMap.subscribe((parms: ParamMap) => {
-      let hostconfig = this.config.auth.oauth2.items[window.location.host];
+    this.sub = this.route.queryParamMap.subscribe((parms: ParamMap) => {
+      let hostconfig = environment.api.auth.oauth2Providers[location.hostname];
       if (!hostconfig) {
         this.router.navigate(['login']);
         return;

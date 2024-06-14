@@ -13,21 +13,21 @@
             </li>
             <a class="breadcrumb-item" [routerLink]="['/work', 'month', f(LastMonth, 'yyyy'), f(LastMonth, 'M')]">
               <button type="button" class="btn btn-sm btn-outline-primary">
-                <app-icon [iconClass]="config.icons['go-left']" [marginEnd]="1"></app-icon>
+                <app-icon [iconClass]="icons['go-left']" [marginEnd]="1"></app-icon>
                 {{ f(LastMonth, 'MMM') }}
               </button>
             </a>
             <a *ngIf="!IsToday" class="breadcrumb-item"
               [routerLink]="['/work', 'month', f(today, 'yyyy'), f(today, 'M')]">
               <button type="button" class="btn btn-sm btn-outline-primary">
-                <app-icon [iconClass]="config.icons['rotate-left']" [marginEnd]="1"></app-icon>
+                <app-icon [iconClass]="icons['rotate-left']" [marginEnd]="1"></app-icon>
                 {{ i18n('common.today') }}
               </button>
             </a>
             <a class="breadcrumb-item" [routerLink]="['/work', 'month', f(NextMonth, 'yyyy'), f(NextMonth, 'M')]">
               <button type="button" class="btn btn-sm btn-outline-primary">
                 {{ f(NextMonth, 'MMM') }}
-                <app-icon [iconClass]="config.icons['go-right']" addCssClasses="ms-1"></app-icon>
+                <app-icon [iconClass]="icons['go-right']" addCssClasses="ms-1"></app-icon>
               </button>
             </a>
           </ol>
@@ -48,7 +48,7 @@
           <div class="card">
             <div class="card-header">
               <h5 class="mb-0">
-                <app-icon [iconClass]="config.icons['info']" [marginEnd]="1"></app-icon>
+                <app-icon [iconClass]="icons['info']" [marginEnd]="1"></app-icon>
                 {{ i18n('workmonth.cards.target.title') }}
               </h5>
             </div>
@@ -80,7 +80,7 @@
           <div class="card">
             <div class="card-header">
               <h5 class="mb-0">
-                <app-icon [iconClass]="config.icons['stopwatch']" [marginEnd]="1"></app-icon>
+                <app-icon [iconClass]="icons['stopwatch']" [marginEnd]="1"></app-icon>
                 {{ i18n('workmonth.cards.time.title') }}
               </h5>
             </div>
@@ -118,7 +118,7 @@
           <div class="card">
             <div class="card-header">
               <h5 class="mb-0">
-                <app-icon [iconClass]="config.icons['today']" [marginEnd]="1"></app-icon>
+                <app-icon [iconClass]="icons['today']" [marginEnd]="1"></app-icon>
                 {{ i18n('workmonth.cards.day.title', [f(s2d(selectedDay.date), 'P')]) }}
               </h5>
             </div>
@@ -189,8 +189,7 @@
                 <button type="button" class="btn btn-sm btn-secondary"
                   (click)="usersettingsObj.view.calendar.showWeekend = !usersettingsObj.view.calendar.showWeekend; pushUserSettings();"
                   [title]="i18n('calendar.showWeekendTitle')">
-                  <app-icon
-                    [iconClass]="config.icons[usersettingsObj.view.calendar.showWeekend ? 'toggle-on' : 'toggle-off']"
+                  <app-icon [iconClass]="icons[usersettingsObj.view.calendar.showWeekend ? 'toggle-on' : 'toggle-off']"
                     [marginEnd]="1"></app-icon>
                   {{ i18n('calendar.showWeekend') }}
                 </button>
@@ -207,7 +206,7 @@
         class="container-fluid p-0 mb-3 mb-md-1 d-flex flex-column flex-md-row justify-content-end align-items-center flex-wrap">
         <!-- Offtime categories drag&drop-->
         <div class="me-3">
-          {{ i18n('workmonth.offtime.title') }}<i [ngClass]="[config.icons['help'], 'fs-8 me-1 help-icon pointer']"
+          {{ i18n('workmonth.offtime.title') }}<i [ngClass]="[icons['help'], 'fs-8 me-1 help-icon pointer']"
             [tooltip]="i18n('workmonth.offtime.subtitle')"></i>:
         </div>
         <nav class="h-100" style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
@@ -218,7 +217,7 @@
                   [ngClass]="['btn btn-sm btn-outline-primary py-2 py-md-0', item.meta.obj.rowcolor]" mwlDraggable
                   [dropData]="{ event: item }" [touchStartLongPress]="{ delay: 300, delta: 30 }"
                   dragActiveClass="drag-active">
-                  <app-icon [iconClass]="config.icons[item.meta.obj.icon]" [addCssClasses]="item.meta.obj.iconcolor"
+                  <app-icon [iconClass]="icons[item.meta.obj.icon]" [addCssClasses]="item.meta.obj.iconcolor"
                     [marginEnd]="1" *ngIf="item.meta.obj.icon !== ''"></app-icon>
                   {{ item.title }}
                 </button>

@@ -1,9 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { first } from 'rxjs';
 import { AuthService } from 'src/app/auth.service';
-import { AppConfig, ConfigService } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
 import { Directory } from 'src/app/if';
 import { FormatService } from 'src/app/utils/format.service';
+import { environment } from 'src/environments/environment.dev';
 
 @Component({
   selector: 'app-rootdir',
@@ -15,19 +16,17 @@ export class DbRootdirComponent implements OnInit {
   @ViewChild('editor') editor?: ElementRef;
 
   busy: boolean = false;
-  saving: boolean = false;
   dirs: Directory[] = [];
+  icons = environment.icons;
+  saving: boolean = false;
   sortAsc: boolean = true;
   sortBy: string = 'name';
 
-  constructor(private authService: AuthService,
-    private configService: ConfigService,
+  constructor(
+    private authService: AuthService,
     private i18nService: I18nService,
-    private formatService: FormatService) { }
-
-  get config(): AppConfig {
-    return this.configService.config;
-  }
+    private formatService: FormatService
+  ) { }
 
   formatDate(date: Date | string | null, form: string): string {
     return this.formatService.fdate(date, form);
@@ -38,8 +37,8 @@ export class DbRootdirComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    let url: string = `${this.config.api.baseUrl}/directories/root`;
-    this.authService.queryApi(url).subscribe((reply) => {
+    let url: string = `${environment.api.baseUrl}/directories/root`;
+    this.authService.queryApi(url).pipe(first()).subscribe((reply) => {
       if (reply.success && reply.payload != undefined && reply.payload['dirs'] != undefined) {
         this.dirs = <Directory[]>reply.payload['dirs'];
         this.sort();

@@ -1,12 +1,12 @@
-import { AfterViewInit, Component, ElementRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarMonthViewDay } from 'angular-calendar';
-import { add, differenceInMinutes, format, getDate, getMonth, getYear, isAfter, isBefore, isSameDay, isSameMonth, parseISO, sub } from 'date-fns';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { ApiReply, UserSettings, WorkDay, WorkDayBooking, WorkMonth, WorkOffCategory } from 'src/app/if';
 import { EventColor } from 'calendar-utils/calendar-utils';
+import { add, differenceInMinutes, format, getDate, getMonth, getYear, isAfter, isBefore, isSameDay, isSameMonth, parseISO, sub } from 'date-fns';
+import { BehaviorSubject, Subject, Subscription, first } from 'rxjs';
+import { ApiReply, UserSettings, WorkDay, WorkDayBooking, WorkMonth, WorkOffCategory } from 'src/app/if';
+import { environment } from 'src/environments/environment.dev';
 import { AuthService } from '../../auth.service';
-import { AppConfig, ConfigService } from '../../config.service';
 import { I18nService } from '../../i18n.service';
 import { SettingsService } from '../../utils/settings.service';
 
@@ -15,76 +15,36 @@ import { SettingsService } from '../../utils/settings.service';
   templateUrl: './work-month.component.html',
   styleUrls: ['./work-month.component.scss']
 })
-export class WorkMonthComponent implements OnInit, AfterViewInit {
+export class WorkMonthComponent implements AfterViewInit, OnDestroy, OnInit {
 
   @ViewChild('calendar', { static: true }) calendar?: TemplateRef<any>;
 
-  calendarEvents: CalendarEvent[] = [];
   activeDayIsOpen: boolean = false;
-  refresh = new Subject<void>();
-
-  today: Date = new Date();
-  selectedMonth: Date = new Date();
-  private selectedDate$: BehaviorSubject<Date | null> = new BehaviorSubject<Date | null>(null);
-  selectedDate = this.selectedDate$.asObservable();
-  selectedDay?: WorkDay;
-  viewDate: Date = new Date();
-  year: number | undefined;
+  calendarEvents: CalendarEvent[] = [];
+  dayObjs: { [key: number]: WorkDay } = {};
+  icons = environment.icons;
   month: number | undefined;
   monthLoading: boolean = true;
-  dayObjs: { [key: number]: WorkDay } = {};
   monthObj?: WorkMonth;
-  usersettingsObj: UserSettings | null = null;
-
   offdayDroppableEvents: CalendarEvent[] = [];
+  private selectedDate$: BehaviorSubject<Date | null> = new BehaviorSubject<Date | null>(null);
+  refresh = new Subject<void>();
+  selectedDate = this.selectedDate$.asObservable();
+  selectedDay?: WorkDay;
+  selectedMonth: Date = new Date();
+  subscriptions: Subscription[] = [];
+  today: Date = new Date();
+  usersettingsObj: UserSettings | null = null;
+  viewDate: Date = new Date();
+  year: number | undefined;
 
-  constructor(private authService: AuthService,
-    private configService: ConfigService,
+  constructor(
+    private authService: AuthService,
     private i18nService: I18nService,
     private route: ActivatedRoute,
     private router: Router,
-    private userSettings: SettingsService) {
-    this.userSettings.settings$.subscribe((settings) => this.usersettingsObj = settings);
-    this.userSettings.workOfftimeCategories$.subscribe((categories) => {
-      this.offdayDroppableEvents = [];
-      for (const offcat of Object.values(categories)) {
-        this.offdayDroppableEvents.push({
-          title: this.i18n('work.offcategories.' + offcat.name),
-          start: new Date(),
-          draggable: true,
-          color: offcat.calendarcolor,
-          allDay: true,
-          meta: {
-            obj: offcat,
-            type: 'WorkOffCategory'
-          }
-        });
-      }
-      this.offdayDroppableEvents.push({
-        title: this.i18n('work.offcategories.none'),
-        start: new Date(),
-        draggable: true,
-        allDay: true,
-        meta: {
-          obj: {
-            calendarcolor: {},
-            icon: '',
-            iconcolor: '',
-            id: 0,
-            name: this.i18n('work.offcategories.none'),
-            quickselect: true,
-            rowcolor: '',
-            userid: 0
-          },
-          type: 'WorkOffCategory'
-        }
-      });
-    });
-  }
-
-  get config(): AppConfig {
-    return this.configService.config;
-  }
+    private userSettings: SettingsService,
+  ) { }
 
   get locale(): string {
     return this.i18nService.Locale;
@@ -146,8 +106,8 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
       if (this.dayObjs[date] == undefined || !isSameMonth(newStart, new Date((<WorkMonth>this.monthObj).datefrom)))
         return;
       let day = this.dayObjs[date];
-      let url = this.config.api.baseUrl + `/work/day/${this.monthObj?.id}/${day.id}/offdays/set/${cat.id}`;
-      this.authService.updateApi(url, {}).subscribe((reply: ApiReply) => {
+      let url = `${environment.api.baseUrl}/work/day/${this.monthObj?.id}/${day.id}/offdays/set/${cat.id}`;
+      this.authService.updateApi(url, {}).pipe(first()).subscribe((reply: ApiReply) => {
         if (reply.success) {
           this.calendarEvents = [
             ...this.calendarEvents.filter((e) => {
@@ -188,7 +148,7 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.route.paramMap.subscribe((params: ParamMap) => {
+    this.subscriptions.push(this.route.paramMap.subscribe((params: ParamMap) => {
       let y = params.get('year');
       if (y != null && +y >= 2022 && +y <= (getYear(this.selectedMonth) + 2))
         this.year = +y;
@@ -211,12 +171,12 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
         this.viewDate = this.selectedMonth;
         this.ngAfterViewInitLoadFromBackend();
       }
-    });
+    }));
   }
 
   ngAfterViewInitLoadFromBackend(): void {
-    let url = this.config.api.baseUrl + '/work/month/' + format(this.selectedMonth, 'yyyy-M');
-    this.authService.queryApi(url).subscribe((reply) => {
+    let url = `${environment.api.baseUrl}/work/month/` + format(this.selectedMonth, 'yyyy-M');
+    this.authService.queryApi(url).pipe(first()).subscribe((reply) => {
       if (reply.success && reply.payload != undefined) {
         if (reply.payload['month'] != null) {
           this.monthObj = <WorkMonth>reply.payload['month'];
@@ -283,8 +243,48 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
+
   ngOnInit(): void {
-    this.selectedDate.subscribe((date) => {
+    this.subscriptions.push(this.userSettings.settings$.subscribe((settings) => this.usersettingsObj = settings));
+    this.subscriptions.push(this.userSettings.workOfftimeCategories$.subscribe((categories) => {
+      this.offdayDroppableEvents = [];
+      for (const offcat of Object.values(categories)) {
+        this.offdayDroppableEvents.push({
+          title: this.i18n('work.offcategories.' + offcat.name),
+          start: new Date(),
+          draggable: true,
+          color: offcat.calendarcolor,
+          allDay: true,
+          meta: {
+            obj: offcat,
+            type: 'WorkOffCategory'
+          }
+        });
+      }
+      this.offdayDroppableEvents.push({
+        title: this.i18n('work.offcategories.none'),
+        start: new Date(),
+        draggable: true,
+        allDay: true,
+        meta: {
+          obj: {
+            calendarcolor: {},
+            icon: '',
+            iconcolor: '',
+            id: 0,
+            name: this.i18n('work.offcategories.none'),
+            quickselect: true,
+            rowcolor: '',
+            userid: 0
+          },
+          type: 'WorkOffCategory'
+        }
+      });
+    }));
+    this.subscriptions.push(this.selectedDate.subscribe((date) => {
       if (date == null)
         return;
       this.viewDate = date;
@@ -319,7 +319,7 @@ export class WorkMonthComponent implements OnInit, AfterViewInit {
             this.selectedDay.daytimeStats = undefined;
         }
       });
-    });
+    }));
   }
 
   pushUserSettings(): void {

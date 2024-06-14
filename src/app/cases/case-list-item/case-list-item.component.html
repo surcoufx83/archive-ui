@@ -24,7 +24,7 @@
                 • {{ i18n('cases.reference', [case.extid]) }}
             </ng-container>
             <ng-container *ngIf="case.filescount > 0">
-                • <app-icon [iconClass]="config.icons['file']" [fontSize]="8"></app-icon>
+                • <app-icon [iconClass]="icons['file']" [fontSize]="8"></app-icon>
                 {{ i18n('cases.filescount', [case.filescount], case.filescount === 1 ? 0 : 1) }}
             </ng-container>
         </div>
@@ -32,7 +32,7 @@
     <div class="ms-3" *ngIf="gotoButton">
         <a [routerLink]="['/case', case.id]">
             <button class="btn btn-sm btn-outline-primary" (click)="btnClick(); $event.stopPropagation();">
-                <app-icon [iconClass]="config.icons['go-right']" addCssClasses="mx-2"></app-icon>
+                <app-icon [iconClass]="icons['go-right']" addCssClasses="mx-2"></app-icon>
             </button>
         </a>
     </div>

@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { format } from 'date-fns';
+import { first } from 'rxjs';
 import { AuthService } from 'src/app/auth.service';
-import { AppConfig, ConfigService } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
 import { ApiReply, Meter } from 'src/app/if';
-import { SettingsService } from 'src/app/utils/settings.service';
 import { FormatService } from 'src/app/utils/format.service';
+import { environment } from 'src/environments/environment.dev';
 
 @Component({
   selector: 'app-readings',
@@ -16,25 +16,21 @@ import { FormatService } from 'src/app/utils/format.service';
 export class ReadingsComponent implements OnInit {
 
   busy: boolean = true;
-  saving: boolean = false;
-  meter: Meter[] = [];
-  editRecord: ReadingDate | null = null;
   dates: { [key: string]: number } = {};
+  editRecord: ReadingDate | null = null;
+  icons = environment.icons;
+  meter: Meter[] = [];
   readings: ReadingDate[] = [];
+  saving: boolean = false;
   showmeter: { [key: number]: boolean } = {};
 
-  constructor(private authService: AuthService,
-    private configService: ConfigService,
+  constructor(
+    private authService: AuthService,
     private i18nService: I18nService,
-    private route: ActivatedRoute,
+    public formatService: FormatService,
     public router: Router,
-    private userSettings: SettingsService,
-    public formatService: FormatService) {
+  ) {
     this.i18nService.setTitle('meter.readings.title');
-  }
-
-  get config(): AppConfig {
-    return this.configService.config;
   }
 
   date(date: Date | string, form: string): string {
@@ -69,7 +65,7 @@ export class ReadingsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authService.queryApi(this.configService.config.api.baseUrl + '/meter/readings').subscribe((reply: ApiReply) => {
+    this.authService.queryApi(`${environment.api.baseUrl}/meter/readings`).pipe(first()).subscribe((reply: ApiReply) => {
       if (reply.payload && reply.payload['meter']) {
         let items = (<Meter[]>(reply.payload['meter'])).sort((a, b) => this.sortMeter(a, b));
         let readings: ReadingDate[] = [];
@@ -100,7 +96,7 @@ export class ReadingsComponent implements OnInit {
     if (this.saving || !record)
       return;
     this.saving = true;
-    this.authService.updateApi(this.configService.config.api.baseUrl + '/meter/readings/create', record).subscribe((reply: ApiReply) => {
+    this.authService.updateApi(`${environment.api.baseUrl}/meter/readings/create`, record).pipe(first()).subscribe((reply: ApiReply) => {
       if (reply.success && reply.payload && reply.payload['count'] && reply.payload['meter']) {
         let linecount = +reply.payload['count'];
         if (linecount > 0) {

@@ -1,11 +1,11 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { first } from 'rxjs';
 import { AuthService } from 'src/app/auth.service';
-import { AppConfig, ConfigService } from 'src/app/config.service';
 import { I18nService } from 'src/app/i18n.service';
 import { Extension, Mimetype } from 'src/app/if';
-import { SettingsService } from 'src/app/utils/settings.service';
 import { ToastsService } from 'src/app/utils/toasts.service';
+import { environment } from 'src/environments/environment.dev';
 
 export const newFileextension: Extension = {
   id: 0,
@@ -38,25 +38,22 @@ export class DbExtensionsComponent implements OnInit {
   @ViewChild('editor') editor?: ElementRef;
 
   busy: boolean = false;
-  saving: boolean = false;
-  extensions: Extension[] = [];
   edititem?: Extension;
-  mimetypes: Mimetype[] = [];
+  extensions: Extension[] = [];
+  icons = environment.icons;
   mimetypeIds: { [key: number]: number } = {};
   mimetypeNames: { [key: string]: number } = {};
+  mimetypes: Mimetype[] = [];
+  saving: boolean = false;
   sortAsc: boolean = true;
   sortBy: string = 'ext';
   timeout: any;
 
-  constructor(private authService: AuthService,
-    private configService: ConfigService,
+  constructor(
+    private authService: AuthService,
     private i18nService: I18nService,
-    private userSettings: SettingsService,
-    private toastService: ToastsService) { }
-
-  get config(): AppConfig {
-    return this.configService.config;
-  }
+    private toastService: ToastsService
+  ) { }
 
   delete(item: Extension) {
     if (confirm(this.i18n('common.confirm.askDeletion', [item.ext]))) {
@@ -76,11 +73,11 @@ export class DbExtensionsComponent implements OnInit {
   }
 
   get displayableIcon(): string {
-    return this.config.icons['preview'];
+    return this.icons['preview'];
   }
 
   get downloadableIcon(): string {
-    return this.config.icons['download'];
+    return this.icons['download'];
   }
 
   i18n(key: string, params: string[] = []): string {
@@ -88,12 +85,12 @@ export class DbExtensionsComponent implements OnInit {
   }
 
   get indexableIcon(): string {
-    return this.config.icons['fingerprint'];
+    return this.icons['fingerprint'];
   }
 
   ngOnInit(): void {
-    let url: string = `${this.config.api.baseUrl}/extensions`;
-    this.authService.queryApi(url).subscribe((reply) => {
+    let url: string = `${environment.api.baseUrl}/extensions`;
+    this.authService.queryApi(url).pipe(first()).subscribe((reply) => {
       if (reply.success && reply.payload != undefined) {
         if (reply.payload['extensions'] != undefined) {
           this.extensions = <Extension[]>reply.payload['extensions'];
@@ -145,7 +142,7 @@ export class DbExtensionsComponent implements OnInit {
     if (!this.edititem)
       return;
     this.saving = true;
-    this.authService.updateApi2(`extension/${this.edititem.id}`, { ext: this.edititem }).subscribe((reply) => {
+    this.authService.updateApi2(`extension/${this.edititem.id}`, { ext: this.edititem }).pipe(first()).subscribe((reply) => {
       if (reply.success && reply.payload != undefined && reply.payload['ext'] != undefined) {
         this.edititem = <Extension>reply.payload['ext'];
         this.extensions.forEach((ext, i) => {

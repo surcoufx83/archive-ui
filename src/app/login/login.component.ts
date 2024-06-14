@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
+import { first } from 'rxjs';
+import { environment } from 'src/environments/environment.dev';
 import { AuthService } from '../auth.service';
-import { AppConfig, ConfigService } from '../config.service';
 import { I18nService } from '../i18n.service';
 
 @Component({
@@ -12,35 +13,31 @@ import { I18nService } from '../i18n.service';
 export class LoginComponent implements OnInit {
 
   busy: boolean = false;
+  failed: string = '';
+  icons = environment.icons;
   password: string = '';
   user: string = '';
-  failed: string = '';
 
-  constructor(private auth: AuthService,
-              private configService: ConfigService,
-              private i18nService: I18nService,
-              private router: Router,
-              private route: ActivatedRoute)
-  { }
+  constructor(
+    private auth: AuthService,
+    private i18nService: I18nService,
+    private router: Router,
+  ) { }
 
-  get config(): AppConfig {
-    return this.configService.config;
-  }
-
-  i18n(key: string) : string {
+  i18n(key: string): string {
     return this.i18nService.i18n(key);
   }
 
-  ngOnInit() : void {
+  ngOnInit(): void {
     if (this.auth.hasSession)
       this.router.navigate(['logincheck']);
   }
 
-  submit() : void {
+  submit(): void {
     if (this.busy)
       return;
     this.busy = true;
-    this.auth.login(this.user, this.password).subscribe((s) => {
+    this.auth.login(this.user, this.password).pipe(first()).subscribe((s) => {
       if (s.success == false) {
         this.busy = false;
         this.failed = 'login.failed';
@@ -48,18 +45,14 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  submitOauth2() : void {
+  submitOauth2(): void {
     if (this.busy)
       return;
     this.busy = true;
-    let hostconfig = this.config.auth.oauth2.items[window.location.host];
+    let hostconfig = environment.api.auth.oauth2Providers[location.hostname];
     if (!hostconfig)
       return;
-    let url = hostconfig.endpoint + '?response_type=code'
-              + '&client_id=' + hostconfig.clientId
-              + '&client_secret=' + hostconfig.clientSecret
-              + '&state=' + hostconfig.state
-              + '&redirect_uri=' + hostconfig.redirectUrl;
+    let url = `${hostconfig.baseUrl}/apps/oauth2/authorize?response_type=code&client_id=${hostconfig.clientId}&client_secret=${hostconfig.clientSecret}&state=${hostconfig.state}&redirect_uri=${encodeURIComponent(`${location.href}/oauth2`)}`;
     location.replace(url);
   }
 

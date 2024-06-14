@@ -9,7 +9,7 @@
             <li class="nav-item">
                 <a [ngClass]="[activeRouteChild == '' ? 'nav-link active' : 'nav-link']"
                     [routerLink]="['/case', case.id]">
-                    <app-icon [iconClass]="config.icons['info']" [marginEnd]="1"
+                    <app-icon [iconClass]="icons['info']" [marginEnd]="1"
                         addCssClasses="d-none d-md-inline-block"></app-icon>
                     {{ i18n('case.metacard.shorttitle') }}
                 </a>
@@ -17,7 +17,7 @@
             <li class="nav-item ms-1" *ngIf="haschilds(case.id)">
                 <a [ngClass]="[activeRouteChild == 'childs' ? 'nav-link active' : 'nav-link']"
                     [routerLink]="['/case', case.id, 'childs']">
-                    <app-icon [iconClass]="config.icons['cases']" [marginEnd]="1"
+                    <app-icon [iconClass]="icons['cases']" [marginEnd]="1"
                         addCssClasses="d-none d-md-inline-block"></app-icon>
                     {{ i18n('case.childscard.title') }}
                 </a>
@@ -25,7 +25,7 @@
             <li class="nav-item ms-1">
                 <a [ngClass]="[activeRouteChild == 'times' ? 'nav-link active' : 'nav-link']"
                     [routerLink]="['/case', case.id, 'times']">
-                    <app-icon [iconClass]="config.icons['stopwatch']" [marginEnd]="1"
+                    <app-icon [iconClass]="icons['stopwatch']" [marginEnd]="1"
                         addCssClasses="d-none d-md-inline-block"></app-icon>
                     {{ i18n('case.timecard.title') }}
                 </a>
@@ -33,7 +33,7 @@
             <li class="nav-item ms-1">
                 <a [ngClass]="[activeRouteChild == 'files' ? 'nav-link active' : 'nav-link']"
                     [routerLink]="['/case', case.id, 'files']">
-                    <app-icon [iconClass]="config.icons['folder']" [marginEnd]="1"
+                    <app-icon [iconClass]="icons['folder']" [marginEnd]="1"
                         addCssClasses="d-none d-md-inline-block"></app-icon>
                     {{ i18n('case.filescard.title') }}
                 </a>
@@ -76,7 +76,7 @@
                                         </select>
                                         <a [routerLink]="['/case', case.parentid]" class="btn btn-outline-secondary"
                                             type="button" *ngIf="getCase(case.parentid)"><i
-                                                [class]="config.icons['goto']"></i></a>
+                                                [class]="icons['goto']"></i></a>
                                     </div>
 
                                 </div>
@@ -167,7 +167,7 @@
                                             (click)="case.statusid = getCaseStatus(case.statusid)!.followup!.status!; updateCase();"
                                             *ngIf="getCaseStatus(case.statusid)!.followup!.autoswitch == false || case.period.end == null"
                                             class="btn btn-outline-secondary rounded" type="button"><i
-                                                [class]="config.icons['step-next']"></i></button>
+                                                [class]="icons['step-next']"></i></button>
                                     </div>
                                 </div>
                             </div>
@@ -208,7 +208,7 @@
                                         </select>
                                         <a [routerLink]="['/case', case.followupcaseid]" *ngIf="case.followupcaseid"
                                             class="btn btn-outline-secondary" type="button"><i
-                                                [class]="config.icons['goto']"></i></a>
+                                                [class]="icons['goto']"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -222,7 +222,7 @@
                                             [value]="formatService.fnumber(case.filescount)" readonly>
                                         <a [routerLink]="['/case', case.id, 'files']"
                                             class="btn btn-outline-secondary rounded" type="button"><i
-                                                [class]="config.icons['goto']"></i></a>
+                                                [class]="icons['goto']"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -260,7 +260,7 @@
                                         <button class="btn btn-outline-secondary rounded dropdown-toggle" type="button"
                                             data-bs-toggle="dropdown" data-bs-auto-close="outside"
                                             aria-expanded="false">
-                                            <app-icon [iconClass]="config.icons['edit']"></app-icon>
+                                            <app-icon [iconClass]="icons['edit']"></app-icon>
                                         </button>
                                         <app-period-dropdown-menu [period]="case.period.minperiod"
                                             idprefix="case-period-minperiod"
@@ -281,7 +281,7 @@
                                         <button class="btn btn-outline-secondary rounded dropdown-toggle" type="button"
                                             data-bs-toggle="dropdown" data-bs-auto-close="outside"
                                             aria-expanded="false">
-                                            <app-icon [iconClass]="config.icons['edit']"></app-icon>
+                                            <app-icon [iconClass]="icons['edit']"></app-icon>
                                         </button>
                                         <app-period-dropdown-menu [period]="case.period.period"
                                             idprefix="case-period-period"
@@ -303,7 +303,7 @@
                                         <button class="btn btn-outline-secondary rounded dropdown-toggle" type="button"
                                             data-bs-toggle="dropdown" data-bs-auto-close="outside"
                                             aria-expanded="false">
-                                            <app-icon [iconClass]="config.icons['edit']"></app-icon>
+                                            <app-icon [iconClass]="icons['edit']"></app-icon>
                                         </button>
                                         <app-period-dropdown-menu [period]="case.period.terminationperiod"
                                             idprefix="case-period-termination"
