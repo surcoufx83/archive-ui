@@ -130,7 +130,7 @@ export class SearchComponent implements OnDestroy, OnInit {
       let group = this.searchgroups[i];
       if (group['active'] === true) {
         this.searchactive[group['groupName']] = true;
-        let url = this.config.api.baseUrl + group['searchPath'];
+        let url = `${environment.api.baseUrl}${group['searchPath']}`;
         this.authService.updateApi(url, { search: phrase }).pipe(first()).subscribe((reply) => {
           if (reply.success && reply.payload != null) {
             switch (group['groupName']) {
