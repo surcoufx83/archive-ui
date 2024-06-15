@@ -17,7 +17,7 @@ export class AuthService {
   public isLoggedIn = this.loggedin.asObservable();
   private oauthProvider: EnvironmentOAuth2Provider;
   private session?: Session;
-  private storeName: string = `${environment}Session`;
+  private storeName: string = `${environment.localStoragePrefix}Session`;
 
   constructor(
     configService: ConfigService,
