@@ -19,6 +19,7 @@ export class I18nService {
   private currentLocale_: BehaviorSubject<string> = new BehaviorSubject<string>(this.locale);
   public currentLocale = this.currentLocale_.asObservable();
   public defaultLocale: string = 'en';
+  private localeAsObject: L10nArchiveLocale = environment.l10n.fallbackLocale == 'de' ? L10nArchiveDeLocale : environment.l10n.fallbackLocale == 'fr' ? L10nArchiveFrLocale : L10nArchiveEnLocale;
   public loaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private entries: { [key: string]: { [key: string]: string | string[] } } = { en: {}, de: {}, fr: {} };
 
@@ -55,6 +56,8 @@ export class I18nService {
       this.currentLocale_.next(this.defaultLocale);
   }
 
+  init(): void { }
+
   private loadStrings(locale: string) {
     let templocale: L10nArchiveLocale | null = null;
     switch (locale) {
@@ -69,6 +72,7 @@ export class I18nService {
         templocale = { ...L10nArchiveEnLocale };
         break;
     }
+    this.localeAsObject = templocale;
 
     Object.entries(<I18nEntry>templocale).forEach((e) => {
       this.iterateStrings(locale, '', e[0], <I18nEntry>e[1]);
@@ -130,6 +134,10 @@ export class I18nService {
         this.setTitle(key, params, i);
       }, 100);
     this.titleService.setTitle(this.i18n(key, params, i));
+  }
+
+  public get str(): L10nArchiveLocale {
+    return this.localeAsObject;
   }
 
 }

@@ -66,7 +66,7 @@
                     [ngClass]="{ 'btn btn-sm transition-opacity': true, 'opacity-100': saving, 'opacity-0': !saving }">
                     <app-icon class="fa-solid fa-floppy-disk text-warning"></app-icon>
                 </button>
-                <a [routerLink]="['/notepad2']" [queryParams]="{ id: note.id, subject: furl(note.title) }">
+                <a [routerLink]="['/notepad']" [queryParams]="{ id: note.id, subject: furl(note.title) }">
                     <button type="button" class="btn btn-sm">
                         <app-icon class="fa-solid fa-x"></app-icon>
                     </button>

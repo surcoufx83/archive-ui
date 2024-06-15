@@ -40,6 +40,7 @@ import { WorkDayComponent } from './work/work-day/work-day.component';
 import { WorkMonthComponent } from './work/work-month/work-month.component';
 import { WorkYearComponent } from './work/work-year/work-year.component';
 import { WorkComponent } from './work/work.component';
+import { ListManagerComponent } from './list-manager/list-manager.component';
 
 const routes: Routes = [
   { path: 'account', component: AccountComponent, canActivate: [SessionGuard] },
@@ -84,6 +85,7 @@ const routes: Routes = [
       { path: 'taxes/:year', component: TaxComponent, canActivate: [SessionGuard] },
     ]
   },
+  { path: 'lists', component: ListManagerComponent, canActivate: [SessionGuard] },
   { path: 'login', component: LoginComponent, canActivate: [SessionGuard], pathMatch: 'full' },
   { path: 'login/oauth2', component: Oauth2CallbackComponent, canActivate: [SessionGuard] },
   { path: 'logout', component: LogoutComponent, canActivate: [SessionGuard] },

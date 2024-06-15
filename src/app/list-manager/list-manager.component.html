@@ -1,0 +1,27 @@
+<div class="d-flex flex-column">
+    @if (isMobile) {
+    <div class="sidebar-toggle d-flex justify-content-end p-2">
+        <button type="button" class="btn btn-dark btn-sm" (click)="sidebarOpen = !sidebarOpen">
+            <app-icon [iconClass]="'fa-regular fa-' + (sidebarOpen ? 'eye-slash' : 'eye')" [marginEnd]="1"></app-icon>
+            {{ i18n('listManager.toggleSidebar') }}
+        </button>
+    </div>
+    }
+    <div class="main-container d-flex vh-calc-100">
+        <div [ngClass]="{ 'sidebar-body': true, 'd-none': !sidebarOpen }" [attr.data-mobile]="isMobile">
+            <app-list-manager-sidebar [lists]="lists()" [isOpen]="sidebarOpen"
+                [isMobile]="isMobile"></app-list-manager-sidebar>
+        </div>
+        <div [ngClass]="{ 'notes-body flex-grow-1 px-4 py-3': true, 'd-none': isMobile && sidebarOpen }">
+            @if (selectedList) {
+            <app-list-manager-list-item [list]="selectedList" [editMode]="editMode"></app-list-manager-list-item>
+            }
+            @else {
+            <h5>{{ i18n('listManager.noListSelected.title') }}</h5>
+            <p>
+                {{ i18n('listManager.noListSelected.introduction') }}
+            </p>
+            }
+        </div>
+    </div>
+</div>

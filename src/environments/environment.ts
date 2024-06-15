@@ -50,6 +50,7 @@ export const defaultEnvironment: Environment = {
     info: 'fa-solid fa-info-circle',
     leads: 'fa-solid fa-funnel-dollar',
     list: 'fa-solid fa-grip-lines',
+    lists: 'fa-solid fa-list-check',
     locale: 'fa-solid fa-language',
     login: 'fa-solid fa-user-lock',
     logout: 'fa-solid fa-power-off',
@@ -110,6 +111,11 @@ export const defaultEnvironment: Environment = {
         title: 'navbar.items.notepad',
         icon: 'notepad',
         link: '/notepad'
+      },
+      {
+        title: 'navbar.items.lists',
+        icon: 'lists',
+        link: '/lists'
       },
       {
         title: 'navbar.items.work',

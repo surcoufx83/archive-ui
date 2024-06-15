@@ -1,0 +1,27 @@
+.sidebar-container {
+    .notepad-item {
+        padding: .4rem .5rem;
+        border-top: 1px solid rgba($color: #ffffff, $alpha: .1);
+        border-left: 4px solid transparent;
+
+        .action-items> :not(.always) {
+            display: none;
+        }
+
+        &:hover {
+            border-left-color: rgb(255, 193, 7);
+
+            .action-items> :not(.always) {
+                display: block;
+            }
+
+        }
+    }
+
+    &[data-mobile="true"] {
+
+        .notepad-item .action-items> :not(.always) {
+            display: inline-block !important;
+        }
+    }
+}

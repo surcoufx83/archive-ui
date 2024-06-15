@@ -90,6 +90,10 @@ import { WorkDayComponent } from './work/work-day/work-day.component';
 import { WorkMonthComponent } from './work/work-month/work-month.component';
 import { WorkYearComponent } from './work/work-year/work-year.component';
 import { WorkComponent } from './work/work.component';
+import { ListManagerComponent } from './list-manager/list-manager.component';
+import { ListManagerListItemComponent } from './list-manager/list-item/list-item.component';
+import { ListManagerSidebarComponent } from './list-manager/sidebar/sidebar.component';
+import { ListGroupComponent } from './list-manager/list-group/list-group.component';
 
 registerLocaleData(localeDe);
 registerLocaleData(localeFr);
@@ -166,6 +170,10 @@ registerLocaleData(localeFr);
         WorkProjectsComponent,
         WorkTimeCategoriesComponent,
         WorkYearComponent,
+        ListManagerComponent,
+        ListManagerListItemComponent,
+        ListManagerSidebarComponent,
+        ListGroupComponent,
     ],
     bootstrap: [
         AppComponent,
@@ -184,19 +192,13 @@ registerLocaleData(localeFr);
     ],
     providers: [
         { provide: DeviceDetectorService, multi: false },
-        { provide: ConfigService, multi: false },
         { provide: I18nService, multi: false },
-        { provide: StorageService, multi: false },
+        { provide: ConfigService, multi: false, deps: [DeviceDetectorService] },
+        { provide: StorageService, multi: false, deps: [ConfigService] },
         { provide: ToastsService, multi: false },
         provideHttpClient(withInterceptorsFromDi()),
-        {
-            provide: APP_INITIALIZER,
-            deps: [ConfigService, DeviceDetectorService, HttpClient, I18nService, StorageService, ToastsService],
-            multi: false,
-            useFactory: (configService: ConfigService) => configService.init()
-        },
-        { provide: AuthService, multi: false, deps: [ConfigService, HttpClient, ToastsService] },
-        { provide: SettingsService, multi: false },
+        { provide: AuthService, multi: false, deps: [ConfigService, HttpClient, ToastsService, I18nService] },
+        { provide: SettingsService, multi: false, deps: [AuthService, ConfigService, StorageService] },
     ]
 })
 export class AppModule { }

@@ -645,6 +645,33 @@ export type L10nArchiveLocale = {
             }
         }
     },
+    listManager: {
+        title: string,
+        filterPlaceholder: string,
+        toggleSidebar: string,
+        noListSelected: {
+            title: string,
+            introduction: string
+        },
+        list: {
+            lastModified: string,
+            resetManually: string,
+            checkedBy: string
+        },
+        textEditor: {
+            titlePlaceholder: string,
+            descriptionPlaceholder: string,
+            cronResetTitle: string,
+            cronResetPlaceholder: string,
+            dateResetTitle: string,
+            dateResetPlaceholder: string,
+            manualResetTitle: string,
+            listStyle: string,
+            listStyleUl: string,
+            listStyleOl: string,
+            listStyleCb: string
+        }
+    },
     locales: {
         de: {
             title: string
@@ -702,8 +729,8 @@ export type L10nArchiveLocale = {
             dashboard: string,
             finance: string,
             home: string,
+            lists: string,
             notepad: string,
-            notepad2: string,
             settings: string,
             work: string
         },

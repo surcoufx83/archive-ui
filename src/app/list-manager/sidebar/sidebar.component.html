@@ -1,14 +1,14 @@
 <div class="sidebar-container h-100 w-100 overflow-y-auto" [attr.data-mobile]="isMobile">
     <div>
         <input type="text" class="form-control w-100 rounded-0" [(ngModel)]="filterExpr" (keyup)="onChangeFilter()"
-            [placeholder]="i18n('notepad2.filterPlaceholder')" autocomplete="off">
+            [placeholder]="i18n('listManager.filterPlaceholder')" autocomplete="off">
     </div>
-    @for (noteItem of filteredNotes; track $index) {
+    @for (noteItem of filteredLists; track $index) {
     <a class="d-flex justify-content-between align-items-center w-100 notepad-item text-reset text-decoration-none"
-        [routerLink]="[ '/notepad' ]" [queryParams]="{ id: noteItem.id, subject: furl(noteItem.title)}">
+        [routerLink]="[ '/lists' ]" [queryParams]="{ id: noteItem.id, subject: furl(noteItem.title)}">
         <div class="text-truncate py-1">{{ noteItem.title }}</div>
         <div class="action-items d-flex align-items-center">
-            <a [routerLink]="[ '/notepad' ]"
+            <a [routerLink]="[ '/lists' ]"
                 [queryParams]="{ id: noteItem.id, subject: furl(noteItem.title), editor: true}"
                 (click)="preventDefaultEvents($event)">
                 <button class="item btn btn-sm btn-outline-primary py-1 ms-1">
@@ -16,10 +16,10 @@
                 </button>
             </a>
             <button class="item btn btn-sm btn-outline-danger py-1 ms-1" data-bs-toggle="modal"
-                data-bs-target="#confirm-deletion-modal" (click)="deleteNote = noteItem" [disabled]="deleteSaving">
+                data-bs-target="#confirm-deletion-modal" (click)="deleteList = noteItem" [disabled]="deleteSaving">
                 <app-icon
-                    [iconClass]="'fa-solid' + (deleteNote?.id != noteItem.id ? ' fa-trash' : '') + (deleteNote?.id == noteItem.id ? ' fa-spinner' : '')"
-                    [spin]="deleteSaving && deleteNote?.id == noteItem.id"></app-icon>
+                    [iconClass]="'fa-solid' + (deleteList?.id != noteItem.id ? ' fa-trash' : '') + (deleteList?.id == noteItem.id ? ' fa-spinner' : '')"
+                    [spin]="deleteSaving && deleteList?.id == noteItem.id"></app-icon>
             </button>
             <button
                 [ngClass]="{ 'item btn btn-sm py-1 ms-1': true, always: noteItem.private, 'btn-outline-secondary': !noteItem.private }"
@@ -38,4 +38,4 @@
 </div>
 
 <confirm-deletion [title]="i18n('common.confirm.deletion.title')" [question]="i18n('common.confirm.deletion.message')"
-    (confirm)="deleteNote ? onDeletionConfirmed(deleteNote) : null"></confirm-deletion>
+    (confirm)="deleteList ? onDeletionConfirmed(deleteList) : null"></confirm-deletion>

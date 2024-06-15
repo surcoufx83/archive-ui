@@ -59,6 +59,19 @@ body {
   border-right: 0 !important;
 }
 
+.custom-list.list-group {
+  > .list-group-item {
+    &:not([data-placeholder="true"]) {
+      border: 0;
+    }
+    &[data-placeholder="true"] {
+      border-top-width: 1px;
+      border-style: dotted;
+      --bs-list-group-item-padding-x: .55rem;
+    }
+  }
+}
+
 .flex-table,
 .flex-table-group {
 

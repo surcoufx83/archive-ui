@@ -650,6 +650,33 @@ export const L10nArchiveFrLocale: L10nArchiveLocale = {
             }
         }
     },
+    listManager: {
+        title: "Listes",
+        filterPlaceholder: "🔍 Filtrer les listes...",
+        toggleSidebar: "Basculer la barre latérale",
+        noListSelected: {
+            title: "Vos Listes",
+            introduction: "Sélectionnez l'une des listes dans la barre de gauche pour la lire, la cocher ou la modifier. Contrairement aux notes, les listes peuvent être réinitialisées, de sorte que toutes les cases sont de nouveau vides."
+        },
+        list: {
+            lastModified: "Dernière modification : {0}",
+            resetManually: "Réinitialiser la liste",
+            checkedBy: "Réalisé par {0} {1}"
+        },
+        textEditor: {
+            titlePlaceholder: "Nom de la liste",
+            descriptionPlaceholder: "Description détaillée facultative pour la liste",
+            cronResetTitle: "Réinitialiser automatiquement?",
+            cronResetPlaceholder: "par ex., 0 0 1 * * (Chaque 1er du mois)",
+            dateResetTitle: "Réinitialiser à une date spécifique?",
+            dateResetPlaceholder: "Entrez la date (yyyy-MM-dd)",
+            manualResetTitle: "Réinitialisable manuellement?",
+            listStyle: "Type de liste",
+            listStyleUl: "Sans numérotation",
+            listStyleOl: "Numéroté",
+            listStyleCb: "Cases à cocher"
+        }
+    },
     locales: {
         de: {
             title: "Allemand"
@@ -704,11 +731,11 @@ export const L10nArchiveFrLocale: L10nArchiveLocale = {
         items: {
             account: "Compte",
             cases: "Dossiers",
-            dashboard: "Dashboard",
+            dashboard: "Tableau de bord",
             finance: "Finances",
             home: "Accueil",
-            notepad: "Notes",
-            notepad2: "Notes (new)",
+            lists: "Listes",
+            notepad: "Bloc-notes",
             settings: "Paramètres",
             work: "Travail"
         },

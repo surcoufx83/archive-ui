@@ -650,6 +650,33 @@ export const L10nArchiveEnLocale: L10nArchiveLocale = {
             }
         }
     },
+    listManager: {
+        title: "Lists",
+        filterPlaceholder: "🔍 Filter lists...",
+        toggleSidebar: "Toggle sidebar",
+        noListSelected: {
+            title: "Your Lists",
+            introduction: "Select one of the lists from the bar on the left to read, check off, or edit it. Unlike notes, lists can be reset, so all checkboxes are empty again."
+        },
+        list: {
+            lastModified: "Last modified: {0}",
+            resetManually: "Reset list",
+            checkedBy: "Completed by {0} {1}"
+        },
+        textEditor: {
+            titlePlaceholder: "Name of the list",
+            descriptionPlaceholder: "Optional, detailed description for the list",
+            cronResetTitle: "Reset automatically?",
+            cronResetPlaceholder: "e.g., 0 0 1 * * (Every 1st of the month)",
+            dateResetTitle: "Reset on specific date?",
+            dateResetPlaceholder: "Enter date (yyyy-MM-dd)",
+            manualResetTitle: "Manually resettable?",
+            listStyle: "List type",
+            listStyleUl: "Unnumbered",
+            listStyleOl: "Numbered",
+            listStyleCb: "Checkboxes"
+        }
+    },
     locales: {
         de: {
             title: "German"
@@ -707,8 +734,8 @@ export const L10nArchiveEnLocale: L10nArchiveLocale = {
             dashboard: "Dashboard",
             finance: "Finance",
             home: "Home",
-            notepad: "Notes",
-            notepad2: "Notes (new)",
+            lists: "Lists",
+            notepad: "Notepad",
             settings: "Settings",
             work: "Work"
         },

@@ -71,9 +71,13 @@ export class StorageService {
   }
 
   public load(key: string): string | null {
-    if (this.items[key] == undefined) {
-      console.error(`StorageService.load(${key}): invalid param key.`);
-      return null;
+    if (this.items[key] === undefined) {
+      if (defaultStorageSettingsitems[key] === undefined) {
+        console.error(`StorageService.load(${key}): invalid param key.`);
+        return null;
+      }
+      this.items[key] = { ...defaultStorageSettingsitems[key] };
+      this.saveSelf();
     }
     return localStorage.getItem(this.getStorageName(key));
   }
@@ -175,6 +179,14 @@ const defaultStorageSettingsitems: { [key: string]: StorageItem } = {
     timeout: null,
     urlFragment: '',
     version: 1,
+  },
+  'lists': {
+    expectedVersion: 1,
+    lastsync: 0,
+    syncInterval: 15000,
+    timeout: null,
+    urlFragment: '/lists',
+    version: 0,
   },
   'notes': {
     expectedVersion: 1,

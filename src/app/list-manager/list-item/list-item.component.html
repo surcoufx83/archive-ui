@@ -1,0 +1,53 @@
+@if (clonedListItem) {
+<form [formGroup]="editableList">
+    <div class="d-flex flex-column">
+        @if (editMode) {
+        <div class="mb-3">
+            <input type="text" class="form-control w-100" formControlName="title" (keyup)="onKeyUp()" autocomplete="off"
+                [placeholder]="str.listManager.textEditor.titlePlaceholder">
+        </div>
+        <div class="mb-3">
+            <textarea class="form-control w-100" formControlName="description" (keyup)="onKeyUp()" autocomplete="off"
+                rows="4" [placeholder]="str.listManager.textEditor.descriptionPlaceholder"></textarea>
+        </div>
+        <div class="mb-3 row">
+            <div class="col col-12 col-md-4 d-flex flex-column">
+                <label>{{str.listManager.textEditor.cronResetTitle}}</label>
+                <input type="text" class="form-control w-100" formControlName="resetCron" (keyup)="onKeyUp()"
+                    autocomplete="off" [placeholder]="str.listManager.textEditor.cronResetPlaceholder">
+            </div>
+            <div class="col col-12 col-md-4 d-flex flex-column">
+                <label>{{str.listManager.textEditor.dateResetTitle}}</label>
+                <input type="date" class="form-control w-100" formControlName="resetDate" (change)="onKeyUp()"
+                    autocomplete="off" [placeholder]="str.listManager.textEditor.dateResetPlaceholder">
+            </div>
+            <div class="col col-12 col-md-4 d-flex flex-column">
+                <label>{{str.listManager.textEditor.manualResetTitle}}</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" formControlName="resetManually" [value]="true"
+                        (change)="onKeyUp()" id="resetManuallyCheckbox">
+                    <label class="form-check-label" for="resetManuallyCheckbox">
+                        {{ editableList.controls.resetManually.value == true ? str.common.yes : str.common.no }}
+                    </label>
+                </div>
+            </div>
+        </div>
+        }
+        @else {
+        <h5 class="text-truncate">
+            {{ clonedListItem.title }}
+        </h5>
+        <p class="text-muted">{{ clonedListItem.description }}</p>
+        }
+    </div>
+    <div class="mb-3">
+        <app-list-manager-list-group [items]="list.items" [type]="list.listStyle"></app-list-manager-list-group>
+    </div>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="text-truncate fs-8 pointer"
+            [title]="i18n('notepad2.note.lastModified', [fdate(clonedListItem.updated , 'Pp')])">
+            {{ i18n('notepad2.note.lastModified', [fdist(clonedListItem.updated, true)]) }}
+        </div>
+    </div>
+</form>
+}

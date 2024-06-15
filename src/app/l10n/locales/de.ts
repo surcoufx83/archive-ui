@@ -650,6 +650,33 @@ export const L10nArchiveDeLocale: L10nArchiveLocale = {
             }
         }
     },
+    listManager: {
+        title: "Listen",
+        filterPlaceholder: "🔍 Listen filtern...",
+        toggleSidebar: "Seitenleiste umschalten",
+        noListSelected: {
+            title: "Deine Listen",
+            introduction: "Wähle eine der Listen aus der Leiste links aus, um diese zu lesen, abzuhaken, zu bearbeiten. Listen können im Gegensatz zu Notizen zurückgesetzt werden, sodass alle Checkboxen wieder leer sind."
+        },
+        list: {
+            lastModified: "Zuletzt geändert: {0}",
+            resetManually: "Liste zurücksetzen",
+            checkedBy: "Erledigt durch {0} {1}"
+        },
+        textEditor: {
+            titlePlaceholder: "Name der Liste",
+            descriptionPlaceholder: "Optionale, detailierte Beschreibung für die Liste",
+            cronResetTitle: "Automatisch zurücksetzen?",
+            cronResetPlaceholder: "z.B. 0 0 1 * * (Jeder Monats-1.)",
+            dateResetTitle: "Einmalig an Datum zurücksetzen?",
+            dateResetPlaceholder: "Datum angeben (yyyy-MM-dd)",
+            manualResetTitle: "Manuel zurücksetzbar?",
+            listStyle: "Listentyp",
+            listStyleUl: "Ohne Nummerierung",
+            listStyleOl: "Nummeriert",
+            listStyleCb: "Checkboxen"
+        }
+    },
     locales: {
         de: {
             title: "Deutsch"
@@ -707,8 +734,8 @@ export const L10nArchiveDeLocale: L10nArchiveLocale = {
             dashboard: "Dashboard",
             finance: "Finanzen",
             home: "Start",
+            lists: "Listen",
             notepad: "Notepad",
-            notepad2: "Notepad (neu)",
             settings: "Einstellungen",
             work: "Arbeit"
         },
