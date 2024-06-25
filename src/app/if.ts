@@ -529,7 +529,27 @@ export type Session = {
 }
 
 export type StandingOrder = {
-
+  id: number,
+  account: BankAccount,
+  accountid: number,
+  accountto: BankAccount | null,
+  accounttoid: number | null,
+  amount: number,
+  case: Case,
+  caseid: number,
+  category: ExpenseCategory | null,
+  categoryid: number | null,
+  client: User,
+  clientid: number,
+  created: string,
+  description: string,
+  dom: number,
+  party: Party | null,
+  partyid: number | null,
+  search: string,
+  terminated: string | null,
+  updated: string,
+  we_fw: boolean,
 }
 
 export type Stock = {

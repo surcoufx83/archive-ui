@@ -56,8 +56,6 @@ export class I18nService {
       this.currentLocale_.next(this.defaultLocale);
   }
 
-  init(): void { }
-
   private loadStrings(locale: string) {
     let templocale: L10nArchiveLocale | null = null;
     switch (locale) {

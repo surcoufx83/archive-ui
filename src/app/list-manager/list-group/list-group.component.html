@@ -12,21 +12,6 @@
 <ng-template #genericListBody>
     <ng-container *ngTemplateOutlet="genericListItem; context: { listItem: null }"></ng-container>
     <ng-container *ngTemplateOutlet="genericListItem; context: { listItem: null, placeholder: true }"></ng-container>
-    <!-- <li class="list-group-item border-0">
-        @if (type === 'ul') {
-        <span class="ms-1">•</span>A list item
-        }
-        @else if (type === 'cb') {
-        <input class="form-check-input me-1" type="checkbox" value="" id="firstCheckbox">
-        <label class="form-check-label" for="firstCheckbox">First checkbox</label>
-        }
-        @else {
-        A list item
-        }
-    </li>
-    <li class="">A list item</li>
-    <li class="list-group-item border-0">A list item</li>
-    <li class="list-group-item border-1" style="border-style: dotted;">A list item</li> -->
 </ng-template>
 
 <ng-template #genericListItem let-listItem="listItem" let-placeholder="placeholder">
