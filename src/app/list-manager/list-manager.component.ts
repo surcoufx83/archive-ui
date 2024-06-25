@@ -43,22 +43,22 @@ export class ListManagerComponent implements OnDestroy, OnInit {
     this.subs.push(this.settingsService.listItems$.subscribe((newLists) => {
       this.lists.set(Object.values(newLists).sort((a, b) => `${a.pinned ? '0' : '9'}${a.title.toLocaleLowerCase()}`.localeCompare(`${b.pinned ? '0' : '9'}${b.title.toLocaleLowerCase()}`, undefined, { numeric: true })));
       if (this.selectedList)
-        this.ngOnInitLoadSelectedList(this.selectedList.id);
+        this.ngOnInitLoadSelectedList(this.selectedList.id, false);
     }));
     this.subs.push(this.route.queryParamMap.subscribe((map) => {
       const tempid = map.get('id');
       if (tempid)
-        this.ngOnInitLoadSelectedList(+tempid);
+        this.ngOnInitLoadSelectedList(+tempid, true);
       else
         this.selectedList = null;
       this.editMode = map.has('editor');
     }));
   }
 
-  ngOnInitLoadSelectedList(id: number): void {
+  ngOnInitLoadSelectedList(id: number, toggleSidebar: boolean): void {
     const templist = this.settingsService.getList(id);
     this.selectedList = templist ? { ...templist } : null;
-    if (this.isMobile)
+    if (toggleSidebar && this.isMobile)
       this.sidebarOpen = false;
   }
 

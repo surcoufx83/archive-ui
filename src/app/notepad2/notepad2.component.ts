@@ -44,22 +44,22 @@ export class Notepad2Component implements OnDestroy, OnInit {
     this.subs.push(this.settingsService.notepadItems$.subscribe((newNotes) => {
       this.notes.set(Object.values(newNotes).sort((a, b) => `${a.pinned ? '0' : '9'}${a.title.toLocaleLowerCase()}`.localeCompare(`${b.pinned ? '0' : '9'}${b.title.toLocaleLowerCase()}`, undefined, { numeric: true })));
       if (this.selectedNote)
-        this.ngOnInitLoadSelectedNote(this.selectedNote.id);
+        this.ngOnInitLoadSelectedNote(this.selectedNote.id, false);
     }));
     this.subs.push(this.route.queryParamMap.subscribe((map) => {
       const tempid = map.get('id');
       if (tempid)
-        this.ngOnInitLoadSelectedNote(+tempid);
+        this.ngOnInitLoadSelectedNote(+tempid, true);
       else
         this.selectedNote = null;
       this.editMode = map.has('editor');
     }));
   }
 
-  ngOnInitLoadSelectedNote(id: number): void {
+  ngOnInitLoadSelectedNote(id: number, toggleSidebar: boolean): void {
     const tempnote = this.settingsService.getNote(id);
     this.selectedNote = tempnote ? { ...tempnote } : null;
-    if (this.isMobile)
+    if (toggleSidebar && this.isMobile)
       this.sidebarOpen = false;
   }
 
