@@ -263,6 +263,7 @@ export type L10nArchiveLocale = {
         days: string,
         default: string,
         delete: string,
+        edit: string,
         goto: string,
         hour: string,
         hours: string,
@@ -787,7 +788,8 @@ export type L10nArchiveLocale = {
             textBold: string,
             textItalic: string,
             textStrikethrough: string,
-        }
+        },
+        blankNoteTitle: string
     },
     notifications: {
         filecreated: {

@@ -16,7 +16,8 @@
                 </button>
             </a>
             <button class="item btn btn-sm btn-outline-danger py-1 ms-1" data-bs-toggle="modal"
-                data-bs-target="#confirm-deletion-modal" (click)="deleteNote = noteItem" [disabled]="deleteSaving">
+                data-bs-target="#confirm-deletion-modal" (click)="deleteNote = noteItem; preventDefaultEvents($event)"
+                [disabled]="deleteSaving">
                 <app-icon
                     [iconClass]="'fa-solid' + (deleteNote?.id != noteItem.id ? ' fa-trash' : '') + (deleteNote?.id == noteItem.id ? ' fa-spinner' : '')"
                     [spin]="deleteSaving && deleteNote?.id == noteItem.id"></app-icon>

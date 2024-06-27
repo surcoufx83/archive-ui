@@ -268,6 +268,7 @@ export const L10nArchiveFrLocale: L10nArchiveLocale = {
         days: "Jours",
         default: "Standard",
         delete: "Supprimer",
+        edit: "Éditer",
         goto: "Ouvrir",
         hour: "Heure",
         hours: "Heures",
@@ -653,7 +654,7 @@ export const L10nArchiveFrLocale: L10nArchiveLocale = {
     listManager: {
         title: "Listes",
         filterPlaceholder: "🔍 Filtrer les listes...",
-        toggleSidebar: "Basculer la barre latérale",
+        toggleSidebar: "Aperçu",
         noListSelected: {
             title: "Vos Listes",
             introduction: "Sélectionnez l'une des listes dans la barre de gauche pour la lire, la cocher ou la modifier. Contrairement aux notes, les listes peuvent être réinitialisées, de sorte que toutes les cases sont de nouveau vides."
@@ -775,7 +776,7 @@ export const L10nArchiveFrLocale: L10nArchiveLocale = {
     notepad2: {
         title: "Notes",
         filterPlaceholder: "🔍 Rechercher une note...",
-        toggleSidebar: "Basculer la barre latérale",
+        toggleSidebar: "Aperçu",
         noNoteSelected: {
             title: "Votre carnet",
             introduction: "Sélectionnez l'une des notes dans la barre de gauche pour la lire ou la modifier. Les notes peuvent désormais être marquées comme privées et ne seront visibles que par le propriétaire."
@@ -792,7 +793,8 @@ export const L10nArchiveFrLocale: L10nArchiveLocale = {
             textBold: "Mettre le texte en gras",
             textItalic: "Mettre le texte en italique",
             textStrikethrough: "Barrer le texte"
-        }
+        },
+        blankNoteTitle: "Nouvelle note"
     },
     notifications: {
         filecreated: {
