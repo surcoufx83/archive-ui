@@ -89,7 +89,6 @@ export class ListManagerListItemComponent implements AfterViewInit, OnChanges, O
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes['list'])
       return;
-    console.log(changes['list'].currentValue)
     if (!this.clonedListItem || changes['list'].firstChange || changes['list'].currentValue.id != changes['list'].previousValue.id) {
       // Other list selected by user, modify current list.
       this.ngOnInit();
