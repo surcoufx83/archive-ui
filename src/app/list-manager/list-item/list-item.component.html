@@ -1,53 +1,197 @@
 @if (clonedListItem) {
 <form [formGroup]="editableList">
     <div class="d-flex flex-column">
-        @if (editMode) {
-        <div class="mb-3">
-            <input type="text" class="form-control w-100" formControlName="title" (keyup)="onKeyUp()" autocomplete="off"
-                [placeholder]="str.listManager.textEditor.titlePlaceholder">
+
+        <!-- Header with title (input if in edit mode) -->
+        <div class="mb-3 d-flex align-items-center">
+            <div class="flex-fill">
+                @if (editMode) {
+                <input type="text" class="form-control w-100" formControlName="title" id="list-editor-name"
+                    name="list-editor-name" (keyup)="onKeyUp()" autocomplete="off"
+                    [placeholder]="i18nstr.listManager.textEditor.titlePlaceholder">
+                }
+                @else {
+                <h5 class="text-truncate">
+                    {{ clonedListItem.title }}
+                </h5>
+                }
+            </div>
+            <div class="ms-3">
+                <app-icon [animateOpacityInAndOut]="saving" [iconClass]="icons['spinner']" [spin]="true"></app-icon>
+            </div>
         </div>
+        <!-- Header with title (input if in edit mode) -->
+
+        <!-- Description of list (textarea if in edit mode)-->
+        @if (editMode || clonedListItem.description != '') {
         <div class="mb-3">
-            <textarea class="form-control w-100" formControlName="description" (keyup)="onKeyUp()" autocomplete="off"
-                rows="4" [placeholder]="str.listManager.textEditor.descriptionPlaceholder"></textarea>
+            @if (editMode) {
+            <textarea class="form-control w-100" formControlName="description" id="list-editor-description"
+                name="list-editor-description" (keyup)="onKeyUp()" autocomplete="off" rows="4"
+                [placeholder]="i18nstr.listManager.textEditor.descriptionPlaceholder"></textarea>
+            }
+            @else {
+            <p class="text-muted">{{ clonedListItem.description }}</p>
+            }
+        </div>
+        }
+        <!-- Description of list (textarea if in edit mode)-->
+
+        @if (editMode) {
+        <!-- List style change and cron expression if in edit mode -->
+        <div class="mb-3 row">
+            <div class="col col-12 col-md-4 d-flex flex-column mb-3">
+                <label>{{i18nstr.listManager.textEditor.listStyle}}</label>
+                <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                    <input type="radio" class="btn-check" id="list-editor-style-ul" autocomplete="off"
+                        formControlName="style" value="ul" (change)="onKeyUp(); list.listStyle = 'ul'">
+                    <label class="btn btn-sm" for="list-editor-style-ul">
+                        <app-icon [iconClass]="icons['listUl']" [marginEnd]="1"></app-icon>
+                        {{ i18nstr.listManager.textEditor.listStyleUl }}
+                    </label>
+
+                    <input type="radio" class="btn-check" id="list-editor-style-ol" autocomplete="off"
+                        formControlName="style" value="ol" (change)="onKeyUp(); list.listStyle = 'ol'">
+                    <label class="btn btn-sm" for="list-editor-style-ol">
+                        <app-icon [iconClass]="icons['listOl']" [marginEnd]="1"></app-icon>
+                        {{ i18nstr.listManager.textEditor.listStyleOl }}
+                    </label>
+
+                    <input type="radio" class="btn-check" id="list-editor-style-cb" autocomplete="off"
+                        formControlName="style" value="cb" (change)="onKeyUp(); list.listStyle = 'cb'">
+                    <label class="btn btn-sm" for="list-editor-style-cb">
+                        <app-icon [iconClass]="icons['listCb']" [marginEnd]="1"></app-icon>
+                        {{ i18nstr.listManager.textEditor.listStyleCb }}
+                    </label>
+
+                </div>
+            </div>
         </div>
         <div class="mb-3 row">
-            <div class="col col-12 col-md-4 d-flex flex-column">
-                <label>{{str.listManager.textEditor.cronResetTitle}}</label>
+            <div
+                [ngClass]="{ 'col col-12 col-md-4 d-flex flex-column mb-3': editableList.controls.style.value === 'cb', 'd-none': editableList.controls.style.value !== 'cb'}">
+                <label for="list-editor-cronexpr">{{i18nstr.listManager.textEditor.cronResetTitle}}</label>
                 <input type="text" class="form-control w-100" formControlName="resetCron" (keyup)="onKeyUp()"
-                    autocomplete="off" [placeholder]="str.listManager.textEditor.cronResetPlaceholder">
+                    id="list-editor-cronexpr" name="list-editor-cronexpr" autocomplete="off"
+                    [placeholder]="i18nstr.listManager.textEditor.cronResetPlaceholder">
+                <label class="fs-7 fst-italic">
+                    @if (editableList.controls.resetCron.value !== null && editableList.controls.resetCron.value !== '')
+                    {
+                    @if (fcron(editableList.controls.resetCron.value) !== '') {
+                    {{ i18n('listManager.textEditor.cronResult.valid', [fcron(editableList.controls.resetCron.value)])
+                    }}
+                    }
+                    @else {
+                    <span class="text-warning">{{ i18nstr.listManager.textEditor.cronResult.invalid }}</span>
+                    }
+                    }
+                    @else {
+                    {{ i18nstr.listManager.textEditor.cronResult.never }}
+                    }
+                </label>
             </div>
-            <div class="col col-12 col-md-4 d-flex flex-column">
-                <label>{{str.listManager.textEditor.dateResetTitle}}</label>
-                <input type="date" class="form-control w-100" formControlName="resetDate" (change)="onKeyUp()"
-                    autocomplete="off" [placeholder]="str.listManager.textEditor.dateResetPlaceholder">
-            </div>
-            <div class="col col-12 col-md-4 d-flex flex-column">
-                <label>{{str.listManager.textEditor.manualResetTitle}}</label>
+        </div>
+        <div class="mb-3 row">
+            <div class="col col-12 col-md-4 mb-3">
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" formControlName="resetManually" [value]="true"
-                        (change)="onKeyUp()" id="resetManuallyCheckbox">
-                    <label class="form-check-label" for="resetManuallyCheckbox">
-                        {{ editableList.controls.resetManually.value == true ? str.common.yes : str.common.no }}
+                    <input class="form-check-input" type="checkbox" formControlName="checkedBelow"
+                        id="list-editor-checkSettings" (change)="onKeyUp()">
+                    <label class=" form-check-label" for="list-editor-checkSettings">
+                        {{ i18nstr.listManager.checkedBelowUncheckedItems }}
                     </label>
                 </div>
             </div>
         </div>
+        <!-- List style change and cron expression if in edit mode -->
+        }
+
+    </div>
+    @if (!editMode) {
+    <div class="mb-3">
+
+        <!-- List group element based on list style -->
+        @if (list.listStyle === 'ol') {
+        <ol class="custom-list list-group list-group-flush list-group-numbered" [attr.data-grouptype]="list.listStyle">
+            <ng-container *ngTemplateOutlet="genericListBody"></ng-container>
+        </ol>
         }
         @else {
-        <h5 class="text-truncate">
-            {{ clonedListItem.title }}
-        </h5>
-        <p class="text-muted">{{ clonedListItem.description }}</p>
+        <ul class="custom-list list-group list-group-flush" [attr.data-grouptype]="list.listStyle">
+            <ng-container *ngTemplateOutlet="genericListBody"></ng-container>
+        </ul>
         }
+        <!-- List group element based on list style -->
+
+        <!-- Button to add a new list entry -->
+        <ul class="custom-list list-group list-group-flush mt-3" [attr.data-grouptype]="list.listStyle">
+            <li class="list-group-item d-flex justify-content-center align-items-center">
+                <button type="button" class="btn btn-sm stretched-link" (click)="onAddListItem()">
+                    <app-icon [iconClass]="icons['add']" [marginEnd]="1"></app-icon>
+                    {{ i18nstr.listManager.addItem }}
+                </button>
+            </li>
+        </ul>
+        <!-- Button to add a new list entry -->
+
     </div>
-    <div class="mb-3">
-        <app-list-manager-list-group [items]="list.items" [type]="list.listStyle"></app-list-manager-list-group>
-    </div>
-    <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="d-flex justify-content-center align-items-center mb-3">
         <div class="text-truncate fs-8 pointer"
             [title]="i18n('notepad2.note.lastModified', [fdate(clonedListItem.updated , 'Pp')])">
             {{ i18n('notepad2.note.lastModified', [fdist(clonedListItem.updated, true)]) }}
         </div>
     </div>
+    }
 </form>
+
+<ng-template #genericListBody>
+    @for (item of clonedListItem.items; track $index) {
+    <!-- Display all unchecked items first (or all items if list is configured this way) -->
+    @if (item.checked === false || this.editableList.controls.checkedBelow.value !== true) {
+    <ng-container *ngTemplateOutlet="genericListItem; context: { item: item, i: $index }"></ng-container>
+    }
+    <!-- Display all unchecked items first -->
+    }
+    @for (item of clonedListItem.items; track $index) {
+    <!-- Display checked items second -->
+    @if (item.checked === true && this.editableList.controls.checkedBelow.value === true) {
+    <ng-container *ngTemplateOutlet="genericListItem; context: { item: item, i: $index }"></ng-container>
+    }
+    <!-- Display checked items second -->
+    }
+</ng-template>
+
+<ng-template #genericListItem let-item="item" let-i="i">
+    <li class="list-group-item d-flex align-items-center py-1 px-2">
+        @if (list.listStyle === 'ul') {
+        <div>
+            <span class="me-2">•</span>
+            <span contenteditable="true">A list item</span>
+        </div>
+        }
+        @else if (list.listStyle === 'cb') {
+        <div class="flex-fill d-flex align-items-center">
+            <input class="form-check-input me-2 mt-0" type="checkbox" [(ngModel)]="item.checked"
+                (change)="onCheckListItem(i)" [name]="'list-item-' + i + '-checkbox'"
+                [id]="'list-item-' + i + '-checkbox'">
+            <!-- <input class="form-control form-control-sm plain flex-fill me-3" type="text" [(ngModel)]="item.content"
+                (keyup)="onKeyUp()" [name]="'list-item-' + $index + '-content'"
+                [id]="'list-item-' + $index + '-content'" autocomplete="off" [autofocus]="$index == 0"> -->
+            <p [(contentEditableWithBinding)]="item.content" class="flex-fill me-3 mb-0 editable-item"
+                [id]="'list-item-' + i + '-content'" autocomplete="off" [autofocus]="i == 0" [attr.data-note-index]="i"
+                (keydown)="onItemTextKeydown(i, $event)" (keyup)="onKeyUp()"></p>
+        </div>
+        }
+        @else {
+        <div class="ms-2" contenteditable="true">
+            A list item
+        </div>
+        }
+        <div class="ms-auto">
+            <span class="fs-8 fst-italic mx-2">{{i + 1}}</span>
+            <button type="button" class="btn btn-sm btn-outline-danger" (click)="onDeleteListItem(i)">
+                <app-icon [iconClass]="icons['delete']"></app-icon>
+            </button>
+        </div>
+    </li>
+</ng-template>
 }

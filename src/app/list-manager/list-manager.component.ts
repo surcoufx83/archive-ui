@@ -1,10 +1,36 @@
 import { Component, OnDestroy, OnInit, WritableSignal, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription, first } from 'rxjs';
 import { ConfigService } from '../config.service';
 import { I18nService } from '../i18n.service';
 import { List } from '../if';
 import { SettingsService } from '../utils/settings.service';
+import { environment } from 'src/environments/environment.dev';
+import { FormatService } from '../utils/format.service';
+import { L10nArchiveLocale } from '../l10n/l10n.types';
+
+const blankList: List = {
+  checkedBelow: true,
+  deleted: null,
+  description: '',
+  id: 0,
+  items: [],
+  listStyle: 'cb',
+  pinned: false,
+  private: false,
+  reset: null,
+  title: '',
+  updated: '',
+  user: {
+    clients: undefined,
+    email: undefined,
+    enabled: undefined,
+    groups: undefined,
+    id: 0,
+    loginname: '',
+    settings: undefined
+  }
+}
 
 @Component({
   selector: 'app-list-manager',
@@ -13,7 +39,10 @@ import { SettingsService } from '../utils/settings.service';
 })
 export class ListManagerComponent implements OnDestroy, OnInit {
 
+  createSaving: boolean = false;
+  deleteSaving: boolean = false;
   editMode: boolean = false;
+  icons = environment.icons;
   isMobile: boolean;
   lists: WritableSignal<List[]> = signal([]);
   selectedList: List | null = null;
@@ -23,16 +52,26 @@ export class ListManagerComponent implements OnDestroy, OnInit {
 
   constructor(
     configService: ConfigService,
+    private formatService: FormatService,
     private i18nService: I18nService,
     private settingsService: SettingsService,
     private route: ActivatedRoute,
+    private router: Router,
   ) {
     this.isMobile = configService.isMobile();
     this.sidebarOpen = true;
   }
 
+  furl(inputStr: string): string {
+    return this.formatService.furl(inputStr);
+  }
+
   i18n(key: string, params: string[] = []): string {
     return this.i18nService.i18n(key, params);
+  }
+
+  get i18nstr(): L10nArchiveLocale {
+    return this.i18nService.str;
   }
 
   ngOnDestroy(): void {
@@ -51,7 +90,7 @@ export class ListManagerComponent implements OnDestroy, OnInit {
         this.ngOnInitLoadSelectedList(+tempid, true);
       else
         this.selectedList = null;
-      this.editMode = map.has('editor');
+      this.editMode = map.has('editor') && map.get('editor') === 'true';
     }));
   }
 
@@ -60,6 +99,32 @@ export class ListManagerComponent implements OnDestroy, OnInit {
     this.selectedList = templist ? { ...templist } : null;
     if (toggleSidebar && this.isMobile)
       this.sidebarOpen = false;
+  }
+
+  onCreateList(): void {
+    if (this.deleteSaving || this.createSaving)
+      return;
+    this.createSaving = true;
+    this.settingsService.updateList({ ...blankList }).pipe(first()).subscribe((list) => {
+      if (list === true || list === false)
+        return;
+      this.router.navigate(['/lists'], { queryParams: { id: list.id, subject: this.furl(this.i18nstr.listManager.blankListTitle), editor: true } })
+    });
+  }
+
+  onDeletionConfirmed(): void {
+    if (this.deleteSaving || this.createSaving || !this.selectedList)
+      return;
+    this.deleteSaving = true;
+    this.settingsService.deleteList({ ...this.selectedList }).pipe(first()).subscribe(() => {
+      this.selectedList = null;
+      this.deleteSaving = false;
+      this.router.navigate(['/lists']);
+      setTimeout(() => {
+        if (this.isMobile)
+          this.sidebarOpen = true;
+      }, 5);
+    });
   }
 
 }

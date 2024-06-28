@@ -203,6 +203,10 @@ export class SettingsService {
     return subject;
   }
 
+  getUser(): User | null {
+    return this.user.value;
+  }
+
   private loadAllCacheItems(): void {
     this.loadUserSettings();
     this.loadCasesData();
@@ -1092,7 +1096,10 @@ export class SettingsService {
   updateList(list: List): Subject<List | boolean> {
     let subject = new Subject<List | boolean>();
     this.postCommon(list.id == 0 ? 'create' : 'update', list,
-      'list', Object.values(this.listItems.value), subject, (n: List[]) => this.updateListManager(n));
+      'list', Object.values(this.listItems.value), subject, (n: List[]) => {
+        this.updateListManager(n);
+        this.resyncListManager();
+      });
     return subject;
   }
 

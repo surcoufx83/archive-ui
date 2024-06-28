@@ -29,7 +29,9 @@ export class FormatService {
     return new Intl.NumberFormat(this.i18nService.Locale, { style: 'currency', currency: c?.shortname ?? 'EUR' }).format(n);
   }
 
-  fcron(expr: string): string {
+  fcron(expr: string | null): string {
+    if (expr === null || expr === '')
+      return '';
     try {
       cronParser.parseExpression(expr);
       return cronstrue.toString(expr, { locale: this.i18nService.Locale });

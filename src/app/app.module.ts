@@ -3,7 +3,7 @@ import { registerLocaleData } from '@angular/common';
 import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import localeDe from '@angular/common/locales/de';
 import localeFr from '@angular/common/locales/fr';
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -47,6 +47,9 @@ import { StocksComponent } from './finance/stocks/stocks.component';
 import { TaxComponent } from './finance/tax/tax.component';
 import { HomeComponent } from './home/home.component';
 import { I18nService } from './i18n.service';
+import { ListManagerListItemComponent } from './list-manager/list-item/list-item.component';
+import { ListManagerComponent } from './list-manager/list-manager.component';
+import { ListManagerSidebarComponent } from './list-manager/sidebar/sidebar.component';
 import { LoginComponent } from './login/login.component';
 import { Oauth2CallbackComponent } from './login/oauth2-callback/oauth2-callback.component';
 import { LogoutComponent } from './logout/logout.component';
@@ -56,6 +59,7 @@ import { Notepad2Component } from './notepad2/notepad2.component';
 import { SidebarComponent } from './notepad2/sidebar/sidebar.component';
 import { SearchComponent } from './search/search.component';
 import { ButtonComponent } from './utils/button/button.component';
+import { ContentEditableWithBindingDirective } from './utils/content-editable-with-binding.directive';
 import { DummyComponent } from './utils/dummy/dummy.component';
 import { H2Component } from './utils/h2/h2.component';
 import { H3Component } from './utils/h3/h3.component';
@@ -90,10 +94,7 @@ import { WorkDayComponent } from './work/work-day/work-day.component';
 import { WorkMonthComponent } from './work/work-month/work-month.component';
 import { WorkYearComponent } from './work/work-year/work-year.component';
 import { WorkComponent } from './work/work.component';
-import { ListManagerComponent } from './list-manager/list-manager.component';
-import { ListManagerListItemComponent } from './list-manager/list-item/list-item.component';
-import { ListManagerSidebarComponent } from './list-manager/sidebar/sidebar.component';
-import { ListGroupComponent } from './list-manager/list-group/list-group.component';
+import { AnimateOpacityInAndOutDirective } from './utils/animate-opacity-in-and-out.directive';
 
 registerLocaleData(localeDe);
 registerLocaleData(localeFr);
@@ -108,6 +109,7 @@ registerLocaleData(localeFr);
         CaseListItemComponent,
         CasesComponent,
         ConfirmDeletionComponent,
+        ContentEditableWithBindingDirective,
         DashboardComponent,
         DbClassesComponent,
         DbContactTypeComponent,
@@ -130,6 +132,9 @@ registerLocaleData(localeFr);
         H5Component,
         HomeComponent,
         IconComponent,
+        ListManagerComponent,
+        ListManagerListItemComponent,
+        ListManagerSidebarComponent,
         LoginComponent,
         LogoutComponent,
         NavbarComponent,
@@ -170,10 +175,7 @@ registerLocaleData(localeFr);
         WorkProjectsComponent,
         WorkTimeCategoriesComponent,
         WorkYearComponent,
-        ListManagerComponent,
-        ListManagerListItemComponent,
-        ListManagerSidebarComponent,
-        ListGroupComponent,
+        AnimateOpacityInAndOutDirective,
     ],
     bootstrap: [
         AppComponent,

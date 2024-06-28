@@ -1,10 +1,33 @@
 <div class="d-flex flex-column">
     @if (isMobile) {
-    <div class="sidebar-toggle d-flex justify-content-end p-2">
-        <button type="button" class="btn btn-dark btn-sm" (click)="sidebarOpen = !sidebarOpen">
-            <app-icon [iconClass]="'fa-regular fa-' + (sidebarOpen ? 'eye-slash' : 'eye')" [marginEnd]="1"></app-icon>
-            {{ i18n('listManager.toggleSidebar') }}
-        </button>
+    <div class="sidebar-toggle d-flex justify-content-between p-2">
+        <div>
+            <button class="item btn btn-sm btn-primary" (click)="onCreateList()">
+                <app-icon [iconClass]="icons['add']" [marginEnd]="1"></app-icon>
+                {{ i18n('common.add') }}
+            </button>
+            @if (selectedList) {
+            <a [routerLink]="[ '/lists' ]"
+                [queryParams]="{ id: selectedList.id, subject: furl(selectedList.title), editor: !editMode}"
+                class="ms-1">
+                <button type="button" class="btn btn-sm btn-primary">
+                    <app-icon [iconClass]="icons[!editMode ? 'edit' : 'go-left']" [marginEnd]="1"></app-icon>
+                    {{ i18n(!editMode ? 'common.edit' : 'common.back') }}
+                </button>
+            </a>
+            <button class="item btn btn-sm btn-outline-danger ms-1" data-bs-toggle="modal"
+                data-bs-target="#confirm-deletion-selected-note" [disabled]="deleteSaving">
+                <app-icon [iconClass]="icons[!deleteSaving ? 'delete' : 'spinner']" [spin]="deleteSaving"></app-icon>
+            </button>
+            }
+        </div>
+        <div>
+            <button type="button" class="btn btn-dark btn-sm" (click)="sidebarOpen = !sidebarOpen">
+                <app-icon [iconClass]="'fa-regular fa-' + (sidebarOpen ? 'eye-slash' : 'eye')"
+                    [marginEnd]="1"></app-icon>
+                {{ i18n('listManager.toggleSidebar') }}
+            </button>
+        </div>
     </div>
     }
     <div class="main-container d-flex vh-calc-100">
@@ -25,3 +48,7 @@
         </div>
     </div>
 </div>
+
+<confirm-deletion modalId="confirm-deletion-selected-list" [title]="i18n('common.confirm.deletion.title')"
+    [question]="i18n('common.confirm.deletion.message')"
+    (confirm)="selectedList ? onDeletionConfirmed() : null"></confirm-deletion>

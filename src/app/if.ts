@@ -277,6 +277,7 @@ export type File = {
 }
 
 export type List = {
+  checkedBelow: boolean,
   deleted: string | null,
   description: string,
   id: number,
@@ -284,7 +285,7 @@ export type List = {
   listStyle: 'ul' | 'ol' | 'cb',
   pinned: boolean,
   private: boolean,
-  reset: null | { cron: string | null, date: string | null, manually: boolean }
+  reset: null | { cron: string | null, selectedDate: string | null }
   title: string,
   updated: string,
   user: User,
@@ -292,11 +293,8 @@ export type List = {
 
 export type ListItem = {
   checked: boolean,
-  checkedBy: User
+  checkedBy: User | null,
   content: string,
-  items: ListItem[],
-  list_style: 'ul' | 'ol' | 'cb',
-  placeholder?: boolean,
 }
 
 export type Meter = {

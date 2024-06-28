@@ -667,16 +667,23 @@ export const L10nArchiveEnLocale: L10nArchiveLocale = {
         textEditor: {
             titlePlaceholder: "Name of the list",
             descriptionPlaceholder: "Optional, detailed description for the list",
-            cronResetTitle: "Reset automatically?",
+            cronResetTitle: "Automatically reset checkboxes?",
             cronResetPlaceholder: "e.g., 0 0 1 * * (Every 1st of the month)",
+            cronResult: {
+                never: "Never reset",
+                invalid: "Invalid expression",
+                valid: "Repeats: {0}"
+            },
             dateResetTitle: "Reset on specific date?",
-            dateResetPlaceholder: "Enter date (yyyy-MM-dd)",
             manualResetTitle: "Manually resettable?",
             listStyle: "List type",
-            listStyleUl: "Unnumbered",
+            listStyleUl: "Simple",
             listStyleOl: "Numbered",
-            listStyleCb: "Checkboxes"
-        }
+            listStyleCb: "Checks"
+        },
+        addItem: "New list item",
+        blankListTitle: "New List",
+        checkedBelowUncheckedItems: "Move checked items below unchecked items"
     },
     locales: {
         de: {

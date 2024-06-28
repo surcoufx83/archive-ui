@@ -664,14 +664,21 @@ export type L10nArchiveLocale = {
             descriptionPlaceholder: string,
             cronResetTitle: string,
             cronResetPlaceholder: string,
+            cronResult: {
+                never: string,
+                invalid: string,
+                valid: string
+            }
             dateResetTitle: string,
-            dateResetPlaceholder: string,
             manualResetTitle: string,
             listStyle: string,
             listStyleUl: string,
             listStyleOl: string,
             listStyleCb: string
-        }
+        },
+        addItem: string,
+        blankListTitle: string,
+        checkedBelowUncheckedItems: string
     },
     locales: {
         de: {
