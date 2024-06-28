@@ -124,20 +124,21 @@ export const L10nArchiveFrLocale: L10nArchiveLocale = {
     },
     casetype: {
         apartment: "Habitation",
-        bankaccounts: "Banque et comptes",
+        associations: "Associations",
+        bankaccounts: "Banque et Comptes",
         car: "Voiture",
-        carbusiness: "Voiture de société",
+        carbusiness: "Voiture de Fonction",
         communication: "Communication",
-        consumables: "Charges / Consommateurs",
+        consumables: "Charges / Consommables",
         contracts: "Contrats",
-        damage: "Dommages et déclarations de sinistre",
+        damage: "Dommages et Réclamations",
         insurance: "Assurances",
-        legals: "Procédure (autorités/tribunaux)",
-        misc: "Autres",
-        repair: "Réparations et entretien",
-        studies: "Formation et études",
+        legals: "Procédures Légales (Autorités/Tribunaux)",
+        misc: "Divers",
+        repair: "Réparations et Maintenance",
+        studies: "Éducation et Études",
         taxes: "Impôts",
-        work: "Relation d'emploi"
+        work: "Emploi"
     },
     classify: {
         classes: {
@@ -268,6 +269,7 @@ export const L10nArchiveFrLocale: L10nArchiveLocale = {
         days: "Jours",
         default: "Standard",
         delete: "Supprimer",
+        edit: "Éditer",
         goto: "Ouvrir",
         hour: "Heure",
         hours: "Heures",
@@ -650,6 +652,43 @@ export const L10nArchiveFrLocale: L10nArchiveLocale = {
             }
         }
     },
+    listManager: {
+        title: "Listes",
+        filterPlaceholder: "🔍 Filtrer les listes...",
+        toggleSidebar: "Aperçu",
+        noListSelected: {
+            title: "Vos Listes",
+            introduction: "Sélectionnez l'une des listes dans la barre de gauche pour la lire, la cocher ou la modifier. Contrairement aux notes, les listes peuvent être réinitialisées, de sorte que toutes les cases sont de nouveau vides."
+        },
+        list: {
+            addItem: "Nouvel élément de liste",
+            blankListTitle: "Nouvelle Liste",
+            checkedBelowUncheckedItems: "Déplacer les éléments cochés sous les éléments non cochés",
+            checkedBy: "Réalisé par {0} {1}",
+            lastModified: "Dernière modification : {0}",
+            resetCron: "Sera réinitialisé : {0}",
+            resetDate: "Sera réinitialisé le {0}",
+            resetDateAndCron: "Sera réinitialisé le {0} et {1}",
+            resetManually: "Réinitialiser la liste"
+        },
+        textEditor: {
+            titlePlaceholder: "Nom de la liste",
+            descriptionPlaceholder: "Description détaillée facultative pour la liste",
+            cronResetTitle: "Réinitialiser automatiquement les cases à cocher ?",
+            cronResetPlaceholder: "par ex., 0 0 1 * * (Chaque 1er du mois)",
+            cronResult: {
+                never: "Ne jamais réinitialiser",
+                invalid: "Expression invalide",
+                valid: "Répète: {0}"
+            },
+            dateResetTitle: "Réinitialiser à une date spécifique?",
+            manualResetTitle: "Réinitialisable manuellement?",
+            listStyle: "Type de liste",
+            listStyleUl: "Simple",
+            listStyleOl: "Numéroté",
+            listStyleCb: "Cases à cocher"
+        }
+    },
     locales: {
         de: {
             title: "Allemand"
@@ -704,11 +743,11 @@ export const L10nArchiveFrLocale: L10nArchiveLocale = {
         items: {
             account: "Compte",
             cases: "Dossiers",
-            dashboard: "Dashboard",
+            dashboard: "Tableau de bord",
             finance: "Finances",
             home: "Accueil",
-            notepad: "Notes",
-            notepad2: "Notes (new)",
+            lists: "Listes",
+            notepad: "Bloc-notes",
             settings: "Paramètres",
             work: "Travail"
         },
@@ -748,7 +787,7 @@ export const L10nArchiveFrLocale: L10nArchiveLocale = {
     notepad2: {
         title: "Notes",
         filterPlaceholder: "🔍 Rechercher une note...",
-        toggleSidebar: "Basculer la barre latérale",
+        toggleSidebar: "Aperçu",
         noNoteSelected: {
             title: "Votre carnet",
             introduction: "Sélectionnez l'une des notes dans la barre de gauche pour la lire ou la modifier. Les notes peuvent désormais être marquées comme privées et ne seront visibles que par le propriétaire."
@@ -765,7 +804,8 @@ export const L10nArchiveFrLocale: L10nArchiveLocale = {
             textBold: "Mettre le texte en gras",
             textItalic: "Mettre le texte en italique",
             textStrikethrough: "Barrer le texte"
-        }
+        },
+        blankNoteTitle: "Nouvelle note"
     },
     notifications: {
         filecreated: {

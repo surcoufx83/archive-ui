@@ -46,10 +46,15 @@ export const defaultEnvironment: Environment = {
     goto: 'fa-solid fa-arrow-up-right-from-square',
     grid: 'fa-solid fa-grip',
     help: 'fa-regular fa-circle-question',
+    hide: 'fa-regular fa-eye-slash',
     home: 'fa-solid fa-handshake-simple',
     info: 'fa-solid fa-info-circle',
     leads: 'fa-solid fa-funnel-dollar',
     list: 'fa-solid fa-grip-lines',
+    lists: 'fa-solid fa-list-check',
+    listUl: 'fa-solid fa-list-ul',
+    listOl: 'fa-solid fa-list-ol',
+    listCb: 'fa-solid fa-list-check',
     locale: 'fa-solid fa-language',
     login: 'fa-solid fa-user-lock',
     logout: 'fa-solid fa-power-off',
@@ -66,10 +71,12 @@ export const defaultEnvironment: Environment = {
     'rotate-left': 'fa-solid fa-rotate-left',
     save: 'fa-solid fa-cloud-arrow-up',
     search: 'fa-brands fa-searchengin',
+    show: 'fa-regular fa-eye',
     settings: 'fa-solid fa-cog',
     shopping: 'fa-solid fa-cart-shopping',
     sortasc: 'fa-solid fa-arrow-down-a-z',
     sortdesc: 'fa-solid fa-arrow-down-z-a',
+    spinner: 'fa-solid fa-spinner',
     star: 'fa-solid fa-star',
     'step-next': 'fa-solid fa-forward-step',
     stocks: 'fa-solid fa-money-bills',
@@ -112,25 +119,17 @@ export const defaultEnvironment: Environment = {
         link: '/notepad'
       },
       {
+        title: 'navbar.items.lists',
+        icon: 'lists',
+        link: '/lists'
+      },
+      {
         title: 'navbar.items.work',
         icon: 'work',
         link: '/work'
       }
     ],
     navbarDropdownItems: [
-      {
-        title: 'navbar.user.userProfileLink',
-        icon: 'account',
-        link: '/profile'
-      },
-      {
-        title: 'navbar.user.userSettingsLink',
-        icon: 'settings',
-        link: '/profile/settings'
-      },
-      {
-        divider: true
-      },
       {
         title: 'navbar.user.clearCacheLink',
         icon: 'x',

@@ -124,6 +124,7 @@ export const L10nArchiveDeLocale: L10nArchiveLocale = {
     },
     casetype: {
         apartment: "Wohnen",
+        associations: "Vereine",
         bankaccounts: "Bank und Konten",
         car: "Auto",
         carbusiness: "Firmenwagen",
@@ -268,6 +269,7 @@ export const L10nArchiveDeLocale: L10nArchiveLocale = {
         days: "Tage",
         default: "Standard",
         delete: "Löschen",
+        edit: "Bearbeiten",
         goto: "Gehe zu",
         hour: "Stunde",
         hours: "Stunden",
@@ -650,6 +652,43 @@ export const L10nArchiveDeLocale: L10nArchiveLocale = {
             }
         }
     },
+    listManager: {
+        title: "Listen",
+        filterPlaceholder: "🔍 Listen filtern...",
+        toggleSidebar: "Übersicht",
+        noListSelected: {
+            title: "Deine Listen",
+            introduction: "Wähle eine der Listen aus der Leiste links aus, um diese zu lesen, abzuhaken, zu bearbeiten. Listen können im Gegensatz zu Notizen zurückgesetzt werden, sodass alle Checkboxen wieder leer sind."
+        },
+        list: {
+            addItem: "Neuer Listeneintrag",
+            blankListTitle: "Neue Liste",
+            checkedBelowUncheckedItems: "Abgehaktes nach unten verschieben",
+            checkedBy: "Erledigt durch {0} {1}",
+            lastModified: "Zuletzt geändert: {0}",
+            resetCron: "Wird zurückgesetzt: {0}",
+            resetDate: "Wird zurückgesetzt am {0}",
+            resetDateAndCron: "Wird zurückgesetzt am {0} und {1}",
+            resetManually: "Liste zurücksetzen"
+        },
+        textEditor: {
+            titlePlaceholder: "Name der Liste",
+            descriptionPlaceholder: "Optionale, detailierte Beschreibung für die Liste",
+            cronResetTitle: "Checkboxen automatisch zurücksetzen?",
+            cronResetPlaceholder: "z.B. 0 0 1 * * (Jeder Monats-1.)",
+            cronResult: {
+                never: "Nie zurücksetzen",
+                invalid: "Ungültiger Ausdruck",
+                valid: "Wiederholt: {0}"
+            },
+            dateResetTitle: "An Datum zurücksetzen",
+            manualResetTitle: "Manuell zurücksetzen",
+            listStyle: "Listentyp",
+            listStyleUl: "Einfach",
+            listStyleOl: "Zahl",
+            listStyleCb: "Checks"
+        }
+    },
     locales: {
         de: {
             title: "Deutsch"
@@ -707,8 +746,8 @@ export const L10nArchiveDeLocale: L10nArchiveLocale = {
             dashboard: "Dashboard",
             finance: "Finanzen",
             home: "Start",
+            lists: "Listen",
             notepad: "Notepad",
-            notepad2: "Notepad (neu)",
             settings: "Einstellungen",
             work: "Arbeit"
         },
@@ -748,7 +787,7 @@ export const L10nArchiveDeLocale: L10nArchiveLocale = {
     notepad2: {
         title: "Notizen",
         filterPlaceholder: "🔍 Notiz suchen...",
-        toggleSidebar: "Seitenleiste umschalten",
+        toggleSidebar: "Übersicht",
         noNoteSelected: {
             title: "Dein Notizbuch",
             introduction: "Wähle eine der Notizen aus der Leiste links aus, um diese zu lesen oder bearbeiten. Notizen können nun auch privat markiert werden und werden damit nur noch dem Besitzer angezeigt."
@@ -765,7 +804,8 @@ export const L10nArchiveDeLocale: L10nArchiveLocale = {
             textBold: "Text fett markieren",
             textItalic: "Text kursiv schreiben",
             textStrikethrough: "Text durchstreichen"
-        }
+        },
+        blankNoteTitle: "Neue Notiz"
     },
     notifications: {
         filecreated: {

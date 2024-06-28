@@ -12,6 +12,7 @@ import type {
   Currency,
   ExpenseCategory,
   ExpenseType,
+  List,
   Note,
   Party,
   PartyContact,
@@ -41,6 +42,7 @@ import { StorageService } from './storage.service';
 const cases = 'cases';
 const client = 'client';
 const finance = 'finance';
+const lists = 'lists';
 const notes = 'notes';
 const notifications = 'notifications';
 const parties = 'parties';
@@ -111,6 +113,9 @@ export class SettingsService {
 
   private expenseTypes: BehaviorSubject<{ [key: number]: ExpenseType }> = new BehaviorSubject<{ [key: number]: ExpenseType }>({});
   expenseTypes$ = this.expenseTypes.asObservable();
+
+  private listItems: BehaviorSubject<{ [key: number]: List }> = new BehaviorSubject<{ [key: number]: List }>({});
+  listItems$ = this.listItems.asObservable();
 
   private notepadItems: BehaviorSubject<{ [key: number]: Note }> = new BehaviorSubject<{ [key: number]: Note }>({});
   notepadItems$ = this.notepadItems.asObservable();
@@ -186,16 +191,30 @@ export class SettingsService {
     }
   }
 
+  deleteList(list: List): Subject<List | boolean> {
+    let subject = new Subject<List | boolean>();
+    this.postCommon('delete', list, 'list', Object.values(this.listItems.value), subject, (n: List[]) => {
+      this.updateListManager(n);
+      this.resyncListManager();
+    });
+    return subject;
+  }
+
   deleteNote(note: Note): Subject<Note | boolean> {
     let subject = new Subject<Note | boolean>();
     this.postCommon('delete', note, 'note', Object.values(this.notepadItems.value), subject, (n: Note[]) => this.updateNotes(n));
     return subject;
   }
 
+  getUser(): User | null {
+    return this.user.value;
+  }
+
   private loadAllCacheItems(): void {
     this.loadUserSettings();
     this.loadCasesData();
     this.loadFinanceData();
+    this.loadListManagerData();
     this.loadNotepadData();
     this.loadPartiesData();
     this.loadTags();
@@ -245,6 +264,15 @@ export class SettingsService {
       this.stocksApis.next(olddata.stocksApis);
     }
     this.syncFinance();
+  }
+
+  private loadListManagerData(): void {
+    let olddata: string | null | ListManagerStorage = this.storageService.load(lists);
+    if (olddata) {
+      olddata = <ListManagerStorage>JSON.parse(olddata);
+      this.listItems.next(olddata.lists);
+    }
+    this.syncListManager();
   }
 
   private loadNotepadData(): void {
@@ -413,6 +441,10 @@ export class SettingsService {
         return this.currencies.value[i];
     }
     return null;
+  }
+
+  getList(id: number | null): List | null {
+    return id !== null && this.listItems.value[id] ? this.listItems.value[id] : null;
   }
 
   getNote(id: number | null): Note | null {
@@ -602,6 +634,12 @@ export class SettingsService {
     });
   }
 
+  private saveListManager(): void {
+    this.storageService.save(lists, {
+      lists: this.listItems.value,
+    });
+  }
+
   private saveNotepad(): void {
     this.storageService.save(notes, {
       notes: this.notepadItems.value,
@@ -689,6 +727,22 @@ export class SettingsService {
         this.saveFinance();
       }
       this.storageService.setTimeout(finance, setTimeout(() => { this.syncFinance(); }, this.storageService.getSyncInterval(finance)));
+    });
+  }
+
+  public resyncListManager(): void {
+    this.syncListManager();
+  }
+  private syncListManager(): void {
+    this.storageService.clearTimeout(lists);
+    this.authService.queryApi(this.storageService.getSyncUrl(lists)).pipe(first()).subscribe((reply) => {
+      if (reply.success && reply.payload != undefined) {
+        let response = <ListManagerResponse>reply.payload;
+        this.updateListManager(response.lists);
+        this.storageService.setLastSync(lists);
+        this.saveListManager();
+      }
+      this.storageService.setTimeout(lists, setTimeout(() => { this.syncListManager(); }, this.storageService.getSyncInterval(lists)));
     });
   }
 
@@ -941,6 +995,17 @@ export class SettingsService {
     this.workTimeCategories.next(temp);
   }
 
+  private updateListManager(lists: List[]) {
+    let temp = { ...this.listItems.value };
+    lists.forEach((n) => {
+      if (n.deleted == null)
+        temp[n.id] = n;
+      else
+        delete temp[n.id];
+    });
+    this.listItems.next(temp);
+  }
+
   private updateNotes(notes: Note[]) {
     let temp = { ...this.notepadItems.value };
     notes.forEach((n) => {
@@ -1031,6 +1096,16 @@ export class SettingsService {
     this.expenseTypes.next(temp);
   }
 
+  updateList(list: List): Subject<List | boolean> {
+    let subject = new Subject<List | boolean>();
+    this.postCommon(list.id == 0 ? 'create' : 'update', list,
+      'list', Object.values(this.listItems.value), subject, (n: List[]) => {
+        this.updateListManager(n);
+        this.resyncListManager();
+      });
+    return subject;
+  }
+
   updateNote(note: Note): Subject<Note | boolean> {
     let subject = new Subject<Note | boolean>();
     this.postCommon(note.id == 0 ? 'create' : 'update', note,
@@ -1080,7 +1155,8 @@ export class SettingsService {
 
   updateUser(user: User, push: boolean = false) {
     this.user.next(user);
-    this.updateSettings(user.settings, push);
+    if (user.settings)
+      this.updateSettings(user.settings, push);
   }
 
 }
@@ -1135,6 +1211,16 @@ export interface FinanceStorage {
   sepaMandates: SepaMandate[];
   stocks: Stock[];
   stocksApis: StockApi[];
+  ts: number;
+  version: number;
+}
+
+export interface ListManagerResponse {
+  lists: List[];
+}
+
+export interface ListManagerStorage {
+  lists: List[];
   ts: number;
   version: number;
 }

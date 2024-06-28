@@ -119,6 +119,7 @@ export type L10nArchiveLocale = {
     },
     casetype: {
         apartment: string,
+        associations: string,
         bankaccounts: string,
         car: string,
         carbusiness: string,
@@ -263,6 +264,7 @@ export type L10nArchiveLocale = {
         days: string,
         default: string,
         delete: string,
+        edit: string,
         goto: string,
         hour: string,
         hours: string,
@@ -645,6 +647,43 @@ export type L10nArchiveLocale = {
             }
         }
     },
+    listManager: {
+        title: string,
+        filterPlaceholder: string,
+        toggleSidebar: string,
+        noListSelected: {
+            title: string,
+            introduction: string
+        },
+        list: {
+            addItem: string,
+            blankListTitle: string,
+            checkedBelowUncheckedItems: string
+            checkedBy: string,
+            lastModified: string,
+            resetCron: string,
+            resetDate: string,
+            resetDateAndCron: string,
+            resetManually: string,
+        },
+        textEditor: {
+            titlePlaceholder: string,
+            descriptionPlaceholder: string,
+            cronResetTitle: string,
+            cronResetPlaceholder: string,
+            cronResult: {
+                never: string,
+                invalid: string,
+                valid: string
+            }
+            dateResetTitle: string,
+            manualResetTitle: string,
+            listStyle: string,
+            listStyleUl: string,
+            listStyleOl: string,
+            listStyleCb: string
+        }
+    },
     locales: {
         de: {
             title: string
@@ -702,8 +741,8 @@ export type L10nArchiveLocale = {
             dashboard: string,
             finance: string,
             home: string,
+            lists: string,
             notepad: string,
-            notepad2: string,
             settings: string,
             work: string
         },
@@ -760,7 +799,8 @@ export type L10nArchiveLocale = {
             textBold: string,
             textItalic: string,
             textStrikethrough: string,
-        }
+        },
+        blankNoteTitle: string
     },
     notifications: {
         filecreated: {

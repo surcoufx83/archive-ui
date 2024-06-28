@@ -1,4 +1,9 @@
 import { Injectable } from '@angular/core';
+import cronParser from 'cron-parser';
+import cronstrue from 'cronstrue';
+import 'cronstrue/locales/de';
+import 'cronstrue/locales/en';
+import 'cronstrue/locales/fr';
 import { format, formatDistanceToNow } from 'date-fns';
 import { Currency } from 'src/app/if';
 import { I18nService } from '../i18n.service';
@@ -22,6 +27,17 @@ export class FormatService {
 
   fcur(n: number, c?: Currency): string {
     return new Intl.NumberFormat(this.i18nService.Locale, { style: 'currency', currency: c?.shortname ?? 'EUR' }).format(n);
+  }
+
+  fcron(expr: string | null): string {
+    if (expr === null || expr === '')
+      return '';
+    try {
+      cronParser.parseExpression(expr);
+      return cronstrue.toString(expr, { locale: this.i18nService.Locale });
+    }
+    catch (e) { }
+    return '';
   }
 
   fdur(duration: Duration | null): string {

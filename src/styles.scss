@@ -9,6 +9,35 @@
   src: url("/assets/PlayfairDisplay-VariableFont_wght.ttf");
 }
 
+@keyframes appear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes vanish {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.animate-opacity {
+  &[data-visible="true"] {
+    animation: appear .2s;
+    opacity: 1;
+  }
+  &[data-visible="false"] {
+    animation: vanish .4s;
+    opacity: 0;
+  }
+}
+
 body {
   min-height: 100vh;
 }
@@ -57,6 +86,19 @@ body {
 .cal-month-view .cal-days {
   border-left: 0 !important;
   border-right: 0 !important;
+}
+
+.custom-list.list-group {
+  > .list-group-item {
+    &:not([data-placeholder="true"]) {
+      border: 0;
+    }
+    &[data-placeholder="true"] {
+      border-top-width: 1px;
+      border-style: dotted;
+      --bs-list-group-item-padding-x: .55rem;
+    }
+  }
 }
 
 .flex-table,
@@ -295,6 +337,22 @@ form {
       transform: translate(0%, 0%) rotate(12deg);
     }
   }
+}
+
+input.plain {
+  background: none!important;
+  border: none!important;
+  color: inherit!important;
+  display: inline!important;
+  font-family: inherit!important;
+  font-size: inherit!important;
+  font-weight: inherit!important;
+  line-height: inherit!important;
+  min-height: inherit!important;
+  padding: 0!important;
+  padding-block: 0!important;
+  padding-inline: 0!important;
+  width: auto!important;
 }
 
 .pointer {

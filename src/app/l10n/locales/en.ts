@@ -123,21 +123,22 @@ export const L10nArchiveEnLocale: L10nArchiveLocale = {
         waitforstart: "Waiting for start"
     },
     casetype: {
-        apartment: "Residential",
-        bankaccounts: "Bank and accounts",
+        apartment: "Living",
+        associations: "Associations",
+        bankaccounts: "Bank and Accounts",
         car: "Car",
-        carbusiness: "Company Vehicle",
+        carbusiness: "Company Car",
         communication: "Communication",
-        consumables: "Consumables",
+        consumables: "Utilities / Consumables",
         contracts: "Contracts",
-        damage: "Damage",
-        insurance: "Insurances",
-        legals: "Legal cases",
+        damage: "Damage and Claims",
+        insurance: "Insurance",
+        legals: "Legal Proceedings (Authorities/Courts)",
         misc: "Miscellaneous",
-        repair: "Repair and maintenance",
-        studies: "Education and studies",
+        repair: "Repairs and Maintenance",
+        studies: "Education and Studies",
         taxes: "Taxes",
-        work: "Work"
+        work: "Employment"
     },
     classify: {
         classes: {
@@ -268,6 +269,7 @@ export const L10nArchiveEnLocale: L10nArchiveLocale = {
         days: "Days",
         default: "System Default",
         delete: "Delete",
+        edit: "Edit",
         goto: "Jump to",
         hour: "Hour",
         hours: "Hours",
@@ -650,6 +652,43 @@ export const L10nArchiveEnLocale: L10nArchiveLocale = {
             }
         }
     },
+    listManager: {
+        title: "Lists",
+        filterPlaceholder: "🔍 Filter lists...",
+        toggleSidebar: "Overview",
+        noListSelected: {
+            title: "Your Lists",
+            introduction: "Select one of the lists from the bar on the left to read, check off, or edit it. Unlike notes, lists can be reset, so all checkboxes are empty again."
+        },
+        list: {
+            addItem: "New list item",
+            blankListTitle: "New List",
+            checkedBelowUncheckedItems: "Move checked items below unchecked items",
+            checkedBy: "Completed by {0} {1}",
+            lastModified: "Last modified: {0}",
+            resetCron: "Will reset: {0}",
+            resetDate: "Will reset on {0}",
+            resetDateAndCron: "Will reset on {0} and {1}",
+            resetManually: "Reset list"
+        },
+        textEditor: {
+            titlePlaceholder: "Name of the list",
+            descriptionPlaceholder: "Optional, detailed description for the list",
+            cronResetTitle: "Automatically reset checkboxes?",
+            cronResetPlaceholder: "e.g., 0 0 1 * * (Every 1st of the month)",
+            cronResult: {
+                never: "Never reset",
+                invalid: "Invalid expression",
+                valid: "Repeats: {0}"
+            },
+            dateResetTitle: "Reset on specific date?",
+            manualResetTitle: "Manually resettable?",
+            listStyle: "List type",
+            listStyleUl: "Simple",
+            listStyleOl: "Numbered",
+            listStyleCb: "Checks"
+        }
+    },
     locales: {
         de: {
             title: "German"
@@ -707,8 +746,8 @@ export const L10nArchiveEnLocale: L10nArchiveLocale = {
             dashboard: "Dashboard",
             finance: "Finance",
             home: "Home",
-            notepad: "Notes",
-            notepad2: "Notes (new)",
+            lists: "Lists",
+            notepad: "Notepad",
             settings: "Settings",
             work: "Work"
         },
@@ -748,7 +787,7 @@ export const L10nArchiveEnLocale: L10nArchiveLocale = {
     notepad2: {
         title: "Notes",
         filterPlaceholder: "🔍 Search note...",
-        toggleSidebar: "Toggle sidebar",
+        toggleSidebar: "Overview",
         noNoteSelected: {
             title: "Your Notebook",
             introduction: "Select one of the notes from the bar on the left to read or edit it. Notes can now also be marked as private and will only be visible to the owner."
@@ -765,7 +804,8 @@ export const L10nArchiveEnLocale: L10nArchiveLocale = {
             textBold: "Bold text",
             textItalic: "Italicize text",
             textStrikethrough: "Strikethrough text"
-        }
+        },
+        blankNoteTitle: "New note"
     },
     notifications: {
         filecreated: {
