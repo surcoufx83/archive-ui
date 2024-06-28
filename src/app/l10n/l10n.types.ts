@@ -655,9 +655,15 @@ export type L10nArchiveLocale = {
             introduction: string
         },
         list: {
+            addItem: string,
+            blankListTitle: string,
+            checkedBelowUncheckedItems: string
+            checkedBy: string,
             lastModified: string,
+            resetCron: string,
+            resetDate: string,
+            resetDateAndCron: string,
             resetManually: string,
-            checkedBy: string
         },
         textEditor: {
             titlePlaceholder: string,
@@ -675,10 +681,7 @@ export type L10nArchiveLocale = {
             listStyleUl: string,
             listStyleOl: string,
             listStyleCb: string
-        },
-        addItem: string,
-        blankListTitle: string,
-        checkedBelowUncheckedItems: string
+        }
     },
     locales: {
         de: {

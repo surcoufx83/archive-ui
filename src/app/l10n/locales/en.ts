@@ -660,9 +660,15 @@ export const L10nArchiveEnLocale: L10nArchiveLocale = {
             introduction: "Select one of the lists from the bar on the left to read, check off, or edit it. Unlike notes, lists can be reset, so all checkboxes are empty again."
         },
         list: {
+            addItem: "New list item",
+            blankListTitle: "New List",
+            checkedBelowUncheckedItems: "Move checked items below unchecked items",
+            checkedBy: "Completed by {0} {1}",
             lastModified: "Last modified: {0}",
-            resetManually: "Reset list",
-            checkedBy: "Completed by {0} {1}"
+            resetCron: "Will reset: {0}",
+            resetDate: "Will reset on {0}",
+            resetDateAndCron: "Will reset on {0} and {1}",
+            resetManually: "Reset list"
         },
         textEditor: {
             titlePlaceholder: "Name of the list",
@@ -680,10 +686,7 @@ export const L10nArchiveEnLocale: L10nArchiveLocale = {
             listStyleUl: "Simple",
             listStyleOl: "Numbered",
             listStyleCb: "Checks"
-        },
-        addItem: "New list item",
-        blankListTitle: "New List",
-        checkedBelowUncheckedItems: "Move checked items below unchecked items"
+        }
     },
     locales: {
         de: {

@@ -660,9 +660,15 @@ export const L10nArchiveFrLocale: L10nArchiveLocale = {
             introduction: "Sélectionnez l'une des listes dans la barre de gauche pour la lire, la cocher ou la modifier. Contrairement aux notes, les listes peuvent être réinitialisées, de sorte que toutes les cases sont de nouveau vides."
         },
         list: {
+            addItem: "Nouvel élément de liste",
+            blankListTitle: "Nouvelle Liste",
+            checkedBelowUncheckedItems: "Déplacer les éléments cochés sous les éléments non cochés",
+            checkedBy: "Réalisé par {0} {1}",
             lastModified: "Dernière modification : {0}",
-            resetManually: "Réinitialiser la liste",
-            checkedBy: "Réalisé par {0} {1}"
+            resetCron: "Sera réinitialisé : {0}",
+            resetDate: "Sera réinitialisé le {0}",
+            resetDateAndCron: "Sera réinitialisé le {0} et {1}",
+            resetManually: "Réinitialiser la liste"
         },
         textEditor: {
             titlePlaceholder: "Nom de la liste",
@@ -680,10 +686,7 @@ export const L10nArchiveFrLocale: L10nArchiveLocale = {
             listStyleUl: "Simple",
             listStyleOl: "Numéroté",
             listStyleCb: "Cases à cocher"
-        },
-        addItem: "Nouvel élément de liste",
-        blankListTitle: "Nouvelle Liste",
-        checkedBelowUncheckedItems: "Déplacer les éléments cochés sous les éléments non cochés"
+        }
     },
     locales: {
         de: {

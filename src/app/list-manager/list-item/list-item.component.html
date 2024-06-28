@@ -11,12 +11,40 @@
                     [placeholder]="i18nstr.listManager.textEditor.titlePlaceholder">
                 }
                 @else {
-                <h5 class="text-truncate">
+                <h5 class="text-truncate mb-0">
                     {{ clonedListItem.title }}
                 </h5>
+                @if (editableList.controls.resetDate.value !== '' && editableList.controls.resetCron.value === '') {
+                <!-- reset date set but no cron expression -->
+                <p class="mb-0 fs-8">
+                    {{ i18n('listManager.list.resetDate', [fdate(editableList.controls.resetDate.value , 'P')]) }}
+                </p>
+                }
+                @else if (editableList.controls.resetDate.value === '' && editableList.controls.resetCron.value !== '')
+                {
+                <!-- cron expression set but no date -->
+                <p class="mb-0 fs-8">
+                    {{ i18n('listManager.list.resetCron', [fcron(editableList.controls.resetCron.value)]) }}
+                </p>
+                }
+                @else if (editableList.controls.resetDate.value !== '' && editableList.controls.resetCron.value !== '')
+                {
+                <!-- cron expression and date set -->
+                <p class="mb-0 fs-8">
+                    {{ i18n('listManager.list.resetDateAndCron', [fdate(editableList.controls.resetDate.value , 'P'),
+                    fcron(editableList.controls.resetCron.value)]) }}
+                </p>
+                }
                 }
             </div>
-            <div class="ms-3">
+            <div class="ms-3 d-flex align-items-center">
+                <input type="date" class="border-0 p-0 m-0" style="width:0!important" #listDatePicker autocomplete="off"
+                    formControlName="resetDate" (input)="onKeyUp()">
+                <button
+                    [ngClass]="{ 'btn btn-sm me-2': true, 'btn-outline-secondary': editableList.controls.resetDate.value === '', 'btn-primary': editableList.controls.resetDate.value !== ''}"
+                    (click)="listDatePicker.showPicker()">
+                    <app-icon [iconClass]="icons['calendar']"></app-icon>
+                </button>
                 <app-icon [animateOpacityInAndOut]="saving" [iconClass]="icons['spinner']" [spin]="true"></app-icon>
             </div>
         </div>
@@ -97,7 +125,7 @@
                     <input class="form-check-input" type="checkbox" formControlName="checkedBelow"
                         id="list-editor-checkSettings" (change)="onKeyUp()">
                     <label class=" form-check-label" for="list-editor-checkSettings">
-                        {{ i18nstr.listManager.checkedBelowUncheckedItems }}
+                        {{ i18nstr.listManager.list.checkedBelowUncheckedItems }}
                     </label>
                 </div>
             </div>
@@ -125,9 +153,9 @@
         <!-- Button to add a new list entry -->
         <ul class="custom-list list-group list-group-flush mt-3" [attr.data-grouptype]="list.listStyle">
             <li class="list-group-item d-flex justify-content-center align-items-center">
-                <button type="button" class="btn btn-sm stretched-link" (click)="onAddListItem()">
+                <button type="button" class="btn stretched-link" (click)="onAddListItem()">
                     <app-icon [iconClass]="icons['add']" [marginEnd]="1"></app-icon>
-                    {{ i18nstr.listManager.addItem }}
+                    {{ i18nstr.listManager.list.addItem }}
                 </button>
             </li>
         </ul>

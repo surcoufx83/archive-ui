@@ -8,6 +8,7 @@ import { FormatService } from 'src/app/utils/format.service';
 import { SettingsService } from 'src/app/utils/settings.service';
 import cronParser from 'cron-parser';
 import { environment } from 'src/environments/environment.dev';
+import { format, isFuture, isToday, parseISO } from 'date-fns';
 
 export function CronExpressionValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -39,6 +40,7 @@ export class ListManagerListItemComponent implements AfterViewInit, OnChanges, O
     title: new FormControl<string>('', { validators: [Validators.required, Validators.minLength(3), Validators.maxLength(256)] }),
     description: new FormControl<string>('', { validators: [Validators.maxLength(2048)] }),
     resetCron: new FormControl<string>('', { validators: [CronExpressionValidator()] }),
+    resetDate: new FormControl<string>(''),
     style: new FormControl<'cb' | 'ol' | 'ul'>('cb', { validators: [Validators.required] }),
     checkedBelow: new FormControl<boolean>(true),
   });
@@ -87,6 +89,7 @@ export class ListManagerListItemComponent implements AfterViewInit, OnChanges, O
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes['list'])
       return;
+    console.log(changes['list'].currentValue)
     if (!this.clonedListItem || changes['list'].firstChange || changes['list'].currentValue.id != changes['list'].previousValue.id) {
       // Other list selected by user, modify current list.
       this.ngOnInit();
@@ -108,16 +111,6 @@ export class ListManagerListItemComponent implements AfterViewInit, OnChanges, O
   ngOnInit(): void {
     this.clonedListItem = { ...this.list };
     this.patchForm(this.clonedListItem);
-  }
-
-  patchForm(list: List): void {
-    this.editableList.patchValue({
-      title: list.title,
-      description: list.description,
-      resetCron: list.reset?.cron ?? '',
-      style: list.listStyle,
-      checkedBelow: list.checkedBelow
-    });
   }
 
   onAddListItem(afterI?: number): void {
@@ -193,7 +186,7 @@ export class ListManagerListItemComponent implements AfterViewInit, OnChanges, O
       this.clonedListItem.description = `${this.editableList.controls.description.value}`;
       this.clonedListItem.reset = {
         cron: this.editableList.controls.resetCron.value ?? null,
-        selectedDate: this.clonedListItem.reset?.selectedDate ?? null
+        selectedDate: this.editableList.controls.resetDate.value ?? null
       }
       this.clonedListItem.listStyle = `${this.editableList.controls.style.value ?? 'cb'}`;
       this.clonedListItem.checkedBelow = this.editableList.controls.checkedBelow.value ?? true;
@@ -206,6 +199,17 @@ export class ListManagerListItemComponent implements AfterViewInit, OnChanges, O
         this.saving = false;
       });
     }, 500);
+  }
+
+  patchForm(list: List): void {
+    this.editableList.patchValue({
+      title: list.title,
+      description: list.description,
+      resetCron: list.reset?.cron ?? '',
+      resetDate: list.reset?.selectedDate && (isToday(parseISO(list.reset?.selectedDate)) || isFuture(parseISO(list.reset?.selectedDate))) ? format(parseISO(list.reset?.selectedDate), 'yyyy-MM-dd') : '',
+      style: list.listStyle,
+      checkedBelow: list.checkedBelow
+    });
   }
 
 }

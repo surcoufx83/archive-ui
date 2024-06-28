@@ -660,9 +660,15 @@ export const L10nArchiveDeLocale: L10nArchiveLocale = {
             introduction: "Wähle eine der Listen aus der Leiste links aus, um diese zu lesen, abzuhaken, zu bearbeiten. Listen können im Gegensatz zu Notizen zurückgesetzt werden, sodass alle Checkboxen wieder leer sind."
         },
         list: {
+            addItem: "Neuer Listeneintrag",
+            blankListTitle: "Neue Liste",
+            checkedBelowUncheckedItems: "Abgehaktes nach unten verschieben",
+            checkedBy: "Erledigt durch {0} {1}",
             lastModified: "Zuletzt geändert: {0}",
-            resetManually: "Liste zurücksetzen",
-            checkedBy: "Erledigt durch {0} {1}"
+            resetCron: "Wird zurückgesetzt: {0}",
+            resetDate: "Wird zurückgesetzt am {0}",
+            resetDateAndCron: "Wird zurückgesetzt am {0} und {1}",
+            resetManually: "Liste zurücksetzen"
         },
         textEditor: {
             titlePlaceholder: "Name der Liste",
@@ -680,10 +686,7 @@ export const L10nArchiveDeLocale: L10nArchiveLocale = {
             listStyleUl: "Einfach",
             listStyleOl: "Zahl",
             listStyleCb: "Checks"
-        },
-        addItem: "Neuer Listeneintrag",
-        blankListTitle: "Neue Liste",
-        checkedBelowUncheckedItems: "Abgehaktes nach unten verschieben"
+        }
     },
     locales: {
         de: {

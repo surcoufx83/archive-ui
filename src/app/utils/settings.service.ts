@@ -193,7 +193,10 @@ export class SettingsService {
 
   deleteList(list: List): Subject<List | boolean> {
     let subject = new Subject<List | boolean>();
-    this.postCommon('delete', list, 'list', Object.values(this.listItems.value), subject, (n: List[]) => this.updateListManager(n));
+    this.postCommon('delete', list, 'list', Object.values(this.listItems.value), subject, (n: List[]) => {
+      this.updateListManager(n);
+      this.resyncListManager();
+    });
     return subject;
   }
 
