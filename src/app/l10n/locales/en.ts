@@ -123,21 +123,22 @@ export const L10nArchiveEnLocale: L10nArchiveLocale = {
         waitforstart: "Waiting for start"
     },
     casetype: {
-        apartment: "Residential",
-        bankaccounts: "Bank and accounts",
+        apartment: "Living",
+        associations: "Associations",
+        bankaccounts: "Bank and Accounts",
         car: "Car",
-        carbusiness: "Company Vehicle",
+        carbusiness: "Company Car",
         communication: "Communication",
-        consumables: "Consumables",
+        consumables: "Utilities / Consumables",
         contracts: "Contracts",
-        damage: "Damage",
-        insurance: "Insurances",
-        legals: "Legal cases",
+        damage: "Damage and Claims",
+        insurance: "Insurance",
+        legals: "Legal Proceedings (Authorities/Courts)",
         misc: "Miscellaneous",
-        repair: "Repair and maintenance",
-        studies: "Education and studies",
+        repair: "Repairs and Maintenance",
+        studies: "Education and Studies",
         taxes: "Taxes",
-        work: "Work"
+        work: "Employment"
     },
     classify: {
         classes: {

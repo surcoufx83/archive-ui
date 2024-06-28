@@ -124,6 +124,7 @@ export const L10nArchiveDeLocale: L10nArchiveLocale = {
     },
     casetype: {
         apartment: "Wohnen",
+        associations: "Vereine",
         bankaccounts: "Bank und Konten",
         car: "Auto",
         carbusiness: "Firmenwagen",

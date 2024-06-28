@@ -119,6 +119,7 @@ export type L10nArchiveLocale = {
     },
     casetype: {
         apartment: string,
+        associations: string,
         bankaccounts: string,
         car: string,
         carbusiness: string,

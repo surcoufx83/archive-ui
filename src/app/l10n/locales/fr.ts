@@ -124,20 +124,21 @@ export const L10nArchiveFrLocale: L10nArchiveLocale = {
     },
     casetype: {
         apartment: "Habitation",
-        bankaccounts: "Banque et comptes",
+        associations: "Associations",
+        bankaccounts: "Banque et Comptes",
         car: "Voiture",
-        carbusiness: "Voiture de société",
+        carbusiness: "Voiture de Fonction",
         communication: "Communication",
-        consumables: "Charges / Consommateurs",
+        consumables: "Charges / Consommables",
         contracts: "Contrats",
-        damage: "Dommages et déclarations de sinistre",
+        damage: "Dommages et Réclamations",
         insurance: "Assurances",
-        legals: "Procédure (autorités/tribunaux)",
-        misc: "Autres",
-        repair: "Réparations et entretien",
-        studies: "Formation et études",
+        legals: "Procédures Légales (Autorités/Tribunaux)",
+        misc: "Divers",
+        repair: "Réparations et Maintenance",
+        studies: "Éducation et Études",
         taxes: "Impôts",
-        work: "Relation d'emploi"
+        work: "Emploi"
     },
     classify: {
         classes: {
