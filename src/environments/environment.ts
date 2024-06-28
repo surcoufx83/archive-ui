@@ -131,19 +131,6 @@ export const defaultEnvironment: Environment = {
     ],
     navbarDropdownItems: [
       {
-        title: 'navbar.user.userProfileLink',
-        icon: 'account',
-        link: '/profile'
-      },
-      {
-        title: 'navbar.user.userSettingsLink',
-        icon: 'settings',
-        link: '/profile/settings'
-      },
-      {
-        divider: true
-      },
-      {
         title: 'navbar.user.clearCacheLink',
         icon: 'x',
         callFn: 'clearCache'
