@@ -57,22 +57,45 @@ export class ListManagerComponent implements OnDestroy, OnInit {
     this.sidebarOpen = true;
   }
 
+  /**
+   * Formats a given string URL.
+   * @param inputStr The string to be formatted.
+   * @returns The formatted URL string.
+   */
   furl(inputStr: string): string {
     return this.formatService.furl(inputStr);
   }
 
+  /**
+   * Translates a given key using the i18n service.
+   * @param key The key to translate.
+   * @param params Additional parameters for translation.
+   * @returns The translated string.
+   */
   i18n(key: string, params: string[] = []): string {
     return this.i18nService.i18n(key, params);
   }
 
+  /**
+     * Getter for i18n localization strings.
+     * @returns The localization strings.
+     */
   get i18nstr(): L10nArchiveLocale {
     return this.i18nService.str;
   }
 
+  /**
+   * Lifecycle hook that is called when the component is destroyed.
+   * Unsubscribes from all subscriptions to avoid memory leaks.
+   */
   ngOnDestroy(): void {
     this.subs.forEach((s) => s.unsubscribe());
   }
 
+  /**
+   * Lifecycle hook that is called when the component is initialized.
+   * Subscribes to settings and route changes to manage list updates and selected list.
+   */
   ngOnInit(): void {
     this.subs.push(this.settingsService.listItems$.subscribe((newLists) => {
       this.lists.set(Object.values(newLists).sort((a, b) => `${a.pinned ? '0' : '9'}${a.title.toLocaleLowerCase()}`.localeCompare(`${b.pinned ? '0' : '9'}${b.title.toLocaleLowerCase()}`, undefined, { numeric: true })));
@@ -89,6 +112,11 @@ export class ListManagerComponent implements OnDestroy, OnInit {
     }));
   }
 
+  /**
+   * Loads the selected list based on the provided ID.
+   * @param id The ID of the list to load.
+   * @param toggleSidebar Whether to toggle the sidebar visibility.
+   */
   ngOnInitLoadSelectedList(id: number, toggleSidebar: boolean): void {
     const templist = this.settingsService.getList(id);
     this.selectedList = templist ? { ...templist } : null;
@@ -96,6 +124,10 @@ export class ListManagerComponent implements OnDestroy, OnInit {
       this.sidebarOpen = false;
   }
 
+  /**
+   * Creates a new list based on the blankList template.
+   * Navigates to the list edit page after creation.
+   */
   onCreateList(): void {
     if (this.deleteSaving || this.createSaving)
       return;
@@ -108,6 +140,10 @@ export class ListManagerComponent implements OnDestroy, OnInit {
     });
   }
 
+  /**
+   * Deletes the currently selected list after confirmation.
+   * Navigates back to the list overview page after deletion.
+   */
   onDeletionConfirmed(): void {
     if (this.deleteSaving || this.createSaving || !this.selectedList)
       return;

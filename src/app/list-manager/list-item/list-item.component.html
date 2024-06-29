@@ -7,7 +7,7 @@
             <div class="flex-fill">
                 @if (editMode) {
                 <input type="text" class="form-control w-100" formControlName="title" id="list-editor-name"
-                    name="list-editor-name" (keyup)="onKeyUp()" autocomplete="off"
+                    name="list-editor-name" (keyup)="save()" autocomplete="off"
                     [placeholder]="i18nstr.listManager.textEditor.titlePlaceholder">
                 }
                 @else {
@@ -40,7 +40,7 @@
             <div class="ms-3 d-flex align-items-center">
                 <app-icon [animateOpacityInAndOut]="saving" [iconClass]="icons['spinner']" [spin]="true"></app-icon>
                 <input type="date" class="border-0 p-0 m-0" style="width:0!important" #listDatePicker autocomplete="off"
-                    formControlName="resetDate" (input)="onKeyUp()">
+                    formControlName="resetDate" (input)="save()">
                 <button
                     [ngClass]="{ 'btn btn-sm ms-2': true, 'btn-outline-secondary': editableList.controls.resetDate.value === '', 'btn-primary': editableList.controls.resetDate.value !== ''}"
                     (click)="listDatePicker.showPicker()">
@@ -55,7 +55,7 @@
         <div class="mb-3">
             @if (editMode) {
             <textarea class="form-control w-100" formControlName="description" id="list-editor-description"
-                name="list-editor-description" (keyup)="onKeyUp()" autocomplete="off" rows="4"
+                name="list-editor-description" (keyup)="save()" autocomplete="off" rows="4"
                 [placeholder]="i18nstr.listManager.textEditor.descriptionPlaceholder"></textarea>
             }
             @else {
@@ -72,21 +72,21 @@
                 <label>{{i18nstr.listManager.textEditor.listStyle}}</label>
                 <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
                     <input type="radio" class="btn-check" id="list-editor-style-ul" autocomplete="off"
-                        formControlName="style" value="ul" (change)="onKeyUp(); list.listStyle = 'ul'">
+                        formControlName="style" value="ul" (change)="save(); list.listStyle = 'ul'">
                     <label class="btn btn-sm" for="list-editor-style-ul">
                         <app-icon [iconClass]="icons['listUl']" [marginEnd]="1"></app-icon>
                         {{ i18nstr.listManager.textEditor.listStyleUl }}
                     </label>
 
                     <input type="radio" class="btn-check" id="list-editor-style-ol" autocomplete="off"
-                        formControlName="style" value="ol" (change)="onKeyUp(); list.listStyle = 'ol'">
+                        formControlName="style" value="ol" (change)="save(); list.listStyle = 'ol'">
                     <label class="btn btn-sm" for="list-editor-style-ol">
                         <app-icon [iconClass]="icons['listOl']" [marginEnd]="1"></app-icon>
                         {{ i18nstr.listManager.textEditor.listStyleOl }}
                     </label>
 
                     <input type="radio" class="btn-check" id="list-editor-style-cb" autocomplete="off"
-                        formControlName="style" value="cb" (change)="onKeyUp(); list.listStyle = 'cb'">
+                        formControlName="style" value="cb" (change)="save(); list.listStyle = 'cb'">
                     <label class="btn btn-sm" for="list-editor-style-cb">
                         <app-icon [iconClass]="icons['listCb']" [marginEnd]="1"></app-icon>
                         {{ i18nstr.listManager.textEditor.listStyleCb }}
@@ -99,7 +99,7 @@
             <div
                 [ngClass]="{ 'col col-12 col-md-4 d-flex flex-column mb-3': editableList.controls.style.value === 'cb', 'd-none': editableList.controls.style.value !== 'cb'}">
                 <label for="list-editor-cronexpr">{{i18nstr.listManager.textEditor.cronResetTitle}}</label>
-                <input type="text" class="form-control w-100" formControlName="resetCron" (keyup)="onKeyUp()"
+                <input type="text" class="form-control w-100" formControlName="resetCron" (keyup)="save()"
                     id="list-editor-cronexpr" name="list-editor-cronexpr" autocomplete="off"
                     [placeholder]="i18nstr.listManager.textEditor.cronResetPlaceholder">
                 <label class="fs-7 fst-italic">
@@ -123,7 +123,7 @@
             <div class="col col-12 col-md-4 mb-3">
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" formControlName="checkedBelow"
-                        id="list-editor-checkSettings" (change)="onKeyUp()">
+                        id="list-editor-checkSettings" (change)="save()">
                     <label class=" form-check-label" for="list-editor-checkSettings">
                         {{ i18nstr.listManager.list.checkedBelowUncheckedItems }}
                     </label>
@@ -213,7 +213,7 @@
                 [id]="'list-item-' + i + '-checkbox'">
             <p [(contentEditableWithBinding)]="item.content" class="flex-fill me-3 mb-0 editable-item"
                 [id]="'list-item-' + i + '-content'" autocomplete="off" [autofocus]="i == 0" [attr.data-note-index]="i"
-                (keydown)="onItemTextKeydown(i, $event)" (keyup)="onKeyUp()"></p>
+                (keydown)="onItemTextKeydown(i, $event)" (keyup)="save()"></p>
         </div>
         }
         @else {
@@ -229,7 +229,7 @@
                 <app-icon [iconClass]="icons['moveUpDown']" [fixedWidth]="true"></app-icon>
             </button>
         </div>
-        <div class="ms-auto" [ngClass]="{ 'd-none': dragMode }">
+        <div class="ms-auto d-none" [ngClass]="{ 'd-md-block': !dragMode }">
             <button type="button" class="btn btn-sm btn-outline-danger" (click)="onDeleteListItem(i)">
                 <app-icon [iconClass]="icons['delete']"></app-icon>
             </button>
