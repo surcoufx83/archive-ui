@@ -1,15 +1,14 @@
 import { AfterViewInit, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChange, SimpleChanges, signal } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import cronParser from 'cron-parser';
+import { format, isFuture, isToday, parseISO } from 'date-fns';
 import { first } from 'rxjs';
 import { I18nService } from 'src/app/i18n.service';
-import { List, ListItem } from 'src/app/if';
+import { List } from 'src/app/if';
 import { L10nArchiveLocale } from 'src/app/l10n/l10n.types';
 import { FormatService } from 'src/app/utils/format.service';
 import { SettingsService } from 'src/app/utils/settings.service';
-import cronParser from 'cron-parser';
 import { environment } from 'src/environments/environment.dev';
-import { format, isFuture, isToday, parseISO } from 'date-fns';
-import { DropEvent } from 'angular-draggable-droppable';
 
 export function CronExpressionValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -53,7 +52,6 @@ export class ListManagerListItemComponent implements AfterViewInit, OnChanges, O
   lastUncheckedIndex: number = -1;
   saving: boolean = false;
   private touchEndX = 0;
-  private touchMoved = false;
   private touchStartX = 0;
   private touchTimeout: any;
   private virtualElement: HTMLElement | null = null;
@@ -346,7 +344,6 @@ export class ListManagerListItemComponent implements AfterViewInit, OnChanges, O
   }
 
   onTouchMoveSwipe(event: TouchEvent, i: number): void {
-    this.touchMoved = true;
     clearTimeout(this.touchTimeout);
     this.touchEndX = event.changedTouches[0].screenX;
     if (this.virtualElement) {
@@ -366,7 +363,6 @@ export class ListManagerListItemComponent implements AfterViewInit, OnChanges, O
   }
 
   onTouchStartSwipe(event: TouchEvent, i: number): void {
-    this.touchMoved = false;
     this.touchStartX = event.changedTouches[0].screenX;
     this.touchTimeout = setTimeout(() => {
       this.createVirtualElement(event, i);

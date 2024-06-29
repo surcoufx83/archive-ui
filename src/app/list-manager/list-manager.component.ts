@@ -1,13 +1,13 @@
 import { Component, OnDestroy, OnInit, WritableSignal, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, first } from 'rxjs';
+import { environment } from 'src/environments/environment.dev';
 import { ConfigService } from '../config.service';
 import { I18nService } from '../i18n.service';
 import { List } from '../if';
-import { SettingsService } from '../utils/settings.service';
-import { environment } from 'src/environments/environment.dev';
-import { FormatService } from '../utils/format.service';
 import { L10nArchiveLocale } from '../l10n/l10n.types';
+import { FormatService } from '../utils/format.service';
+import { SettingsService } from '../utils/settings.service';
 
 const blankList: List = {
   checkedBelow: true,
@@ -48,7 +48,6 @@ export class ListManagerComponent implements OnDestroy, OnInit {
   lists: WritableSignal<List[]> = signal([]);
   selectedList: List | null = null;
   sidebarOpen: boolean;
-
   subs: Subscription[] = [];
 
   constructor(
