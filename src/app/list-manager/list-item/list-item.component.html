@@ -42,7 +42,7 @@
                 <input type="date" class="border-0 p-0 m-0" style="width:0!important" #listDatePicker autocomplete="off"
                     formControlName="resetDate" (input)="onKeyUp()">
                 <button
-                    [ngClass]="{ 'btn btn-sm me-2': true, 'btn-outline-secondary': editableList.controls.resetDate.value === '', 'btn-primary': editableList.controls.resetDate.value !== ''}"
+                    [ngClass]="{ 'btn btn-sm ms-2': true, 'btn-outline-secondary': editableList.controls.resetDate.value === '', 'btn-primary': editableList.controls.resetDate.value !== ''}"
                     (click)="listDatePicker.showPicker()">
                     <app-icon [iconClass]="icons['calendar']"></app-icon>
                 </button>
@@ -197,7 +197,9 @@
     <ng-container
         *ngTemplateOutlet="genericDropZone; context: { after: null, before: i, id: 'drop-zone-' + -1 + '-' + i }"></ng-container>
     <li class="list-group-item d-flex align-items-center py-1 px-2"
-        [ngClass]="{ draggable: dragMode, 'drag': draggingElement()?.index == i}" [id]="'list-item-' + i">
+        [ngClass]="{ draggable: dragMode, 'drag': draggingElement()?.index == i}" [id]="'list-item-' + i"
+        (touchstart)="onTouchStartSwipe($event, i)" (touchmove)="onTouchMoveSwipe($event, i)"
+        (touchend)="onTouchEndSwipe(i)">
         @if (list.listStyle === 'ul') {
         <div>
             <span class="me-2">•</span>

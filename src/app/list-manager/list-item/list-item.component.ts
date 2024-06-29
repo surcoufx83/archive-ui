@@ -52,12 +52,36 @@ export class ListManagerListItemComponent implements AfterViewInit, OnChanges, O
   lastCheckedIndex: number = -1;
   lastUncheckedIndex: number = -1;
   saving: boolean = false;
+  private touchEndX = 0;
+  private touchMoved = false;
+  private touchStartX = 0;
+  private touchTimeout: any;
+  private virtualElement: HTMLElement | null = null;
 
   constructor(
     private formatService: FormatService,
     private i18nService: I18nService,
     private settingsService: SettingsService,
   ) { }
+
+  createVirtualElement(event: TouchEvent, i: number): void {
+    const originalElement = document.getElementById(`list-item-${i}`);
+    if (originalElement) {
+      this.virtualElement = originalElement.cloneNode(true) as HTMLElement;
+      this.virtualElement.classList.add('shadow');
+      this.virtualElement.classList.add('border');
+      this.virtualElement.classList.add('border-danger');
+      this.virtualElement.classList.add('bg-light-subtle');
+      this.virtualElement.style.position = 'fixed';
+      this.virtualElement.style.left = `${event.changedTouches[0].pageX}px`;
+      this.virtualElement.style.top = `${event.changedTouches[0].pageY}px`;
+      this.virtualElement.style.width = `${originalElement.offsetWidth}px`;
+      this.virtualElement.style.height = `${originalElement.offsetHeight}px`;
+      this.virtualElement.style.opacity = `.93`;
+      this.virtualElement.style.pointerEvents = 'none'; // Make sure the virtual element doesn't interfere with touch events
+      document.body.appendChild(this.virtualElement);
+    }
+  }
 
   fcron(expr: string | null): string {
     return this.formatService.fcron(expr);
@@ -81,6 +105,21 @@ export class ListManagerListItemComponent implements AfterViewInit, OnChanges, O
 
   get i18nstr(): L10nArchiveLocale {
     return this.i18nService.str;
+  }
+
+  isSwipeLeft(): boolean {
+    return this.touchStartX - this.touchEndX > 150;
+  }
+
+  isSwipeRight(): boolean {
+    return this.touchEndX - this.touchStartX > 150;
+  }
+
+  moveVirtualElement(event: TouchEvent): void {
+    if (this.virtualElement) {
+      this.virtualElement.style.left = `${event.changedTouches[0].pageX}px`;
+      this.virtualElement.style.top = `${event.changedTouches[0].pageY}px`;
+    }
   }
 
   ngAfterViewInit(): void {
@@ -287,6 +326,14 @@ export class ListManagerListItemComponent implements AfterViewInit, OnChanges, O
     this.draggingOver.set(null);
   }
 
+  onTouchEndSwipe(i: number): void {
+    clearTimeout(this.touchTimeout);
+    if (this.virtualElement && (this.isSwipeLeft() || this.isSwipeRight())) {
+      this.onDeleteListItem(i);
+    }
+    this.removeVirtualElement();
+  }
+
   onTouchMove(event: TouchEvent): void {
     if (this.draggingElement()) {
       const touch = event.touches[0];
@@ -295,6 +342,17 @@ export class ListManagerListItemComponent implements AfterViewInit, OnChanges, O
         this.draggingOver.set(target.id);
       }
       event.preventDefault();
+    }
+  }
+
+  onTouchMoveSwipe(event: TouchEvent, i: number): void {
+    this.touchMoved = true;
+    clearTimeout(this.touchTimeout);
+    this.touchEndX = event.changedTouches[0].screenX;
+    if (this.virtualElement) {
+      this.moveVirtualElement(event);
+    } else if (Math.abs(this.touchStartX - this.touchEndX) > 10) {
+      this.createVirtualElement(event, i);
     }
   }
 
@@ -307,6 +365,14 @@ export class ListManagerListItemComponent implements AfterViewInit, OnChanges, O
     event.preventDefault();
   }
 
+  onTouchStartSwipe(event: TouchEvent, i: number): void {
+    this.touchMoved = false;
+    this.touchStartX = event.changedTouches[0].screenX;
+    this.touchTimeout = setTimeout(() => {
+      this.createVirtualElement(event, i);
+    }, 200);
+  }
+
   patchForm(list: List): void {
     this.editableList.patchValue({
       title: list.title,
@@ -316,6 +382,13 @@ export class ListManagerListItemComponent implements AfterViewInit, OnChanges, O
       style: list.listStyle,
       checkedBelow: list.checkedBelow
     });
+  }
+
+  removeVirtualElement(): void {
+    if (this.virtualElement) {
+      document.body.removeChild(this.virtualElement);
+      this.virtualElement = null;
+    }
   }
 
   resetItemIndexVars(): void {
