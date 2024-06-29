@@ -22,13 +22,8 @@ const blankList: List = {
   title: '',
   updated: '',
   user: {
-    clients: undefined,
-    email: undefined,
-    enabled: undefined,
-    groups: undefined,
     id: 0,
-    loginname: '',
-    settings: undefined
+    loginname: ''
   }
 }
 
