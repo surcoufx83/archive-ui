@@ -660,6 +660,9 @@ export type L10nArchiveLocale = {
             blankListTitle: string,
             checkedBelowUncheckedItems: string
             checkedBy: string,
+            completed: string,
+            dropzone: string,
+            incomplete: string,
             lastModified: string,
             resetCron: string,
             resetDate: string,

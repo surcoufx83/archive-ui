@@ -89,13 +89,14 @@ body {
 }
 
 .custom-list.list-group {
-  > .list-group-item {
-    &:not([data-placeholder="true"]) {
-      border: 0;
+  > .list-group-item:not(.border-1) {
+    border: 0;
+    &.add-new-item {
+      border-width: 1px;
+      border-style: dashed;
+      --bs-list-group-item-padding-x: .55rem;
     }
-    &[data-placeholder="true"] {
-      border-top-width: 1px;
-      border-style: dotted;
+    &.drop-zone {
       --bs-list-group-item-padding-x: .55rem;
     }
   }

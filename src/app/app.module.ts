@@ -58,6 +58,7 @@ import { NoteComponent } from './notepad2/note/note.component';
 import { Notepad2Component } from './notepad2/notepad2.component';
 import { SidebarComponent } from './notepad2/sidebar/sidebar.component';
 import { SearchComponent } from './search/search.component';
+import { AnimateOpacityInAndOutDirective } from './utils/animate-opacity-in-and-out.directive';
 import { ButtonComponent } from './utils/button/button.component';
 import { ContentEditableWithBindingDirective } from './utils/content-editable-with-binding.directive';
 import { DummyComponent } from './utils/dummy/dummy.component';
@@ -94,7 +95,6 @@ import { WorkDayComponent } from './work/work-day/work-day.component';
 import { WorkMonthComponent } from './work/work-month/work-month.component';
 import { WorkYearComponent } from './work/work-year/work-year.component';
 import { WorkComponent } from './work/work.component';
-import { AnimateOpacityInAndOutDirective } from './utils/animate-opacity-in-and-out.directive';
 
 registerLocaleData(localeDe);
 registerLocaleData(localeFr);
@@ -103,6 +103,7 @@ registerLocaleData(localeFr);
     declarations: [
         AccountComponent,
         AccountsComponent,
+        AnimateOpacityInAndOutDirective,
         AppComponent,
         ButtonComponent,
         CaseComponent,
@@ -175,7 +176,6 @@ registerLocaleData(localeFr);
         WorkProjectsComponent,
         WorkTimeCategoriesComponent,
         WorkYearComponent,
-        AnimateOpacityInAndOutDirective,
     ],
     bootstrap: [
         AppComponent,
