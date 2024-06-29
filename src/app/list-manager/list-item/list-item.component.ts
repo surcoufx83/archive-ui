@@ -204,13 +204,11 @@ export class ListManagerListItemComponent implements AfterViewInit, OnChanges, O
     event.dataTransfer.setData('text', listElementId);
   }
 
-  onDrop(event: DragEvent, placeAfter: number | null, placeBefore: number | null): void {
+  onDrop(event: DragEvent | TouchEvent, placeAfter: number | null, placeBefore: number | null): void {
     const dragging = this.draggingElement();
     const targetindex = (placeAfter ?? placeBefore)!;
-    if (!dragging ||
-      !event.dataTransfer ||
-      dragging.listElementId != event.dataTransfer.getData('text') ||
-      dragging.index == targetindex ||
+    if (
+      !dragging ||
       !this.clonedListItem?.items[dragging.index] ||
       !this.clonedListItem?.items[targetindex]
     )
@@ -218,7 +216,11 @@ export class ListManagerListItemComponent implements AfterViewInit, OnChanges, O
 
     const item = this.clonedListItem.items.splice(dragging.index, 1);
     if (item.length === 1) {
-      this.clonedListItem.items.splice(placeBefore && targetindex > dragging.index ? targetindex - 1 : targetindex, 0, item[0]);
+      this.clonedListItem.items.splice(
+        placeBefore && targetindex > dragging.index ? targetindex - 1 : targetindex,
+        0,
+        item[0]
+      );
       this.resetItemIndexVars();
       setTimeout(() => {
         this.onKeyUp();
@@ -262,6 +264,47 @@ export class ListManagerListItemComponent implements AfterViewInit, OnChanges, O
         this.saving = false;
       });
     }, 500);
+  }
+
+  onTouchEnd(event: TouchEvent): void {
+    const dragging = this.draggingElement();
+    if (dragging) {
+      const targetId = this.draggingOver();
+      if (targetId) {
+        const targetElement = document.getElementById(targetId);
+        const placeAfter = parseInt(targetElement?.getAttribute('data-after') || '-1');
+        const placeBefore = parseInt(targetElement?.getAttribute('data-before') || '-1');
+        this.onDrop(
+          new DragEvent('drop', {
+            dataTransfer: new DataTransfer(),
+          }),
+          placeAfter !== -1 ? placeAfter : null,
+          placeBefore !== -1 ? placeBefore : null
+        );
+      }
+    }
+    this.draggingElement.set(null);
+    this.draggingOver.set(null);
+  }
+
+  onTouchMove(event: TouchEvent): void {
+    if (this.draggingElement()) {
+      const touch = event.touches[0];
+      const target = document.elementFromPoint(touch.clientX, touch.clientY);
+      if (target && target.classList.contains('drop-zone')) {
+        this.draggingOver.set(target.id);
+      }
+      event.preventDefault();
+    }
+  }
+
+  onTouchStart(i: number, listElementId: string, event: TouchEvent): void {
+    this.draggingElement.set({
+      index: i,
+      listElementId: listElementId,
+      listElementRef: document.getElementById(listElementId),
+    });
+    event.preventDefault();
   }
 
   patchForm(list: List): void {

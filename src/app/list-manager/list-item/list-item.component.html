@@ -221,7 +221,9 @@
         }
         <div class="ms-auto" [ngClass]="{ 'd-none': !dragMode }">
             <button type="button" class="btn btn-sm btn-primary w-100 px-3" [draggable]="dragMode"
-                (dragstart)="onDragStart(i, 'list-item-' + i, $event)" (dragend)="onDragEnd($event)">
+                (dragstart)="onDragStart(i, 'list-item-' + i, $event)" (dragend)="onDragEnd($event)"
+                (touchstart)="onTouchStart(i, 'list-item-' + i, $event)" (touchmove)="onTouchMove($event)"
+                (touchend)="onTouchEnd($event)">
                 <app-icon [iconClass]="icons['moveUpDown']" [fixedWidth]="true"></app-icon>
             </button>
         </div>
