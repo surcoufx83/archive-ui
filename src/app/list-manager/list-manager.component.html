@@ -14,7 +14,12 @@
                     {{ i18n(!editMode ? 'common.edit' : 'common.back') }}
                 </button>
             </a>
-            <button class="item btn btn-sm btn-outline-danger ms-1" data-bs-toggle="modal"
+            <button class="item btn btn-sm ms-1"
+                [ngClass]="{ 'btn-primary': dragMode, 'btn-outline-primary': !dragMode }"
+                (click)="dragMode = !dragMode">
+                <app-icon [iconClass]="icons['dragAndDrop']" [fixedWidth]="true"></app-icon>
+            </button>
+            <button class="item btn btn-sm btn-outline-danger ms-3" data-bs-toggle="modal"
                 data-bs-target="#confirm-deletion-selected-list" [disabled]="deleteSaving">
                 <app-icon [iconClass]="icons[!deleteSaving ? 'delete' : 'spinner']" [spin]="deleteSaving"></app-icon>
             </button>
@@ -37,7 +42,8 @@
         </div>
         <div [ngClass]="{ 'notes-body flex-grow-1 px-4 py-3': true, 'd-none': isMobile && sidebarOpen }">
             @if (selectedList) {
-            <app-list-manager-list-item [list]="selectedList" [editMode]="editMode"></app-list-manager-list-item>
+            <app-list-manager-list-item [list]="selectedList" [dragMode]="dragMode"
+                [editMode]="editMode"></app-list-manager-list-item>
             }
             @else {
             <h5>{{ i18n('listManager.noListSelected.title') }}</h5>

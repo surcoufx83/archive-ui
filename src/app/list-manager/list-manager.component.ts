@@ -41,6 +41,7 @@ export class ListManagerComponent implements OnDestroy, OnInit {
 
   createSaving: boolean = false;
   deleteSaving: boolean = false;
+  dragMode: boolean = true;
   editMode: boolean = false;
   icons = environment.icons;
   isMobile: boolean;

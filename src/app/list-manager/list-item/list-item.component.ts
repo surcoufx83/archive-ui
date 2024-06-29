@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChange, SimpleChanges, signal } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { first } from 'rxjs';
 import { I18nService } from 'src/app/i18n.service';
@@ -9,6 +9,7 @@ import { SettingsService } from 'src/app/utils/settings.service';
 import cronParser from 'cron-parser';
 import { environment } from 'src/environments/environment.dev';
 import { format, isFuture, isToday, parseISO } from 'date-fns';
+import { DropEvent } from 'angular-draggable-droppable';
 
 export function CronExpressionValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -33,9 +34,12 @@ export function CronExpressionValidator(): ValidatorFn {
 export class ListManagerListItemComponent implements AfterViewInit, OnChanges, OnDestroy, OnInit {
 
   @Input({ required: true }) list!: List;
+  @Input({ required: true }) dragMode!: boolean;
   @Input({ required: true }) editMode!: boolean;
 
   clonedListItem?: List;
+  draggingElement = signal<ListDragItem | null>(null);
+  draggingOver = signal<string | null>(null);
   editableList = new FormGroup({
     title: new FormControl<string>('', { validators: [Validators.required, Validators.minLength(3), Validators.maxLength(256)] }),
     description: new FormControl<string>('', { validators: [Validators.maxLength(2048)] }),
@@ -45,6 +49,8 @@ export class ListManagerListItemComponent implements AfterViewInit, OnChanges, O
     checkedBelow: new FormControl<boolean>(true),
   });
   icons = environment.icons;
+  lastCheckedIndex: number = -1;
+  lastUncheckedIndex: number = -1;
   saving: boolean = false;
 
   constructor(
@@ -87,14 +93,17 @@ export class ListManagerListItemComponent implements AfterViewInit, OnChanges, O
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (!changes['list'])
-      return;
-    if (!this.clonedListItem || changes['list'].firstChange || changes['list'].currentValue.id != changes['list'].previousValue.id) {
+    if (changes['list'])
+      this.ngOnChangesList(changes['list']);
+  }
+
+  ngOnChangesList(listChange: SimpleChange): void {
+    if (!this.clonedListItem || listChange.firstChange || listChange.currentValue.id != listChange.previousValue.id) {
       // Other list selected by user, modify current list.
       this.ngOnInit();
       this.ngAfterViewInit();
     }
-    else if (this.editableList && changes['list'].currentValue.id === changes['list'].previousValue.id) {
+    else if (this.editableList && listChange.currentValue.id === listChange.previousValue.id) {
       // If list already loaded, update metadata only, not title and content as this will break current editing.
       this.clonedListItem.deleted = this.list.deleted;
       this.clonedListItem.pinned = this.list.pinned;
@@ -109,6 +118,7 @@ export class ListManagerListItemComponent implements AfterViewInit, OnChanges, O
 
   ngOnInit(): void {
     this.clonedListItem = { ...this.list };
+    this.resetItemIndexVars();
     this.patchForm(this.clonedListItem);
   }
 
@@ -148,9 +158,10 @@ export class ListManagerListItemComponent implements AfterViewInit, OnChanges, O
       };
     else
       this.clonedListItem.items[i].checkedBy = null;
+    this.resetItemIndexVars();
     setTimeout(() => {
       this.onKeyUp();
-    }, 10);
+    }, 1);
   }
 
   onDeleteListItem(i: number): void {
@@ -161,6 +172,59 @@ export class ListManagerListItemComponent implements AfterViewInit, OnChanges, O
     setTimeout(() => {
       this.onKeyUp();
     }, 10);
+  }
+
+  onDragEnd(event: DragEvent): void {
+    this.draggingElement.set(null);
+    this.draggingOver.set(null);
+  }
+
+  onDragLeave(event: DragEvent): void {
+    this.draggingOver.set(null);
+    event.preventDefault();
+  }
+
+  onDragOver(event: DragEvent): void {
+    if (event.target) {
+      this.draggingOver.set((<HTMLElement>event.target).id);
+    }
+    event.preventDefault();
+  }
+
+  onDragStart(i: number, listElementId: string, event: DragEvent): void {
+    if (!event.dataTransfer)
+      return;
+    this.draggingElement.set({
+      index: i,
+      listElementId: listElementId,
+      listElementRef: document.getElementById(listElementId),
+    });
+    event.dataTransfer.clearData();
+    event.dataTransfer.dropEffect = 'move';
+    event.dataTransfer.setData('text', listElementId);
+  }
+
+  onDrop(event: DragEvent, placeAfter: number | null, placeBefore: number | null): void {
+    const dragging = this.draggingElement();
+    const targetindex = (placeAfter ?? placeBefore)!;
+    if (!dragging ||
+      !event.dataTransfer ||
+      dragging.listElementId != event.dataTransfer.getData('text') ||
+      dragging.index == targetindex ||
+      !this.clonedListItem?.items[dragging.index] ||
+      !this.clonedListItem?.items[targetindex]
+    )
+      return;
+
+    const item = this.clonedListItem.items.splice(dragging.index, 1);
+    if (item.length === 1) {
+      this.clonedListItem.items.splice(placeBefore && targetindex > dragging.index ? targetindex - 1 : targetindex, 0, item[0]);
+      this.resetItemIndexVars();
+      setTimeout(() => {
+        this.onKeyUp();
+      }, 1);
+    }
+    event.preventDefault();
   }
 
   onItemTextKeydown(i: number, event: KeyboardEvent): void {
@@ -211,4 +275,27 @@ export class ListManagerListItemComponent implements AfterViewInit, OnChanges, O
     });
   }
 
+  resetItemIndexVars(): void {
+    this.lastCheckedIndex = -1;
+    this.lastUncheckedIndex = -1;
+    if (!this.clonedListItem)
+      return;
+    for (let i = this.clonedListItem.items.length - 1; i >= 0; i--) {
+      if (!this.clonedListItem.items[i].checked && this.lastUncheckedIndex == -1) {
+        this.lastUncheckedIndex = i;
+      }
+      if (this.clonedListItem.items[i].checked && this.lastCheckedIndex == -1) {
+        this.lastCheckedIndex = i;
+      }
+      if (this.lastCheckedIndex > -1 && this.lastUncheckedIndex > -1)
+        break;
+    }
+  }
+
+}
+
+export type ListDragItem = {
+  index: number,
+  listElementId: string,
+  listElementRef: HTMLElement | null,
 }

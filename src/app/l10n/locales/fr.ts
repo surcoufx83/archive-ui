@@ -665,6 +665,7 @@ export const L10nArchiveFrLocale: L10nArchiveLocale = {
             blankListTitle: "Nouvelle Liste",
             checkedBelowUncheckedItems: "Déplacer les éléments cochés sous les éléments non cochés",
             checkedBy: "Réalisé par {0} {1}",
+            dropzone: "Glissez ici",
             lastModified: "Dernière modification : {0}",
             resetCron: "Sera réinitialisé : {0}",
             resetDate: "Sera réinitialisé le {0}",

@@ -38,6 +38,7 @@
                 }
             </div>
             <div class="ms-3 d-flex align-items-center">
+                <app-icon [animateOpacityInAndOut]="saving" [iconClass]="icons['spinner']" [spin]="true"></app-icon>
                 <input type="date" class="border-0 p-0 m-0" style="width:0!important" #listDatePicker autocomplete="off"
                     formControlName="resetDate" (input)="onKeyUp()">
                 <button
@@ -45,7 +46,6 @@
                     (click)="listDatePicker.showPicker()">
                     <app-icon [iconClass]="icons['calendar']"></app-icon>
                 </button>
-                <app-icon [animateOpacityInAndOut]="saving" [iconClass]="icons['spinner']" [spin]="true"></app-icon>
             </div>
         </div>
         <!-- Header with title (input if in edit mode) -->
@@ -134,6 +134,7 @@
         }
 
     </div>
+
     @if (!editMode) {
     <div class="mb-3">
 
@@ -152,7 +153,7 @@
 
         <!-- Button to add a new list entry -->
         <ul class="custom-list list-group list-group-flush mt-3" [attr.data-grouptype]="list.listStyle">
-            <li class="list-group-item d-flex justify-content-center align-items-center">
+            <li class="list-group-item add-new-item d-flex justify-content-center align-items-center">
                 <button type="button" class="btn stretched-link" (click)="onAddListItem()">
                     <app-icon [iconClass]="icons['add']" [marginEnd]="1"></app-icon>
                     {{ i18nstr.listManager.list.addItem }}
@@ -172,24 +173,31 @@
 </form>
 
 <ng-template #genericListBody>
+
     @for (item of clonedListItem.items; track $index) {
     <!-- Display all unchecked items first (or all items if list is configured this way) -->
-    @if (item.checked === false || this.editableList.controls.checkedBelow.value !== true) {
+    @if (item.checked === false || this.editableList.controls.checkedBelow.value !== true || dragMode) {
     <ng-container *ngTemplateOutlet="genericListItem; context: { item: item, i: $index }"></ng-container>
     }
     <!-- Display all unchecked items first -->
     }
     @for (item of clonedListItem.items; track $index) {
     <!-- Display checked items second -->
-    @if (item.checked === true && this.editableList.controls.checkedBelow.value === true) {
+    @if (item.checked === true && this.editableList.controls.checkedBelow.value === true && !dragMode) {
     <ng-container *ngTemplateOutlet="genericListItem; context: { item: item, i: $index }"></ng-container>
     }
     <!-- Display checked items second -->
     }
+    <ng-container
+        *ngTemplateOutlet="genericDropZone; context: { after: clonedListItem.items.length - 1, before: null, id: 'drop-zone-' + (clonedListItem.items.length - 1) + '-' + -1 }"></ng-container>
+
 </ng-template>
 
 <ng-template #genericListItem let-item="item" let-i="i">
-    <li class="list-group-item d-flex align-items-center py-1 px-2">
+    <ng-container
+        *ngTemplateOutlet="genericDropZone; context: { after: null, before: i, id: 'drop-zone-' + -1 + '-' + i }"></ng-container>
+    <li class="list-group-item d-flex align-items-center py-1 px-2"
+        [ngClass]="{ draggable: dragMode, 'drag': draggingElement()?.index == i}" [id]="'list-item-' + i">
         @if (list.listStyle === 'ul') {
         <div>
             <span class="me-2">•</span>
@@ -198,12 +206,9 @@
         }
         @else if (list.listStyle === 'cb') {
         <div class="flex-fill d-flex align-items-center">
-            <input class="form-check-input me-2 mt-0" type="checkbox" [(ngModel)]="item.checked"
-                (change)="onCheckListItem(i)" [name]="'list-item-' + i + '-checkbox'"
+            <input class="form-check-input me-2 mt-0" [ngClass]="{ 'd-none': dragMode }" type="checkbox"
+                [(ngModel)]="item.checked" (change)="onCheckListItem(i)" [name]="'list-item-' + i + '-checkbox'"
                 [id]="'list-item-' + i + '-checkbox'">
-            <!-- <input class="form-control form-control-sm plain flex-fill me-3" type="text" [(ngModel)]="item.content"
-                (keyup)="onKeyUp()" [name]="'list-item-' + $index + '-content'"
-                [id]="'list-item-' + $index + '-content'" autocomplete="off" [autofocus]="$index == 0"> -->
             <p [(contentEditableWithBinding)]="item.content" class="flex-fill me-3 mb-0 editable-item"
                 [id]="'list-item-' + i + '-content'" autocomplete="off" [autofocus]="i == 0" [attr.data-note-index]="i"
                 (keydown)="onItemTextKeydown(i, $event)" (keyup)="onKeyUp()"></p>
@@ -214,12 +219,29 @@
             A list item
         </div>
         }
-        <div class="ms-auto">
-            <span class="fs-8 fst-italic mx-2">{{i + 1}}</span>
+        <div class="ms-auto" [ngClass]="{ 'd-none': !dragMode }">
+            <button type="button" class="btn btn-sm btn-primary w-100 px-3" [draggable]="dragMode"
+                (dragstart)="onDragStart(i, 'list-item-' + i, $event)" (dragend)="onDragEnd($event)">
+                <app-icon [iconClass]="icons['moveUpDown']" [fixedWidth]="true"></app-icon>
+            </button>
+        </div>
+        <div class="ms-auto" [ngClass]="{ 'd-none': dragMode }">
             <button type="button" class="btn btn-sm btn-outline-danger" (click)="onDeleteListItem(i)">
                 <app-icon [iconClass]="icons['delete']"></app-icon>
             </button>
         </div>
+    </li>
+</ng-template>
+
+<ng-template #genericDropZone let-after="after" let-before="before" let-id="id">
+    <li class="list-group-item drop-zone"
+        [ngClass]="{ 'd-none': !dragMode, 'over border-1 border-primary list-group-item-primary': draggingOver() == id, 'list-group-item-light': draggingOver() != id }"
+        [id]="id" [attr.data-after]="after ?? -1" [attr.data-before]="before ?? -1" (dragover)="onDragOver($event)"
+        (dragleave)="onDragLeave($event)" (drop)="onDrop($event, after, before)">
+        @if (draggingOver() == id) {
+        <app-icon [iconClass]="icons['drop']" [fixedWidth]="true" [marginEnd]="2"></app-icon>
+        {{ i18nstr.listManager.list.dropzone }}
+        }
     </li>
 </ng-template>
 }
