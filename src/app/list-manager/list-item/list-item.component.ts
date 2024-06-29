@@ -41,6 +41,8 @@ export class ListManagerListItemComponent implements AfterViewInit, OnChanges, O
   @Input({ required: true }) editMode!: boolean;
 
   clonedListItem?: List;
+  countCheckedItems = signal<number | null>(null);
+  countUncheckedItems = signal<number | null>(null);
   debouncesave: any;
   draggingElement = signal<ListDragItem | null>(null);
   draggingOver = signal<string | null>(null);
@@ -516,6 +518,8 @@ export class ListManagerListItemComponent implements AfterViewInit, OnChanges, O
     this.lastUncheckedIndex = -1;
     if (!this.clonedListItem)
       return;
+    let checked = 0;
+    let unchecked = 1;
     for (let i = this.clonedListItem.items.length - 1; i >= 0; i--) {
       if (!this.clonedListItem.items[i].checked && this.lastUncheckedIndex == -1) {
         this.lastUncheckedIndex = i;
@@ -526,6 +530,8 @@ export class ListManagerListItemComponent implements AfterViewInit, OnChanges, O
       if (this.lastCheckedIndex > -1 && this.lastUncheckedIndex > -1)
         break;
     }
+    this.countCheckedItems.set(this.clonedListItem.items.filter(item => item.checked).length);
+    this.countUncheckedItems.set(this.clonedListItem.items.length - (this.countCheckedItems() ?? 0));
   }
 
   /**

@@ -14,6 +14,14 @@
                 <h5 class="text-truncate mb-0">
                     {{ clonedListItem.title }}
                 </h5>
+
+                <p class="mb-0 fs-8">
+                    <app-icon [iconClass]="icons['check']" [marginEnd]="1"></app-icon> {{
+                    i18n('listManager.list.completed', [''+countCheckedItems()]) }}
+                    <app-icon [iconClass]="icons['check-no']" [marginEnd]="1" class="ms-2"></app-icon> {{
+                    i18n('listManager.list.incomplete', [''+countUncheckedItems()]) }}
+                </p>
+
                 @if (editableList.controls.resetDate.value !== '' && editableList.controls.resetCron.value === '') {
                 <!-- reset date set but no cron expression -->
                 <p class="mb-0 fs-8">
