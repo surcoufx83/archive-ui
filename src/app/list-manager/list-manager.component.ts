@@ -108,6 +108,7 @@ export class ListManagerComponent implements OnDestroy, OnInit {
     this.settingsService.updateList({ ...blankList }).pipe(first()).subscribe((list) => {
       if (list === true || list === false)
         return;
+      this.createSaving = false;
       this.router.navigate(['/lists'], { queryParams: { id: list.id, subject: this.furl(this.i18nstr.listManager.list.blankListTitle), editor: true } })
     });
   }

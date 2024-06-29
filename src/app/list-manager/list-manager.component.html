@@ -1,5 +1,4 @@
 <div class="d-flex flex-column">
-    @if (isMobile) {
     <div class="sidebar-toggle d-flex justify-content-between p-2">
         <div>
             <button class="item btn btn-sm btn-primary" (click)="onCreateList()">
@@ -21,6 +20,7 @@
             </button>
             }
         </div>
+        @if (isMobile) {
         <div>
             <button type="button" class="btn btn-dark btn-sm" (click)="sidebarOpen = !sidebarOpen">
                 <app-icon [iconClass]="'fa-regular fa-' + (sidebarOpen ? 'eye-slash' : 'eye')"
@@ -28,8 +28,8 @@
                 {{ i18n('listManager.toggleSidebar') }}
             </button>
         </div>
+        }
     </div>
-    }
     <div class="main-container d-flex vh-calc-100">
         <div [ngClass]="{ 'sidebar-body': true, 'd-none': !sidebarOpen }" [attr.data-mobile]="isMobile">
             <app-list-manager-sidebar [lists]="lists()" [isOpen]="sidebarOpen"
