@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment.dev';
 import { NavbarItem } from '../config.service';
 import { I18nService } from '../i18n.service';
@@ -13,7 +12,6 @@ import { L10nArchiveLocale } from '../l10n/l10n.types';
 export class WorkComponent {
 
   navitems: NavbarItem[] = environment.navigation.workBarItems;
-  subscriptions: Subscription[] = [];
 
   constructor(
     private i18nService: I18nService
