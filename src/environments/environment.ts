@@ -173,14 +173,10 @@ export const defaultEnvironment: Environment = {
         matchLink: '/work/month'
       },
       {
-        title: 'navbar.workitems.leads',
-        icon: 'leads',
-        link: '/work/leads'
-      },
-      {
-        title: 'navbar.workitems.settings',
-        icon: 'settings',
-        link: '/work/settings'
+        title: "navbar.workitems.year",
+        icon: "year",
+        link: "/work/year",
+        matchLink: "/work/year"
       }
     ]
   },
