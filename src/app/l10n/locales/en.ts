@@ -775,10 +775,11 @@ export const L10nArchiveEnLocale: L10nArchiveLocale = {
         },
         workitems: {
             leads: "Leads",
-            month: "Monthly View",
+            month: "Month View",
             year: "Years",
             settings: "Settings",
-            today: "Daily Booking"
+            today: "Daily Booking",
+            travel: "Business Trips"
         }
     },
     notepad: {

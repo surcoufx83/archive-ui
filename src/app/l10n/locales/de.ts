@@ -778,7 +778,8 @@ export const L10nArchiveDeLocale: L10nArchiveLocale = {
             month: "Monatsansicht",
             year: "Jahre",
             settings: "Einstellungen",
-            today: "Tagesbuchung"
+            today: "Tagesbuchung",
+            travel: "Geschäftsreisen"
         }
     },
     notepad: {

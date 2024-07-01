@@ -95,6 +95,7 @@ import { WorkDayComponent } from './work/work-day/work-day.component';
 import { WorkMonthComponent } from './work/work-month/work-month.component';
 import { WorkYearComponent } from './work/work-year/work-year.component';
 import { WorkComponent } from './work/work.component';
+import { WorkTravelComponent } from './work/work-travel/work-travel.component';
 
 registerLocaleData(localeDe);
 registerLocaleData(localeFr);
@@ -176,6 +177,7 @@ registerLocaleData(localeFr);
         WorkProjectsComponent,
         WorkTimeCategoriesComponent,
         WorkYearComponent,
+        WorkTravelComponent,
     ],
     bootstrap: [
         AppComponent,

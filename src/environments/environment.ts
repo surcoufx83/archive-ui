@@ -90,6 +90,7 @@ export const defaultEnvironment: Environment = {
     today: 'fa-solid fa-calendar-day',
     'toggle-off': 'fa-solid fa-toggle-off',
     'toggle-on': 'fa-solid fa-toggle-on',
+    travel: 'fa-solid fa-car-side',
     warehouse: 'fa-solid fa-boxes-stacked',
     wine: 'fa-solid fa-wine-bottle',
     work: 'fa-solid fa-laptop-house',
@@ -177,6 +178,12 @@ export const defaultEnvironment: Environment = {
         icon: "year",
         link: "/work/year",
         matchLink: "/work/year"
+      },
+      {
+        title: "navbar.workitems.travel",
+        icon: "travel",
+        link: "/work/travel",
+        matchLink: "/work/travel"
       }
     ]
   },

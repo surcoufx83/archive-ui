@@ -773,7 +773,8 @@ export type L10nArchiveLocale = {
             month: string,
             year: string,
             settings: string,
-            today: string
+            today: string,
+            travel: string
         }
     },
     notepad: {
