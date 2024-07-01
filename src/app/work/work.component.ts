@@ -1,69 +1,32 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { UserSettings } from 'src/app/if';
+import { environment } from 'src/environments/environment.dev';
 import { NavbarItem } from '../config.service';
 import { I18nService } from '../i18n.service';
-import { SettingsService } from '../utils/settings.service';
+import { L10nArchiveLocale } from '../l10n/l10n.types';
 
 @Component({
   selector: 'app-work',
   templateUrl: './work.component.html',
   styleUrls: ['./work.component.scss']
 })
-export class WorkComponent implements OnDestroy, OnInit {
+export class WorkComponent {
 
-  navitems: NavbarItem[] = [
-    {
-      title: "navbar.workitems.today",
-      icon: "today",
-      link: "/work/today",
-      matchLink: "/work/day"
-    },
-    {
-      title: "navbar.workitems.month",
-      icon: "calendar",
-      link: "/work/month",
-      matchLink: "/work/month"
-    },
-    {
-      title: "navbar.workitems.year",
-      icon: "year",
-      link: "/work/year",
-      matchLink: "/work/year"
-    },
-    {
-      title: "navbar.workitems.leads",
-      icon: "leads",
-      link: "/work/leads"
-    },
-    {
-      title: "navbar.workitems.settings",
-      icon: "settings",
-      link: "/work/settings"
-    }
-  ];
-  settingsObj: UserSettings | null = null;
+  navitems: NavbarItem[] = environment.navigation.workBarItems;
   subscriptions: Subscription[] = [];
 
   constructor(
-    private i18nService: I18nService,
-    private settings: SettingsService
+    private i18nService: I18nService
   ) {
-    this.i18nService.setTitle('work.pagetitle');
+    this.i18nService.setTitle(this.i18nstr.work.pagetitle);
   }
 
-  i18n(key: string): string {
-    return this.i18nService.i18n(key);
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
-  }
-
-  ngOnInit(): void {
-    this.subscriptions.push(this.settings.settings$.subscribe((settings) => {
-      this.settingsObj = settings;
-    }));
+  /**
+   * Getter for i18n localization strings.
+   * @returns The localization strings.
+   */
+  get i18nstr(): L10nArchiveLocale {
+    return this.i18nService.str;
   }
 
 }
