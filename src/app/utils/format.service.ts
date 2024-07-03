@@ -60,6 +60,34 @@ export class FormatService {
   }
 
   /**
+   * Formats a date into a specified string format.
+   * @param date The date to format.
+   * @param form The format string.
+   * @returns The formatted date string.
+   */
+  fdate(date: Date | string | null, form: string): string {
+    if (date == null)
+      return this.i18nService.i18n('common.novalue');
+    if (typeof (date) === 'string')
+      date = new Date(date);
+    return format(date, form, { locale: this.i18nService.DateLocale });
+  }
+
+  /**
+   * Formats the distance to now from a given date.
+   * @param date The date to calculate distance from.
+   * @param suffix Whether to add a suffix.
+   * @returns The formatted distance string.
+   */
+  fdist(date: Date | string | null, suffix: boolean | undefined = undefined): string {
+    if (date == null)
+      return this.i18nService.i18n('common.novalue');
+    if (typeof (date) === 'string')
+      date = new Date(date);
+    return formatDistanceToNow(date, { locale: this.i18nService.DateLocale, addSuffix: suffix });
+  }
+
+  /**
    * Formats a duration into a human-readable string.
    * @param duration The duration object.
    * @returns The formatted duration string.
@@ -109,34 +137,6 @@ export class FormatService {
     if (duration.hours > 0 || duration.minutes > 0 || duration.seconds > 0)
       items.push(this.i18nService.i18n('common.period.patternTime', [this.fnumber(duration.hours), this.fnumber(duration.minutes), this.fnumber(duration.seconds)]));
     return items.join(' ');
-  }
-
-  /**
-   * Formats a date into a specified string format.
-   * @param date The date to format.
-   * @param form The format string.
-   * @returns The formatted date string.
-   */
-  fdate(date: Date | string | null, form: string): string {
-    if (date == null)
-      return this.i18nService.i18n('common.novalue');
-    if (typeof (date) === 'string')
-      date = new Date(date);
-    return format(date, form, { locale: this.i18nService.DateLocale });
-  }
-
-  /**
-   * Formats the distance to now from a given date.
-   * @param date The date to calculate distance from.
-   * @param suffix Whether to add a suffix.
-   * @returns The formatted distance string.
-   */
-  fdist(date: Date | string | null, suffix: boolean | undefined = undefined): string {
-    if (date == null)
-      return this.i18nService.i18n('common.novalue');
-    if (typeof (date) === 'string')
-      date = new Date(date);
-    return formatDistanceToNow(date, { locale: this.i18nService.DateLocale, addSuffix: suffix });
   }
 
   /**
