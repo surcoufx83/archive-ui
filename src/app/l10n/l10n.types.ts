@@ -942,6 +942,12 @@ export type L10nArchiveLocale = {
         wkn: string
     },
     travel: {
+        colActions: string,
+        colBegin: string,
+        colEnd: string,
+        colLocation: string,
+        colPerson: string,
+        colReason: string,
         createReportBtn: string,
         pagetitle: string,
     },

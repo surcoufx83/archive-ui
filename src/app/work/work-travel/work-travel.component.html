@@ -21,17 +21,18 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th>Person</th>
-                        <th>Von/Am</th>
-                        <th class="d-none d-md-table-cell">Bis</th>
-                        <th class="d-none d-md-table-cell">Grund</th>
-                        <th class="d-none d-md-table-cell">Ort</th>
-                        <th class="text-end">Aktionen</th>
+                        <th>{{ i18nstr.travel.colPerson }}</th>
+                        <th>{{ i18nstr.travel.colBegin }}</th>
+                        <th class="d-none d-md-table-cell">{{ i18nstr.travel.colEnd }}</th>
+                        <th class="d-none d-md-table-cell">{{ i18nstr.travel.colReason }}</th>
+                        <th class="d-none d-md-table-cell">{{ i18nstr.travel.colLocation }}</th>
+                        <th class="text-end">{{ i18nstr.travel.colActions }}</th>
                     </tr>
                 </thead>
                 <tbody>
                     @for (item of travels; track $index) {
-                    <tr>
+                    <tr style="transform: rotate(0);">
+                        <!-- Transform required to prevent stretched-link to go up to whole table -->
                         <td>
                             <span class="badge rounded-pill text-bg-dark me-2">{{ item.user.initials }}</span>
                             {{ item.user.loginname | titlecase }}
@@ -57,7 +58,7 @@
                             }
                         </td>
                         <td class="text-end">
-                            <a [routerLink]="['/work', 'travel', item.id, furl(item.reason)]">
+                            <a [routerLink]="['/work', 'travel', item.id, furl(item.reason)]" class="stretched-link">
                                 <button class="btn btn-sm btn-outline-secondary ms-2">
                                     <app-icon [iconClass]="icons['edit']"></app-icon>
                                     <span class="d-none d-lg-inline ms-2">{{ i18nstr.common.edit }}</span>
@@ -68,9 +69,6 @@
                     }
                 </tbody>
             </table>
-        </div>
-        <div class="card-body">
-            {{travels|json}}
         </div>
     </div>
 </div>

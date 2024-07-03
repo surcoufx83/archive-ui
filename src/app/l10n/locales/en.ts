@@ -949,6 +949,12 @@ export const L10nArchiveEnLocale: L10nArchiveLocale = {
     travel: {
         createReportBtn: "Annual Report",
         pagetitle: "Business Trips",
+        colActions: "Actions",
+        colBegin: "Start Date",
+        colEnd: "End Date",
+        colLocation: "Location",
+        colPerson: "Person",
+        colReason: "Reason"
     },
     warehouse: {
         pagetitle: "Storage management",
