@@ -91,7 +91,6 @@ export class CaseComponent implements OnDestroy, OnInit {
   }
 
   private loadCase(id: number | null, obj: Case | null = null): void {
-    console.log('loadCase', id, obj, this.caseid)
     if (this.caseid === id)
       return;
     this.caseid = id;
@@ -136,7 +135,6 @@ export class CaseComponent implements OnDestroy, OnInit {
       }
     }));
     this.subscriptions.push(this.route.paramMap.subscribe((map) => {
-      console.log(map)
       const caseid = map.get('id');
       if (caseid != null)
         this.loadCase(+caseid);
