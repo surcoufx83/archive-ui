@@ -18,7 +18,7 @@ export class FormatService {
   constructor(private i18nService: I18nService) { }
 
   /**
-  * Formats a file size into a human-readable string.
+  * Formats a file size into a human-readable string. In case of input less than or equal to `0`, `0 B` is returned.
   * @param size The size in bytes.
   * @param fd Fraction digits.
   * @param md Maximum digits.
@@ -28,7 +28,7 @@ export class FormatService {
     if (size <= 0)
       return '0 B';
     let f = Math.floor(Math.log(size) / Math.log(1024));
-    return `${this.fnumber(size / Math.pow(1024, f), fd, md)} ${FormatService.fsunits[f]}`;
+    return `${this.fnumber(size / (1024 ** f), fd, md)} ${FormatService.fsunits[f]}`;
   }
 
   /**
@@ -53,7 +53,9 @@ export class FormatService {
       cronParser.parseExpression(expr);
       return cronstrue.toString(expr, { locale: this.i18nService.Locale });
     }
-    catch (e) { }
+    catch (e) {
+      // No additional error handling or logging required.
+    }
     return '';
   }
 
@@ -166,6 +168,18 @@ export class FormatService {
    */
   furl(inputStr: string): string {
     return encodeURIComponent(inputStr.replace(/[^a-zA-Z0-9\-]/ig, '-').replace(/\-+/ig, '-').replace(/^\-|\-$/ig, ''));
+  }
+
+  /**
+   * Converts a given string to title case.
+   * Each word's first letter is capitalized and the remaining letters are lowercased.
+   * @param inputStr The string to convert to title case.
+   * @returns The title-cased string.
+   */
+  titleCase(inputStr: string): string {
+    return inputStr.split(' ').map(word => {
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    }).join(' ');
   }
 
 }
