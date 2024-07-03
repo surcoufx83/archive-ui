@@ -616,7 +616,14 @@ export type User = {
   enabled?: boolean,
   groups?: UserGroup[],
   id: number,
+  initials: string,
   loginname: string,
+  names?: {
+    first: string,
+    full: string,
+    last: string,
+    middle: string,
+  },
   settings?: UserSettings,
 }
 

@@ -275,6 +275,7 @@ export class ListManagerListItemComponent implements AfterViewInit, OnChanges, O
     if (item.checked === true)
       this.clonedListItem.items[i].checkedBy = {
         id: user.id,
+        initials: user.initials,
         loginname: user.loginname
       };
     else
