@@ -110,14 +110,16 @@ export class I18nService {
   }
 
   private titleTimeout?: any;
-  public setTitle(key: string, params: any[] = [], i: number = 0): void {
+  public setTitle(key: string, params: any[] = [], i: number = 0): string {
     if (this.titleTimeout !== undefined)
       clearTimeout(this.titleTimeout);
     if (!this.loaded.value)
       this.titleTimeout = setTimeout(() => {
         this.setTitle(key, params, i);
       }, 100);
-    this.titleService.setTitle(this.i18n(key, params, i));
+    const titleStr = this.i18n(key, params, i);
+    this.titleService.setTitle(titleStr);
+    return titleStr;
   }
 
   public get str(): L10nArchiveLocale {

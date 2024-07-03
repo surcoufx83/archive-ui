@@ -223,7 +223,7 @@ const defaultStorageSettingsitems: { [key: string]: StorageItem } = {
   'user': {
     expectedVersion: 1,
     lastsync: 0,
-    syncInterval: 180000,
+    syncInterval: 18000,
     timeout: null,
     urlFragment: '/user/settings',
     version: 0,

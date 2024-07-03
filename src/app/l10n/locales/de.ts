@@ -947,14 +947,23 @@ export const L10nArchiveDeLocale: L10nArchiveLocale = {
         wkn: "WKN"
     },
     travel: {
-        createReportBtn: "Jahresbericht",
-        pagetitle: "Geschäftsreisen",
         colActions: "Aktionen",
         colBegin: "Am / Vom",
         colEnd: "Bis",
         colLocation: "Ort",
         colPerson: "Person",
-        colReason: "Grund"
+        colReason: "Grund",
+        createReportBtn: "Jahresbericht",
+        deleteTravelBtn: "Reise löschen",
+        editor: {
+            city: "Ort",
+            country: "Land",
+            location: "Ziel",
+            person: "Person",
+            reason: "Anlass",
+        },
+        pagetitle: "Geschäftsreisen",
+        pagetitleWithObj: "{0} Reise nach {1}",
     },
     warehouse: {
         pagetitle: "Lagerverwaltung",

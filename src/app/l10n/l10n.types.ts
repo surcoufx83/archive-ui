@@ -949,7 +949,16 @@ export type L10nArchiveLocale = {
         colPerson: string,
         colReason: string,
         createReportBtn: string,
+        deleteTravelBtn: string,
+        editor: {
+            city: string,
+            country: string,
+            location: string,
+            person: string,
+            reason: string,
+        },
         pagetitle: string,
+        pagetitleWithObj: string,
     },
     warehouse: {
         pagetitle: string,

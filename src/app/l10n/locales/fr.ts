@@ -954,7 +954,16 @@ export const L10nArchiveFrLocale: L10nArchiveLocale = {
         colEnd: "Au",
         colLocation: "Lieu",
         colPerson: "Personne",
-        colReason: "Raison"
+        colReason: "Raison",
+        pagetitleWithObj: "{0} Reise nach {1}",
+        deleteTravelBtn: "Reise löschen",
+        editor: {
+            city: "Ort",
+            country: "Land",
+            location: "Ziel",
+            person: "Person",
+            reason: "Anlass",
+        },
     },
     warehouse: {
         pagetitle: "Gestion de stocks",

@@ -148,6 +148,8 @@ export class SettingsService {
   private user: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
   user$ = this.user.asObservable();
 
+  private otherUsers: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([]);
+
   private warehouseRooms: BehaviorSubject<WarehouseRoom[] | null> = new BehaviorSubject<WarehouseRoom[] | null>(null);
   warehouseRooms$ = this.warehouseRooms.asObservable();
 
@@ -322,14 +324,17 @@ export class SettingsService {
     if (olddata2) {
       olddata2 = <UserSettingsStorage>JSON.parse(olddata2);
       this.updateUser(olddata2.user, false);
+      if (olddata2.others !== undefined)
+        this.otherUsers.next(olddata2.others);
     }
-    this.authService.queryApi(this.storageService.getSyncUrl(user)).pipe(first()).subscribe((reply) => {
+    /* this.authService.queryApi(this.storageService.getSyncUrl(user)).pipe(first()).subscribe((reply) => {
       if (reply.success && reply.payload != null) {
         reply.payload['version'] = this.storageService.getExpectedStorageVersion(user);
         this.updateUser(<User>reply.payload['user']);
         this.storageService.save(user, reply.payload);
       }
-    });
+    }); */
+    this.syncUser();
   }
 
 
@@ -457,6 +462,10 @@ export class SettingsService {
     return id !== null && this.notepadItems.value[id] ? this.notepadItems.value[id] : null;
   }
 
+  getOtherUsers(): User[] | null {
+    return this.otherUsers.value;
+  }
+
   getStock(id: number | null): Stock | null {
     return id !== null && this.stocks.value[id] ? this.stocks.value[id] : null;
   }
@@ -501,6 +510,10 @@ export class SettingsService {
 
   getWorkTimeCategory(id: number | null): WorkTimeCategory | null {
     return id !== null && this.workTimeCategories.value[id] ? this.workTimeCategories.value[id] : null;
+  }
+
+  getWorkTravelItem(id: number | null): WorkTravel | null {
+    return id !== null && this.workTravel.value[id] ? this.workTravel.value[id] : null;
   }
 
   private postCommon(method: 'create' | 'update' | 'delete', item: any, urlitem: string, listing: any[], subject: BehaviorSubject<boolean | any | null> | Subject<any | boolean>,
@@ -830,6 +843,21 @@ export class SettingsService {
         }
       }
       this.storageService.setTimeout(tags, setTimeout(() => { this.syncTags(); }, this.storageService.getSyncInterval(tags)));
+    });
+  }
+
+  public syncUser(): void {
+    this.storageService.clearTimeout(user);
+    this.authService.queryApi(this.storageService.getSyncUrl(user)).pipe(first()).subscribe((reply) => {
+      if (reply.success && reply.payload != undefined) {
+        let temp = <UserSettingsStorage>reply.payload;
+        temp.version = this.storageService.getExpectedStorageVersion(user);
+        this.updateUser(temp.user);
+        if (temp.others !== undefined)
+          this.otherUsers.next(temp.others);
+        this.storageService.save(user, temp);
+      }
+      this.storageService.setTimeout(user, setTimeout(() => { this.syncUser(); }, this.storageService.getSyncInterval(user)));
     });
   }
 
@@ -1297,6 +1325,7 @@ export interface TagsStorage {
 }
 
 export interface UserSettingsStorage {
+  others?: User[];
   user: User;
   version?: number;
 }
