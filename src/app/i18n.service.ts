@@ -22,6 +22,7 @@ export class I18nService {
   private localeAsObject: L10nArchiveLocale = { ...(environment.l10n.fallbackLocale == 'de' ? L10nArchiveDeLocale : environment.l10n.fallbackLocale == 'fr' ? L10nArchiveFrLocale : L10nArchiveEnLocale) };
   public loaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private entries: { [key: string]: { [key: string]: string | string[] } } = { en: {}, de: {}, fr: {} };
+  private titleTimeout?: any;
 
   get DateLocale(): Locale {
     switch (this.locale) {
@@ -56,6 +57,10 @@ export class I18nService {
       this.currentLocale_.next(this.defaultLocale);
   }
 
+  /**
+   * Loads localization strings for the specified locale.
+   * @param locale The locale to load strings for.
+   */
   private loadStrings(locale: string) {
     this.localeAsObject = { ...(locale == 'de' ? L10nArchiveDeLocale : locale == 'fr' ? L10nArchiveFrLocale : L10nArchiveEnLocale) };
     Object.entries(<I18nEntry>this.localeAsObject).forEach((e) => {
@@ -64,6 +69,13 @@ export class I18nService {
     this.loaded.next(true);
   }
 
+  /**
+   * Iterates over the localization strings and stores them.
+   * @param locale The locale being processed.
+   * @param parentkey The parent key for nested entries.
+   * @param key The current key.
+   * @param content The localization content.
+   */
   private iterateStrings(locale: string, parentkey: string, key: string, content: I18nEntry): void {
     let mykey = (parentkey !== '' ? parentkey + '.' : '') + key;
     if (typeof content === 'object' && !Array.isArray(content)) {
@@ -75,10 +87,25 @@ export class I18nService {
       this.entries[locale][mykey] = content;
   }
 
+  /**
+   * Translates a given key using the i18n service.
+   * @param key The key to translate.
+   * @param params Additional parameters for translation.
+   * @param i Index for array entries.
+   * @returns The translated string.
+   */
   public i18n(key: string, params: any[] = [], i: number = 0): string {
     return this.i18n_locale(this.currentLocale_.value, key, params, i);
   }
 
+  /**
+   * Translates a given key for a specific locale.
+   * @param locale The locale to use for translation.
+   * @param key The key to translate.
+   * @param params Additional parameters for translation.
+   * @param i Index for array entries.
+   * @returns The translated string.
+   */
   private i18n_locale(locale: string, key: string, params: any[] = [], i: number = 0): string {
     if (this.entries[locale] == undefined)
       return '...';
@@ -99,6 +126,10 @@ export class I18nService {
     return `<I18n/${locale}: string '${key}' missing!>`;
   }
 
+  /**
+   * Sets the current locale.
+   * @param key The locale key to set.
+   */
   public setLocale(key: string): void {
     if (this.availableLocales.indexOf(key) == -1)
       return;
@@ -109,7 +140,13 @@ export class I18nService {
     localStorage.setItem(`locale`, JSON.stringify(storeItem));
   }
 
-  private titleTimeout?: any;
+  /**
+   * Sets the document title using a localized string.
+   * @param key The key for the title string.
+   * @param params Additional parameters for the title string.
+   * @param i Index for array entries.
+   * @returns The localized title string.
+   */
   public setTitle(key: string, params: any[] = [], i: number = 0): string {
     clearTimeout(this.titleTimeout);
     if (!this.loaded.value)
@@ -121,6 +158,10 @@ export class I18nService {
     return titleStr;
   }
 
+  /**
+   * Getter for the current localization strings.
+   * @returns The localization strings.
+   */
   public get str(): L10nArchiveLocale {
     return this.localeAsObject;
   }
