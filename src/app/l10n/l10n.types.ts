@@ -941,6 +941,10 @@ export type L10nArchiveLocale = {
         value: string,
         wkn: string
     },
+    travel: {
+        createReportBtn: string,
+        pagetitle: string,
+    },
     warehouse: {
         pagetitle: string,
         rooms: {

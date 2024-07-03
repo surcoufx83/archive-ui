@@ -946,6 +946,10 @@ export const L10nArchiveFrLocale: L10nArchiveLocale = {
         value: "Valeur",
         wkn: "WKN"
     },
+    travel: {
+        createReportBtn: "Rapport Annuel",
+        pagetitle: "Voyages d'affaires",
+    },
     warehouse: {
         pagetitle: "Gestion de stocks",
         rooms: {

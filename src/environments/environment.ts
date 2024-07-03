@@ -67,6 +67,7 @@ export const defaultEnvironment: Environment = {
     'moving-boxes': 'fa-solid fa-people-carry-box',
     notepad: 'fa-regular fa-lightbulb',
     organic: 'fa-solid fa-seedling',
+    report: 'fa-solid fa-file-arrow-down',
     pin: 'fa-solid fa-map-pin',
     preview: 'fa-solid fa-eye',
     receipt: 'fa-solid fa-receipt',

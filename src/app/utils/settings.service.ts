@@ -31,7 +31,8 @@ import type {
   WorkLead,
   WorkOffCategory,
   WorkProject,
-  WorkTimeCategory
+  WorkTimeCategory,
+  WorkTravel
 } from 'src/app/if';
 import type { WarehouseReply } from 'src/app/warehouse/warehouse.component';
 import { environment } from 'src/environments/environment.dev';
@@ -167,6 +168,9 @@ export class SettingsService {
 
   private workTimeCategories: BehaviorSubject<{ [key: number]: WorkTimeCategory }> = new BehaviorSubject<{ [key: number]: WorkTimeCategory }>({});
   workTimeCategories$ = this.workTimeCategories.asObservable();
+
+  private workTravel: BehaviorSubject<{ [key: number]: WorkTravel }> = new BehaviorSubject<{ [key: number]: WorkTravel }>({});
+  workTravel$ = this.workTravel.asObservable();
 
   constructor(
     private authService: AuthService,
@@ -387,6 +391,8 @@ export class SettingsService {
       this.workOfftimeCategories.next(olddata.offCategories);
       this.workProjects.next(olddata.projects);
       this.workTimeCategories.next(olddata.timeCategories);
+      if (olddata.travel)
+        this.workTravel.next(olddata.travel);
     }
     this.syncWork();
   }
@@ -671,6 +677,7 @@ export class SettingsService {
       offCategories: this.workOfftimeCategories.value,
       projects: this.workProjects.value,
       timeCategories: this.workTimeCategories.value,
+      travel: this.workTravel.value,
     });
   }
 
@@ -836,6 +843,7 @@ export class SettingsService {
         this.updateWorkOffCategories(response.offCategories);
         this.updateWorkProjects(response.projects);
         this.updateWorkTimeCategories(response.timeCategories);
+        this.updateWorkTravel(response.travel);
         this.storageService.setLastSync(work);
         this.saveWork();
       }
@@ -995,7 +1003,17 @@ export class SettingsService {
     this.workTimeCategories.next(temp);
   }
 
+  private updateWorkTravel(travelitem: WorkTravel[]) {
+    if (travelitem.length == 0)
+      return;
+    let temp = { ...this.workTravel.value };
+    travelitem.forEach((a) => this._updateCommon(temp, a));
+    this.workTravel.next(temp);
+  }
+
   private updateListManager(lists: List[]) {
+    if (lists.length == 0)
+      return;
     let temp = { ...this.listItems.value };
     lists.forEach((n) => {
       if (n.deleted == null)
@@ -1153,6 +1171,13 @@ export class SettingsService {
     return subject;
   }
 
+  updateTravel(travelitem: WorkTravel): BehaviorSubject<WorkTravel | null> {
+    let subject = new BehaviorSubject<WorkTravel | null>(null);
+    this.postCommon(travelitem.id == 0 ? 'create' : 'update', travelitem,
+      'travel', Object.values(this.workTravel.value), subject, (c: WorkTravel[]) => this.updateWorkTravel(c));
+    return subject;
+  }
+
   updateUser(user: User, push: boolean = false) {
     this.user.next(user);
     if (user.settings)
@@ -1282,6 +1307,7 @@ export interface WorkResponse {
   offCategories: WorkOffCategory[];
   projects: WorkProject[];
   timeCategories: WorkTimeCategory[];
+  travel: WorkTravel[];
 }
 
 export interface WorkStorage {
@@ -1290,6 +1316,7 @@ export interface WorkStorage {
   offCategories: WorkOffCategory[];
   projects: WorkProject[];
   timeCategories: WorkTimeCategory[];
+  travel?: WorkTravel[];
   ts: number;
   version: number;
 }

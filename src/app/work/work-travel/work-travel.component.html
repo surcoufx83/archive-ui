@@ -1,1 +1,63 @@
-<p>work-travel works!</p>
+<div class="container-fluid pt-4 pt-md-2 mb-2">
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">{{ i18nstr.travel.pagetitle }}</h5>
+            <div class="d-flex align-items-center">
+                <app-icon [animateOpacityInAndOut]="saving" [iconClass]="icons['spinner']" [spin]="true"></app-icon>
+                <button class="btn btn-sm btn-outline-secondary ms-2">
+                    <app-icon [iconClass]="icons['report']"></app-icon>
+                    <span class="d-none d-lg-inline ms-2">{{ i18nstr.travel.createReportBtn }}</span>
+                </button>
+                <button class="btn btn-sm btn-outline-primary ms-2">
+                    <app-icon [iconClass]="icons['add']"></app-icon>
+                    <span class="d-none d-lg-inline ms-2">{{ i18nstr.common.add }}</span>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Person</th>
+                        <th>Von/Am</th>
+                        <th>Bis</th>
+                        <th>Grund</th>
+                        <th>Ort</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (item of travels; track $index) {
+                    <tr>
+                        <td>
+                            {{ item.user.loginname | titlecase }}
+                        </td>
+                        <td>
+                            {{ fdate(item.timeStart, 'P') }}
+                        </td>
+                        <td>
+                            @if (fdate(item.timeStart, 'P') != fdate(item.timeEnd, 'P')) {
+                            {{ fdate(item.timeEnd, 'P') }}
+                            }
+                            @else {
+                            ⸺
+                            }
+                        </td>
+                        <td>
+                            {{ item.reason }}
+                        </td>
+                        <td>
+                            {{ item.location }}{{ item.location != '' && item.city != '' ? ', ' : '' }}{{ item.city }}
+                            @if (!item.country.isdefault) {
+                            ({{ item.country.key2 }})
+                            }
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="card-body">
+            {{travels|json}}
+        </div>
+    </div>
+</div>
