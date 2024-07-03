@@ -13,11 +13,17 @@ import { I18nService } from '../i18n.service';
 })
 export class FormatService {
 
-
   private static fsunits = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
 
   constructor(private i18nService: I18nService) { }
 
+  /**
+  * Formats a file size into a human-readable string.
+  * @param size The size in bytes.
+  * @param fd Fraction digits.
+  * @param md Maximum digits.
+  * @returns The formatted file size string.
+  */
   filesize(size: number, fd: number = 0, md: number | undefined = undefined): string {
     if (size <= 0)
       return '0 B';
@@ -25,10 +31,21 @@ export class FormatService {
     return `${this.fnumber(size / Math.pow(1024, f), fd, md)} ${FormatService.fsunits[f]}`;
   }
 
+  /**
+   * Formats a number as a currency string.
+   * @param n The number to format.
+   * @param c The currency object.
+   * @returns The formatted currency string.
+   */
   fcur(n: number, c?: Currency): string {
     return new Intl.NumberFormat(this.i18nService.Locale, { style: 'currency', currency: c?.shortname ?? 'EUR' }).format(n);
   }
 
+  /**
+   * Parses and formats a cron expression into a human-readable string.
+   * @param expr The cron expression.
+   * @returns The formatted cron expression string.
+   */
   fcron(expr: string | null): string {
     if (expr === null || expr === '')
       return '';
@@ -40,6 +57,11 @@ export class FormatService {
     return '';
   }
 
+  /**
+   * Formats a duration into a human-readable string.
+   * @param duration The duration object.
+   * @returns The formatted duration string.
+   */
   fdur(duration: Duration | null): string {
     if (duration == null)
       return '';
@@ -87,6 +109,12 @@ export class FormatService {
     return items.join(' ');
   }
 
+  /**
+   * Formats a date into a specified string format.
+   * @param date The date to format.
+   * @param form The format string.
+   * @returns The formatted date string.
+   */
   fdate(date: Date | string | null, form: string): string {
     if (date == null)
       return this.i18nService.i18n('common.novalue');
@@ -95,6 +123,12 @@ export class FormatService {
     return format(date, form, { locale: this.i18nService.DateLocale });
   }
 
+  /**
+   * Formats the distance to now from a given date.
+   * @param date The date to calculate distance from.
+   * @param suffix Whether to add a suffix.
+   * @returns The formatted distance string.
+   */
   fdist(date: Date | string | null, suffix: boolean | undefined = undefined): string {
     if (date == null)
       return this.i18nService.i18n('common.novalue');
@@ -103,16 +137,35 @@ export class FormatService {
     return formatDistanceToNow(date, { locale: this.i18nService.DateLocale, addSuffix: suffix });
   }
 
+  /**
+   * Formats a number with specified fraction digits.
+   * @param n The number to format.
+   * @param fd Minimum fraction digits.
+   * @param md Maximum fraction digits.
+   * @returns The formatted number string.
+   */
   fnumber(n: number, fd: number = 0, md: number | undefined = undefined): string {
     return (+n).toLocaleString(this.i18nService.Locale, { minimumFractionDigits: fd, maximumFractionDigits: md });
   }
 
+  /**
+   * Formats a number as a percentage.
+   * @param n The number to format.
+   * @param fd Minimum fraction digits.
+   * @param md Maximum fraction digits.
+   * @returns The formatted percentage string.
+   */
   fpercent(n: number, fd: number = 0, md: number | undefined = undefined): string {
     return (+n).toLocaleString(this.i18nService.Locale, { minimumFractionDigits: fd, maximumFractionDigits: md }) + '%';
   }
 
+  /**
+   * Formats a string for use in a URL.
+   * @param inputStr The string to format.
+   * @returns The formatted URL string.
+   */
   furl(inputStr: string): string {
-    return inputStr.replace(/[^a-zA-Z0-9\-]/ig, '-').replace(/\-+/ig, '-').replace(/^\-|\-$/ig, '');
+    return encodeURIComponent(inputStr.replace(/[^a-zA-Z0-9\-]/ig, '-').replace(/\-+/ig, '-').replace(/^\-|\-$/ig, ''));
   }
 
 }
