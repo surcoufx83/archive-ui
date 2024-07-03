@@ -31,6 +31,10 @@ export class WorkTravelComponent implements OnDestroy, OnInit {
     return this.formatService.fdate(date, form);
   }
 
+  furl(inputStr: string): string {
+    return this.formatService.furl(inputStr);
+  }
+
   /**
    * Getter for i18n localization strings.
    * @returns The localization strings.

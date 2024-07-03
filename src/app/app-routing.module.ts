@@ -42,6 +42,7 @@ import { WorkMonthComponent } from './work/work-month/work-month.component';
 import { WorkYearComponent } from './work/work-year/work-year.component';
 import { WorkComponent } from './work/work.component';
 import { WorkTravelComponent } from './work/work-travel/work-travel.component';
+import { WorkTravelEditorComponent } from './work/work-travel/editor/editor.component';
 
 const routes: Routes = [
   { path: 'account', component: AccountComponent, canActivate: [SessionGuard] },
@@ -119,7 +120,8 @@ const routes: Routes = [
         ]
       },
       { path: 'today', component: WorkDayComponent, canActivate: [SessionGuard] },
-      { path: 'travel', component: WorkTravelComponent, canActivate: [SessionGuard] },
+      { path: 'travel', component: WorkTravelComponent, canActivate: [SessionGuard], pathMatch: 'full' },
+      { path: 'travel/:id/:var', component: WorkTravelEditorComponent, canActivate: [SessionGuard] },
     ]
   },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
