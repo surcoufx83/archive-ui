@@ -111,8 +111,7 @@ export class I18nService {
 
   private titleTimeout?: any;
   public setTitle(key: string, params: any[] = [], i: number = 0): string {
-    if (this.titleTimeout !== undefined)
-      clearTimeout(this.titleTimeout);
+    clearTimeout(this.titleTimeout);
     if (!this.loaded.value)
       this.titleTimeout = setTimeout(() => {
         this.setTitle(key, params, i);
