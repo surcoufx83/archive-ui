@@ -91,6 +91,7 @@ export class CaseComponent implements OnDestroy, OnInit {
   }
 
   private loadCase(id: number | null, obj: Case | null = null): void {
+    console.log('loadCase', id, obj, this.caseid)
     if (this.caseid === id)
       return;
     this.caseid = id;
@@ -122,7 +123,6 @@ export class CaseComponent implements OnDestroy, OnInit {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
-    this.subscriptions = [];
   }
 
   ngOnInit(): void {
@@ -135,11 +135,13 @@ export class CaseComponent implements OnDestroy, OnInit {
         this.listOfCaseTypes = this.listOfCaseTypes.sort((a, b) => this.i18n('casetype.' + a.name) > this.i18n('casetype.' + b.name) ? 1 : -1);
       }
     }));
-    this.subscriptions.push(this.router.events.subscribe((e) => {
-      if (e instanceof NavigationEnd) {
-        this.activeRouteChild = this.route.snapshot.url.length == 3 ? this.route.snapshot.url[2].path : '';
-        this.loadCase(+this.route.snapshot.url[1].path);
-      }
+    this.subscriptions.push(this.route.paramMap.subscribe((map) => {
+      console.log(map)
+      const caseid = map.get('id');
+      if (caseid != null)
+        this.loadCase(+caseid);
+      const viewid = map.get('view');
+      this.activeRouteChild = viewid ?? '';
     }));
     this.subscriptions.push(this.userSettings.clientSettings$.subscribe((settings) => {
       this.showDeleted = settings.casesettings.showCasesInDeletion;
