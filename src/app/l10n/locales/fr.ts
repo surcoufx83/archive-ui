@@ -963,6 +963,9 @@ export const L10nArchiveFrLocale: L10nArchiveLocale = {
             location: "Ziel",
             person: "Person",
             reason: "Anlass",
+            travelStart: "Von",
+            travelEnd: "Bis",
+            travelDuration: "Dauer",
         },
     },
     warehouse: {

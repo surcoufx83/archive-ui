@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { I18nService } from 'src/app/i18n.service';
-import { User, WorkTravel } from 'src/app/if';
+import { User, WorkTravel, WorkTravelDay } from 'src/app/if';
 import { L10nArchiveLocale } from 'src/app/l10n/l10n.types';
 import { FormatService } from 'src/app/utils/format.service';
 import { SettingsService } from 'src/app/utils/settings.service';
@@ -28,6 +28,7 @@ export class WorkTravelEditorComponent {
   saving: boolean = false;
   otherUsers: User[] | null = this.dataService.getOtherUsers();
   travel: WorkTravel | null = null;
+  travelDays: WorkTravelDay[] = [];
   travelId: number | null = null;
   travelTitle = signal<string>('');
   user: User | null;
@@ -63,6 +64,17 @@ export class WorkTravelEditorComponent {
    */
   fdate(date: Date | string | null, form: string): string {
     return this.formatService.fdate(date, form);
+  }
+
+  /**
+   * Formats the distance between two dates into a human-readable string.
+   * @param date The target date.
+   * @param baseDate The base date to compare with.
+   * @param suffix Whether to add a suffix to the formatted string.
+   * @returns The formatted distance string or a placeholder if dates are null.
+   */
+  fdist2(date: Date | string | null, baseDate: Date | string | null, suffix: boolean | undefined = undefined): string {
+    return this.formatService.fdist2(date, baseDate, suffix);
   }
 
   /**
@@ -142,7 +154,8 @@ export class WorkTravelEditorComponent {
         city: this.travel.city,
         country: this.travel.country.id,
       });
-      console.log(this.editform.value)
+      this.travelDays = [...this.travel.days];
+      console.log(this.editform.value);
     }
   }
 

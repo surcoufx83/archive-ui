@@ -956,6 +956,10 @@ export type L10nArchiveLocale = {
             location: string,
             person: string,
             reason: string,
+            travelStart: string,
+            travelEnd: string,
+            travelDuration: string,
+
         },
         pagetitle: string,
         pagetitleWithObj: string,

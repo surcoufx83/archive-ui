@@ -4,7 +4,7 @@ import cronstrue from 'cronstrue';
 import 'cronstrue/locales/de';
 import 'cronstrue/locales/en';
 import 'cronstrue/locales/fr';
-import { format, formatDistanceToNow } from 'date-fns';
+import { format, formatDistance, formatDistanceToNow } from 'date-fns';
 import { Currency } from 'src/app/if';
 import { I18nService } from '../i18n.service';
 
@@ -85,6 +85,23 @@ export class FormatService {
     if (typeof (date) === 'string')
       date = new Date(date);
     return formatDistanceToNow(date, { locale: this.i18nService.DateLocale, addSuffix: suffix });
+  }
+
+  /**
+   * Formats the distance between two dates into a human-readable string.
+   * @param date The target date.
+   * @param baseDate The base date to compare with.
+   * @param suffix Whether to add a suffix to the formatted string.
+   * @returns The formatted distance string or a placeholder if dates are null.
+   */
+  fdist2(date: Date | string | null, baseDate: Date | string | null, suffix: boolean | undefined = undefined): string {
+    if (date == null || baseDate == null)
+      return this.i18nService.i18n('common.novalue');
+    if (typeof (date) === 'string')
+      date = new Date(date);
+    if (typeof (baseDate) === 'string')
+      baseDate = new Date(baseDate);
+    return formatDistance(date, baseDate, { locale: this.i18nService.DateLocale, addSuffix: suffix });
   }
 
   /**
