@@ -997,6 +997,7 @@ export const L10nArchiveFrLocale: L10nArchiveLocale = {
         timecategories: {
             administration: "Activités administratives",
             bugfixing: "Bugfixing",
+            healthwork: "Travail Clinique",
             meeting: "Meeting",
             "non-canon": "Absent",
             implementation: "Implémentation",

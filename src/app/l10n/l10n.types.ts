@@ -993,6 +993,7 @@ export type L10nArchiveLocale = {
         timecategories: {
             administration: string,
             bugfixing: string,
+            healthwork: string,
             meeting: string,
             "non-canon": string,
             implementation: string,
