@@ -141,9 +141,12 @@
       <h4>{{ i18n('search.result.subtitle', [(resultgroupcount['files'] == undefined ? i18n('common.none') :
         ''+resultgroupcount['files']), i18n('search.result.group.files')]) }}</h4>
       <ul class="list-group" *ngIf="searchresults.files">
-        <file-list-item *ngFor="let item of searchresults.files;" [file]="item.file" [relevance]="item.relevance"
-          (clicked)="router.navigate(['/file', item.file.id])" (downloadClicked)="download(item)"
-          (previewClicked)="router.navigate(['/file', item.file.id, 'preview'])"></file-list-item>
+        @for (item of searchresults.files; track $index) {
+        <a [ngClass]="['fix-border list-group-item', 'py-2', 'pe-2', 'border-start-0 border-end-0']"
+          [routerLink]="['/file', item.file.id]">
+          <file-list-item [file]="item.file" [relevance]="item.relevance" [routeSelf]="['/home']"></file-list-item>
+        </a>
+        }
       </ul>
     </div>
 
@@ -152,9 +155,12 @@
       <h4>{{ i18n('search.result.subtitle', [(resultgroupcount['pages'] == undefined ? i18n('common.none') :
         ''+resultgroupcount['pages']), i18n('search.result.group.pages')]) }}</h4>
       <ul class="list-group" *ngIf="searchresults.pages">
-        <file-list-item *ngFor="let item of searchresults.pages;" [file]="item.file" [relevance]="item.relevance"
-          (clicked)="router.navigate(['/file', item.file.id])" (downloadClicked)="download(item)"
-          (previewClicked)="router.navigate(['/file', item.file.id, 'preview'])"></file-list-item>
+        @for (item of searchresults.pages; track $index) {
+        <a [ngClass]="['fix-border list-group-item', 'py-2', 'pe-2', 'border-start-0 border-end-0']"
+          [routerLink]="['/file', item.file.id]">
+          <file-list-item [file]="item.file" [relevance]="item.relevance" [routeSelf]="['/home']"></file-list-item>
+        </a>
+        }
       </ul>
     </div>
 
