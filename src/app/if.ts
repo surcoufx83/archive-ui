@@ -616,7 +616,14 @@ export type User = {
   enabled?: boolean,
   groups?: UserGroup[],
   id: number,
+  initials: string,
   loginname: string,
+  names?: {
+    first: string,
+    full: string,
+    last: string,
+    middle: string,
+  },
   settings?: UserSettings,
 }
 
@@ -957,4 +964,41 @@ export type WorkTimeCategory = {
   rowcolor: string,
   updated: string,
   userid: number,
+}
+
+export type WorkTravel = {
+  amountTotal: number,
+  city: string,
+  country: Country,
+  created: string,
+  days: WorkTravelDay[],
+  deleted: string | null,
+  distanceTotal: number,
+  expenses: WorkTravelExpense[],
+  id: number,
+  location: string,
+  reason: string,
+  timeEnd: string,
+  timeStart: string,
+  updated: string,
+  user: User,
+}
+
+export type WorkTravelDay = {
+  amount: number,
+  date: string,
+  fullDay: boolean,
+  id: number,
+  meals: {
+    breakfast: boolean,
+    dinner: boolean,
+    lunch: boolean,
+  }
+}
+
+export type WorkTravelExpense = {
+  amount: number,
+  description: string,
+  id: number,
+  type: string,
 }

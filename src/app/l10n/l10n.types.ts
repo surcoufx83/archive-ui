@@ -773,7 +773,8 @@ export type L10nArchiveLocale = {
             month: string,
             year: string,
             settings: string,
-            today: string
+            today: string,
+            travel: string
         }
     },
     notepad: {
@@ -940,6 +941,29 @@ export type L10nArchiveLocale = {
         value: string,
         wkn: string
     },
+    travel: {
+        colActions: string,
+        colBegin: string,
+        colEnd: string,
+        colLocation: string,
+        colPerson: string,
+        colReason: string,
+        createReportBtn: string,
+        deleteTravelBtn: string,
+        editor: {
+            city: string,
+            country: string,
+            location: string,
+            person: string,
+            reason: string,
+            travelStart: string,
+            travelEnd: string,
+            travelDuration: string,
+
+        },
+        pagetitle: string,
+        pagetitleWithObj: string,
+    },
     warehouse: {
         pagetitle: string,
         rooms: {
@@ -969,6 +993,7 @@ export type L10nArchiveLocale = {
         timecategories: {
             administration: string,
             bugfixing: string,
+            healthwork: string,
             meeting: string,
             "non-canon": string,
             implementation: string,

@@ -23,7 +23,8 @@ const blankList: List = {
   updated: '',
   user: {
     id: 0,
-    loginname: ''
+    initials: '',
+    loginname: '',
   }
 }
 

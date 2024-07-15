@@ -23,6 +23,7 @@ import { ShoppingComponent } from './finance/shopping/shopping.component';
 import { StocksComponent } from './finance/stocks/stocks.component';
 import { TaxComponent } from './finance/tax/tax.component';
 import { HomeComponent } from './home/home.component';
+import { ListManagerComponent } from './list-manager/list-manager.component';
 import { LoginComponent } from './login/login.component';
 import { Oauth2CallbackComponent } from './login/oauth2-callback/oauth2-callback.component';
 import { LogoutComponent } from './logout/logout.component';
@@ -40,7 +41,8 @@ import { WorkDayComponent } from './work/work-day/work-day.component';
 import { WorkMonthComponent } from './work/work-month/work-month.component';
 import { WorkYearComponent } from './work/work-year/work-year.component';
 import { WorkComponent } from './work/work.component';
-import { ListManagerComponent } from './list-manager/list-manager.component';
+import { WorkTravelComponent } from './work/work-travel/work-travel.component';
+import { WorkTravelEditorComponent } from './work/work-travel/editor/editor.component';
 
 const routes: Routes = [
   { path: 'account', component: AccountComponent, canActivate: [SessionGuard] },
@@ -118,6 +120,8 @@ const routes: Routes = [
         ]
       },
       { path: 'today', component: WorkDayComponent, canActivate: [SessionGuard] },
+      { path: 'travel', component: WorkTravelComponent, canActivate: [SessionGuard], pathMatch: 'full' },
+      { path: 'travel/:id/:var', component: WorkTravelEditorComponent, canActivate: [SessionGuard] },
     ]
   },
   { path: '', redirectTo: '/home', pathMatch: 'full' },

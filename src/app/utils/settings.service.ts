@@ -31,7 +31,8 @@ import type {
   WorkLead,
   WorkOffCategory,
   WorkProject,
-  WorkTimeCategory
+  WorkTimeCategory,
+  WorkTravel
 } from 'src/app/if';
 import type { WarehouseReply } from 'src/app/warehouse/warehouse.component';
 import { environment } from 'src/environments/environment.dev';
@@ -147,6 +148,8 @@ export class SettingsService {
   private user: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
   user$ = this.user.asObservable();
 
+  private otherUsers: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([]);
+
   private warehouseRooms: BehaviorSubject<WarehouseRoom[] | null> = new BehaviorSubject<WarehouseRoom[] | null>(null);
   warehouseRooms$ = this.warehouseRooms.asObservable();
 
@@ -167,6 +170,9 @@ export class SettingsService {
 
   private workTimeCategories: BehaviorSubject<{ [key: number]: WorkTimeCategory }> = new BehaviorSubject<{ [key: number]: WorkTimeCategory }>({});
   workTimeCategories$ = this.workTimeCategories.asObservable();
+
+  private workTravel: BehaviorSubject<{ [key: number]: WorkTravel }> = new BehaviorSubject<{ [key: number]: WorkTravel }>({});
+  workTravel$ = this.workTravel.asObservable();
 
   constructor(
     private authService: AuthService,
@@ -318,14 +324,17 @@ export class SettingsService {
     if (olddata2) {
       olddata2 = <UserSettingsStorage>JSON.parse(olddata2);
       this.updateUser(olddata2.user, false);
+      if (olddata2.others !== undefined)
+        this.otherUsers.next(olddata2.others);
     }
-    this.authService.queryApi(this.storageService.getSyncUrl(user)).pipe(first()).subscribe((reply) => {
+    /* this.authService.queryApi(this.storageService.getSyncUrl(user)).pipe(first()).subscribe((reply) => {
       if (reply.success && reply.payload != null) {
         reply.payload['version'] = this.storageService.getExpectedStorageVersion(user);
         this.updateUser(<User>reply.payload['user']);
         this.storageService.save(user, reply.payload);
       }
-    });
+    }); */
+    this.syncUser();
   }
 
 
@@ -387,6 +396,8 @@ export class SettingsService {
       this.workOfftimeCategories.next(olddata.offCategories);
       this.workProjects.next(olddata.projects);
       this.workTimeCategories.next(olddata.timeCategories);
+      if (olddata.travel)
+        this.workTravel.next(olddata.travel);
     }
     this.syncWork();
   }
@@ -451,6 +462,10 @@ export class SettingsService {
     return id !== null && this.notepadItems.value[id] ? this.notepadItems.value[id] : null;
   }
 
+  getOtherUsers(): User[] | null {
+    return this.otherUsers.value;
+  }
+
   getStock(id: number | null): Stock | null {
     return id !== null && this.stocks.value[id] ? this.stocks.value[id] : null;
   }
@@ -495,6 +510,10 @@ export class SettingsService {
 
   getWorkTimeCategory(id: number | null): WorkTimeCategory | null {
     return id !== null && this.workTimeCategories.value[id] ? this.workTimeCategories.value[id] : null;
+  }
+
+  getWorkTravelItem(id: number | null): WorkTravel | null {
+    return id !== null && this.workTravel.value[id] ? this.workTravel.value[id] : null;
   }
 
   private postCommon(method: 'create' | 'update' | 'delete', item: any, urlitem: string, listing: any[], subject: BehaviorSubject<boolean | any | null> | Subject<any | boolean>,
@@ -671,6 +690,7 @@ export class SettingsService {
       offCategories: this.workOfftimeCategories.value,
       projects: this.workProjects.value,
       timeCategories: this.workTimeCategories.value,
+      travel: this.workTravel.value,
     });
   }
 
@@ -826,6 +846,21 @@ export class SettingsService {
     });
   }
 
+  public syncUser(): void {
+    this.storageService.clearTimeout(user);
+    this.authService.queryApi(this.storageService.getSyncUrl(user)).pipe(first()).subscribe((reply) => {
+      if (reply.success && reply.payload != undefined) {
+        let temp = <UserSettingsStorage>reply.payload;
+        temp.version = this.storageService.getExpectedStorageVersion(user);
+        this.updateUser(temp.user);
+        if (temp.others !== undefined)
+          this.otherUsers.next(temp.others);
+        this.storageService.save(user, temp);
+      }
+      this.storageService.setTimeout(user, setTimeout(() => { this.syncUser(); }, this.storageService.getSyncInterval(user)));
+    });
+  }
+
   private syncWork(): void {
     this.storageService.clearTimeout(work);
     this.authService.queryApi(this.storageService.getSyncUrl(work)).pipe(first()).subscribe((reply) => {
@@ -836,6 +871,7 @@ export class SettingsService {
         this.updateWorkOffCategories(response.offCategories);
         this.updateWorkProjects(response.projects);
         this.updateWorkTimeCategories(response.timeCategories);
+        this.updateWorkTravel(response.travel);
         this.storageService.setLastSync(work);
         this.saveWork();
       }
@@ -995,7 +1031,17 @@ export class SettingsService {
     this.workTimeCategories.next(temp);
   }
 
+  private updateWorkTravel(travelitem: WorkTravel[]) {
+    if (travelitem.length == 0)
+      return;
+    let temp = { ...this.workTravel.value };
+    travelitem.forEach((a) => this._updateCommon(temp, a));
+    this.workTravel.next(temp);
+  }
+
   private updateListManager(lists: List[]) {
+    if (lists.length == 0)
+      return;
     let temp = { ...this.listItems.value };
     lists.forEach((n) => {
       if (n.deleted == null)
@@ -1153,6 +1199,13 @@ export class SettingsService {
     return subject;
   }
 
+  updateTravel(travelitem: WorkTravel): BehaviorSubject<WorkTravel | null> {
+    let subject = new BehaviorSubject<WorkTravel | null>(null);
+    this.postCommon(travelitem.id == 0 ? 'create' : 'update', travelitem,
+      'travel', Object.values(this.workTravel.value), subject, (c: WorkTravel[]) => this.updateWorkTravel(c));
+    return subject;
+  }
+
   updateUser(user: User, push: boolean = false) {
     this.user.next(user);
     if (user.settings)
@@ -1272,6 +1325,7 @@ export interface TagsStorage {
 }
 
 export interface UserSettingsStorage {
+  others?: User[];
   user: User;
   version?: number;
 }
@@ -1282,6 +1336,7 @@ export interface WorkResponse {
   offCategories: WorkOffCategory[];
   projects: WorkProject[];
   timeCategories: WorkTimeCategory[];
+  travel: WorkTravel[];
 }
 
 export interface WorkStorage {
@@ -1290,6 +1345,7 @@ export interface WorkStorage {
   offCategories: WorkOffCategory[];
   projects: WorkProject[];
   timeCategories: WorkTimeCategory[];
+  travel?: WorkTravel[];
   ts: number;
   version: number;
 }

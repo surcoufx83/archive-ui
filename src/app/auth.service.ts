@@ -23,7 +23,8 @@ export class AuthService {
     configService: ConfigService,
     private http: HttpClient,
     private toastService: ToastsService,
-    private i18nService: I18nService) {
+    private i18nService: I18nService,
+  ) {
     if (!Object.keys(environment.api.auth.oauth2Providers).includes(location.hostname)) {
       throw new Error(`The app configuration does not include the current hostname. Therefore this website will not work.`);
     }

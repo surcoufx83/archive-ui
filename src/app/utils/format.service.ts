@@ -4,7 +4,7 @@ import cronstrue from 'cronstrue';
 import 'cronstrue/locales/de';
 import 'cronstrue/locales/en';
 import 'cronstrue/locales/fr';
-import { format, formatDistanceToNow } from 'date-fns';
+import { format, formatDistance, formatDistanceToNow } from 'date-fns';
 import { Currency } from 'src/app/if';
 import { I18nService } from '../i18n.service';
 
@@ -13,22 +13,39 @@ import { I18nService } from '../i18n.service';
 })
 export class FormatService {
 
-
   private static fsunits = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
 
   constructor(private i18nService: I18nService) { }
 
+  /**
+  * Formats a file size into a human-readable string. In case of input less than or equal to `0`, `0 B` is returned.
+  * @param size The size in bytes.
+  * @param fd Fraction digits.
+  * @param md Maximum digits.
+  * @returns The formatted file size string.
+  */
   filesize(size: number, fd: number = 0, md: number | undefined = undefined): string {
     if (size <= 0)
       return '0 B';
     let f = Math.floor(Math.log(size) / Math.log(1024));
-    return `${this.fnumber(size / Math.pow(1024, f), fd, md)} ${FormatService.fsunits[f]}`;
+    return `${this.fnumber(size / (1024 ** f), fd, md)} ${FormatService.fsunits[f]}`;
   }
 
+  /**
+   * Formats a number as a currency string.
+   * @param n The number to format.
+   * @param c The currency object.
+   * @returns The formatted currency string.
+   */
   fcur(n: number, c?: Currency): string {
     return new Intl.NumberFormat(this.i18nService.Locale, { style: 'currency', currency: c?.shortname ?? 'EUR' }).format(n);
   }
 
+  /**
+   * Parses and formats a cron expression into a human-readable string.
+   * @param expr The cron expression.
+   * @returns The formatted cron expression string.
+   */
   fcron(expr: string | null): string {
     if (expr === null || expr === '')
       return '';
@@ -36,10 +53,62 @@ export class FormatService {
       cronParser.parseExpression(expr);
       return cronstrue.toString(expr, { locale: this.i18nService.Locale });
     }
-    catch (e) { }
+    catch (e) {
+      // No additional error handling or logging required.
+    }
     return '';
   }
 
+  /**
+   * Formats a date into a specified string format.
+   * @param date The date to format.
+   * @param form The format string.
+   * @returns The formatted date string.
+   */
+  fdate(date: Date | string | null, form: string): string {
+    if (date == null)
+      return this.i18nService.i18n('common.novalue');
+    if (typeof (date) === 'string')
+      date = new Date(date);
+    return format(date, form, { locale: this.i18nService.DateLocale });
+  }
+
+  /**
+   * Formats the distance to now from a given date.
+   * @param date The date to calculate distance from.
+   * @param suffix Whether to add a suffix.
+   * @returns The formatted distance string.
+   */
+  fdist(date: Date | string | null, suffix: boolean | undefined = undefined): string {
+    if (date == null)
+      return this.i18nService.i18n('common.novalue');
+    if (typeof (date) === 'string')
+      date = new Date(date);
+    return formatDistanceToNow(date, { locale: this.i18nService.DateLocale, addSuffix: suffix });
+  }
+
+  /**
+   * Formats the distance between two dates into a human-readable string.
+   * @param date The target date.
+   * @param baseDate The base date to compare with.
+   * @param suffix Whether to add a suffix to the formatted string.
+   * @returns The formatted distance string or a placeholder if dates are null.
+   */
+  fdist2(date: Date | string | null, baseDate: Date | string | null, suffix: boolean | undefined = undefined): string {
+    if (date == null || baseDate == null)
+      return this.i18nService.i18n('common.novalue');
+    if (typeof (date) === 'string')
+      date = new Date(date);
+    if (typeof (baseDate) === 'string')
+      baseDate = new Date(baseDate);
+    return formatDistance(date, baseDate, { locale: this.i18nService.DateLocale, addSuffix: suffix });
+  }
+
+  /**
+   * Formats a duration into a human-readable string.
+   * @param duration The duration object.
+   * @returns The formatted duration string.
+   */
   fdur(duration: Duration | null): string {
     if (duration == null)
       return '';
@@ -87,32 +156,47 @@ export class FormatService {
     return items.join(' ');
   }
 
-  fdate(date: Date | string | null, form: string): string {
-    if (date == null)
-      return this.i18nService.i18n('common.novalue');
-    if (typeof (date) === 'string')
-      date = new Date(date);
-    return format(date, form, { locale: this.i18nService.DateLocale });
-  }
-
-  fdist(date: Date | string | null, suffix: boolean | undefined = undefined): string {
-    if (date == null)
-      return this.i18nService.i18n('common.novalue');
-    if (typeof (date) === 'string')
-      date = new Date(date);
-    return formatDistanceToNow(date, { locale: this.i18nService.DateLocale, addSuffix: suffix });
-  }
-
+  /**
+   * Formats a number with specified fraction digits.
+   * @param n The number to format.
+   * @param fd Minimum fraction digits.
+   * @param md Maximum fraction digits.
+   * @returns The formatted number string.
+   */
   fnumber(n: number, fd: number = 0, md: number | undefined = undefined): string {
     return (+n).toLocaleString(this.i18nService.Locale, { minimumFractionDigits: fd, maximumFractionDigits: md });
   }
 
+  /**
+   * Formats a number as a percentage.
+   * @param n The number to format.
+   * @param fd Minimum fraction digits.
+   * @param md Maximum fraction digits.
+   * @returns The formatted percentage string.
+   */
   fpercent(n: number, fd: number = 0, md: number | undefined = undefined): string {
     return (+n).toLocaleString(this.i18nService.Locale, { minimumFractionDigits: fd, maximumFractionDigits: md }) + '%';
   }
 
+  /**
+   * Formats a string for use in a URL.
+   * @param inputStr The string to format.
+   * @returns The formatted URL string.
+   */
   furl(inputStr: string): string {
-    return inputStr.replace(/[^a-zA-Z0-9\-]/ig, '-').replace(/\-+/ig, '-').replace(/^\-|\-$/ig, '');
+    return encodeURIComponent(inputStr.replace(/[^a-zA-Z0-9\-]/ig, '-').replace(/\-+/ig, '-').replace(/^\-|\-$/ig, ''));
+  }
+
+  /**
+   * Converts a given string to title case.
+   * Each word's first letter is capitalized and the remaining letters are lowercased.
+   * @param inputStr The string to convert to title case.
+   * @returns The title-cased string.
+   */
+  titleCase(inputStr: string): string {
+    return inputStr.split(' ').map(word => {
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    }).join(' ');
   }
 
 }

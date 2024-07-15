@@ -214,7 +214,7 @@ const DefaultSearchItems: SearchStorage = {
     { groupName: 'notepad', searchPath: '/notepad/search', active: true, defaultActive: true },
     { groupName: 'cases', searchPath: '/cases/search', active: true, defaultActive: true },
     { groupName: 'files', searchPath: '/files/search', active: true, defaultActive: true },
-    { groupName: 'pages', searchPath: '/files/searchContent', active: false, defaultActive: false },
+    { groupName: 'pages', searchPath: '/files/searchContent', active: true, defaultActive: true },
     { groupName: 'directories', searchPath: '/directories/search', active: true, defaultActive: true },
     { groupName: 'accounts', searchPath: '/accounts/search', active: true, defaultActive: true },
   ]

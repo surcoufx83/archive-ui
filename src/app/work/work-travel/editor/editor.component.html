@@ -1,0 +1,73 @@
+@if (travel == null) {
+
+}
+@else {
+<div class="container-fluid pt-4 pt-md-2 mb-2">
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0 text-truncate">
+                <app-icon [iconClass]="'fa-solid fa-train-subway'" [marginEnd]="2"></app-icon>
+                {{ travelTitle() }}
+            </h5>
+            <div class="d-flex align-items-center">
+                <app-icon [animateOpacityInAndOut]="saving" [iconClass]="icons['spinner']" [spin]="true"></app-icon>
+                <button class="btn btn-sm ms-2"
+                    [ngClass]="{ 'btn-outline-primary': !editmode, 'btn-primary': editmode }"
+                    (click)="editmode = !editmode">
+                    <app-icon [iconClass]="icons['edit']"></app-icon>
+                    <span class="d-none d-lg-inline ms-2">{{ i18nstr.common.edit }}</span>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row mb-2">
+                <div class="col col-12 col-md-6 col-lg-4">
+                    <span>{{ i18nstr.travel.editor.person }}:</span>
+                    <strong class="ms-2">{{ travel.user.loginname | titlecase }}</strong>
+                </div>
+                <div class="col col-12 col-md-6 col-lg-4">
+                    <span>{{ i18nstr.travel.editor.reason }}:</span>
+                    <strong class="ms-2">{{ travel.reason }}</strong>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-12 col-md-6 col-lg-4">
+                    <span>{{ i18nstr.travel.editor.location }}:</span>
+                    <strong class="ms-2">{{ travel.location }}</strong>
+                </div>
+                <div class="col col-12 col-md-6 col-lg-4">
+                    <span>{{ i18nstr.travel.editor.city }}:</span>
+                    <strong class="ms-2">{{ travel.city }}</strong>
+                </div>
+                <div class="col col-12 col-md-6 col-lg-4">
+                    <span>{{ i18nstr.travel.editor.country }}:</span>
+                    <strong class="ms-2">{{ i18n('country.' + travel.country.name) }}</strong>
+                </div>
+            </div>
+            <hr />
+            <div class="row mb-2">
+                <div class="col col-12 col-md-4 col-lg-2">
+                    <span>{{ i18nstr.travel.editor.travelStart }}:</span>
+                    <strong class="ms-2">{{ fdate(travel.timeStart, 'Pp') }}</strong>
+                </div>
+                <div class="col col-12 col-md-4 col-lg-2">
+                    <span>{{ i18nstr.travel.editor.travelEnd }}:</span>
+                    <strong class="ms-2">{{ fdate(travel.timeEnd, 'Pp') }}</strong>
+                </div>
+                <div class="col col-12 col-md-4 col-lg-2">
+                    <span>{{ i18nstr.travel.editor.travelDuration }}:</span>
+                    <strong class="ms-2">{{ fdist2(travel.timeEnd, travel.timeStart) }}</strong>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+        </div>
+        <div class="card-footer">
+            <button class="btn btn-sm btn-outline-danger">
+                <app-icon [iconClass]="icons['delete']"></app-icon>
+                <span class="ms-2">{{ i18nstr.travel.deleteTravelBtn }}</span>
+            </button>
+        </div>
+    </div>
+</div>
+}

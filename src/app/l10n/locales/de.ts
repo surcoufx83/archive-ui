@@ -778,7 +778,8 @@ export const L10nArchiveDeLocale: L10nArchiveLocale = {
             month: "Monatsansicht",
             year: "Jahre",
             settings: "Einstellungen",
-            today: "Tagesbuchung"
+            today: "Tagesbuchung",
+            travel: "Geschäftsreisen"
         }
     },
     notepad: {
@@ -945,6 +946,28 @@ export const L10nArchiveDeLocale: L10nArchiveLocale = {
         value: "Wert",
         wkn: "WKN"
     },
+    travel: {
+        colActions: "Aktionen",
+        colBegin: "Am / Vom",
+        colEnd: "Bis",
+        colLocation: "Ort",
+        colPerson: "Person",
+        colReason: "Grund",
+        createReportBtn: "Jahresbericht",
+        deleteTravelBtn: "Reise löschen",
+        editor: {
+            city: "Ort",
+            country: "Land",
+            location: "Ziel",
+            person: "Person",
+            reason: "Anlass",
+            travelStart: "Von",
+            travelEnd: "Bis",
+            travelDuration: "Dauer",
+        },
+        pagetitle: "Geschäftsreisen",
+        pagetitleWithObj: "{0} Reise nach {1}",
+    },
     warehouse: {
         pagetitle: "Lagerverwaltung",
         rooms: {
@@ -974,6 +997,7 @@ export const L10nArchiveDeLocale: L10nArchiveLocale = {
         timecategories: {
             administration: "Administratives",
             bugfixing: "Bugfixing",
+            healthwork: "Klinik",
             meeting: "Meeting intern",
             "non-canon": "Abwesend",
             implementation: "Implementierung",

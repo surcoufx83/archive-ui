@@ -67,6 +67,7 @@ export const defaultEnvironment: Environment = {
     'moving-boxes': 'fa-solid fa-people-carry-box',
     notepad: 'fa-regular fa-lightbulb',
     organic: 'fa-solid fa-seedling',
+    report: 'fa-solid fa-file-arrow-down',
     pin: 'fa-solid fa-map-pin',
     preview: 'fa-solid fa-eye',
     receipt: 'fa-solid fa-receipt',
@@ -90,6 +91,7 @@ export const defaultEnvironment: Environment = {
     today: 'fa-solid fa-calendar-day',
     'toggle-off': 'fa-solid fa-toggle-off',
     'toggle-on': 'fa-solid fa-toggle-on',
+    travel: 'fa-solid fa-car-side',
     warehouse: 'fa-solid fa-boxes-stacked',
     wine: 'fa-solid fa-wine-bottle',
     work: 'fa-solid fa-laptop-house',
@@ -173,14 +175,16 @@ export const defaultEnvironment: Environment = {
         matchLink: '/work/month'
       },
       {
-        title: 'navbar.workitems.leads',
-        icon: 'leads',
-        link: '/work/leads'
+        title: "navbar.workitems.year",
+        icon: "year",
+        link: "/work/year",
+        matchLink: "/work/year"
       },
       {
-        title: 'navbar.workitems.settings',
-        icon: 'settings',
-        link: '/work/settings'
+        title: "navbar.workitems.travel",
+        icon: "travel",
+        link: "/work/travel",
+        matchLink: "/work/travel"
       }
     ]
   },

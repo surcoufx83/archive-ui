@@ -93,6 +93,8 @@ import { WorkOffCategoriesComponent } from './work/settings/off-categories/off-c
 import { WorkTimeCategoriesComponent } from './work/settings/time-categories/time-categories.component';
 import { WorkDayComponent } from './work/work-day/work-day.component';
 import { WorkMonthComponent } from './work/work-month/work-month.component';
+import { WorkTravelEditorComponent } from './work/work-travel/editor/editor.component';
+import { WorkTravelComponent } from './work/work-travel/work-travel.component';
 import { WorkYearComponent } from './work/work-year/work-year.component';
 import { WorkComponent } from './work/work.component';
 
@@ -175,6 +177,8 @@ registerLocaleData(localeFr);
         WorkOffCategoriesComponent,
         WorkProjectsComponent,
         WorkTimeCategoriesComponent,
+        WorkTravelComponent,
+        WorkTravelEditorComponent,
         WorkYearComponent,
     ],
     bootstrap: [
