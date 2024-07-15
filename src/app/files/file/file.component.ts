@@ -368,7 +368,7 @@ export class FileComponent implements OnDestroy, OnInit {
       clearTimeout(this.debounce);
     this.debounce = setTimeout(() => {
       this.updating = true;
-      let url = `${environment.api.baseUrl}/file/${this.file!.id}/guess`;
+      let url = `${environment.api.baseUrl}/file/${this.file!.id}`;
       this.authService.updateApi(url, this.changes).pipe(first()).subscribe((reply) => {
         this.updating = false;
       });
