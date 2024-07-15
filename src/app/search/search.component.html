@@ -144,7 +144,7 @@
         @for (item of searchresults.files; track $index) {
         <a [ngClass]="['fix-border list-group-item', 'py-2', 'pe-2', 'border-start-0 border-end-0']"
           [routerLink]="['/file', item.file.id]">
-          <file-list-item [file]="item.file" [relevance]="item.relevance" [routeSelf]="['/home']"></file-list-item>
+          <file-list-item [file]="item.file" [relevance]="item.relevance"></file-list-item>
         </a>
         }
       </ul>
@@ -158,7 +158,7 @@
         @for (item of searchresults.pages; track $index) {
         <a [ngClass]="['fix-border list-group-item', 'py-2', 'pe-2', 'border-start-0 border-end-0']"
           [routerLink]="['/file', item.file.id]">
-          <file-list-item [file]="item.file" [relevance]="item.relevance" [routeSelf]="['/home']"></file-list-item>
+          <file-list-item [file]="item.file" [relevance]="item.relevance"></file-list-item>
         </a>
         }
       </ul>

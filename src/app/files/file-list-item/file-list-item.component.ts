@@ -18,7 +18,6 @@ export class FileListItemComponent {
   @Input({ required: true }) file!: File;
   @Input() gotoButton: boolean = false;
   @Input() relevance: number | null = null;
-  @Input({ required: true }) routeSelf!: string[];
   @Input() showButtons: boolean = true;
 
   icons = environment.icons;
