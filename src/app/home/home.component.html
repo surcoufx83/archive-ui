@@ -17,7 +17,7 @@
           <ng-container *ngFor="let file of inboxfiles;">
             <a [ngClass]="['fix-border list-group-item', 'py-2', 'pe-2', 'border-start-0 border-end-0']"
               [routerLink]="['/file', file.id]">
-              <file-list-item [file]="file" [showButtons]="false">
+              <file-list-item [file]="file" [showButtons]="false" [routeSelf]="['/home']">
               </file-list-item>
             </a>
           </ng-container>
@@ -52,7 +52,7 @@
           <ng-container *ngFor="let file of recentfiles;">
             <a [ngClass]="['fix-border list-group-item', 'py-2', 'pe-2', 'border-start-0 border-end-0']"
               [routerLink]="['/file', file.id]">
-              <file-list-item [file]="file" [showButtons]="true">
+              <file-list-item [file]="file" [showButtons]="true" [routeSelf]="['/home']">
               </file-list-item>
             </a>
           </ng-container>

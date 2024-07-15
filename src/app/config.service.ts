@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Injectable({
@@ -9,7 +10,7 @@ export class ConfigService {
   private cache: { [key: string]: any } = {};
 
   constructor(
-    private deviceService?: DeviceDetectorService
+    private deviceService?: DeviceDetectorService,
   ) { }
 
   getCacheItem(key: string): any | null {
@@ -19,8 +20,6 @@ export class ConfigService {
   isMobile(): boolean {
     return this.deviceService?.isMobile() || navigator.userAgent.toLowerCase().indexOf('mobile') > -1;
   }
-
-  init(): void { }
 
   setCacheItem(key: string, obj: any): void {
     this.cache[key] = obj;

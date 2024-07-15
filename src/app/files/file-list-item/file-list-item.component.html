@@ -1,4 +1,4 @@
-<div class="d-flex pointer" (click)="click(); $event.stopPropagation();">
+<div class="d-flex pointer">
     <div class="d-flex flex-column flex-grow-1">
         <div class="d-flex">
             <div class="pointer d-none d-lg-block" *ngIf="relevance">
@@ -10,16 +10,17 @@
                 <div>{{ file.name }}</div>
             </div>
             <div *ngIf="showButtons && version && version.ext?.displayable" class="ms-2 ms-lg-1">
-                <button type="button" class="form-control btn-sm btn-outline-secondary text-nowrap"
-                    (click)="preview(); $event.stopPropagation();"
-                    [title]="i18n('search.result.group.gotoPreviewTitle')">
-                    <app-icon [iconClass]="icons['preview']" addCssClasses="mx-1"></app-icon>
-                </button>
+                <a [routerLink]="['/file', file.id, 'preview']">
+                    <button type="button" class="form-control btn-sm btn-outline-secondary text-nowrap"
+                        [title]="i18n('search.result.group.gotoPreviewTitle')">
+                        <app-icon [iconClass]="icons['preview']" addCssClasses="mx-1"></app-icon>
+                    </button>
+                </a>
             </div>
             <div *ngIf="showButtons && version && version.ext?.downloadable" class="ms-2 ms-lg-1">
                 <button type="button" class="form-control btn-sm btn-outline-secondary text-nowrap"
-                    (click)="download(); $event.stopPropagation();"
-                    [title]="i18n('search.result.group.downloadFileTitle')">
+                    [title]="i18n('search.result.group.downloadFileTitle')"
+                    (click)="download(); $event.preventDefault(); $event.stopImmediatePropagation(); $event.stopPropagation()">
                     <app-icon [iconClass]="icons['download']" addCssClasses="mx-1"></app-icon>
                 </button>
             </div>
