@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Injectable({

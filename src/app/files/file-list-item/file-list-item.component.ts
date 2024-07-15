@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { saveAs } from 'file-saver-es';
 import { first } from 'rxjs';
 import { AuthService } from 'src/app/auth.service';
 import { I18nService } from 'src/app/i18n.service';
@@ -6,8 +7,6 @@ import { File, Version } from 'src/app/if';
 import { FileService } from 'src/app/utils/file.service';
 import { FormatService } from 'src/app/utils/format.service';
 import { environment } from 'src/environments/environment.dev';
-import { saveAs } from 'file-saver-es';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'file-list-item',
