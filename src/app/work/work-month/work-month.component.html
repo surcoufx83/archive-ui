@@ -2,10 +2,45 @@
 
 <ng-container *ngIf="usersettingsObj != undefined && selectedDay != undefined">
   <div class="container pt-4 pt-md-2 mb-2">
-    <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between">
-      <h2 class="d-block d-md-none">{{ i18n('workmonth.pagetitleShort', [f(selectedMonth, 'MMM yyyy')]) }}</h2>
-      <h2 class="d-none d-md-block">{{ i18n('workmonth.pagetitle', [f(selectedMonth, 'MMMM yyyy')]) }}</h2>
-      <div>
+    <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between align-items-center">
+      <h2 class="text-truncate mb-0 pe-2">
+        <span class="d-none d-lg-inline">{{ i18n('workmonth.pagetitle', [f(selectedMonth, 'MMMM yyyy')]) }}</span>
+        <span class="d-inline d-lg-none">{{ i18n('workmonth.pagetitleShort', [f(selectedMonth, 'MMM yyyy')]) }}</span>
+      </h2>
+      <div class="flex-shrink-0">
+        <ui-busy-indicator class="me-2" [ngClass]="{ 'd-none': !monthLoading }"></ui-busy-indicator>
+        @if (LastMonth) {
+        <a [routerLink]="['/work', 'month', f(LastMonth, 'yyyy'), f(LastMonth, 'M')]">
+          <button type="button" class="btn btn-sm btn-outline-primary px-3 px-lg-2">
+            <app-icon [iconClass]="icons['go-left']"></app-icon>
+            <span class="d-none d-lg-inline ms-1">
+              {{ f(LastMonth, 'MMM') }}
+            </span>
+          </button>
+        </a>
+        }
+        <a [routerLink]="['/work', 'month', f(today, 'yyyy'), f(today, 'M')]" class="ms-2">
+          <button type="button" class="btn btn-sm"
+            [ngClass]="{ 'btn-outline-secondary': IsToday, 'btn-outline-primary': !IsToday }">
+            <app-icon [iconClass]="icons['today']"></app-icon>
+            <span class="d-none d-lg-inline ms-1">
+              {{ i18n('common.today') }}
+            </span>
+          </button>
+        </a>
+        @if (NextMonth) {
+        <a [routerLink]="['/work', 'month', f(NextMonth, 'yyyy'), f(NextMonth, 'M')]" class="ms-2">
+          <button type="button" class="btn btn-sm btn-outline-primary px-3 px-lg-2">
+            <app-icon [iconClass]="icons['go-right']"></app-icon>
+            <span class="d-none d-lg-inline ms-1">
+              {{ f(NextMonth, 'MMM') }}
+            </span>
+          </button>
+        </a>
+        }
+      </div>
+
+      <!-- <div>
         <nav class="h-100" style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
           <ol class="breadcrumb d-flex align-items-center h-100 mb-0">
             <li class="breadcrumb-item">
@@ -32,7 +67,7 @@
             </a>
           </ol>
         </nav>
-      </div>
+      </div> -->
     </div>
   </div>
 

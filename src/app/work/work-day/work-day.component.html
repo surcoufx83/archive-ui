@@ -2,42 +2,42 @@
 
 <ng-container *ngIf="usersettingsObj && day && booking">
   <div class="container pt-4 pt-md-2 mb-2">
-    <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between">
-      <h2>{{ i18n('workday.pagetitle', [ f(today, 'PP') ]) }}</h2>
-      <div>
-        <nav class="h-100" style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
-          <ol class="breadcrumb d-flex align-items-center h-100 mb-0">
-            <li class="breadcrumb-item">
-              <ui-busy-indicator *ngIf="busy"></ui-busy-indicator>
-            </li>
-            <li class="breadcrumb-item">
-              <a class="breadcrumb-item" *ngIf="yesterday != undefined"
-                [routerLink]="['/work', 'day', f(yesterday, 'yyyy-MM-dd')]">
-                <button type="button" class="btn btn-sm btn-outline-primary">
-                  <app-icon [iconClass]="icons['go-left']" [marginEnd]="1"></app-icon>
-                  {{ f(yesterday, 'P') }}
-                </button>
-              </a>
-            </li>
-            <li class="breadcrumb-item" *ngIf="!isToday">
-              <a class="breadcrumb-item" [routerLink]="['/work', 'day', actualDate]">
-                <button type="button" class="btn btn-sm btn-outline-primary">
-                  <app-icon [iconClass]="icons['rotate-left']" [marginEnd]="1"></app-icon>
-                  {{ i18n('common.today') }}
-                </button>
-              </a>
-            </li>
-            <li class="breadcrumb-item">
-              <a class="breadcrumb-item" *ngIf="tomorrow != undefined"
-                [routerLink]="['/work', 'day', f(tomorrow, 'yyyy-MM-dd')]">
-                <button type="button" class="btn btn-sm btn-outline-primary">
-                  <app-icon [iconClass]="icons['go-right']" [marginEnd]="1"></app-icon>
-                  {{ f(tomorrow, 'P') }}
-                </button>
-              </a>
-            </li>
-          </ol>
-        </nav>
+    <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between align-items-center">
+      <h2 class="text-truncate mb-0 pe-2">
+        <span class="d-none d-lg-inline">{{ i18n('workday.pagetitle', [ f(today, 'PP') ]) }}</span>
+        <span class="d-inline d-lg-none">{{ f(today, 'PP') }}</span>
+      </h2>
+      <div class="flex-shrink-0">
+        <ui-busy-indicator class="me-2" [ngClass]="{ 'd-none': !busy }"></ui-busy-indicator>
+        @if (yesterday) {
+        <a [routerLink]="['/work', 'day', f(yesterday, 'yyyy-MM-dd')]">
+          <button type="button" class="btn btn-sm btn-outline-primary px-3 px-lg-2">
+            <app-icon [iconClass]="icons['go-left']"></app-icon>
+            <span class="d-none d-lg-inline ms-1">
+              {{ f(yesterday, 'P') }}
+            </span>
+          </button>
+        </a>
+        }
+        <a [routerLink]="['/work', 'day', actualDate]" class="ms-2">
+          <button type="button" class="btn btn-sm"
+            [ngClass]="{ 'btn-outline-secondary': isToday, 'btn-outline-primary': !isToday }">
+            <app-icon [iconClass]="icons['today']"></app-icon>
+            <span class="d-none d-lg-inline ms-1">
+              {{ i18n('common.today') }}
+            </span>
+          </button>
+        </a>
+        @if (tomorrow) {
+        <a [routerLink]="['/work', 'day', f(tomorrow, 'yyyy-MM-dd')]" class="ms-2">
+          <button type="button" class="btn btn-sm btn-outline-primary px-3 px-lg-2">
+            <app-icon [iconClass]="icons['go-right']"></app-icon>
+            <span class="d-none d-lg-inline ms-1">
+              {{ f(tomorrow, 'P') }}
+            </span>
+          </button>
+        </a>
+        }
       </div>
     </div>
   </div>
