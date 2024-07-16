@@ -1042,7 +1042,11 @@ export type L10nArchiveLocale = {
                 nameTitle: string,
                 namePlaceholder: string
             },
-            live: {}
+            live: {},
+            recentBookings: {
+                title: string,
+                filter: string,
+            }
         }
     },
     workmonth: {

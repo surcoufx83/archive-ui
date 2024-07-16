@@ -1046,7 +1046,11 @@ export const L10nArchiveFrLocale: L10nArchiveLocale = {
                 nameTitle: "Nom du client",
                 namePlaceholder: "Veuillez préciser..."
             },
-            live: {}
+            live: {},
+            recentBookings: {
+                title: "Utilisé fréquemment (60 jours)",
+                filter: "🔍 Filtrer...",
+            }
         }
     },
     workmonth: {

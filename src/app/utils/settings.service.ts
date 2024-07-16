@@ -17,6 +17,7 @@ import type {
   Party,
   PartyContact,
   PartyRole,
+  RecentBooking,
   SepaMandate,
   ServerNotification,
   Stock,
@@ -167,6 +168,9 @@ export class SettingsService {
 
   private workProjects: BehaviorSubject<{ [key: number]: WorkProject }> = new BehaviorSubject<{ [key: number]: WorkProject }>({});
   workProjects$ = this.workProjects.asObservable();
+
+  private workRecentTimeBookings: BehaviorSubject<RecentBooking[]> = new BehaviorSubject<RecentBooking[]>([]);
+  workRecentTimeBookings$ = this.workRecentTimeBookings.asObservable();
 
   private workTimeCategories: BehaviorSubject<{ [key: number]: WorkTimeCategory }> = new BehaviorSubject<{ [key: number]: WorkTimeCategory }>({});
   workTimeCategories$ = this.workTimeCategories.asObservable();
@@ -327,13 +331,6 @@ export class SettingsService {
       if (olddata2.others !== undefined)
         this.otherUsers.next(olddata2.others);
     }
-    /* this.authService.queryApi(this.storageService.getSyncUrl(user)).pipe(first()).subscribe((reply) => {
-      if (reply.success && reply.payload != null) {
-        reply.payload['version'] = this.storageService.getExpectedStorageVersion(user);
-        this.updateUser(<User>reply.payload['user']);
-        this.storageService.save(user, reply.payload);
-      }
-    }); */
     this.syncUser();
   }
 
@@ -398,6 +395,8 @@ export class SettingsService {
       this.workTimeCategories.next(olddata.timeCategories);
       if (olddata.travel)
         this.workTravel.next(olddata.travel);
+      if (olddata.bookings)
+        this.workRecentTimeBookings.next(olddata.bookings);
     }
     this.syncWork();
   }
@@ -685,6 +684,7 @@ export class SettingsService {
 
   private saveWork(): void {
     this.storageService.save(work, {
+      bookings: this.workRecentTimeBookings.value,
       customers: this.workCustomers.value,
       leads: this.workLeads.value,
       offCategories: this.workOfftimeCategories.value,
@@ -866,6 +866,7 @@ export class SettingsService {
     this.authService.queryApi(this.storageService.getSyncUrl(work)).pipe(first()).subscribe((reply) => {
       if (reply.success && reply.payload != undefined) {
         let response = <WorkResponse>reply.payload;
+        this.updateWorkBookings(response.bookings);
         this.updateWorkCustomers(response.customers);
         this.updateWorkLeads(response.leads);
         this.updateWorkOffCategories(response.offCategories);
@@ -999,6 +1000,10 @@ export class SettingsService {
 
   private updateCurrencies(currencies: Currency[]) {
     this.currencies.next(currencies);
+  }
+
+  private updateWorkBookings(bookings: RecentBooking[]): void {
+    this.workRecentTimeBookings.next(bookings);
   }
 
   private updateWorkCustomers(customers: WorkCustomer[]) {
@@ -1331,6 +1336,7 @@ export interface UserSettingsStorage {
 }
 
 export interface WorkResponse {
+  bookings: RecentBooking[];
   customers: WorkCustomer[];
   leads: WorkLead[];
   offCategories: WorkOffCategory[];
@@ -1340,6 +1346,7 @@ export interface WorkResponse {
 }
 
 export interface WorkStorage {
+  bookings?: RecentBooking[];
   customers: WorkCustomer[];
   leads: WorkLead[];
   offCategories: WorkOffCategory[];

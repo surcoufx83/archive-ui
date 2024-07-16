@@ -962,6 +962,7 @@ export type WorkTimeCategory = {
   id: number,
   name: string,
   rowcolor: string,
+  travelIndicator: boolean,
   updated: string,
   userid: number,
 }

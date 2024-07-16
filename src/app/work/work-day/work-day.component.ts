@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { addDays, differenceInMinutes, format, parseISO, set, setHours, subDays } from 'date-fns';
 import { AuthService } from '../../auth.service';
@@ -10,6 +10,7 @@ import { Subscription, first } from 'rxjs';
 import { RecentBooking, UserSettings, WorkCustomer, WorkDay, WorkDayBooking, WorkProject, WorkTimeCategory } from 'src/app/if';
 import { environment } from 'src/environments/environment.dev';
 import { I18nService } from '../../i18n.service';
+import { FormatService } from 'src/app/utils/format.service';
 
 @Component({
   selector: 'app-work-day',
@@ -21,7 +22,7 @@ export class WorkDayComponent implements OnDestroy, OnInit {
   @ViewChild('createCustomerModalCloser') createCustomerModalCloserElement?: ElementRef;
   @ViewChild('focus') focusElement?: ElementRef;
 
-  actualDate: string = this.f(new Date(), 'yyyy-MM-dd');
+  actualDate: string = this.formatService.fdate(new Date(), 'yyyy-MM-dd');
   booking?: WorkDayBooking;
   bookingProps: { [key: string]: number } = {};
   busy: boolean = false;
@@ -30,13 +31,14 @@ export class WorkDayComponent implements OnDestroy, OnInit {
     'name': new UntypedFormControl('', { validators: Validators.required }),
     'busy': new UntypedFormControl(false)
   });
+  copyBooking = signal<[RecentBooking | WorkDayBooking | null, number]>([null, 0]);
   customers: WorkCustomer[] = [];
   day?: WorkDay;
   icons = environment.icons;
   isToday: boolean = true;
   livetrackingActive: boolean = false;
   projects: WorkProject[] = [];
-  recentEntries: RecentBooking[] = [];
+  recentEntries = signal<RecentBooking[]>([]);
   subscriptions: Subscription[] = [];
   timepattern: RegExp = /^(?<hr>\d{1,2}):?(?<min>\d{2})$/;
   today: Date = new Date();
@@ -47,6 +49,7 @@ export class WorkDayComponent implements OnDestroy, OnInit {
   constructor(
     private authService: AuthService,
     private i18nService: I18nService,
+    private formatService: FormatService,
     private route: ActivatedRoute,
     private router: Router,
     private userSettings: SettingsService,
@@ -59,12 +62,13 @@ export class WorkDayComponent implements OnDestroy, OnInit {
     return Object.values(this.day.bookings);
   }
 
-  category(id: number): WorkTimeCategory | undefined {
+  /* category(id: number): WorkTimeCategory | undefined {
     return this.userSettings.getWorkTimeCategory(id) ?? undefined;
-  }
+  } */
 
   copyFromRecent(item: RecentBooking | WorkDayBooking): void {
-    this.bookingProps = {};
+    this.copyBooking.set([item, Date.now()])
+    /* this.bookingProps = {};
     for (let i = 0; i < this.categories.length; i++) {
       if (this.categories[i].id == item.timecategoryid) {
         this.bookingProps['timecategory'] = i;
@@ -88,12 +92,12 @@ export class WorkDayComponent implements OnDestroy, OnInit {
       this.booking.description = item.description;
     }
     this.scroller.scrollToAnchor('scroll-anchor');
-    this.focusElement?.nativeElement.focus();
+    this.focusElement?.nativeElement.focus(); */
   }
 
-  customer(id: number): WorkCustomer | undefined {
+  /* customer(id: number): WorkCustomer | undefined {
     return this.userSettings.getWorkCustomer(id) ?? undefined;
-  }
+  } */
 
   deleteBooking(item: WorkDayBooking): void {
     let url = `${environment.api.baseUrl}/work/bookings/${item.id}/delete`;
@@ -105,7 +109,7 @@ export class WorkDayComponent implements OnDestroy, OnInit {
     });
   }
 
-  f(date: Date | string, form: string): string {
+  /* f(date: Date | string, form: string): string {
     if (typeof (date) === 'string')
       date = new Date(date);
     return format(date, form, { locale: this.i18nService.DateLocale });
@@ -113,29 +117,23 @@ export class WorkDayComponent implements OnDestroy, OnInit {
 
   fd(duration: number): string {
     return this.i18n('calendar.duration.short', [duration.toLocaleString(this.i18nService.Locale, { minimumFractionDigits: 1 })]);
-  }
-
-  get hasBookings(): boolean {
-    if (!this.day || this.day.bookings == null)
-      return false;
-    return Object.keys(this.day.bookings).length > 0;
-  }
+  } */
 
   i18n(key: string, params: string[] = []): string {
     return this.i18nService.i18n(key, params);
   }
 
-  get liveButtonColor(): string {
+  /* get liveButtonColor(): string {
     if (!this.usersettingsObj?.work.livetracking.enabled)
       return 'btn-secondary';
     if (!this.livetrackingActive)
       return 'btn-primary';
     return 'btn-success';
-  }
+  } */
 
-  get locale(): string {
+  /* get locale(): string {
     return this.i18nService.Locale;
-  }
+  } */
 
   newBooking(dayid: number | undefined): void {
     this.booking = {
@@ -164,10 +162,15 @@ export class WorkDayComponent implements OnDestroy, OnInit {
 
   ngOnInit(): void {
     this.subscriptions.push(this.userSettings.settings$.subscribe((settings) => this.usersettingsObj = settings));
-    this.subscriptions.push(this.userSettings.workTimeCategories$.subscribe((categories) => this.categories = Object.values(categories).sort((a, b) => this.i18n('work.timecategories.' + a.name) > this.i18n('work.timecategories.' + b.name) ? 1 : this.i18n('work.timecategories.' + a.name) === this.i18n('work.timecategories.' + b.name) ? 0 : -1)));
-    this.subscriptions.push(this.userSettings.workCustomers$.subscribe((customers) => {
-      this.customers = Object.values(customers).sort((a, b) => a.name.toLocaleLowerCase() > b.name.toLocaleLowerCase() ? 1 : -1);
+    this.subscriptions.push(this.userSettings.workTimeCategories$.pipe(first()).subscribe((categories) => {
+      // Only used once so form field won't get resettet by updating categories
+      this.categories = Object.values(categories)
+        .sort((a, b) => this.i18n('work.timecategories.' + a.name).localeCompare(this.i18n('work.timecategories.' + b.name)))
     }));
+    this.subscriptions.push(this.userSettings.workCustomers$.subscribe((customers) => {
+      this.customers = Object.values(customers).sort((a, b) => a.name.localeCompare(b.name));
+    }));
+    this.subscriptions.push(this.userSettings.workRecentTimeBookings$.subscribe((bookings) => this.recentEntries.set(bookings)));
     this.subscriptions.push(this.route.paramMap.subscribe((params) => {
       let date = 'today';
       if (!params.has('date')) {
@@ -182,18 +185,18 @@ export class WorkDayComponent implements OnDestroy, OnInit {
           this.day = <WorkDay>reply.payload['day'];
           this.newBooking(this.day.id);
           this.today = setHours(parseISO(this.day.date), 12);
-          this.i18nService.setTitle('workday.pagetitle', [this.f(this.today, 'PP')]);
-          this.isToday = (this.f(this.today, 'yyyy-MM-dd') == this.actualDate);
+          this.i18nService.setTitle('workday.pagetitle', [this.formatService.fdate(this.today, 'PP')]);
+          this.isToday = (this.formatService.fdate(this.today, 'yyyy-MM-dd') == this.actualDate);
           this.yesterday = subDays(this.today, 1);
           this.tomorrow = addDays(this.today, 1);
         }
         this.busy = false;
       });
     }));
-    setTimeout(() => { this.refreshRecentBookings(); }, 10);
+    //setTimeout(() => { this.refreshRecentBookings(); }, 10);
   }
 
-  onChangeCategory(): void {
+  /* onChangeCategory(): void {
     if (!this.booking)
       return;
     if (this.bookingProps['timecategory'] == -1) {
@@ -247,7 +250,7 @@ export class WorkDayComponent implements OnDestroy, OnInit {
       }
     }
     this.booking.duration = 0;
-  }
+  } */
 
   onSaveCreateCustomer(): void {
     if (this.createCustomer.get('busy')?.value)
@@ -266,73 +269,47 @@ export class WorkDayComponent implements OnDestroy, OnInit {
     });
   }
 
-  onSubmitBooking(): void {
+  onSubmitBooking(booking: WorkDayBooking): void {
     if (this.busy || !this.day)
       return;
     this.busy = true;
     let url = `${environment.api.baseUrl}/work/month/${this.day.monthid}/day/${this.day.day}/booking/create`;
-    this.authService.updateApi(url, this.booking).pipe(first()).subscribe((reply) => {
+    this.authService.updateApi(url, booking).pipe(first()).subscribe((reply) => {
       if (reply.success) {
         this.newBooking(this.day?.id);
         if (reply.payload && reply.payload['day'])
           this.day = <WorkDay>reply.payload['day'];
-        if (this.focusElement != undefined)
-          this.focusElement.nativeElement.focus();
       }
       this.busy = false;
     });
   }
 
-  parseTime(time: string): Date | null {
+  /* parseTime(time: string): Date | null {
     let match = time.match(this.timepattern);
     if (match && match.groups) {
       return set(this.today, { hours: +match.groups['hr'], minutes: +match.groups['min'], seconds: 0 });
     }
     return null;
-  }
+  } */
 
-  get progressdone(): string {
-    if (!this.usersettingsObj || !this.day || !this.day.stats)
-      return '0';
-    if (this.day.stats.duration > this.usersettingsObj.work.worktime.default)
-      return '' + Math.floor(this.usersettingsObj.work.worktime.default * 10);
-    return '' + Math.floor(this.day.stats.duration * 10);
-  }
-
-  get progressmissing(): string {
-    if (!this.usersettingsObj || !this.day || !this.day.stats)
-      return '0';
-    if (this.day.stats.duration > this.usersettingsObj.work.worktime.default)
-      return '0';
-    return '' + Math.floor((this.usersettingsObj.work.worktime.default - this.day.stats.duration) * 10);
-  }
-
-  get progressovertime(): string {
-    if (!this.usersettingsObj || !this.day || !this.day.stats)
-      return '0';
-    if (this.day.stats.duration > this.usersettingsObj.work.worktime.default)
-      return '' + Math.floor((this.day.stats.duration - this.usersettingsObj.work.worktime.default) * 10);
-    return '0';
-  }
-
-  project(id: number): WorkProject | undefined {
+  /* project(id: number): WorkProject | undefined {
     return this.userSettings.getWorkProject(id) ?? undefined;
-  }
+  } */
 
-  pushUserSettings(): void {
+  /* pushUserSettings(): void {
     this.userSettings.updateSettings(<UserSettings>this.usersettingsObj, true);
-  }
+  } */
 
-  refreshRecentBookings(): void {
+  /* refreshRecentBookings(): void {
     this.authService.queryApi(`${environment.api.baseUrl}/work/bookings/recent`).pipe(first()).subscribe((reply) => {
       if (reply.success && reply.payload && reply.payload['items'])
         this.recentEntries = <RecentBooking[]>reply.payload['items'];
       setTimeout(() => { this.refreshRecentBookings(); }, 60000);
     });
-  }
+  } */
 
-  s2d(datestr: string): Date {
+  /* s2d(datestr: string): Date {
     return new Date(datestr);
-  }
+  } */
 
 }

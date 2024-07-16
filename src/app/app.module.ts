@@ -97,6 +97,10 @@ import { WorkTravelEditorComponent } from './work/work-travel/editor/editor.comp
 import { WorkTravelComponent } from './work/work-travel/work-travel.component';
 import { WorkYearComponent } from './work/work-year/work-year.component';
 import { WorkComponent } from './work/work.component';
+import { WorkDayHeaderComponent } from './work/work-day/work-day-header/work-day-header.component';
+import { WorkDayInfobox1Component } from './work/work-day/work-day-infobox1/work-day-infobox1.component';
+import { WorkDayBookingsComponent } from './work/work-day/work-day-bookings/work-day-bookings.component';
+import { WorkDayBookingFormComponent } from './work/work-day/work-day-booking-form/work-day-booking-form.component';
 
 registerLocaleData(localeDe);
 registerLocaleData(localeFr);
@@ -180,6 +184,10 @@ registerLocaleData(localeFr);
         WorkTravelComponent,
         WorkTravelEditorComponent,
         WorkYearComponent,
+        WorkDayHeaderComponent,
+        WorkDayInfobox1Component,
+        WorkDayBookingsComponent,
+        WorkDayBookingFormComponent,
     ],
     bootstrap: [
         AppComponent,
