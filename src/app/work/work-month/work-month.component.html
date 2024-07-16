@@ -39,35 +39,6 @@
         </a>
         }
       </div>
-
-      <!-- <div>
-        <nav class="h-100" style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
-          <ol class="breadcrumb d-flex align-items-center h-100 mb-0">
-            <li class="breadcrumb-item">
-              <ui-busy-indicator *ngIf="monthLoading"></ui-busy-indicator>
-            </li>
-            <a class="breadcrumb-item" [routerLink]="['/work', 'month', f(LastMonth, 'yyyy'), f(LastMonth, 'M')]">
-              <button type="button" class="btn btn-sm btn-outline-primary">
-                <app-icon [iconClass]="icons['go-left']" [marginEnd]="1"></app-icon>
-                {{ f(LastMonth, 'MMM') }}
-              </button>
-            </a>
-            <a *ngIf="!IsToday" class="breadcrumb-item"
-              [routerLink]="['/work', 'month', f(today, 'yyyy'), f(today, 'M')]">
-              <button type="button" class="btn btn-sm btn-outline-primary">
-                <app-icon [iconClass]="icons['rotate-left']" [marginEnd]="1"></app-icon>
-                {{ i18n('common.today') }}
-              </button>
-            </a>
-            <a class="breadcrumb-item" [routerLink]="['/work', 'month', f(NextMonth, 'yyyy'), f(NextMonth, 'M')]">
-              <button type="button" class="btn btn-sm btn-outline-primary">
-                {{ f(NextMonth, 'MMM') }}
-                <app-icon [iconClass]="icons['go-right']" addCssClasses="ms-1"></app-icon>
-              </button>
-            </a>
-          </ol>
-        </nav>
-      </div> -->
     </div>
   </div>
 
