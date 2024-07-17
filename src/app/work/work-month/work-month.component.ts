@@ -130,10 +130,16 @@ export class WorkMonthComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   getProjectDescription(entry: WorkDayBooking, inclCustomer: boolean = false): string {
-    return (entry.customer && inclCustomer ? entry.customer.name + ' // ' : '')
-      + (entry.project ? entry.project.name + ' // ' : '')
-      + (entry.projectstage !== '' ? entry.projectstage + ' // ' : '')
-      + entry.description;
+    let items: string[] = [];
+    if (entry.customer && entry.customer.name && inclCustomer)
+      items.push(entry.customer.name)
+    if (entry.project?.name)
+      items.push(entry.project.name);
+    if (entry.projectstage)
+      items.push(entry.projectstage);
+    if (entry.description)
+      items.push(entry.description);
+    return items.join(' // ');
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
