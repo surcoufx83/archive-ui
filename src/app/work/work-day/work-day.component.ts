@@ -4,8 +4,7 @@ import { addDays, differenceInMinutes, format, parseISO, set, setHours, subDays 
 import { AuthService } from '../../auth.service';
 import { SettingsService } from '../../utils/settings.service';
 
-import { ViewportScroller } from '@angular/common';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Subscription, first } from 'rxjs';
 import { RecentBooking, UserSettings, WorkCustomer, WorkDay, WorkDayBooking, WorkProject, WorkTimeCategory } from 'src/app/if';
 import { environment } from 'src/environments/environment.dev';
@@ -27,9 +26,9 @@ export class WorkDayComponent implements OnDestroy, OnInit {
   bookingProps: { [key: string]: number } = {};
   busy: boolean = false;
   categories: WorkTimeCategory[] = [];
-  createCustomer = new UntypedFormGroup({
-    'name': new UntypedFormControl('', { validators: Validators.required }),
-    'busy': new UntypedFormControl(false)
+  createCustomer = new FormGroup({
+    name: new FormControl<string>('', { validators: Validators.required }),
+    busy: new FormControl<boolean>(false)
   });
   copyBooking = signal<[RecentBooking | WorkDayBooking | null, number]>([null, 0]);
   customers: WorkCustomer[] = [];
@@ -177,19 +176,21 @@ export class WorkDayComponent implements OnDestroy, OnInit {
    * Updates the customer list and resets the form.
    */
   onSaveCreateCustomer(): void {
-    if (this.createCustomer.get('busy')?.value)
+    if (this.createCustomer.get('busy')?.value || !this.createCustomer.valid)
       return;
     this.createCustomer.patchValue({ 'busy': true });
     let newcustomer: WorkCustomer = {
-      id: 0, name: this.createCustomer.get('name')!.value, created: "", deleted: null,
+      id: 0, name: this.createCustomer.get('name')!.value || '', created: "", deleted: null,
       disabled: false, lastusage: "", modified: "", userid: 0
     }
-    this.userSettings.updateCustomer(newcustomer).pipe(first()).subscribe((customer) => {
-      if (customer != null) {
-        this.createCustomerModalCloserElement?.nativeElement.click();
-        this.createCustomer.get('name')!.reset();
-      }
-      this.createCustomer.patchValue({ 'busy': false });
+    let sub = this.userSettings.updateCustomer(newcustomer).subscribe((customer) => {
+      console.log(customer, this.createCustomerModalCloserElement)
+      if (customer == null)
+        return;
+      this.createCustomerModalCloserElement?.nativeElement.click();
+      this.createCustomer.get('name')!.reset();
+      this.createCustomer.reset();
+      sub.unsubscribe();
     });
   }
 

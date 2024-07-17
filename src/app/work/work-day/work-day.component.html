@@ -87,11 +87,12 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" #createCustomerModalCloser data-bs-dismiss="modal">
+          <button type="button" class="btn btn-secondary" #createCustomerModalCloser data-bs-dismiss="modal"
+            (click)="createCustomer.reset()">
             {{i18n('common.cancel')}}
           </button>
           <button type="submit" class="btn btn-success"
-            [disabled]="!createCustomer.get('name')!.dirty || !createCustomer.get('name')!.valid || createCustomer.get('busy')?.value">
+            [disabled]="!createCustomer.valid || createCustomer.controls.busy.value === true">
             {{i18n('common.save')}}
           </button>
         </div>
