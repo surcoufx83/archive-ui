@@ -175,56 +175,52 @@
 
     <div class="col-12 col-lg-4">
         <!-- booking form recent booking entries -->
-        <div class="card">
-            <div class="card-body">
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <h5 class="mb-0 text-truncate">
-                            {{ i18nstr.workday.tracking.recentBookings.title }}
-                        </h5>
-                    </li>
-                    <li class="list-group-item p-0">
-                        <div class="input-group">
-                            <input type="search" class="form-control form-control-sm w-100" id="recent-filter"
-                                name="recent-filter" [(ngModel)]="filterRecent" (input)="onChangeRecentFilter()"
-                                (keydown)="onFilterKeyDown($event)"
-                                [placeholder]="i18nstr.workday.tracking.recentBookings.filter">
+        <ul class="list-group">
+            <li class="list-group-item">
+                <h5 class="mb-0 text-truncate">
+                    {{ i18nstr.workday.tracking.recentBookings.title }}
+                </h5>
+            </li>
+            <li class="list-group-item p-0">
+                <div class="input-group">
+                    <input type="search" class="form-control form-control-sm w-100 rounded-0 border-0"
+                        id="recent-filter" name="recent-filter" [(ngModel)]="filterRecent"
+                        (input)="onChangeRecentFilter()" (keydown)="onFilterKeyDown($event)"
+                        [placeholder]="i18nstr.workday.tracking.recentBookings.filter">
+                </div>
+            </li>
+            @for (item of filteredRecentBookings(); track $index) {
+            <li class="list-group-item pointer" [title]="i18n('workday.tracking.common.recentTitle')"
+                (click)="copyFromRecent(item.booking);">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <div>
+                            @if (item.category) {
+                            <i class="fs-7 me-1" [ngClass]="[item.category.icon, item.category.iconcolor]"></i>
+                            }
+
+                            @if (item.customer) {
+                            {{ item.customer.name }}
+                            }
+
+                            {{ item.booking.projectstage }}
+
+                            @if (item.project) {
+                            {{ item.project.name }}
+                            }
+
                         </div>
-                    </li>
-                    @for (item of filteredRecentBookings(); track $index) {
-                    <li class="list-group-item pointer" [title]="i18n('workday.tracking.common.recentTitle')"
-                        (click)="copyFromRecent(item.booking);">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                <div>
-                                    @if (item.category) {
-                                    <i class="fs-7 me-1" [ngClass]="[item.category.icon, item.category.iconcolor]"></i>
-                                    }
-
-                                    @if (item.customer) {
-                                    {{ item.customer.name }}
-                                    }
-
-                                    {{ item.booking.projectstage }}
-
-                                    @if (item.project) {
-                                    {{ item.project.name }}
-                                    }
-
-                                </div>
-                                <div class="fs-8">
-                                    {{ item.booking.description }}
-                                </div>
-                            </div>
-                            <div>
-                                <span class="badge rounded-pill text-bg-dark ms-2">{{ item.booking.count }}x</span>
-                            </div>
+                        <div class="fs-8">
+                            {{ item.booking.description }}
                         </div>
-                    </li>
-                    }
-                </ul>
-            </div>
-        </div>
+                    </div>
+                    <div>
+                        <span class="badge rounded-pill text-bg-dark ms-2">{{ item.booking.count }}x</span>
+                    </div>
+                </div>
+            </li>
+            }
+        </ul>
         <!-- booking form recent booking entries -->
     </div>
 
