@@ -277,7 +277,7 @@ export class WorkDayComponent implements OnDestroy, OnInit {
     this.authService.updateApi(url, booking).pipe(first()).subscribe((reply) => {
       if (reply.success) {
         this.newBooking(this.day?.id);
-        if (reply.payload && reply.payload['day'])
+        if (reply.payload?.['day'])
           this.day = <WorkDay>reply.payload['day'];
       }
       this.busy = false;
