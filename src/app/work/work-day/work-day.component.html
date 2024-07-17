@@ -50,8 +50,9 @@
     <!-- container tracking -->
     <div class="pt-md-2 mb-2">
       <app-work-day-booking-form [booking]="booking" [busy]="busy" [categories]="categories"
-        [copyBooking]="copyBooking()" [customers]="customers" [projects]="projects" [recentBookings]="recentEntries()"
-        [usersettingsObj]="usersettingsObj" (bookingSubmit)="onSubmitBooking($event)"></app-work-day-booking-form>
+        [copyBooking]="copyBooking()" [customers]="customers" [day]="day" [projects]="projects"
+        [recentBookings]="recentEntries()" [usersettingsObj]="usersettingsObj"
+        (bookingSubmit)="onSubmitBooking($event)"></app-work-day-booking-form>
     </div>
     <!-- Container with booking form -->
     }

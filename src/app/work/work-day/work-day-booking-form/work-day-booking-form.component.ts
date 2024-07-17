@@ -1,14 +1,15 @@
 import { ViewportScroller } from '@angular/common';
 import { Component, ElementRef, EventEmitter, Input, OnChanges, Output, signal, SimpleChanges, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { differenceInMinutes, parseISO, set } from 'date-fns';
 import { I18nService } from 'src/app/i18n.service';
-import { RecentBooking, UserSettings, WorkCustomer, WorkDayBooking, WorkProject, WorkTimeCategory } from 'src/app/if';
+import { RecentBooking, UserSettings, WorkCustomer, WorkDay, WorkDayBooking, WorkProject, WorkTimeCategory } from 'src/app/if';
 import { L10nArchiveLocale } from 'src/app/l10n/l10n.types';
 import { FormatService } from 'src/app/utils/format.service';
 import { SettingsService } from 'src/app/utils/settings.service';
 import { environment } from 'src/environments/environment.dev';
 
-export const WorkDayBookingTimeValidationPattern = /^(\d{1,2}):?(\d{2})$/;
+export const WorkDayBookingTimeValidationPattern = /^(?<hr>\d{1,2}):?(?<min>\d{2})$/;
 
 @Component({
   selector: 'app-work-day-booking-form',
@@ -22,6 +23,7 @@ export class WorkDayBookingFormComponent implements OnChanges {
   @Input({ required: true }) categories!: WorkTimeCategory[];
   @Input({ required: true }) copyBooking?: [RecentBooking | WorkDayBooking | null, number];
   @Input({ required: true }) customers!: WorkCustomer[];
+  @Input({ required: true }) day!: WorkDay;
   @Input({ required: true }) projects!: WorkProject[];
   @Input({ required: true }) recentBookings!: RecentBooking[];
   @Input({ required: true }) usersettingsObj!: UserSettings;
@@ -150,7 +152,23 @@ export class WorkDayBookingFormComponent implements OnChanges {
    * Handles changes to the booking times.
    */
   onChangeTime(): void {
-    // TODO Implementation goes here
+    let start = this.parseTime(this.bookingForm.controls.timeFrom.value || '');
+    let end = this.parseTime(this.bookingForm.controls.timeUntil.value || '');
+    let breakmin = this.bookingForm.controls.timeBreak.value || 0;
+
+    if (start && end) {
+      let dif = differenceInMinutes(end, start);
+      if (dif > 0) {
+        dif = (dif - breakmin) / 60;
+        this.bookingForm.patchValue({
+          durationOutput: `${dif}`
+        });
+        return;
+      }
+    }
+    this.bookingForm.patchValue({
+      durationOutput: `0`
+    });
   }
 
   /**
@@ -181,6 +199,14 @@ export class WorkDayBookingFormComponent implements OnChanges {
     tempBooking.timefrom = this.bookingForm.controls.timeFrom.value || '';
     tempBooking.timeuntil = this.bookingForm.controls.timeUntil.value || '';
     this.bookingSubmit.emit(tempBooking);
+  }
+
+  parseTime(time: string): Date | null {
+    let match = time.match(WorkDayBookingTimeValidationPattern);
+    if (match && match.groups) {
+      return set(parseISO(this.day.date), { hours: +match.groups['hr'], minutes: +match.groups['min'], seconds: 0 });
+    }
+    return null;
   }
 
 }

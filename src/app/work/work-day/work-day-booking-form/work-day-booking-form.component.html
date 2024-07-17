@@ -15,7 +15,7 @@
                                 <input type="text" #focusInput class="form-control" id="tracking-from"
                                     name="tracking-from" formControlName="timeFrom"
                                     [placeholder]="i18n('workday.tracking.common.timePlaceholder')"
-                                    (change)="onChangeTime()">
+                                    (input)="onChangeTime()">
                             </div>
                         </div>
                         <div class="col-6 col-lg-3 mb-3">
@@ -26,7 +26,7 @@
                                 <input type="text" class="form-control" id="tracking-until" name="tracking-until"
                                     formControlName="timeUntil"
                                     [placeholder]="i18n('workday.tracking.common.timePlaceholder')"
-                                    (change)="onChangeTime()">
+                                    (input)="onChangeTime()">
                             </div>
                         </div>
                         <div class="col-6 col-lg-3 mb-3">
@@ -37,13 +37,13 @@
                                 <input type="number" class="form-control" id="tracking-break" name="tracking-break"
                                     formControlName="timeBreak"
                                     [placeholder]="i18n('workday.tracking.common.breakPlaceholder')"
-                                    (change)="onChangeTime()">
+                                    (input)="onChangeTime()">
                             </div>
                         </div>
                         <div class="col-6 col-lg-3 mb-3">
                             <div class="form-group">
                                 <label for="tracking-duration" class="form-label">
-                                    {{ i18n('workday.tracking.common.duration') }}
+                                    {{ i18n('workday.tracking.common.durationLong') }}
                                 </label>
                                 <input type="text" class="form-control" id="tracking-duration" name="tracking-duration"
                                     formControlName="durationOutput" readonly>

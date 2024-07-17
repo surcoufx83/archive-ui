@@ -1028,6 +1028,7 @@ export type L10nArchiveLocale = {
                 customer: string,
                 description: string,
                 duration: string,
+                durationLong: string,
                 durationShort: string,
                 from: string,
                 project: string,

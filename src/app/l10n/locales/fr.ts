@@ -1026,20 +1026,21 @@ export const L10nArchiveFrLocale: L10nArchiveLocale = {
             livebtn: "En direct",
             livebtnTitle: "Fonction de suivi en direct",
             common: {
-                break: "Pause",
+                break: "Début Pause",
                 breakShort: "Pause",
-                breakPlaceholder: "minutes",
+                breakPlaceholder: "mm",
                 customer: "Client",
                 description: "Description des travaux effectués",
                 duration: "Temps de travail",
+                durationLong: "Temps de travail (heures)",
                 durationShort: "Total",
-                from: "Du",
+                from: "De",
                 project: "Projet client",
-                recentTitle: "Cliquer pour reprendre ces données",
-                task: "Tâche",
-                timeCategory: "Сatégorie",
+                recentTitle: "Cliquez pour adopter ces données",
+                task: "Paquet de tâches",
+                timeCategory: "Catégorie",
                 timePlaceholder: "hh:mm | hhmm | hmm",
-                until: "Jusqu'à"
+                until: "À"
             },
             createCustomer: {
                 title: "Nouveau client",

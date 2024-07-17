@@ -1032,6 +1032,7 @@ export const L10nArchiveDeLocale: L10nArchiveLocale = {
                 customer: "Kunde",
                 description: "Beschreibung der durchgeführten Arbeiten",
                 duration: "Arbeitszeit",
+                durationLong: "Arbeitszeit (Stunden)",
                 durationShort: "Gesamt",
                 from: "Von",
                 project: "Kundenprojekt",
