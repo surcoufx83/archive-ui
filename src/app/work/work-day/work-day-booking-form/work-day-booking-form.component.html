@@ -175,7 +175,7 @@
 
     <div class="col-12 col-lg-4">
         <!-- booking form recent booking entries -->
-        <ul class="list-group">
+        <ul class="list-group rounded-bottom-0">
             <li class="list-group-item">
                 <h5 class="mb-0 text-truncate">
                     {{ i18nstr.workday.tracking.recentBookings.title }}
@@ -189,6 +189,8 @@
                         [placeholder]="i18nstr.workday.tracking.recentBookings.filter">
                 </div>
             </li>
+        </ul>
+        <ul class="list-group overflow-y-auto rounded-top-0 border-top-0" style="max-height: 50vh;">
             @for (item of filteredRecentBookings(); track $index) {
             <li class="list-group-item pointer" [title]="i18n('workday.tracking.common.recentTitle')"
                 (click)="copyFromRecent(item.booking);">
