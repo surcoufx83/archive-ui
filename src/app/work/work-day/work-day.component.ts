@@ -53,52 +53,34 @@ export class WorkDayComponent implements OnDestroy, OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private userSettings: SettingsService,
-    private scroller: ViewportScroller
   ) { }
 
+  /**
+   * Retrieves the bookings for the day.
+   * @returns An array of WorkDayBooking objects.
+   */
   get bookings(): WorkDayBooking[] {
     if (!this.day || this.day.bookings == null)
       return [];
     return Object.values(this.day.bookings);
   }
 
-  /* category(id: number): WorkTimeCategory | undefined {
-    return this.userSettings.getWorkTimeCategory(id) ?? undefined;
-  } */
-
+  /**
+   * After user clicks a item in the days booking list, this method is
+   * invoked and by updating the `copyBooking` property, the booking
+   * to copy is transfered into the form component.
+   * The `Date.now()` is used also updated if user clicks the same
+   * booking again.
+   * @param item The booking to transfer to the form
+   */
   copyFromRecent(item: RecentBooking | WorkDayBooking): void {
-    this.copyBooking.set([item, Date.now()])
-    /* this.bookingProps = {};
-    for (let i = 0; i < this.categories.length; i++) {
-      if (this.categories[i].id == item.timecategoryid) {
-        this.bookingProps['timecategory'] = i;
-        this.onChangeCategory();
-      }
-    }
-    for (let i = 0; i < this.customers.length; i++) {
-      if (this.customers[i].id == item.customerid) {
-        this.bookingProps['customer'] = i;
-        this.onChangeCustomer();
-      }
-    }
-    for (let i = 0; i < this.projects.length; i++) {
-      if (this.projects[i].id == item.projectid) {
-        this.bookingProps['project'] = i;
-        this.onChangeProject();
-      }
-    }
-    if (this.booking) {
-      this.booking.projectstage = item.projectstage;
-      this.booking.description = item.description;
-    }
-    this.scroller.scrollToAnchor('scroll-anchor');
-    this.focusElement?.nativeElement.focus(); */
+    this.copyBooking.set([item, Date.now()]);
   }
 
-  /* customer(id: number): WorkCustomer | undefined {
-    return this.userSettings.getWorkCustomer(id) ?? undefined;
-  } */
-
+  /**
+   * Deletes a booking.
+   * @param item The booking to delete.
+   */
   deleteBooking(item: WorkDayBooking): void {
     let url = `${environment.api.baseUrl}/work/bookings/${item.id}/delete`;
     this.authService.updateApi(url, {}).pipe(first()).subscribe((reply) => {
@@ -109,32 +91,20 @@ export class WorkDayComponent implements OnDestroy, OnInit {
     });
   }
 
-  /* f(date: Date | string, form: string): string {
-    if (typeof (date) === 'string')
-      date = new Date(date);
-    return format(date, form, { locale: this.i18nService.DateLocale });
-  }
-
-  fd(duration: number): string {
-    return this.i18n('calendar.duration.short', [duration.toLocaleString(this.i18nService.Locale, { minimumFractionDigits: 1 })]);
-  } */
-
+  /**
+   * Translates a given key using the i18n service.
+   * @param key The key to translate.
+   * @param params Additional parameters for translation.
+   * @returns The translated string.
+   */
   i18n(key: string, params: string[] = []): string {
     return this.i18nService.i18n(key, params);
   }
 
-  /* get liveButtonColor(): string {
-    if (!this.usersettingsObj?.work.livetracking.enabled)
-      return 'btn-secondary';
-    if (!this.livetrackingActive)
-      return 'btn-primary';
-    return 'btn-success';
-  } */
-
-  /* get locale(): string {
-    return this.i18nService.Locale;
-  } */
-
+  /**
+   * Creates a new booking for the specified day.
+   * @param dayid The ID of the day for the new booking.
+   */
   newBooking(dayid: number | undefined): void {
     this.booking = {
       break: 0,
@@ -155,11 +125,18 @@ export class WorkDayComponent implements OnDestroy, OnInit {
     this.bookingProps = {};
   }
 
+  /**
+   * Lifecycle hook that is called when a directive, pipe, or service is destroyed.
+   * Unsubscribes from all subscriptions to avoid memory leaks.
+   */
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
-
+  /**
+   * Lifecycle hook that is called once, after the first ngOnChanges().
+   * Initializes the component and subscribes to various services.
+   */
   ngOnInit(): void {
     this.subscriptions.push(this.userSettings.settings$.subscribe((settings) => this.usersettingsObj = settings));
     this.subscriptions.push(this.userSettings.workTimeCategories$.pipe(first()).subscribe((categories) => {
@@ -193,65 +170,12 @@ export class WorkDayComponent implements OnDestroy, OnInit {
         this.busy = false;
       });
     }));
-    //setTimeout(() => { this.refreshRecentBookings(); }, 10);
   }
 
-  /* onChangeCategory(): void {
-    if (!this.booking)
-      return;
-    if (this.bookingProps['timecategory'] == -1) {
-      this.booking.timecategory = <WorkTimeCategory>{};
-      this.booking.timecategoryid = -1;
-      return;
-    }
-    this.booking.timecategory = this.categories[this.bookingProps['timecategory']];
-    this.booking.timecategoryid = this.categories[this.bookingProps['timecategory']].id;
-  }
-
-  onChangeCustomer(): void {
-    this.projects = [];
-    if (!this.booking)
-      return;
-    if (this.bookingProps['customer'] == -1) {
-      this.booking.customer = null;
-      this.booking.customerid = -1;
-      return;
-    }
-    this.booking.customer = this.customers[this.bookingProps['customer']];
-    this.booking.customerid = this.customers[this.bookingProps['customer']].id;
-    this.projects = this.userSettings.getWorkProjects(this.booking.customerid) ?? [];
-  }
-
-  onChangeProject(): void {
-    if (!this.booking)
-      return;
-    if (this.bookingProps['project'] == -1) {
-      this.booking.project = null;
-      this.booking.projectid = -1;
-      return;
-    }
-    this.booking.project = this.projects[this.bookingProps['project']];
-    this.booking.projectid = this.projects[this.bookingProps['project']].id;
-  }
-
-  onChangeTime(): void {
-    if (!this.booking)
-      return;
-    let start = this.parseTime(this.booking.timefrom);
-    let end = this.parseTime(this.booking.timeuntil);
-    let breakmin = this.booking.break;
-
-    if (start && end) {
-      let dif = differenceInMinutes(end, start);
-      if (dif > 0) {
-        dif = (dif - breakmin) / 60;
-        this.booking.duration = dif;
-        return;
-      }
-    }
-    this.booking.duration = 0;
-  } */
-
+  /**
+   * Handles the creation of a new customer.
+   * Updates the customer list and resets the form.
+   */
   onSaveCreateCustomer(): void {
     if (this.createCustomer.get('busy')?.value)
       return;
@@ -269,6 +193,11 @@ export class WorkDayComponent implements OnDestroy, OnInit {
     });
   }
 
+  /**
+   * Handles the submission of a booking.
+   * Updates the booking list and resets the form.
+   * @param booking The booking to submit.
+   */
   onSubmitBooking(booking: WorkDayBooking): void {
     if (this.busy || !this.day)
       return;
@@ -283,33 +212,5 @@ export class WorkDayComponent implements OnDestroy, OnInit {
       this.busy = false;
     });
   }
-
-  /* parseTime(time: string): Date | null {
-    let match = time.match(this.timepattern);
-    if (match && match.groups) {
-      return set(this.today, { hours: +match.groups['hr'], minutes: +match.groups['min'], seconds: 0 });
-    }
-    return null;
-  } */
-
-  /* project(id: number): WorkProject | undefined {
-    return this.userSettings.getWorkProject(id) ?? undefined;
-  } */
-
-  /* pushUserSettings(): void {
-    this.userSettings.updateSettings(<UserSettings>this.usersettingsObj, true);
-  } */
-
-  /* refreshRecentBookings(): void {
-    this.authService.queryApi(`${environment.api.baseUrl}/work/bookings/recent`).pipe(first()).subscribe((reply) => {
-      if (reply.success && reply.payload && reply.payload['items'])
-        this.recentEntries = <RecentBooking[]>reply.payload['items'];
-      setTimeout(() => { this.refreshRecentBookings(); }, 60000);
-    });
-  } */
-
-  /* s2d(datestr: string): Date {
-    return new Date(datestr);
-  } */
 
 }
