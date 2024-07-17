@@ -131,7 +131,7 @@ export class WorkMonthComponent implements AfterViewInit, OnDestroy, OnInit {
 
   getProjectDescription(entry: WorkDayBooking, inclCustomer: boolean = false): string {
     let items: string[] = [];
-    if (entry.customer && entry.customer.name && inclCustomer)
+    if (entry.customer?.name && inclCustomer)
       items.push(entry.customer.name)
     if (entry.project?.name)
       items.push(entry.project.name);
