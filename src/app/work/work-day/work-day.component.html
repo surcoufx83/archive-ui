@@ -24,6 +24,18 @@
         }
       </div>
 
+      <div class="d-none d-md-block col-md-4">
+        <!-- card 2: spacer -->
+      </div>
+
+      <div class="col-12 col-md-4">
+        <!-- card 3: templates handling -->
+        @if (day) {
+        <app-work-day-templatesbox [day]="day" [today]="today"
+          [usersettingsObj]="usersettingsObj"></app-work-day-templatesbox>
+        }
+      </div>
+
       <!-- container with info cards -->
     </div>
 
@@ -91,8 +103,7 @@
             (click)="createCustomer.reset()">
             {{i18n('common.cancel')}}
           </button>
-          <button type="submit" class="btn btn-success"
-            [disabled]="!createCustomer.valid || createCustomer.controls.busy.value === true">
+          <button type="submit" class="btn btn-success" [disabled]="!createCustomer.valid || createCustomerBusy()">
             {{i18n('common.save')}}
           </button>
         </div>

@@ -10,6 +10,7 @@ import { RecentBooking, UserSettings, WorkCustomer, WorkDay, WorkDayBooking, Wor
 import { environment } from 'src/environments/environment.dev';
 import { I18nService } from '../../i18n.service';
 import { FormatService } from 'src/app/utils/format.service';
+import { ToastsService } from 'src/app/utils/toasts.service';
 
 @Component({
   selector: 'app-work-day',
@@ -28,8 +29,8 @@ export class WorkDayComponent implements OnDestroy, OnInit {
   categories: WorkTimeCategory[] = [];
   createCustomer = new FormGroup({
     name: new FormControl<string>('', { validators: Validators.required }),
-    busy: new FormControl<boolean>(false)
   });
+  createCustomerBusy = signal<boolean>(false);
   copyBooking = signal<[RecentBooking | WorkDayBooking | null, number]>([null, 0]);
   customers: WorkCustomer[] = [];
   day?: WorkDay;
@@ -52,6 +53,7 @@ export class WorkDayComponent implements OnDestroy, OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private userSettings: SettingsService,
+    private toastsService: ToastsService,
   ) { }
 
   /**
@@ -176,20 +178,25 @@ export class WorkDayComponent implements OnDestroy, OnInit {
    * Updates the customer list and resets the form.
    */
   onSaveCreateCustomer(): void {
-    if (this.createCustomer.get('busy')?.value || !this.createCustomer.valid)
+    if (this.createCustomerBusy() || !this.createCustomer.valid)
       return;
-    this.createCustomer.patchValue({ 'busy': true });
+    this.createCustomerBusy.set(true);
     let newcustomer: WorkCustomer = {
       id: 0, name: this.createCustomer.get('name')!.value || '', created: "", deleted: null,
       disabled: false, lastusage: "", modified: "", userid: 0
     }
     let sub = this.userSettings.updateCustomer(newcustomer).subscribe((customer) => {
-      console.log(customer, this.createCustomerModalCloserElement)
       if (customer == null)
         return;
-      this.createCustomerModalCloserElement?.nativeElement.click();
-      this.createCustomer.get('name')!.reset();
-      this.createCustomer.reset();
+      if (customer !== true && customer !== false) {
+        this.createCustomerModalCloserElement?.nativeElement.click();
+        this.createCustomer.get('name')!.reset();
+        this.createCustomer.reset();
+      }
+      else {
+        this.toastsService.error('Fehler', 'Der neue Kunde konnte nicht angelegt werden.');
+      }
+      this.createCustomerBusy.set(false);
       sub.unsubscribe();
     });
   }

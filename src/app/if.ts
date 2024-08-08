@@ -806,6 +806,28 @@ export type WorkDay = {
   daytimeStats?: WorkDayTimeStats,
 }
 
+export type WorkDaySimple = {
+  date: string,
+  day: number,
+  id: number,
+  month: WorkMonth,
+  monthid: number,
+  note: string,
+}
+
+export type WorkDayTemplate = {
+  content: {
+    bookings: WorkDayBooking[],
+    origin: WorkDaySimple,
+  },
+  created: string,
+  deleted: string | null,
+  flexItem: number,
+  id: number,
+  name: string,
+  updated: string,
+}
+
 export type WorkDayBooking = {
   break: number,
   customer: WorkCustomer | null,

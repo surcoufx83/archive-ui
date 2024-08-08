@@ -101,6 +101,7 @@ import { WorkDayHeaderComponent } from './work/work-day/work-day-header/work-day
 import { WorkDayInfobox1Component } from './work/work-day/work-day-infobox1/work-day-infobox1.component';
 import { WorkDayBookingsComponent } from './work/work-day/work-day-bookings/work-day-bookings.component';
 import { WorkDayBookingFormComponent } from './work/work-day/work-day-booking-form/work-day-booking-form.component';
+import { WorkDayTemplatesboxComponent } from './work/work-day/work-day-templatesbox/work-day-templatesbox.component';
 
 registerLocaleData(localeDe);
 registerLocaleData(localeFr);
@@ -188,6 +189,7 @@ registerLocaleData(localeFr);
         WorkDayInfobox1Component,
         WorkDayBookingsComponent,
         WorkDayBookingFormComponent,
+        WorkDayTemplatesboxComponent,
     ],
     bootstrap: [
         AppComponent,

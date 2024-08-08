@@ -1014,6 +1014,16 @@ export const L10nArchiveEnLocale: L10nArchiveLocale = {
             title: "Summary",
             booked: "Tracked"
         },
+        templatescard: {
+            description: "This day can be defined as a template. Saved templates can be used in weekly bookings.",
+            disabledHoliday: "This day cannot be used as a template because it is assigned as a holiday.",
+            disabledOffday: "This day cannot be used as a template because it is assigned as an absence.",
+            existingItem: "The selected day is saved as the template «{0}». Saving again will overwrite the existing entry.",
+            pickFlexItemLabel: "Select Flex Item",
+            templateNamePlaceholder: "🖋️ Template Name",
+            title: "Template Management",
+            weekLink: "To Weekly Booking"
+        },
         tracked: {
             title: "Today's tracked time",
             description: "Description",

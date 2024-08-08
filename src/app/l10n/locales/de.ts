@@ -1014,6 +1014,16 @@ export const L10nArchiveDeLocale: L10nArchiveLocale = {
             title: "Übersicht",
             booked: "Gebucht"
         },
+        templatescard: {
+            description: "Dieser Tag kann als Vorlage definiert werden. Gespeicherte Vorlagen können in der Wochenbuchung verwendet werden.",
+            disabledHoliday: "Dieser Tag kann nicht als Vorlage verwendet werden, da ein Feiertag zugeordnet ist.",
+            disabledOffday: "Dieser Tag kann nicht als Vorlage verwendet werden, da eine Abwesenheit zugeordnet ist.",
+            existingItem: "Der gewählte Tag ist als Vorlage «{0}» gespeichert. Erneutes Speichern überschreibt den vorhandenen Eintrag.",
+            pickFlexItemLabel: "Flex-Eintrag wählen",
+            templateNamePlaceholder: "🖋️ Name der Vorlage",
+            title: "Vorlagenverwaltung",
+            weekLink: "Zur Wochenbuchung"
+        },
         tracked: {
             title: "Heutige Buchungen",
             description: "Beschreibung",

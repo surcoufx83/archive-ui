@@ -1,0 +1,61 @@
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">
+            <app-icon [iconClass]="icons['template']" [marginEnd]="1"></app-icon>
+            {{ i18nstr.workday.templatescard.title }}
+        </h5>
+        <a [routerLink]="['/work', 'settings', 'templates']" class="text-light fs-7 text-decoration-none">
+            <app-icon [iconClass]="icons['menu']"></app-icon>
+        </a>
+    </div>
+    <div class="card-body">
+        <p class="text-muted fs-8" [ngClass]="{ 'mb-0': day.holiday != null || day.offcategory != null }">
+            @if (day.holiday != null) {
+            {{ i18nstr.workday.templatescard.disabledHoliday }}
+            }
+            @else if (day.offcategory != null) {
+            {{ i18nstr.workday.templatescard.disabledOffday }}
+            }
+            @else {
+            {{ i18nstr.workday.templatescard.description }}
+
+            @if (existingTemplate) {
+            <br />
+            <strong class="text-warning">
+                {{ i18n('workday.templatescard.existingItem', [existingTemplate.name]) }}
+            </strong>
+            }
+            }
+        </p>
+        @if (day.holiday == null && day.offcategory == null) {
+        <form [formGroup]="templateForm" (submit)="onSubmitTemplateDay()">
+            <div class="d-flex justify-content-between mb-2">
+                <input type="text" class="form-control form-control-sm fs-7" formControlName="name"
+                    [placeholder]="i18nstr.workday.templatescard.templateNamePlaceholder" />
+            </div>
+            <div class="d-flex justify-content-between">
+                <select class="form-select form-select-sm fs-7" formControlName="flexitem">
+                    <option value="-1">{{ i18nstr.workday.templatescard.pickFlexItemLabel }}</option>
+                    @for (item of bookings; track $index) {
+                    <option [value]="item.id">
+                        {{ $index + 1 }}: {{ item.customer?.name }} {{ item.description }}
+                    </option>
+                    }
+                </select>
+                <button type="submit" class="btn btn-outline-secondary fs-7 ms-1 text-nowrap"
+                    [disabled]="templateForm.invalid">
+                    <app-icon [iconClass]="icons[saving ? 'spinner' : 'save']" [spin]="saving"
+                        [marginEnd]="1"></app-icon>
+                    {{ i18nstr.common.save }}
+                </button>
+            </div>
+        </form>
+        }
+    </div>
+    <div class="card-footer">
+        <a [routerLink]="['/work', 'week']" class="text-light fs-7 text-decoration-none">
+            <app-icon [iconClass]="icons['week']" [marginEnd]="1"></app-icon>
+            {{ i18nstr.workday.templatescard.weekLink }}
+        </a>
+    </div>
+</div>

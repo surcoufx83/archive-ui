@@ -1010,6 +1010,16 @@ export type L10nArchiveLocale = {
             title: string,
             booked: string
         },
+        templatescard: {
+            description: string,
+            disabledHoliday: string,
+            disabledOffday: string,
+            existingItem: string,
+            pickFlexItemLabel: string,
+            templateNamePlaceholder: string,
+            title: string,
+            weekLink: string,
+        },
         tracked: {
             title: string,
             description: string,

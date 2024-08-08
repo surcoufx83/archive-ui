@@ -12,7 +12,7 @@
                                 <label for="tracking-from" class="form-label required">
                                     {{ i18n('workday.tracking.common.from') }}
                                 </label>
-                                <input type="text" #focusInput class="form-control" id="tracking-from"
+                                <input type="text" #focusInput class="form-control always-status" id="tracking-from"
                                     name="tracking-from" formControlName="timeFrom"
                                     [placeholder]="i18n('workday.tracking.common.timePlaceholder')"
                                     (input)="onChangeTime()">
@@ -23,8 +23,8 @@
                                 <label for="tracking-until" class="form-label required">
                                     {{ i18n('workday.tracking.common.until') }}
                                 </label>
-                                <input type="text" class="form-control" id="tracking-until" name="tracking-until"
-                                    formControlName="timeUntil"
+                                <input type="text" class="form-control always-status" id="tracking-until"
+                                    name="tracking-until" formControlName="timeUntil"
                                     [placeholder]="i18n('workday.tracking.common.timePlaceholder')"
                                     (input)="onChangeTime()">
                             </div>
@@ -34,8 +34,8 @@
                                 <label for="tracking-break" class="form-label required">
                                     {{ i18n('workday.tracking.common.break') }}
                                 </label>
-                                <input type="number" class="form-control" id="tracking-break" name="tracking-break"
-                                    formControlName="timeBreak"
+                                <input type="number" class="form-control always-status" id="tracking-break"
+                                    name="tracking-break" formControlName="timeBreak"
                                     [placeholder]="i18n('workday.tracking.common.breakPlaceholder')"
                                     (input)="onChangeTime()">
                             </div>
@@ -58,8 +58,8 @@
                                     {{ i18n('workday.tracking.common.timeCategory') }}
                                 </label>
                                 <div class="input-group">
-                                    <select class="form-select" id="tracking-category" name="tracking-category"
-                                        formControlName="category">
+                                    <select class="form-select always-status" id="tracking-category"
+                                        name="tracking-category" formControlName="category">
                                         <option [ngValue]="-1">
                                             {{ i18n('common.select.pickOne') }}
                                         </option>
@@ -92,8 +92,8 @@
                                     data-bs-target="#createCustomerModal">
                                     [{{ i18n('common.add') }}]
                                 </label>
-                                <select class="form-select" id="tracking-customer" name="tracking-customer"
-                                    formControlName="customer">
+                                <select class="form-select always-status" id="tracking-customer"
+                                    name="tracking-customer" formControlName="customer">
                                     <option [ngValue]="-1">
                                         {{ i18n('common.select.pickOne') }}
                                     </option>
@@ -114,7 +114,7 @@
                                 <label for="tracking-project" class="form-label">
                                     {{ i18n('workday.tracking.common.project') }}
                                 </label>
-                                <select class="form-select" id="tracking-project" name="tracking-project"
+                                <select class="form-select always-status" id="tracking-project" name="tracking-project"
                                     formControlName="customerProject">
                                     <option [ngValue]="-1">
                                         {{ i18n('common.select.pickOne') }}
@@ -136,8 +136,8 @@
                                 <label for="tracking-task" class="form-label">
                                     {{ i18n('workday.tracking.common.task') }}
                                 </label>
-                                <input type="text" class="form-control" id="tracking-task" name="tracking-task"
-                                    formControlName="task">
+                                <input type="text" class="form-control always-status" id="tracking-task"
+                                    name="tracking-task" formControlName="task">
                             </div>
                             <!-- tracking of task if enabled via user settings -->
                         </div>
@@ -149,8 +149,8 @@
                                 <label for="tracking-description" class="form-label">
                                     {{ i18n('workday.tracking.common.description') }}
                                 </label>
-                                <textarea class="form-control" id="tracking-description" name="tracking-description"
-                                    formControlName="description"></textarea>
+                                <textarea class="form-control always-status" id="tracking-description"
+                                    name="tracking-description" formControlName="description"></textarea>
                             </div>
                         </div>
                     </div>
