@@ -1,46 +1,55 @@
-<ui-centered-busy-indicator *ngIf="usersettingsObj == undefined"></ui-centered-busy-indicator>
+@if (!usersettingsObj || !selectedDay) {
+<ui-centered-busy-indicator></ui-centered-busy-indicator>
+}
+
+@else {
+
+<div class="container">
+
+  <div class="pt-4 pt-md-2 mb-2">
+    <!-- The page header with day back and forward buttons and busy indicator -->
+    <app-work-month-header [selectedMonth]="selectedMonth" [busy]="monthLoading"></app-work-month-header>
+  </div>
+
+  <div class="pt-md-2 mb-2">
+
+    <div class="row g-2">
+      <!-- container with info cards -->
+
+      <div class="col-12 col-md-4">
+        <!-- card 1: Month info -->
+        <app-work-month-info-box [workMonth]="monthObj">
+
+        </app-work-month-info-box>
+      </div>
+
+      <div class="d-none d-md-block col-md-4">
+        <!-- card 2:  -->
+      </div>
+
+      <div class="col-12 col-md-4">
+        <!-- card 3:  -->
+
+      </div>
+
+      <!-- container with info cards -->
+    </div>
+
+  </div>
+
+  <div class="pt-4 pt-md-2 mb-2">
+    <!-- Calendar container -->
+    <app-h3 [title]="i18n('workday.tracking.title')" [containercss]="'pt-4'" id="scroll-anchor"></app-h3>
+
+
+
+  </div>
+
+</div>
+
+}
 
 <ng-container *ngIf="usersettingsObj != undefined && selectedDay != undefined">
-  <div class="container pt-4 pt-md-2 mb-2">
-    <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between align-items-center">
-      <h2 class="text-truncate mb-0 pe-2">
-        <span class="d-none d-lg-inline">{{ i18n('workmonth.pagetitle', [f(selectedMonth, 'MMMM yyyy')]) }}</span>
-        <span class="d-inline d-lg-none">{{ i18n('workmonth.pagetitleShort', [f(selectedMonth, 'MMM yyyy')]) }}</span>
-      </h2>
-      <div class="flex-shrink-0">
-        <ui-busy-indicator class="me-2" [ngClass]="{ 'd-none': !monthLoading }"></ui-busy-indicator>
-        @if (LastMonth) {
-        <a [routerLink]="['/work', 'month', f(LastMonth, 'yyyy'), f(LastMonth, 'M')]">
-          <button type="button" class="btn btn-sm btn-outline-primary px-3 px-lg-2">
-            <app-icon [iconClass]="icons['go-left']"></app-icon>
-            <span class="d-none d-lg-inline ms-1">
-              {{ f(LastMonth, 'MMM') }}
-            </span>
-          </button>
-        </a>
-        }
-        <a [routerLink]="['/work', 'month', f(today, 'yyyy'), f(today, 'M')]" class="ms-2">
-          <button type="button" class="btn btn-sm"
-            [ngClass]="{ 'btn-outline-secondary': IsToday, 'btn-outline-primary': !IsToday }">
-            <app-icon [iconClass]="icons['today']"></app-icon>
-            <span class="d-none d-lg-inline ms-1">
-              {{ i18n('common.today') }}
-            </span>
-          </button>
-        </a>
-        @if (NextMonth) {
-        <a [routerLink]="['/work', 'month', f(NextMonth, 'yyyy'), f(NextMonth, 'M')]" class="ms-2">
-          <button type="button" class="btn btn-sm btn-outline-primary px-3 px-lg-2">
-            <app-icon [iconClass]="icons['go-right']"></app-icon>
-            <span class="d-none d-lg-inline ms-1">
-              {{ f(NextMonth, 'MMM') }}
-            </span>
-          </button>
-        </a>
-        }
-      </div>
-    </div>
-  </div>
 
   <ng-container *ngIf="!monthLoading && monthObj != undefined && selectedDay != undefined">
 
@@ -51,34 +60,7 @@
 
         <div class="col-12 col-md-4">
           <!-- card 1: container month info -->
-          <div class="card">
-            <div class="card-header">
-              <h5 class="mb-0">
-                <app-icon [iconClass]="icons['info']" [marginEnd]="1"></app-icon>
-                {{ i18n('workmonth.cards.target.title') }}
-              </h5>
-            </div>
-            <div class="card-body">
-              <div class="d-flex justify-content-between mb-2">
-                <div class="fs-7">
-                  {{ i18n('workmonth.cards.target.businessDays') }} [ {{ i18n('workmonth.cards.target.offDays') }} ]
-                </div>
-                <div class="font-weight-bold">
-                  <strong>{{ monthObj.days - monthObj.weekenddays - monthObj.holidays }}</strong>
-                  <span class="fs-8 ms-1">[ {{ monthObj.weekenddays }} / {{ monthObj.holidays }} ]</span>
-                </div>
-              </div>
-              <div class="d-flex justify-content-between mb-2">
-                <div class="fs-7">
-                  {{ i18n('workmonth.cards.target.lastEdit') }}
-                </div>
-                <div class="font-weight-bold">
-                  <span class="d-none d-lg-inline">{{ f(s2d(monthObj.updated), 'PPpp') }}</span>
-                  <span class="d-inline d-lg-none">{{ f(s2d(monthObj.updated), 'PP') }}</span>
-                </div>
-              </div>
-            </div>
-          </div>
+
         </div><!-- card 1: container month info -->
 
         <div class="col-12 col-md-4">

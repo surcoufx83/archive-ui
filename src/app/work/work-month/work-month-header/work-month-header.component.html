@@ -1,0 +1,39 @@
+<app-h2-new [busy]="busy">
+  <ng-container title>
+    <span class="d-none d-lg-inline">
+      {{ i18n('workmonth.pagetitle', [fdate(selectedMonth, 'MMMM yyyy')]) }}
+    </span>
+    <span class="d-inline d-lg-none">
+      {{ i18n('workmonth.pagetitleShort', [fdate(selectedMonth, 'MMM yyyy')]) }}
+    </span>
+  </ng-container>
+  <ng-container actions>
+    @if (lastMonth()) {
+    <app-link-btn [link]="['/work', 'month', fdate(lastMonth(), 'yyyy'), fdate(lastMonth(), 'M')]"
+      [css]="['btn-sm', 'btn-outline-primary']" icon="go-left">
+      <span class="d-none d-lg-inline">
+        {{ fdate(lastMonth(), 'MMM') }}
+      </span>
+    </app-link-btn>
+    }
+
+    @if (selectedMonth && currentMonth()) {
+    <app-link-btn [link]="['/work', 'month', fdate(currentMonth(), 'yyyy'), fdate(currentMonth(), 'M')]"
+      [css]="{ 'btn-sm': true, 'btn-outline-secondary': isThisMonth(), 'btn-outline-primary': !isThisMonth() }"
+      icon="today">
+      <span class="d-none d-lg-inline">
+        {{ i18n('common.today') }}
+      </span>
+    </app-link-btn>
+    }
+
+    @if (nextMonth()) {
+    <app-link-btn [link]="['/work', 'month', fdate(nextMonth(), 'yyyy'), fdate(nextMonth(), 'M')]"
+      [css]="['btn-sm', 'btn-outline-primary']" icon="go-right">
+      <span class="d-none d-lg-inline">
+        {{ fdate(nextMonth(), 'MMM') }}
+      </span>
+    </app-link-btn>
+    }
+  </ng-container>
+</app-h2-new>

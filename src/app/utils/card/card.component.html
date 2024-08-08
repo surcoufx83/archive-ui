@@ -1,0 +1,11 @@
+<div class="card">
+    <div class="card-header">
+        @if (icon) {
+        <app-icon [iconClass]="icons[icon]" [marginEnd]="1"></app-icon>
+        }
+        {{ title }}
+    </div>
+    <div class="card-body">
+        <ng-content></ng-content>
+    </div>
+</div>

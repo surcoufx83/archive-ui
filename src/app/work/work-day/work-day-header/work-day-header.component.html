@@ -1,42 +1,36 @@
-<div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between align-items-center">
-    <h2 class="text-truncate mb-0 pe-2">
+<app-h2-new [busy]="busy">
+    <ng-container title>
         <span class="d-none d-lg-inline">
             {{ i18n('workday.pagetitle', [ fdate(today, 'PP') ]) }}
         </span>
         <span class="d-inline d-lg-none">
             {{ fdate(today, 'PP') }}
         </span>
-    </h2>
-    <div class="flex-shrink-0">
-        <ui-busy-indicator class="me-2" [ngClass]="{ 'd-none': !busy }"></ui-busy-indicator>
+    </ng-container>
+    <ng-container actions>
         @if (yesterday) {
-        <a [routerLink]="['/work', 'day', fdate(yesterday, 'yyyy-MM-dd')]">
-            <button type="button" class="btn btn-sm btn-outline-primary px-3 px-lg-2">
-                <app-icon [iconClass]="icons['go-left']"></app-icon>
-                <span class="d-none d-lg-inline ms-1">
-                    {{ fdate(yesterday, 'P') }}
-                </span>
-            </button>
-        </a>
+        <app-link-btn [link]="['/work', 'day', fdate(yesterday, 'yyyy-MM-dd')]"
+            [css]="['btn-sm', 'btn-outline-primary']" icon="go-left">
+            <span class="d-none d-lg-inline">
+                {{ fdate(yesterday, 'P') }}
+            </span>
+        </app-link-btn>
         }
-        <a [routerLink]="['/work', 'day', actualDate]" class="ms-2">
-            <button type="button" class="btn btn-sm"
-                [ngClass]="{ 'btn-outline-secondary': isToday, 'btn-outline-primary': !isToday }">
-                <app-icon [iconClass]="icons['today']"></app-icon>
-                <span class="d-none d-lg-inline ms-1">
-                    {{ i18n('common.today') }}
-                </span>
-            </button>
-        </a>
+
+        <app-link-btn [link]="['/work', 'day', actualDate]"
+            [css]="{ 'btn-sm': true, 'btn-outline-secondary': isToday, 'btn-outline-primary': !isToday }" icon="today">
+            <span class="d-none d-lg-inline">
+                {{ i18n('common.today') }}
+            </span>
+        </app-link-btn>
+
         @if (tomorrow) {
-        <a [routerLink]="['/work', 'day', fdate(tomorrow, 'yyyy-MM-dd')]" class="ms-2">
-            <button type="button" class="btn btn-sm btn-outline-primary px-3 px-lg-2">
-                <app-icon [iconClass]="icons['go-right']"></app-icon>
-                <span class="d-none d-lg-inline ms-1">
-                    {{ fdate(tomorrow, 'P') }}
-                </span>
-            </button>
-        </a>
+        <app-link-btn [link]="['/work', 'day', fdate(tomorrow, 'yyyy-MM-dd')]" [css]="['btn-sm', 'btn-outline-primary']"
+            icon="go-right">
+            <span class="d-none d-lg-inline">
+                {{ fdate(tomorrow, 'P') }}
+            </span>
+        </app-link-btn>
         }
-    </div>
-</div>
+    </ng-container>
+</app-h2-new>

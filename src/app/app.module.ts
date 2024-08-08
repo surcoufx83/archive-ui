@@ -102,6 +102,11 @@ import { WorkDayInfobox1Component } from './work/work-day/work-day-infobox1/work
 import { WorkDayBookingsComponent } from './work/work-day/work-day-bookings/work-day-bookings.component';
 import { WorkDayBookingFormComponent } from './work/work-day/work-day-booking-form/work-day-booking-form.component';
 import { WorkDayTemplatesboxComponent } from './work/work-day/work-day-templatesbox/work-day-templatesbox.component';
+import { WorkMonthHeaderComponent } from './work/work-month/work-month-header/work-month-header.component';
+import { H2NewComponent } from './utils/h2-new/h2-new.component';
+import { LinkBtnComponent } from './utils/link-btn/link-btn.component';
+import { WorkMonthBoxInfoComponent } from './work/work-month/work-month-box-info/work-month-box-info.component';
+import { CardComponent } from './utils/card/card.component';
 
 registerLocaleData(localeDe);
 registerLocaleData(localeFr);
@@ -190,6 +195,11 @@ registerLocaleData(localeFr);
         WorkDayBookingsComponent,
         WorkDayBookingFormComponent,
         WorkDayTemplatesboxComponent,
+        WorkMonthHeaderComponent,
+        H2NewComponent,
+        LinkBtnComponent,
+        WorkMonthBoxInfoComponent,
+        CardComponent,
     ],
     bootstrap: [
         AppComponent,

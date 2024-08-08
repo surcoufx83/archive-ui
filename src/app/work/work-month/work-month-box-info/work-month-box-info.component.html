@@ -1,0 +1,24 @@
+<app-card icon="info" [title]="i18nstr.workmonth.cards.target.title">
+    <div class="d-flex justify-content-between mb-2">
+        <div class="fs-7">
+            {{ i18nstr.workmonth.cards.target.businessDays }} [ {{ i18nstr.workmonth.cards.target.offDays }} ]
+        </div>
+        <div>
+            @if (workMonth) {
+            <strong>{{ workMonth.days - workMonth.weekenddays - workMonth.holidays }}</strong>
+            <span class="fs-8 ms-1">[ {{ workMonth.weekenddays }} / {{ workMonth.holidays }} ]</span>
+            }
+        </div>
+    </div>
+    <div class="d-flex justify-content-between">
+        <div class="fs-7">
+            {{ i18nstr.workmonth.cards.target.lastEdit }}
+        </div>
+        <div>
+            @if (workMonth) {
+            <span class="d-none d-lg-inline">{{ fdate(workMonth.updated, 'PPpp') }}</span>
+            <span class="d-inline d-lg-none">{{ fdate(workMonth.updated, 'PP') }}</span>
+            }
+        </div>
+    </div>
+</app-card>
