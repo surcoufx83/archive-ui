@@ -5,7 +5,7 @@
             {{ i18nstr.workday.templatescard.title }}
         </h5>
         <a [routerLink]="['/work', 'settings', 'templates']" class="text-light fs-7 text-decoration-none">
-            <app-icon [iconClass]="icons['menu']"></app-icon>
+            <app-icon [iconClass]="icons['settings']"></app-icon>
         </a>
     </div>
     <div class="card-body">
@@ -53,8 +53,8 @@
         }
     </div>
     <div class="card-footer">
-        <a [routerLink]="['/work', 'week']" class="text-light fs-7 text-decoration-none">
-            <app-icon [iconClass]="icons['week']" [marginEnd]="1"></app-icon>
+        <a [routerLink]="['/work', 'month']" class="text-light fs-7 text-decoration-none">
+            <app-icon [iconClass]="icons['calendar']" [marginEnd]="1"></app-icon>
             {{ i18nstr.workday.templatescard.weekLink }}
         </a>
     </div>

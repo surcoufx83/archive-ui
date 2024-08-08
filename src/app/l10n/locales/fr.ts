@@ -1015,14 +1015,14 @@ export const L10nArchiveFrLocale: L10nArchiveLocale = {
             booked: "Réservé"
         },
         templatescard: {
-            description: "Ce jour peut être défini comme un modèle. Les modèles enregistrés peuvent être utilisés dans les réservations hebdomadaires.",
+            description: "Ce jour peut être défini comme un modèle. Les modèles enregistrés peuvent être utilisés dans la vue mensuelle.",
             disabledHoliday: "Ce jour ne peut pas être utilisé comme modèle car il est attribué comme jour férié.",
             disabledOffday: "Ce jour ne peut pas être utilisé comme modèle car il est attribué comme jour d'absence.",
             existingItem: "Le jour sélectionné est enregistré comme modèle «{0}». Sauvegarder à nouveau écrasera l'entrée existante.",
             pickFlexItemLabel: "Sélectionner un élément flexible",
             templateNamePlaceholder: "🖋️ Nom du modèle",
             title: "Gestion des modèles",
-            weekLink: "À la réservation hebdomadaire"
+            weekLink: "À la vue mensuelle"
         },
         tracked: {
             title: "Réservations d'aujourd'hui",
