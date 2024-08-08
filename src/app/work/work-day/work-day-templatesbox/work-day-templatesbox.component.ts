@@ -1,11 +1,9 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { first, Subscription } from 'rxjs';
-import { AuthService } from 'src/app/auth.service';
 import { I18nService } from 'src/app/i18n.service';
-import { WorkDay, UserSettings, WorkDayTemplate, WorkDayBooking } from 'src/app/if';
+import { UserSettings, WorkDay, WorkDayBooking, WorkDayTemplate } from 'src/app/if';
 import { L10nArchiveLocale } from 'src/app/l10n/l10n.types';
-import { FormatService } from 'src/app/utils/format.service';
 import { SettingsService } from 'src/app/utils/settings.service';
 import { environment } from 'src/environments/environment.dev';
 
@@ -32,9 +30,7 @@ export class WorkDayTemplatesboxComponent implements OnChanges, OnDestroy, OnIni
   });
 
   constructor(
-    private authService: AuthService,
     private cache: SettingsService,
-    private formatService: FormatService,
     private i18nService: I18nService,
   ) { }
 
@@ -56,6 +52,10 @@ export class WorkDayTemplatesboxComponent implements OnChanges, OnDestroy, OnIni
     return this.i18nService.str;
   }
 
+  /**
+   * Lifecycle hook that is called when any data-bound property of a directive changes.
+   * @param changes The changes to the data-bound properties.
+   */
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['day'] && changes['day'].currentValue) {
       const day = <WorkDay>changes['day'].currentValue;
@@ -64,10 +64,18 @@ export class WorkDayTemplatesboxComponent implements OnChanges, OnDestroy, OnIni
     }
   }
 
+  /**
+   * Lifecycle hook that is called when a directive, pipe, or service is destroyed.
+   * Unsubscribes from all subscriptions to avoid memory leaks.
+   */
   ngOnDestroy(): void {
     this.sub?.unsubscribe();
   }
 
+  /**
+   * Lifecycle hook that is called once, after the first ngOnChanges().
+   * Initializes the component and subscribes to the work day templates.
+   */
   ngOnInit(): void {
     this.sub = this.cache.workDayTemplates$.subscribe((templates) => {
       this.knownTemplateDays = Object.values(templates).map(t => t.content.origin.id);
@@ -75,10 +83,10 @@ export class WorkDayTemplatesboxComponent implements OnChanges, OnDestroy, OnIni
     });
   }
 
+  /**
+   * Loads an existing template for the current day if it exists.
+   */
   loadExistingTemplate(): void {
-    console.log('loadExistingTemplate')
-    console.log(this.day)
-    console.log(this.knownTemplateDays)
     if (!this.knownTemplateDays.includes(this.day.id)) {
       this.resetTemplate();
       return;
@@ -98,6 +106,9 @@ export class WorkDayTemplatesboxComponent implements OnChanges, OnDestroy, OnIni
     });
   }
 
+  /**
+   * Resets the template form to its initial state.
+   */
   resetTemplate(): void {
     this.existingTemplate = undefined;
     this.templateForm.patchValue({
@@ -115,8 +126,6 @@ export class WorkDayTemplatesboxComponent implements OnChanges, OnDestroy, OnIni
   onSubmitTemplateDay(): void {
     if (!this.templateForm.valid)
       return;
-    console.log(this.templateForm.controls.name.value)
-    console.log(this.day)
     const payload: WorkDayTemplate = {
       content: {
         origin: {
@@ -136,10 +145,8 @@ export class WorkDayTemplatesboxComponent implements OnChanges, OnDestroy, OnIni
       name: this.templateForm.controls.name.value!,
       updated: ''
     };
-    console.log(payload);
     this.saving = true;
     this.cache.updateWorkDayTemplate(payload).pipe(first()).subscribe((result) => {
-      console.log(result)
       this.saving = false;
     });
   }
