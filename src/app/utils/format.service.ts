@@ -67,7 +67,7 @@ export class FormatService {
    */
   fdate(date: Date | string | null, form: string): string {
     if (date == null)
-      return this.i18nService.i18n('common.novalue');
+      return this.i18nService.str.common.novalue;
     if (typeof (date) === 'string')
       date = new Date(date);
     return format(date, form, { locale: this.i18nService.DateLocale });
@@ -81,7 +81,7 @@ export class FormatService {
    */
   fdist(date: Date | string | null, suffix: boolean | undefined = undefined): string {
     if (date == null)
-      return this.i18nService.i18n('common.novalue');
+      return this.i18nService.str.common.novalue;
     if (typeof (date) === 'string')
       date = new Date(date);
     return formatDistanceToNow(date, { locale: this.i18nService.DateLocale, addSuffix: suffix });
@@ -96,7 +96,7 @@ export class FormatService {
    */
   fdist2(date: Date | string | null, baseDate: Date | string | null, suffix: boolean | undefined = undefined): string {
     if (date == null || baseDate == null)
-      return this.i18nService.i18n('common.novalue');
+      return this.i18nService.str.common.novalue;
     if (typeof (date) === 'string')
       date = new Date(date);
     if (typeof (baseDate) === 'string')
@@ -176,6 +176,20 @@ export class FormatService {
    */
   fpercent(n: number, fd: number = 0, md: number | undefined = undefined): string {
     return (+n).toLocaleString(this.i18nService.Locale, { minimumFractionDigits: fd, maximumFractionDigits: md }) + '%';
+  }
+
+  /**
+   * Converts a duration in hours (with decimals) to a localized string representation.
+   * For example, a duration of 7.5 would be represented as "7.5 hours" in the appropriate language and format.
+   * The string is translated using the i18n service to ensure it matches the user's locale.
+   * 
+   * @param duration The duration of time in hours, with decimals (e.g., 7.5 for 7 hours and 30 minutes).
+   * @returns A localized string representing the duration in the format defined by the i18n service.
+   */
+  timespan(duration: number | null | undefined): string {
+    if (!duration)
+      return '';
+    return this.i18nService.i18n('calendar.duration.short', [duration.toLocaleString(this.i18nService.Locale, { minimumFractionDigits: 1 })]);
   }
 
   /**

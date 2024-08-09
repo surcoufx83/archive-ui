@@ -4,7 +4,7 @@
         <div>
             <button class="item btn btn-sm btn-primary" (click)="onCreateNote()">
                 <app-icon [iconClass]="icons['add']" [marginEnd]="1"></app-icon>
-                {{ i18n('common.add') }}
+                {{ i18nstr.common.add }}
             </button>
             @if (selectedNote) {
             <a [routerLink]="[ '/notepad' ]"
@@ -24,7 +24,7 @@
         <div>
             <button type="button" class="btn btn-dark btn-sm" (click)="sidebarOpen = !sidebarOpen">
                 <app-icon [iconClass]="icons[!sidebarOpen ? 'show' : 'hide']" [marginEnd]="1"></app-icon>
-                {{ i18n('notepad2.toggleSidebar') }}
+                {{ i18nstr.notepad2.toggleSidebar }}
             </button>
         </div>
     </div>
@@ -38,15 +38,15 @@
             <app-notepad2-note [note]="selectedNote" [editMode]="editMode"></app-notepad2-note>
             }
             @else {
-            <h5>{{ i18n('notepad2.noNoteSelected.title') }}</h5>
+            <h5>{{ i18nstr.notepad2.noNoteSelected.title }}</h5>
             <p>
-                {{ i18n('notepad2.noNoteSelected.introduction') }}
+                {{ i18nstr.notepad2.noNoteSelected.introduction }}
             </p>
             }
         </div>
     </div>
 </div>
 
-<confirm-deletion modalId="confirm-deletion-selected-note" [title]="i18n('common.confirm.deletion.title')"
-    [question]="i18n('common.confirm.deletion.message')"
+<confirm-deletion modalId="confirm-deletion-selected-note" [title]="i18nstr.common.confirm.deletion.title"
+    [question]="i18nstr.common.confirm.deletion.message"
     (confirm)="selectedNote ? onDeletionConfirmed() : null"></confirm-deletion>

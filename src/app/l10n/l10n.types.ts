@@ -1010,6 +1010,16 @@ export type L10nArchiveLocale = {
             title: string,
             booked: string
         },
+        templatescard: {
+            description: string,
+            disabledHoliday: string,
+            disabledOffday: string,
+            existingItem: string,
+            pickFlexItemLabel: string,
+            templateNamePlaceholder: string,
+            title: string,
+            weekLink: string,
+        },
         tracked: {
             title: string,
             description: string,
@@ -1028,6 +1038,7 @@ export type L10nArchiveLocale = {
                 customer: string,
                 description: string,
                 duration: string,
+                durationLong: string,
                 durationShort: string,
                 from: string,
                 project: string,
@@ -1042,7 +1053,11 @@ export type L10nArchiveLocale = {
                 nameTitle: string,
                 namePlaceholder: string
             },
-            live: {}
+            live: {},
+            recentBookings: {
+                title: string,
+                filter: string,
+            }
         }
     },
     workmonth: {
@@ -1066,7 +1081,9 @@ export type L10nArchiveLocale = {
                 title: string,
                 takeover: string,
                 balance: string,
-                carryover: string
+                carryover: string,
+                booked: string,
+                target: string
             }
         },
         offtime: {

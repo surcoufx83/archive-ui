@@ -1,0 +1,35 @@
+<app-card icon="today" [title]="i18n('workmonth.cards.day.title', [fdate(workDay?.date, 'P')])">
+    <div class="d-flex justify-content-between mb-2">
+        <div class="fs-7">
+            {{ i18nstr.calendar.weekday }}
+        </div>
+        <strong>{{ fdate(workDay?.date, 'EEEE') }}</strong>
+    </div>
+    @if (workDay && workDay.offcategory) {
+    <div class="d-flex justify-content-between">
+        <div class="fs-7">
+            {{ i18nstr.work.offcategories.title }}
+        </div>
+        <strong>{{ i18n('work.offcategories.' + workDay.offcategory.name) }}</strong>
+    </div>
+    }
+    @if (workDay && workDay.stats) {
+    <div class="d-flex justify-content-between">
+        <div class="fs-7">
+            {{ i18nstr.workday.daycard.booked }}
+        </div>
+        <div class="font-weight-bold">
+            <strong>
+                {{ formatTimespan(workDay.stats.duration) }}
+            </strong>
+            @if (settings && settings.work.worktime.default != workDay.stats.duration) {
+            <span class="fs-8 ms-2">[{{ settings.work.worktime.default < workDay.stats.duration ? '+' : '' }}{{
+                    formatTimespan(workDay.stats.duration - settings.work.worktime.default) }}]</span>
+                    }
+        </div>
+    </div>
+    }
+    <div class="my-2 border-bottom"></div>
+    <app-grid-row [items]="headerGridRow()" [rowCss]="['fs-7', 'text-center', 'fw-bold']"></app-grid-row>
+    <app-grid-row [items]="contentGridRow()" [rowCss]="['fs-7', 'text-center']"></app-grid-row>
+</app-card>

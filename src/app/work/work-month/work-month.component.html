@@ -1,213 +1,73 @@
-<ui-centered-busy-indicator *ngIf="usersettingsObj == undefined"></ui-centered-busy-indicator>
+@if (!usersettingsObj || !selectedDay) {
+<ui-centered-busy-indicator></ui-centered-busy-indicator>
+}
 
-<ng-container *ngIf="usersettingsObj != undefined && selectedDay != undefined">
-  <div class="container pt-4 pt-md-2 mb-2">
-    <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between">
-      <h2 class="d-block d-md-none">{{ i18n('workmonth.pagetitleShort', [f(selectedMonth, 'MMM yyyy')]) }}</h2>
-      <h2 class="d-none d-md-block">{{ i18n('workmonth.pagetitle', [f(selectedMonth, 'MMMM yyyy')]) }}</h2>
-      <div>
-        <nav class="h-100" style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
-          <ol class="breadcrumb d-flex align-items-center h-100 mb-0">
-            <li class="breadcrumb-item">
-              <ui-busy-indicator *ngIf="monthLoading"></ui-busy-indicator>
-            </li>
-            <a class="breadcrumb-item" [routerLink]="['/work', 'month', f(LastMonth, 'yyyy'), f(LastMonth, 'M')]">
-              <button type="button" class="btn btn-sm btn-outline-primary">
-                <app-icon [iconClass]="icons['go-left']" [marginEnd]="1"></app-icon>
-                {{ f(LastMonth, 'MMM') }}
-              </button>
-            </a>
-            <a *ngIf="!IsToday" class="breadcrumb-item"
-              [routerLink]="['/work', 'month', f(today, 'yyyy'), f(today, 'M')]">
-              <button type="button" class="btn btn-sm btn-outline-primary">
-                <app-icon [iconClass]="icons['rotate-left']" [marginEnd]="1"></app-icon>
-                {{ i18n('common.today') }}
-              </button>
-            </a>
-            <a class="breadcrumb-item" [routerLink]="['/work', 'month', f(NextMonth, 'yyyy'), f(NextMonth, 'M')]">
-              <button type="button" class="btn btn-sm btn-outline-primary">
-                {{ f(NextMonth, 'MMM') }}
-                <app-icon [iconClass]="icons['go-right']" addCssClasses="ms-1"></app-icon>
-              </button>
-            </a>
-          </ol>
-        </nav>
-      </div>
-    </div>
+@else {
+
+<div class="container">
+
+  <div class="pt-4 pt-md-2 mb-2">
+    <!-- The page header with day back and forward buttons and busy indicator -->
+    <app-work-month-header [selectedMonth]="selectedMonth" [busy]="monthLoading"></app-work-month-header>
   </div>
+
+  <div class="pt-md-2 mb-2">
+
+    <div class="row g-2">
+      <!-- container with info cards -->
+
+      <div class="col-12 col-md-4">
+        <!-- card 1: Month info -->
+        <app-work-month-info-box [workMonth]="monthObj"></app-work-month-info-box>
+      </div>
+
+      <div class="d-none d-md-block col-md-4">
+        <!-- card 2: Chart box (todo) -->
+      </div>
+
+      <div class="col-12 col-md-4">
+        <!-- card 3: Day info box -->
+        <app-work-month-box-day [workDay]="selectedDay" [settings]="usersettingsObj"></app-work-month-box-day>
+      </div>
+
+      <!-- container with info cards -->
+    </div>
+
+  </div>
+
+  <div class="pt-4 pt-md-2 mb-2">
+    <!-- Calendar container -->
+    <app-h3 [title]="i18nstr.workmonth.calendar.title" [containercss]="'pt-4'" [btn1]="i18nstr.calendar.showWeekend"
+      btn1css="btn btn-sm btn-secondary"
+      [btn1icon]="icons[usersettingsObj.view.calendar.showWeekend ? 'toggle-on' : 'toggle-off']"
+      (btn1Clicked)="usersettingsObj.view.calendar.showWeekend = !usersettingsObj.view.calendar.showWeekend; pushUserSettings()"></app-h3>
+  </div>
+
+  <div class="border my-3 rounded">
+    <mwl-calendar-month-view [activeDayIsOpen]="activeDayIsOpen" [viewDate]="viewDate" [events]="calendarEvents"
+      [excludeDays]="(usersettingsObj.view.calendar.showWeekend ? [] : [0,6])" [refresh]="refresh"
+      [weekStartsOn]="usersettingsObj.view.calendar.firstDayOfWeek" (beforeViewRender)="beforeMonthViewRender($event)"
+      (dayClicked)="dayClicked($event.day)" (eventClicked)="handleEvent('Clicked', $event.event)"
+      (eventTimesChanged)="eventTimesChanged($event)" [locale]="locale">
+    </mwl-calendar-month-view>
+  </div>
+
+</div>
+
+}
+
+<!-- <ng-container *ngIf="usersettingsObj != undefined && selectedDay != undefined">
 
   <ng-container *ngIf="!monthLoading && monthObj != undefined && selectedDay != undefined">
 
-    <div class="container pt-md-2 mb-2">
-
-      <div class="row g-2">
-        <!-- container with info cards -->
-
-        <div class="col-12 col-md-4">
-          <!-- card 1: container month info -->
-          <div class="card">
-            <div class="card-header">
-              <h5 class="mb-0">
-                <app-icon [iconClass]="icons['info']" [marginEnd]="1"></app-icon>
-                {{ i18n('workmonth.cards.target.title') }}
-              </h5>
-            </div>
-            <div class="card-body">
-              <div class="d-flex justify-content-between mb-2">
-                <div class="fs-7">
-                  {{ i18n('workmonth.cards.target.businessDays') }} [ {{ i18n('workmonth.cards.target.offDays') }} ]
-                </div>
-                <div class="font-weight-bold">
-                  <strong>{{ monthObj.days - monthObj.weekenddays - monthObj.holidays }}</strong>
-                  <span class="fs-8 ms-1">[ {{ monthObj.weekenddays }} / {{ monthObj.holidays }} ]</span>
-                </div>
-              </div>
-              <div class="d-flex justify-content-between mb-2">
-                <div class="fs-7">
-                  {{ i18n('workmonth.cards.target.lastEdit') }}
-                </div>
-                <div class="font-weight-bold">
-                  <span class="d-none d-lg-inline">{{ f(s2d(monthObj.updated), 'PPpp') }}</span>
-                  <span class="d-inline d-lg-none">{{ f(s2d(monthObj.updated), 'PP') }}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div><!-- card 1: container month info -->
-
-        <div class="col-12 col-md-4">
-          <!-- card 2: time booked -->
-          <div class="card">
-            <div class="card-header">
-              <h5 class="mb-0">
-                <app-icon [iconClass]="icons['stopwatch']" [marginEnd]="1"></app-icon>
-                {{ i18n('workmonth.cards.time.title') }}
-              </h5>
-            </div>
-            <div class="card-body">
-              <div class="d-flex justify-content-between mb-2">
-                <div class="fs-7">
-                  {{ i18n('workmonth.cards.time.takeover') }}
-                </div>
-                <div class="font-weight-bold">
-                  {{ i18n('calendar.duration.short', ['' + monthObj.timestart]) }}
-                </div>
-              </div>
-              <div class="d-flex justify-content-between mb-2">
-                <div class="fs-7">
-                  {{ i18n('workmonth.cards.time.balance') }}
-                </div>
-                <div class="font-weight-bold">
-                  {{ i18n('calendar.duration.short', ['' + monthObj.timedif]) }}
-                </div>
-              </div>
-              <div class="d-flex justify-content-between mb-2">
-                <div class="fs-7">
-                  {{ i18n('workmonth.cards.time.carryover') }}
-                </div>
-                <div class="font-weight-bold">
-                  {{ i18n('calendar.duration.short', ['' + monthObj.timeclose]) }}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div><!-- card 2: time booked -->
-
-        <div class="col-12 col-md-4">
-          <!-- card 3: day information -->
-          <div class="card">
-            <div class="card-header">
-              <h5 class="mb-0">
-                <app-icon [iconClass]="icons['today']" [marginEnd]="1"></app-icon>
-                {{ i18n('workmonth.cards.day.title', [f(s2d(selectedDay.date), 'P')]) }}
-              </h5>
-            </div>
-            <div class="card-body">
-              <div class="d-flex justify-content-between">
-                <div class="fs-7">
-                  {{ i18n('calendar.weekday') }}
-                </div>
-                <div class="font-weight-bold">
-                  <strong>{{ f(s2d(selectedDay.date), 'EEEE') }}</strong>
-                </div>
-              </div>
-              <div class="d-flex justify-content-between" *ngIf="selectedDay.offcategory">
-                <div class="fs-7">
-                  {{ i18n('work.offcategories.title') }}
-                </div>
-                <div class="font-weight-bold">
-                  <strong>{{ i18n('work.offcategories.' + selectedDay.offcategory.name) }}</strong>
-                </div>
-              </div>
-              <ng-container *ngIf="selectedDay.stats">
-                <div class="d-flex justify-content-between">
-                  <div class="fs-7">
-                    {{ i18n('workday.daycard.booked') }}
-                  </div>
-                  <div class="font-weight-bold">
-                    <strong>{{ fd(selectedDay.stats.duration) }}</strong>
-                    <span class="fs-8 ms-2"
-                      *ngIf="usersettingsObj.work.worktime.default > selectedDay.stats.duration">[{{
-                      fd(selectedDay.stats.duration - usersettingsObj.work.worktime.default) }}]</span>
-                    <span class="fs-8 ms-2"
-                      *ngIf="usersettingsObj.work.worktime.default < selectedDay.stats.duration">[+{{
-                      fd(selectedDay.stats.duration - usersettingsObj.work.worktime.default) }}]</span>
-                  </div>
-                </div>
-              </ng-container>
-              <ng-container *ngIf="selectedDay.daytimeStats">
-                <div class="mt-2 border-bottom"></div>
-                <div class="row mt-2 fs-8">
-                  <div class="col-3 text-center"><strong>{{ i18n('workday.tracking.common.from') }}</strong></div>
-                  <div class="col-3 text-center"><strong>{{ i18n('workday.tracking.common.until') }}</strong></div>
-                  <div class="col-3 text-center"><strong>{{ i18n('workday.tracking.common.breakShort') }}</strong></div>
-                  <div class="col-3 text-center"><strong>{{ i18n('workday.tracking.common.durationShort') }}</strong>
-                  </div>
-                </div>
-                <div class="row fs-8">
-                  <div class="col-3 text-center">{{ f(s2d(selectedDay.daytimeStats.startOfDay), 'p') }}</div>
-                  <div class="col-3 text-center">{{ f(s2d(selectedDay.daytimeStats.endOfDay), 'p') }}</div>
-                  <div class="col-3 text-center">{{ fd(selectedDay.daytimeStats.breaksDuration) }}</div>
-                  <div class="col-3 text-center">{{ fd(selectedDay.daytimeStats.totalDurationWithBreaks) }}</div>
-                </div>
-              </ng-container>
-            </div>
-          </div>
-        </div><!-- card 3: day information -->
-
-      </div><!-- container with month calendar -->
-
-    </div>
-
-    <div class="container pt-4 pt-md-2 mb-2">
-      <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between">
-        <h3>{{ i18n('workmonth.calendar.title') }}</h3>
-        <div>
-          <nav class="h-100" style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
-            <ol class="breadcrumb d-flex align-items-center h-100 mb-0">
-              <li class="breadcrumb-item">
-                <button type="button" class="btn btn-sm btn-secondary"
-                  (click)="usersettingsObj.view.calendar.showWeekend = !usersettingsObj.view.calendar.showWeekend; pushUserSettings();"
-                  [title]="i18n('calendar.showWeekendTitle')">
-                  <app-icon [iconClass]="icons[usersettingsObj.view.calendar.showWeekend ? 'toggle-on' : 'toggle-off']"
-                    [marginEnd]="1"></app-icon>
-                  {{ i18n('calendar.showWeekend') }}
-                </button>
-              </li>
-            </ol>
-          </nav>
-        </div>
-      </div>
-    </div>
 
     <div class="container pt-md-2 mb-2">
 
       <div
         class="container-fluid p-0 mb-3 mb-md-1 d-flex flex-column flex-md-row justify-content-end align-items-center flex-wrap">
-        <!-- Offtime categories drag&drop-->
         <div class="me-3">
-          {{ i18n('workmonth.offtime.title') }}<i [ngClass]="[icons['help'], 'fs-8 me-1 help-icon pointer']"
-            [tooltip]="i18n('workmonth.offtime.subtitle')"></i>:
+          {{ i18nstr.workmonth.offtime.title }}<i [ngClass]="[icons['help'], 'fs-8 me-1 help-icon pointer']"
+            [tooltip]="i18nstr.workmonth.offtime.subtitle"></i>:
         </div>
         <nav class="h-100" style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
           <ol class="breadcrumb d-flex align-items-center h-100 mb-0">
@@ -225,21 +85,12 @@
             </ng-container>
           </ol>
         </nav>
-        <!-- Offtime categories drag&drop-->
       </div>
 
-      <div class="border my-3">
-        <mwl-calendar-month-view [activeDayIsOpen]="activeDayIsOpen" [viewDate]="viewDate" [events]="calendarEvents"
-          [excludeDays]="(usersettingsObj.view.calendar.showWeekend ? [] : [0,6])" [refresh]="refresh"
-          [weekStartsOn]="usersettingsObj.view.calendar.firstDayOfWeek"
-          (beforeViewRender)="beforeMonthViewRender($event)" (dayClicked)="dayClicked($event.day)"
-          (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)"
-          [locale]="locale">
-        </mwl-calendar-month-view>
-      </div>
+
 
     </div>
 
   </ng-container>
 
-</ng-container>
+</ng-container> -->

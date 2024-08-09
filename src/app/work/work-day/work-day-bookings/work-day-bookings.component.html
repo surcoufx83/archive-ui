@@ -1,0 +1,58 @@
+<div class="card">
+    <div class="card-body">
+        <div class="flex-table flex-table-sm">
+            <div class="flex-table-head row">
+                <div class="col-4 col-lg-2">
+                    {{ i18nstr.workday.tracked.fromUntilTitle }}
+
+                </div>
+                <div class="col-4 col-lg-2">
+                    {{ i18nstr.workday.tracking.common.break }}
+
+                </div>
+                <div class="col-4 col-lg-2">
+                    {{ i18nstr.workday.tracking.common.duration }}
+
+                </div>
+                <div class="col-12 col-lg-6">
+                    {{ i18nstr.workday.tracked.description }}
+
+                </div>
+            </div>
+
+            @for (item of bookings; track $index) {
+            <div class="flex-table-body row pointer" (click)="bookingClick.emit(item)">
+                <div class="col-4 col-lg-2">
+                    {{ i18n('workday.tracked.fromUntil', [fdate(item.timefrom, 'p'), fdate(item.timeuntil, 'p')]) }}
+                </div>
+                <div class="col-4 col-lg-2">
+                    @if (item.break > 0) {
+                    {{ i18n('calendar.duration.short', ['' + item.break]) }}
+                    }
+                </div>
+                <div class="col-4 col-lg-2">
+                    <i [class]="item.timecategory.icon + ' ' + item.timecategory.iconcolor + ' me-1'"
+                        [title]="i18n('work.timecategories.' + item.timecategory.name)"></i>
+                    {{ i18n('calendar.duration.short', ['' + item.duration]) }}
+                </div>
+                <div class="col-12 col-lg-6 d-flex justify-content-between">
+                    <div>
+                        {{ item.customer?.name }}
+                        {{ item.project?.name }}
+                        <div class="fs-7">
+                            {{ item.projectstage }} {{ item.description }}
+                        </div>
+                    </div>
+                    <div class="align-self-center">
+                        <button class="btn btn-outline-danger"
+                            (click)="deleteClick.emit(item); $event.stopPropagation();">
+                            <app-icon [iconClass]="icons['delete']"></app-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            }
+
+        </div>
+    </div>
+</div>

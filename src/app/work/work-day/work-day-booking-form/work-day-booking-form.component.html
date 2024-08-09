@@ -1,0 +1,229 @@
+<div class="row g-2">
+    <div class="col-12 col-lg-8">
+        <!-- booking form outer container -->
+        <div class="card">
+            <div class="card-body">
+
+                <form [formGroup]="bookingForm" (submit)="onSubmit()">
+
+                    <div class="row">
+                        <div class="col-6 col-lg-3 mb-3">
+                            <div class="form-group">
+                                <label for="tracking-from" class="form-label required">
+                                    {{ i18nstr.workday.tracking.common.from }}
+                                </label>
+                                <input type="text" #focusInput class="form-control always-status" id="tracking-from"
+                                    name="tracking-from" formControlName="timeFrom"
+                                    [placeholder]="i18nstr.workday.tracking.common.timePlaceholder"
+                                    (input)="onChangeTime()">
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3 mb-3">
+                            <div class="form-group">
+                                <label for="tracking-until" class="form-label required">
+                                    {{ i18nstr.workday.tracking.common.until }}
+                                </label>
+                                <input type="text" class="form-control always-status" id="tracking-until"
+                                    name="tracking-until" formControlName="timeUntil"
+                                    [placeholder]="i18nstr.workday.tracking.common.timePlaceholder"
+                                    (input)="onChangeTime()">
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3 mb-3">
+                            <div class="form-group">
+                                <label for="tracking-break" class="form-label required">
+                                    {{ i18nstr.workday.tracking.common.break }}
+                                </label>
+                                <input type="number" class="form-control always-status" id="tracking-break"
+                                    name="tracking-break" formControlName="timeBreak"
+                                    [placeholder]="i18nstr.workday.tracking.common.breakPlaceholder"
+                                    (input)="onChangeTime()">
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3 mb-3">
+                            <div class="form-group">
+                                <label for="tracking-duration" class="form-label">
+                                    {{ i18nstr.workday.tracking.common.durationLong }}
+                                </label>
+                                <input type="text" class="form-control" id="tracking-duration" name="tracking-duration"
+                                    formControlName="durationOutput" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 col-lg-6 mb-3">
+                            <div class="form-group">
+                                <label for="tracking-category" class="form-label required">
+                                    {{ i18nstr.workday.tracking.common.timeCategory }}
+                                </label>
+                                <div class="input-group">
+                                    <select class="form-select always-status" id="tracking-category"
+                                        name="tracking-category" formControlName="category">
+                                        <option [ngValue]="-1">
+                                            {{ i18nstr.common.select.pickOne }}
+                                        </option>
+                                        @for (category of categories; track $index) {
+                                        <option [ngValue]="category.id">
+                                            {{ i18n('work.timecategories.' + category.name) }}
+                                        </option>
+                                        }
+
+                                    </select>
+                                    @if (booking.timecategory.icon) {
+                                    <label class="input-group-text" for="tracking-category">
+                                        <app-icon [iconClass]="booking.timecategory.icon"
+                                            [addCssClasses]="booking.timecategory.iconcolor"></app-icon>
+                                    </label>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" [ngClass]="{ 'd-none': !usersettingsObj.work.tracking.trackCustomer }">
+                        <!-- tracking of customer if enabled via user settings -->
+                        <div class="col-12 col-lg-4 mb-3">
+                            <div class="form-group">
+                                <label for="tracking-customer" class="form-label required">
+                                    {{ i18nstr.workday.tracking.common.customer }}
+                                </label>
+                                <label class="form-label text-link pointer ms-3 fs-8" data-bs-toggle="modal"
+                                    data-bs-target="#createCustomerModal">
+                                    [{{ i18nstr.common.add }}]
+                                </label>
+                                <select class="form-select always-status" id="tracking-customer"
+                                    name="tracking-customer" formControlName="customer">
+                                    <option [ngValue]="-1">
+                                        {{ i18nstr.common.select.pickOne }}
+                                    </option>
+                                    @for (customer of customers; track $index) {
+                                    <option [ngValue]="customer.id">
+                                        {{ customer.name }}
+                                    </option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <!-- tracking of customer if enabled via user settings -->
+
+                        <div class="col-12 col-lg-4 mb-3"
+                            [ngClass]="{ 'd-none': !usersettingsObj.work.tracking.trackCustomerProject }">
+                            <!-- tracking of customer project if enabled via user settings-->
+                            <div class="form-group">
+                                <label for="tracking-project" class="form-label">
+                                    {{ i18nstr.workday.tracking.common.project }}
+                                </label>
+                                <select class="form-select always-status" id="tracking-project" name="tracking-project"
+                                    formControlName="customerProject">
+                                    <option [ngValue]="-1">
+                                        {{ i18nstr.common.select.pickOne }}
+                                    </option>
+                                    @for (project of projects; track $index) {
+                                    <option [ngValue]="project.id">
+                                        {{ project.name }}
+                                    </option>
+                                    }
+                                </select>
+                            </div>
+                            <!-- tracking of customer project if enabled via user settings-->
+                        </div>
+
+                        <div class="col-12 col-lg-4 mb-3"
+                            [ngClass]="{ 'd-none': !usersettingsObj.work.tracking.trackProjectTask }">
+                            <!-- tracking of task if enabled via user settings -->
+                            <div class="form-group">
+                                <label for="tracking-task" class="form-label">
+                                    {{ i18nstr.workday.tracking.common.task }}
+                                </label>
+                                <input type="text" class="form-control always-status" id="tracking-task"
+                                    name="tracking-task" formControlName="task">
+                            </div>
+                            <!-- tracking of task if enabled via user settings -->
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <div class="form-group">
+                                <label for="tracking-description" class="form-label">
+                                    {{ i18nstr.workday.tracking.common.description }}
+                                </label>
+                                <textarea class="form-control always-status" id="tracking-description"
+                                    name="tracking-description" formControlName="description"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary" [disabled]="busy">
+                                    <app-icon [iconClass]="icons[busy ? 'busy' : 'save']" [marginEnd]="1"></app-icon>
+                                    {{ i18nstr.common.save }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+        <!-- booking form outer container -->
+    </div>
+
+    <div class="col-12 col-lg-4">
+        <!-- booking form recent booking entries -->
+        <ul class="list-group rounded-bottom-0">
+            <li class="list-group-item">
+                <h5 class="mb-0 text-truncate">
+                    {{ i18nstr.workday.tracking.recentBookings.title }}
+                </h5>
+            </li>
+            <li class="list-group-item p-0">
+                <div class="input-group">
+                    <input type="search" class="form-control form-control-sm w-100 rounded-0 border-0"
+                        id="recent-filter" name="recent-filter" [(ngModel)]="filterRecent"
+                        (input)="onChangeRecentFilter()" (keydown)="onFilterKeyDown($event)"
+                        [placeholder]="i18nstr.workday.tracking.recentBookings.filter">
+                </div>
+            </li>
+        </ul>
+        <ul class="list-group overflow-y-auto rounded-top-0 border-top-0" style="max-height: 50vh;">
+            @for (item of filteredRecentBookings(); track $index) {
+            <li class="list-group-item pointer" [title]="i18nstr.workday.tracking.common.recentTitle"
+                (click)="copyFromRecent(item.booking);">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <div>
+                            @if (item.category) {
+                            <i class="fs-7 me-1" [ngClass]="[item.category.icon, item.category.iconcolor]"></i>
+                            }
+
+                            @if (item.customer) {
+                            {{ item.customer.name }}
+                            }
+
+                            {{ item.booking.projectstage }}
+
+                            @if (item.project) {
+                            {{ item.project.name }}
+                            }
+
+                        </div>
+                        <div class="fs-8">
+                            {{ item.booking.description }}
+                        </div>
+                    </div>
+                    <div>
+                        <span class="badge rounded-pill text-bg-dark ms-2">{{ item.booking.count }}x</span>
+                    </div>
+                </div>
+            </li>
+            }
+        </ul>
+        <!-- booking form recent booking entries -->
+    </div>
+
+</div>

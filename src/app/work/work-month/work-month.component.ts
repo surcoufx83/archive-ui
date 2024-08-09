@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment.dev';
 import { AuthService } from '../../auth.service';
 import { I18nService } from '../../i18n.service';
 import { SettingsService } from '../../utils/settings.service';
+import { L10nArchiveLocale } from 'src/app/l10n/l10n.types';
 
 @Component({
   selector: 'app-work-month',
@@ -103,7 +104,7 @@ export class WorkMonthComponent implements AfterViewInit, OnDestroy, OnInit {
     if (event.meta.type === 'WorkOffCategory') {
       let cat: WorkOffCategory = event.meta.obj;
       let date: number = getDate(newStart);
-      if (this.dayObjs[date] == undefined || !isSameMonth(newStart, new Date((<WorkMonth>this.monthObj).datefrom)))
+      if (this.dayObjs[date] == undefined || !isSameMonth(newStart, new Date((<WorkMonth>this.monthObj).period.dateFrom)))
         return;
       let day = this.dayObjs[date];
       let url = `${environment.api.baseUrl}/work/day/${this.monthObj?.id}/${day.id}/offdays/set/${cat.id}`;
@@ -130,10 +131,16 @@ export class WorkMonthComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   getProjectDescription(entry: WorkDayBooking, inclCustomer: boolean = false): string {
-    return (entry.customer && inclCustomer ? entry.customer.name + ' // ' : '')
-      + (entry.project ? entry.project.name + ' // ' : '')
-      + (entry.projectstage !== '' ? entry.projectstage + ' // ' : '')
-      + entry.description;
+    let items: string[] = [];
+    if (entry.customer?.name && inclCustomer)
+      items.push(entry.customer.name)
+    if (entry.project?.name)
+      items.push(entry.project.name);
+    if (entry.projectstage)
+      items.push(entry.projectstage);
+    if (entry.description)
+      items.push(entry.description);
+    return items.join(' // ');
   }
 
   handleEvent(action: string, event: CalendarEvent): void {
@@ -145,6 +152,14 @@ export class WorkMonthComponent implements AfterViewInit, OnDestroy, OnInit {
 
   i18n(key: string, params: string[] = []): string {
     return this.i18nService.i18n(key, params);
+  }
+
+  /**
+   * Getter for i18n localization strings.
+   * @returns The localization strings.
+   */
+  get i18nstr(): L10nArchiveLocale {
+    return this.i18nService.str;
   }
 
   ngAfterViewInit() {
@@ -231,7 +246,7 @@ export class WorkMonthComponent implements AfterViewInit, OnDestroy, OnInit {
               }
             }
             const today = new Date();
-            if (this.monthObj.month == getMonth(today) + 1 && this.dayObjs[getDate(today)] != undefined)
+            if (this.monthObj.period.month == getMonth(today) + 1 && this.dayObjs[getDate(today)] != undefined)
               this.selectedDate$.next(today);
             else if (this.dayObjs[1] != undefined) {
               this.selectedDate$.next(this.s2d(this.dayObjs[1].date));
@@ -265,7 +280,7 @@ export class WorkMonthComponent implements AfterViewInit, OnDestroy, OnInit {
         });
       }
       this.offdayDroppableEvents.push({
-        title: this.i18n('work.offcategories.none'),
+        title: this.i18nstr.work.offcategories.none,
         start: new Date(),
         draggable: true,
         allDay: true,
@@ -275,7 +290,7 @@ export class WorkMonthComponent implements AfterViewInit, OnDestroy, OnInit {
             icon: '',
             iconcolor: '',
             id: 0,
-            name: this.i18n('work.offcategories.none'),
+            name: this.i18nstr.work.offcategories.none,
             quickselect: true,
             rowcolor: '',
             userid: 0

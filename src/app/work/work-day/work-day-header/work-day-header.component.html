@@ -1,0 +1,36 @@
+<app-h2-new [busy]="busy">
+    <ng-container title>
+        <span class="d-none d-lg-inline">
+            {{ i18n('workday.pagetitle', [ fdate(today, 'PP') ]) }}
+        </span>
+        <span class="d-inline d-lg-none">
+            {{ fdate(today, 'PP') }}
+        </span>
+    </ng-container>
+    <ng-container actions>
+        @if (yesterday) {
+        <app-link-btn [link]="['/work', 'day', fdate(yesterday, 'yyyy-MM-dd')]"
+            [css]="['btn-sm', 'btn-outline-primary']" icon="go-left">
+            <span class="d-none d-lg-inline">
+                {{ fdate(yesterday, 'P') }}
+            </span>
+        </app-link-btn>
+        }
+
+        <app-link-btn [link]="['/work', 'day', actualDate]"
+            [css]="{ 'btn-sm': true, 'btn-outline-secondary': isToday, 'btn-outline-primary': !isToday }" icon="today">
+            <span class="d-none d-lg-inline">
+                {{ i18nstr.common.today }}
+            </span>
+        </app-link-btn>
+
+        @if (tomorrow) {
+        <app-link-btn [link]="['/work', 'day', fdate(tomorrow, 'yyyy-MM-dd')]" [css]="['btn-sm', 'btn-outline-primary']"
+            icon="go-right">
+            <span class="d-none d-lg-inline">
+                {{ fdate(tomorrow, 'P') }}
+            </span>
+        </app-link-btn>
+        }
+    </ng-container>
+</app-h2-new>

@@ -2,19 +2,19 @@
 
     <div class="container pt-4 pt-md-2 mb-2">
         <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between align-items-center">
-            <h2 class="px-2 mb-0">{{ i18n('stocks.title') }}</h2>
+            <h2 class="px-2 mb-0">{{ i18nstr.stocks.title }}</h2>
             <div>
                 <nav class="h-100" style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
                     <ol class="breadcrumb d-flex align-items-center h-100 mb-0 flex-fill flex-nowrap">
                         <button type="button" class="btn btn-sm btn-outline-primary" (click)="createNewRates()"
                             data-bs-toggle="modal" data-bs-target="#rate-input-modal">
                             <app-icon [iconClass]="icons['receipt']"></app-icon>
-                            {{ i18n('stocks.updateRates') }}
+                            {{ i18nstr.stocks.updateRates }}
                         </button>
                         <a class="ms-2" [routerLink]="['/finance', 'stocks', 'transactions']">
                             <button type="button" class="btn btn-sm btn-outline-primary">
                                 <app-icon [iconClass]="icons['file']"></app-icon>
-                                {{ i18n('stocks.transactionsLink') }}
+                                {{ i18nstr.stocks.transactionsLink }}
                             </button>
                         </a>
                     </ol>
@@ -26,13 +26,13 @@
     <div class="container">
         <div class="flex-table flex-table-sm mb-3">
             <div class="flex-table-head row">
-                <div class="col-6 col-md-4 col-lg-3">{{ i18n('stocks.name') }}</div>
-                <div class="col-1 text-end d-none d-lg-block">{{ i18n('stocks.quantity') }}</div>
-                <div class="col-2 text-end d-none d-md-block">{{ i18n('stocks.rate') }}</div>
-                <div class="col-3 col-md-2 text-end">{{ i18n('stocks.value') }}</div>
-                <div class="col-3 text-end d-block d-md-none">{{ i18n('stocks.dif') }}</div>
-                <div class="col-2 text-end d-none d-md-block">{{ i18n('stocks.dif') }}</div>
-                <div class="col-2 text-end d-none d-md-block">{{ i18n('stocks.difrel') }}</div>
+                <div class="col-6 col-md-4 col-lg-3">{{ i18nstr.stocks.name }}</div>
+                <div class="col-1 text-end d-none d-lg-block">{{ i18nstr.stocks.quantity }}</div>
+                <div class="col-2 text-end d-none d-md-block">{{ i18nstr.stocks.rate }}</div>
+                <div class="col-3 col-md-2 text-end">{{ i18nstr.stocks.value }}</div>
+                <div class="col-3 text-end d-block d-md-none">{{ i18nstr.stocks.dif }}</div>
+                <div class="col-2 text-end d-none d-md-block">{{ i18nstr.stocks.dif }}</div>
+                <div class="col-2 text-end d-none d-md-block">{{ i18nstr.stocks.difrel }}</div>
             </div>
             <ng-container *ngTemplateOutlet="sumRow"></ng-container>
             <ng-container *ngFor="let stock of stocks; let i = index;">
@@ -45,7 +45,7 @@
 <ng-template #sumRow>
     <div class="flex-table-head row">
         <div class="col-6 text-truncate">
-            {{ i18n('stocks.total') }}
+            {{ i18nstr.stocks.total }}
         </div>
         <div class="col-3 col-md-2 text-end">
             {{ formatService.fcur(valueCurrent) }}
@@ -123,37 +123,37 @@
             <strong>{{ stock.name }}</strong>
         </div>
         <div class="col-12 col-md-6 col-lg-4">
-            <strong>{{ i18n('stocks.isin') }}:</strong> {{ stock.isin ?? i18n('common.novalue') }}
+            <strong>{{ i18nstr.stocks.isin }}:</strong> {{ stock.isin ?? i18nstr.common.novalue }}
         </div>
         <div class="col-12 col-md-6 col-lg-4">
-            <strong>{{ i18n('stocks.wkn') }} / {{ i18n('stocks.symbol') }}:</strong> {{ stock.wkn ??
-            i18n('common.novalue') }} / {{ stock.symbol ?? i18n('common.novalue')
+            <strong>{{ i18nstr.stocks.wkn }} / {{ i18nstr.stocks.symbol }}:</strong> {{ stock.wkn ??
+            i18nstr.common.novalue }} / {{ stock.symbol ?? i18nstr.common.novalue
             }}
         </div>
         <div class="col-12 col-md-6 col-lg-4">
-            <strong>{{ i18n('stocks.currency') }}:</strong> {{ currency(stock.currency).name }}
+            <strong>{{ i18nstr.stocks.currency }}:</strong> {{ currency(stock.currency).name }}
         </div>
         <div class="col-12 col-md-6 col-lg-4">
-            <strong>{{ i18n('stocks.api') }}:</strong> {{ api(stock.api)?.name ?? i18n('common.none') }}
+            <strong>{{ i18nstr.stocks.api }}:</strong> {{ api(stock.api)?.name ?? i18nstr.common.none }}
         </div>
         <div class="col-12 col-md-6 col-lg-4">
-            <strong>{{ i18n('stocks.ordercount') }}:</strong> {{ stock.ordercount }}
-            (<a class="fs-7" [routerLink]="['/finance', 'stocks', stock.id, 'transactions']">{{ i18n('common.goto')
+            <strong>{{ i18nstr.stocks.ordercount }}:</strong> {{ stock.ordercount }}
+            (<a class="fs-7" [routerLink]="['/finance', 'stocks', stock.id, 'transactions']">{{ i18nstr.common.goto
                 }}</a>)
         </div>
     </div>
     <div class="flex-table-body row">
         <div class="col-12 col-md-6 col-lg-4">
-            <strong>{{ i18n('stocks.bought') }}:</strong> {{ i18n('stocks.boughtValue', [
-            formatService.fnumber(stock.bought.quantity), i18n('common.pcs'), formatService.fcur(stock.bought.value /
+            <strong>{{ i18nstr.stocks.bought }}:</strong> {{ i18n('stocks.boughtValue', [
+            formatService.fnumber(stock.bought.quantity), i18nstr.common.pcs, formatService.fcur(stock.bought.value /
             stock.bought.quantity, currency(stock.currency)) ]) }}
         </div>
         <div class="col-12 col-md-6 col-lg-4">
-            <strong>{{ i18n('stocks.rate2') }}:</strong> {{ formatService.fcur(stock.current.rate,
+            <strong>{{ i18nstr.stocks.rate2 }}:</strong> {{ formatService.fcur(stock.current.rate,
             currency(stock.currency)) }} <span class="fs-7">{{ formatService.fdist(stock.current.date, true) }}</span>
         </div>
         <div class="col-12 col-md-6 col-lg-4">
-            <strong>{{ i18n('stocks.value') }}:</strong> {{ formatService.fcur(stock.current.value,
+            <strong>{{ i18nstr.stocks.value }}:</strong> {{ formatService.fcur(stock.current.value,
             currency(stock.currency)) }} <span class="fs-7">
                 <span [ngClass]="[stock.current.dif.abs > 0 ? 'text-success' : 'text-danger']">
                     <span *ngIf="stock.current.dif.abs > 0">+</span>{{ formatService.fcur(stock.current.dif.abs,
@@ -172,12 +172,12 @@
         <div class="modal-content">
             <form (submit)="saveNewRates(currentRates); createNewRates(true);">
                 <div class="modal-header">
-                    <h5 class="modal-title">{{ i18n('stocks.rateInputModal.title') }}</h5>
+                    <h5 class="modal-title">{{ i18nstr.stocks.rateInputModal.title }}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <p class="fs-8">
-                        {{ i18n('stocks.rateInputModal.description') }}
+                        {{ i18nstr.stocks.rateInputModal.description }}
                     </p>
                     <ul *ngIf="currentRates != null" class="list-group list-group-flush">
                         <li class="list-group-item">
@@ -185,13 +185,13 @@
                                 <input type="checkbox" [(ngModel)]="currentSkipWithApi" name="input-skip-with-api"
                                     id="input-skip-with-api" class="form-check-input">
                                 <label class="form-check-label" for="input-skip-with-api"> <strong>{{
-                                        i18n('stocks.rateInputModal.ignoreWithApi') }}</strong></label>
+                                        i18nstr.stocks.rateInputModal.ignoreWithApi }}</strong></label>
                             </div>
                         </li>
                         <li class="list-group-item">
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <strong>{{ i18n('common.date') }}</strong>
+                                    <strong>{{ i18nstr.common.date }}</strong>
                                 </div>
                                 <div class="text-end">
                                     <input type="date" [(ngModel)]="currentRates.date" name="input-date"
@@ -208,12 +208,12 @@
                                             <span *ngIf="value.stock.isin != ''"
                                                 class="pointer user-select-all text-nowrap"
                                                 [title]="i18n('stocks.isinWithValue', [value.stock.isin])">
-                                                <strong>{{ i18n('stocks.isin') }}:</strong> {{ value.stock.isin
+                                                <strong>{{ i18nstr.stocks.isin }}:</strong> {{ value.stock.isin
                                                 }}</span>
                                             <span *ngIf="value.stock.symbol != null && value.stock.symbol != ''"
                                                 class="pointer user-select-all text-nowrap"
                                                 [title]="i18n('stocks.symbolWithValue', [value.stock.symbol])">
-                                                <strong>{{ i18n('stocks.symbol') }}:</strong> {{ value.stock.symbol
+                                                <strong>{{ i18nstr.stocks.symbol }}:</strong> {{ value.stock.symbol
                                                 }}</span>
                                         </div>
                                     </div>
@@ -242,11 +242,11 @@
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button #closeRatesModalButton type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{
-                        i18n('common.cancel')
+                        i18nstr.common.cancel
                         }}</button>
                     <button type="submit" class="btn btn-success" [disabled]="savingRates">
                         <app-icon [iconClass]="icons[savingRates ? 'busy' : 'save']"></app-icon>
-                        {{ i18n('common.save') }}
+                        {{ i18nstr.common.save }}
                     </button>
                 </div>
             </form>

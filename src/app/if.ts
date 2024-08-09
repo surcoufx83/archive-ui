@@ -806,6 +806,28 @@ export type WorkDay = {
   daytimeStats?: WorkDayTimeStats,
 }
 
+export type WorkDaySimple = {
+  date: string,
+  day: number,
+  id: number,
+  month: WorkMonth,
+  monthid: number,
+  note: string,
+}
+
+export type WorkDayTemplate = {
+  content: {
+    bookings: WorkDayBooking[],
+    origin: WorkDaySimple,
+  },
+  created: string,
+  deleted: string | null,
+  flexItem: number,
+  id: number,
+  name: string,
+  updated: string,
+}
+
 export type WorkDayBooking = {
   break: number,
   customer: WorkCustomer | null,
@@ -910,19 +932,36 @@ export type WorkLeadLead = {
 }
 
 export type WorkMonth = {
-  datefrom: string,
-  dateuntil: string,
-  days: number,
-  holidays: number,
   id: number,
-  month: number,
-  timeclose: number,
-  timedif: number,
-  timestart: number,
   updated: string,
-  userid: number,
-  weekenddays: number,
-  year: number,
+  period: {
+    dateFrom: string,
+    dateUntil: string,
+    month: number,
+    year: number,
+  },
+  stats: {
+    days: {
+      total: number,
+      holidays: number,
+      weekend: number,
+    },
+    bookings: {
+      categories?: null | {
+        categoryId: number;
+        time: {
+          total: number,
+          break: number,
+          net: number,
+        }
+      }[],
+      timeStart: number,
+      timeClose: number,
+      timeDif: number,
+      timeBooked: number,
+      timeTarget: number,
+    }
+  },
   uiCreating?: boolean,
 }
 
@@ -962,6 +1001,7 @@ export type WorkTimeCategory = {
   id: number,
   name: string,
   rowcolor: string,
+  travelIndicator: boolean,
   updated: string,
   userid: number,
 }

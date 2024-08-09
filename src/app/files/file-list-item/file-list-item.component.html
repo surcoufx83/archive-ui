@@ -12,14 +12,14 @@
             <div *ngIf="showButtons && version && version.ext?.displayable" class="ms-2 ms-lg-1">
                 <a [routerLink]="['/file', file.id, 'preview']">
                     <button type="button" class="form-control btn-sm btn-outline-secondary text-nowrap"
-                        [title]="i18n('search.result.group.gotoPreviewTitle')">
+                        [title]="i18nstr.search.result.group.gotoPreviewTitle">
                         <app-icon [iconClass]="icons['preview']" addCssClasses="mx-1"></app-icon>
                     </button>
                 </a>
             </div>
             <div *ngIf="showButtons && version && version.ext?.downloadable" class="ms-2 ms-lg-1">
                 <button type="button" class="form-control btn-sm btn-outline-secondary text-nowrap"
-                    [title]="i18n('search.result.group.downloadFileTitle')"
+                    [title]="i18nstr.search.result.group.downloadFileTitle"
                     (click)="download(); $event.preventDefault(); $event.stopImmediatePropagation(); $event.stopPropagation()">
                     <app-icon [iconClass]="icons['download']" addCssClasses="mx-1"></app-icon>
                 </button>

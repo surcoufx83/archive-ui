@@ -4,6 +4,7 @@ import { Subject, Subscription, first } from 'rxjs';
 import { AuthService } from 'src/app/auth.service';
 import { I18nService } from 'src/app/i18n.service';
 import { UserSettings, WorkMonth } from 'src/app/if';
+import { L10nArchiveLocale } from 'src/app/l10n/l10n.types';
 import { SettingsService } from 'src/app/utils/settings.service';
 import { ToastsService } from 'src/app/utils/toasts.service';
 import { environment } from 'src/environments/environment.dev';
@@ -56,6 +57,14 @@ export class WorkYearComponent implements OnDestroy, OnInit {
     return this.i18nService.i18n(key, params);
   }
 
+  /**
+   * Getter for i18n localization strings.
+   * @returns The localization strings.
+   */
+  get i18nstr(): L10nArchiveLocale {
+    return this.i18nService.str;
+  }
+
   ngOnDestroy(): void {
     this.subs.forEach((s) => s.unsubscribe());
   }
@@ -69,8 +78,8 @@ export class WorkYearComponent implements OnDestroy, OnInit {
       this.busy = false;
       this.loaded = true;
       Object.entries(this.yearMonths).forEach((item) => {
-        item[1] = item[1].sort((a, b) => a.month - b.month);
-        this.yearClosingTime[<number><unknown>item[0]] = item[1][item[1].length - 1].timeclose;
+        item[1] = item[1].sort((a, b) => a.period.month - b.period.month);
+        this.yearClosingTime[<number><unknown>item[0]] = item[1][item[1].length - 1].stats.bookings.timeClose;
         this.yearMonthCount[<number><unknown>item[0]] = item[1].length;
         this.yearMonthsVisible[<number><unknown>item[0]] = this.yearMonthsVisible[<number><unknown>item[0]] || (item[1].length != 12) || <number><unknown>item[0] == this.thisYear;
       });
@@ -86,7 +95,7 @@ export class WorkYearComponent implements OnDestroy, OnInit {
       if (item[1] < 12) {
         cancel = true;
         this.toastsService.warn(
-          this.i18n('workyear.addYear.yearOpenToastTitle'),
+          this.i18nstr.workyear.addYear.yearOpenToastTitle,
           this.i18n('workyear.addYear.yearOpenToastMessage', ['' + item[0]])
         );
       }
@@ -121,26 +130,35 @@ export class WorkYearComponent implements OnDestroy, OnInit {
     const datefrom = new Date(year, i, 1, 12, 0, 0);
     const dateuntil = sub(add(new Date(year, i, 1, 12, 0, 0), { months: 1 }), { days: 1 });
     let month: WorkMonth = {
-      datefrom: formatISO(datefrom),
-      dateuntil: formatISO(dateuntil),
-      days: getDaysInMonth(datefrom),
-      holidays: 0,
       id: 0,
-      month: getMonth(datefrom) + 1,
-      timeclose: 0,
-      timedif: 0,
-      timestart: 0,
+      uiCreating: true,
       updated: '',
-      userid: 0,
-      weekenddays: eachWeekendOfMonth(datefrom).length,
-      year: year,
-      uiCreating: true
+      period: {
+        dateFrom: formatISO(datefrom),
+        dateUntil: formatISO(dateuntil),
+        month: getMonth(datefrom) + 1,
+        year: year
+      },
+      stats: {
+        days: {
+          total: getDaysInMonth(datefrom),
+          holidays: 0,
+          weekend: eachWeekendOfMonth(datefrom).length
+        },
+        bookings: {
+          timeStart: 0,
+          timeClose: 0,
+          timeDif: 0,
+          timeBooked: 0,
+          timeTarget: 0
+        }
+      }
     };
     this.authService.updateApi(url, month).pipe(first()).subscribe((reply) => {
       if (reply.success) {
         month = { ...reply.payload!['month'] };
         this.yearMonths[year].push(month);
-        this.yearClosingTime[year] = month.timeclose;
+        this.yearClosingTime[year] = month.stats.bookings.timeClose;
         this.yearMonthCount[year] = this.yearMonths[year].length;
         if (i < 11) {
           let sub = this.onCompleteYearMonth(year, i + 1).subscribe((r) => {

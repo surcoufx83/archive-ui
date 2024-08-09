@@ -1,15 +1,17 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { addDays, differenceInMinutes, format, parseISO, set, setHours, subDays } from 'date-fns';
 import { AuthService } from '../../auth.service';
 import { SettingsService } from '../../utils/settings.service';
 
-import { ViewportScroller } from '@angular/common';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Subscription, first } from 'rxjs';
 import { RecentBooking, UserSettings, WorkCustomer, WorkDay, WorkDayBooking, WorkProject, WorkTimeCategory } from 'src/app/if';
 import { environment } from 'src/environments/environment.dev';
 import { I18nService } from '../../i18n.service';
+import { FormatService } from 'src/app/utils/format.service';
+import { ToastsService } from 'src/app/utils/toasts.service';
+import { L10nArchiveLocale } from 'src/app/l10n/l10n.types';
 
 @Component({
   selector: 'app-work-day',
@@ -21,22 +23,23 @@ export class WorkDayComponent implements OnDestroy, OnInit {
   @ViewChild('createCustomerModalCloser') createCustomerModalCloserElement?: ElementRef;
   @ViewChild('focus') focusElement?: ElementRef;
 
-  actualDate: string = this.f(new Date(), 'yyyy-MM-dd');
+  actualDate: string = this.formatService.fdate(new Date(), 'yyyy-MM-dd');
   booking?: WorkDayBooking;
   bookingProps: { [key: string]: number } = {};
   busy: boolean = false;
   categories: WorkTimeCategory[] = [];
-  createCustomer = new UntypedFormGroup({
-    'name': new UntypedFormControl('', { validators: Validators.required }),
-    'busy': new UntypedFormControl(false)
+  createCustomer = new FormGroup({
+    name: new FormControl<string>('', { validators: Validators.required }),
   });
+  createCustomerBusy = signal<boolean>(false);
+  copyBooking = signal<[RecentBooking | WorkDayBooking | null, number]>([null, 0]);
   customers: WorkCustomer[] = [];
   day?: WorkDay;
   icons = environment.icons;
   isToday: boolean = true;
   livetrackingActive: boolean = false;
   projects: WorkProject[] = [];
-  recentEntries: RecentBooking[] = [];
+  recentEntries = signal<RecentBooking[]>([]);
   subscriptions: Subscription[] = [];
   timepattern: RegExp = /^(?<hr>\d{1,2}):?(?<min>\d{2})$/;
   today: Date = new Date();
@@ -47,54 +50,39 @@ export class WorkDayComponent implements OnDestroy, OnInit {
   constructor(
     private authService: AuthService,
     private i18nService: I18nService,
+    private formatService: FormatService,
     private route: ActivatedRoute,
     private router: Router,
     private userSettings: SettingsService,
-    private scroller: ViewportScroller
+    private toastsService: ToastsService,
   ) { }
 
+  /**
+   * Retrieves the bookings for the day.
+   * @returns An array of WorkDayBooking objects.
+   */
   get bookings(): WorkDayBooking[] {
     if (!this.day || this.day.bookings == null)
       return [];
     return Object.values(this.day.bookings);
   }
 
-  category(id: number): WorkTimeCategory | undefined {
-    return this.userSettings.getWorkTimeCategory(id) ?? undefined;
-  }
-
+  /**
+   * After user clicks a item in the days booking list, this method is
+   * invoked and by updating the `copyBooking` property, the booking
+   * to copy is transfered into the form component.
+   * The `Date.now()` is used also updated if user clicks the same
+   * booking again.
+   * @param item The booking to transfer to the form
+   */
   copyFromRecent(item: RecentBooking | WorkDayBooking): void {
-    this.bookingProps = {};
-    for (let i = 0; i < this.categories.length; i++) {
-      if (this.categories[i].id == item.timecategoryid) {
-        this.bookingProps['timecategory'] = i;
-        this.onChangeCategory();
-      }
-    }
-    for (let i = 0; i < this.customers.length; i++) {
-      if (this.customers[i].id == item.customerid) {
-        this.bookingProps['customer'] = i;
-        this.onChangeCustomer();
-      }
-    }
-    for (let i = 0; i < this.projects.length; i++) {
-      if (this.projects[i].id == item.projectid) {
-        this.bookingProps['project'] = i;
-        this.onChangeProject();
-      }
-    }
-    if (this.booking) {
-      this.booking.projectstage = item.projectstage;
-      this.booking.description = item.description;
-    }
-    this.scroller.scrollToAnchor('scroll-anchor');
-    this.focusElement?.nativeElement.focus();
+    this.copyBooking.set([item, Date.now()]);
   }
 
-  customer(id: number): WorkCustomer | undefined {
-    return this.userSettings.getWorkCustomer(id) ?? undefined;
-  }
-
+  /**
+   * Deletes a booking.
+   * @param item The booking to delete.
+   */
   deleteBooking(item: WorkDayBooking): void {
     let url = `${environment.api.baseUrl}/work/bookings/${item.id}/delete`;
     this.authService.updateApi(url, {}).pipe(first()).subscribe((reply) => {
@@ -105,38 +93,28 @@ export class WorkDayComponent implements OnDestroy, OnInit {
     });
   }
 
-  f(date: Date | string, form: string): string {
-    if (typeof (date) === 'string')
-      date = new Date(date);
-    return format(date, form, { locale: this.i18nService.DateLocale });
-  }
-
-  fd(duration: number): string {
-    return this.i18n('calendar.duration.short', [duration.toLocaleString(this.i18nService.Locale, { minimumFractionDigits: 1 })]);
-  }
-
-  get hasBookings(): boolean {
-    if (!this.day || this.day.bookings == null)
-      return false;
-    return Object.keys(this.day.bookings).length > 0;
-  }
-
+  /**
+   * Translates a given key using the i18n service.
+   * @param key The key to translate.
+   * @param params Additional parameters for translation.
+   * @returns The translated string.
+   */
   i18n(key: string, params: string[] = []): string {
     return this.i18nService.i18n(key, params);
   }
 
-  get liveButtonColor(): string {
-    if (!this.usersettingsObj?.work.livetracking.enabled)
-      return 'btn-secondary';
-    if (!this.livetrackingActive)
-      return 'btn-primary';
-    return 'btn-success';
+  /**
+   * Getter for i18n localization strings.
+   * @returns The localization strings.
+   */
+  get i18nstr(): L10nArchiveLocale {
+    return this.i18nService.str;
   }
 
-  get locale(): string {
-    return this.i18nService.Locale;
-  }
-
+  /**
+   * Creates a new booking for the specified day.
+   * @param dayid The ID of the day for the new booking.
+   */
   newBooking(dayid: number | undefined): void {
     this.booking = {
       break: 0,
@@ -157,17 +135,29 @@ export class WorkDayComponent implements OnDestroy, OnInit {
     this.bookingProps = {};
   }
 
+  /**
+   * Lifecycle hook that is called when a directive, pipe, or service is destroyed.
+   * Unsubscribes from all subscriptions to avoid memory leaks.
+   */
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
-
+  /**
+   * Lifecycle hook that is called once, after the first ngOnChanges().
+   * Initializes the component and subscribes to various services.
+   */
   ngOnInit(): void {
     this.subscriptions.push(this.userSettings.settings$.subscribe((settings) => this.usersettingsObj = settings));
-    this.subscriptions.push(this.userSettings.workTimeCategories$.subscribe((categories) => this.categories = Object.values(categories).sort((a, b) => this.i18n('work.timecategories.' + a.name) > this.i18n('work.timecategories.' + b.name) ? 1 : this.i18n('work.timecategories.' + a.name) === this.i18n('work.timecategories.' + b.name) ? 0 : -1)));
-    this.subscriptions.push(this.userSettings.workCustomers$.subscribe((customers) => {
-      this.customers = Object.values(customers).sort((a, b) => a.name.toLocaleLowerCase() > b.name.toLocaleLowerCase() ? 1 : -1);
+    this.subscriptions.push(this.userSettings.workTimeCategories$.pipe(first()).subscribe((categories) => {
+      // Only used once so form field won't get resettet by updating categories
+      this.categories = Object.values(categories)
+        .sort((a, b) => this.i18n('work.timecategories.' + a.name).localeCompare(this.i18n('work.timecategories.' + b.name)))
     }));
+    this.subscriptions.push(this.userSettings.workCustomers$.subscribe((customers) => {
+      this.customers = Object.values(customers).sort((a, b) => a.name.localeCompare(b.name));
+    }));
+    this.subscriptions.push(this.userSettings.workRecentTimeBookings$.subscribe((bookings) => this.recentEntries.set(bookings)));
     this.subscriptions.push(this.route.paramMap.subscribe((params) => {
       let date = 'today';
       if (!params.has('date')) {
@@ -182,157 +172,62 @@ export class WorkDayComponent implements OnDestroy, OnInit {
           this.day = <WorkDay>reply.payload['day'];
           this.newBooking(this.day.id);
           this.today = setHours(parseISO(this.day.date), 12);
-          this.i18nService.setTitle('workday.pagetitle', [this.f(this.today, 'PP')]);
-          this.isToday = (this.f(this.today, 'yyyy-MM-dd') == this.actualDate);
+          this.i18nService.setTitle('workday.pagetitle', [this.formatService.fdate(this.today, 'PP')]);
+          this.isToday = (this.formatService.fdate(this.today, 'yyyy-MM-dd') == this.actualDate);
           this.yesterday = subDays(this.today, 1);
           this.tomorrow = addDays(this.today, 1);
         }
         this.busy = false;
       });
     }));
-    setTimeout(() => { this.refreshRecentBookings(); }, 10);
   }
 
-  onChangeCategory(): void {
-    if (!this.booking)
-      return;
-    if (this.bookingProps['timecategory'] == -1) {
-      this.booking.timecategory = <WorkTimeCategory>{};
-      this.booking.timecategoryid = -1;
-      return;
-    }
-    this.booking.timecategory = this.categories[this.bookingProps['timecategory']];
-    this.booking.timecategoryid = this.categories[this.bookingProps['timecategory']].id;
-  }
-
-  onChangeCustomer(): void {
-    this.projects = [];
-    if (!this.booking)
-      return;
-    if (this.bookingProps['customer'] == -1) {
-      this.booking.customer = null;
-      this.booking.customerid = -1;
-      return;
-    }
-    this.booking.customer = this.customers[this.bookingProps['customer']];
-    this.booking.customerid = this.customers[this.bookingProps['customer']].id;
-    this.projects = this.userSettings.getWorkProjects(this.booking.customerid) ?? [];
-  }
-
-  onChangeProject(): void {
-    if (!this.booking)
-      return;
-    if (this.bookingProps['project'] == -1) {
-      this.booking.project = null;
-      this.booking.projectid = -1;
-      return;
-    }
-    this.booking.project = this.projects[this.bookingProps['project']];
-    this.booking.projectid = this.projects[this.bookingProps['project']].id;
-  }
-
-  onChangeTime(): void {
-    if (!this.booking)
-      return;
-    let start = this.parseTime(this.booking.timefrom);
-    let end = this.parseTime(this.booking.timeuntil);
-    let breakmin = this.booking.break;
-
-    if (start && end) {
-      let dif = differenceInMinutes(end, start);
-      if (dif > 0) {
-        dif = (dif - breakmin) / 60;
-        this.booking.duration = dif;
-        return;
-      }
-    }
-    this.booking.duration = 0;
-  }
-
+  /**
+   * Handles the creation of a new customer.
+   * Updates the customer list and resets the form.
+   */
   onSaveCreateCustomer(): void {
-    if (this.createCustomer.get('busy')?.value)
+    if (this.createCustomerBusy() || !this.createCustomer.valid)
       return;
-    this.createCustomer.patchValue({ 'busy': true });
+    this.createCustomerBusy.set(true);
     let newcustomer: WorkCustomer = {
-      id: 0, name: this.createCustomer.get('name')!.value, created: "", deleted: null,
+      id: 0, name: this.createCustomer.get('name')!.value || '', created: "", deleted: null,
       disabled: false, lastusage: "", modified: "", userid: 0
     }
-    this.userSettings.updateCustomer(newcustomer).pipe(first()).subscribe((customer) => {
-      if (customer != null) {
+    let sub = this.userSettings.updateCustomer(newcustomer).subscribe((customer) => {
+      if (customer == null)
+        return;
+      if (customer !== true && customer !== false) {
         this.createCustomerModalCloserElement?.nativeElement.click();
         this.createCustomer.get('name')!.reset();
+        this.createCustomer.reset();
       }
-      this.createCustomer.patchValue({ 'busy': false });
+      else {
+        this.toastsService.error('Fehler', 'Der neue Kunde konnte nicht angelegt werden.');
+      }
+      this.createCustomerBusy.set(false);
+      sub.unsubscribe();
     });
   }
 
-  onSubmitBooking(): void {
+  /**
+   * Handles the submission of a booking.
+   * Updates the booking list and resets the form.
+   * @param booking The booking to submit.
+   */
+  onSubmitBooking(booking: WorkDayBooking): void {
     if (this.busy || !this.day)
       return;
     this.busy = true;
     let url = `${environment.api.baseUrl}/work/month/${this.day.monthid}/day/${this.day.day}/booking/create`;
-    this.authService.updateApi(url, this.booking).pipe(first()).subscribe((reply) => {
+    this.authService.updateApi(url, booking).pipe(first()).subscribe((reply) => {
       if (reply.success) {
         this.newBooking(this.day?.id);
-        if (reply.payload && reply.payload['day'])
+        if (reply.payload?.['day'])
           this.day = <WorkDay>reply.payload['day'];
-        if (this.focusElement != undefined)
-          this.focusElement.nativeElement.focus();
       }
       this.busy = false;
     });
-  }
-
-  parseTime(time: string): Date | null {
-    let match = time.match(this.timepattern);
-    if (match && match.groups) {
-      return set(this.today, { hours: +match.groups['hr'], minutes: +match.groups['min'], seconds: 0 });
-    }
-    return null;
-  }
-
-  get progressdone(): string {
-    if (!this.usersettingsObj || !this.day || !this.day.stats)
-      return '0';
-    if (this.day.stats.duration > this.usersettingsObj.work.worktime.default)
-      return '' + Math.floor(this.usersettingsObj.work.worktime.default * 10);
-    return '' + Math.floor(this.day.stats.duration * 10);
-  }
-
-  get progressmissing(): string {
-    if (!this.usersettingsObj || !this.day || !this.day.stats)
-      return '0';
-    if (this.day.stats.duration > this.usersettingsObj.work.worktime.default)
-      return '0';
-    return '' + Math.floor((this.usersettingsObj.work.worktime.default - this.day.stats.duration) * 10);
-  }
-
-  get progressovertime(): string {
-    if (!this.usersettingsObj || !this.day || !this.day.stats)
-      return '0';
-    if (this.day.stats.duration > this.usersettingsObj.work.worktime.default)
-      return '' + Math.floor((this.day.stats.duration - this.usersettingsObj.work.worktime.default) * 10);
-    return '0';
-  }
-
-  project(id: number): WorkProject | undefined {
-    return this.userSettings.getWorkProject(id) ?? undefined;
-  }
-
-  pushUserSettings(): void {
-    this.userSettings.updateSettings(<UserSettings>this.usersettingsObj, true);
-  }
-
-  refreshRecentBookings(): void {
-    this.authService.queryApi(`${environment.api.baseUrl}/work/bookings/recent`).pipe(first()).subscribe((reply) => {
-      if (reply.success && reply.payload && reply.payload['items'])
-        this.recentEntries = <RecentBooking[]>reply.payload['items'];
-      setTimeout(() => { this.refreshRecentBookings(); }, 60000);
-    });
-  }
-
-  s2d(datestr: string): Date {
-    return new Date(datestr);
   }
 
 }

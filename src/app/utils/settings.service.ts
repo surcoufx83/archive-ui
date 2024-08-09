@@ -17,6 +17,7 @@ import type {
   Party,
   PartyContact,
   PartyRole,
+  RecentBooking,
   SepaMandate,
   ServerNotification,
   Stock,
@@ -28,6 +29,7 @@ import type {
   WarehouseRoom,
   WarehouseSpace,
   WorkCustomer,
+  WorkDayTemplate,
   WorkLead,
   WorkOffCategory,
   WorkProject,
@@ -159,6 +161,9 @@ export class SettingsService {
   private workCustomers: BehaviorSubject<{ [key: number]: WorkCustomer }> = new BehaviorSubject<{ [key: number]: WorkCustomer }>({});
   workCustomers$ = this.workCustomers.asObservable();
 
+  private workDayTemplates: BehaviorSubject<{ [key: number]: WorkDayTemplate }> = new BehaviorSubject<{ [key: number]: WorkDayTemplate }>({});
+  workDayTemplates$ = this.workDayTemplates.asObservable();
+
   private workLeads: BehaviorSubject<{ [key: number]: WorkLead }> = new BehaviorSubject<{ [key: number]: WorkLead }>({});
   workLeads$ = this.workLeads.asObservable();
 
@@ -167,6 +172,9 @@ export class SettingsService {
 
   private workProjects: BehaviorSubject<{ [key: number]: WorkProject }> = new BehaviorSubject<{ [key: number]: WorkProject }>({});
   workProjects$ = this.workProjects.asObservable();
+
+  private workRecentTimeBookings: BehaviorSubject<RecentBooking[]> = new BehaviorSubject<RecentBooking[]>([]);
+  workRecentTimeBookings$ = this.workRecentTimeBookings.asObservable();
 
   private workTimeCategories: BehaviorSubject<{ [key: number]: WorkTimeCategory }> = new BehaviorSubject<{ [key: number]: WorkTimeCategory }>({});
   workTimeCategories$ = this.workTimeCategories.asObservable();
@@ -327,13 +335,6 @@ export class SettingsService {
       if (olddata2.others !== undefined)
         this.otherUsers.next(olddata2.others);
     }
-    /* this.authService.queryApi(this.storageService.getSyncUrl(user)).pipe(first()).subscribe((reply) => {
-      if (reply.success && reply.payload != null) {
-        reply.payload['version'] = this.storageService.getExpectedStorageVersion(user);
-        this.updateUser(<User>reply.payload['user']);
-        this.storageService.save(user, reply.payload);
-      }
-    }); */
     this.syncUser();
   }
 
@@ -398,6 +399,10 @@ export class SettingsService {
       this.workTimeCategories.next(olddata.timeCategories);
       if (olddata.travel)
         this.workTravel.next(olddata.travel);
+      if (olddata.bookings)
+        this.workRecentTimeBookings.next(olddata.bookings);
+      if (olddata.templates)
+        this.workDayTemplates.next(olddata.templates)
     }
     this.syncWork();
   }
@@ -492,6 +497,21 @@ export class SettingsService {
     return id !== null && this.workCustomers.value[id] ? this.workCustomers.value[id] : null;
   }
 
+  getWorkDayTemplate(id: number | null): WorkDayTemplate | null {
+    return id !== null && this.workDayTemplates.value[id] ? this.workDayTemplates.value[id] : null;
+  }
+
+  getWorkDayTemplateByDayId(id: number | null): WorkDayTemplate | null {
+    if (id == null)
+      return null;
+    const tempar = Object.values(this.workDayTemplates.value);
+    for (let i = 0; i < tempar.length; i++) {
+      if (tempar[i].content.origin.id === id)
+        return tempar[i];
+    }
+    return null;
+  }
+
   getWorkLead(id: number | null): WorkLead | null {
     return id !== null && this.workLeads.value[id] ? this.workLeads.value[id] : null;
   }
@@ -516,22 +536,25 @@ export class SettingsService {
     return id !== null && this.workTravel.value[id] ? this.workTravel.value[id] : null;
   }
 
-  private postCommon(method: 'create' | 'update' | 'delete', item: any, urlitem: string, listing: any[], subject: BehaviorSubject<boolean | any | null> | Subject<any | boolean>,
-    callback: Function) {
+  private postCommon(
+    method: 'create' | 'update' | 'delete',
+    item: any,
+    urlitem: string,
+    listing: any[],
+    subject: BehaviorSubject<boolean | any | null> | Subject<any | boolean>,
+    callback: (listing: any[]) => void,
+    propertyName?: string
+  ) {
 
     let url = `${environment.api.baseUrl}/${urlitem}/${method == 'create' ? `create` : `${item.id}${method == 'delete' ? `/delete` : ``}`}`;
-    /* if (method == 'create')
-      url += 'create';
-    else
-      url += item.id + (method == 'delete' ? '/delete' : ''); */
     let obj: { [key: string]: any } = {};
     if (method != 'delete')
-      obj[urlitem] = item;
+      obj[propertyName ?? urlitem] = item;
     this.authService.updateApi(url, obj).pipe(first()).subscribe((reply) => {
       if (reply.success) {
         let newitem = null;
         if (method != 'delete' && reply.payload)
-          newitem = reply.payload[urlitem];
+          newitem = reply.payload[propertyName ?? urlitem];
         else if (method == 'delete') {
           newitem = { ...item };
           newitem.deldate = Date.now();
@@ -685,10 +708,12 @@ export class SettingsService {
 
   private saveWork(): void {
     this.storageService.save(work, {
+      bookings: this.workRecentTimeBookings.value,
       customers: this.workCustomers.value,
       leads: this.workLeads.value,
       offCategories: this.workOfftimeCategories.value,
       projects: this.workProjects.value,
+      templates: this.workDayTemplates.value,
       timeCategories: this.workTimeCategories.value,
       travel: this.workTravel.value,
     });
@@ -866,7 +891,9 @@ export class SettingsService {
     this.authService.queryApi(this.storageService.getSyncUrl(work)).pipe(first()).subscribe((reply) => {
       if (reply.success && reply.payload != undefined) {
         let response = <WorkResponse>reply.payload;
+        this.updateWorkBookings(response.bookings);
         this.updateWorkCustomers(response.customers);
+        this.updateWorkDayTemplates(response.templates);
         this.updateWorkLeads(response.leads);
         this.updateWorkOffCategories(response.offCategories);
         this.updateWorkProjects(response.projects);
@@ -1001,10 +1028,20 @@ export class SettingsService {
     this.currencies.next(currencies);
   }
 
+  private updateWorkBookings(bookings: RecentBooking[]): void {
+    this.workRecentTimeBookings.next(bookings);
+  }
+
   private updateWorkCustomers(customers: WorkCustomer[]) {
     let temp = { ...this.workCustomers.value };
     customers.forEach((a) => this._updateCommon(temp, a));
     this.workCustomers.next(temp);
+  }
+
+  private updateWorkDayTemplates(templates: WorkDayTemplate[]) {
+    let temp = { ...this.workDayTemplates.value };
+    templates.forEach((a) => this._updateCommon(temp, a));
+    this.workDayTemplates.next(temp);
   }
 
   private updateWorkLeads(leads: WorkLead[]) {
@@ -1123,8 +1160,8 @@ export class SettingsService {
     return subject;
   }
 
-  updateCustomer(customeritem: WorkCustomer): BehaviorSubject<WorkCustomer | null> {
-    let subject = new BehaviorSubject<WorkCustomer | null>(null);
+  updateCustomer(customeritem: WorkCustomer): BehaviorSubject<boolean | WorkCustomer | null> {
+    let subject = new BehaviorSubject<boolean | WorkCustomer | null>(null);
     this.postCommon(customeritem.id == 0 ? 'create' : 'update', customeritem,
       'customer', Object.values(this.workCustomers.value), subject, (c: WorkCustomer[]) => this.updateWorkCustomers(c));
     return subject;
@@ -1210,6 +1247,20 @@ export class SettingsService {
     this.user.next(user);
     if (user.settings)
       this.updateSettings(user.settings, push);
+  }
+
+  updateWorkDayTemplate(templateitem: WorkDayTemplate): Subject<boolean | WorkDayTemplate> {
+    let subject = new Subject<boolean | WorkDayTemplate>();
+    this.postCommon(
+      templateitem.id == 0 ? 'create' : 'update',
+      templateitem,
+      'work/template',
+      Object.values(this.workDayTemplates.value),
+      subject,
+      (c: WorkDayTemplate[]) => this.updateWorkDayTemplates(c),
+      'template'
+    );
+    return subject;
   }
 
 }
@@ -1331,19 +1382,23 @@ export interface UserSettingsStorage {
 }
 
 export interface WorkResponse {
+  bookings: RecentBooking[];
   customers: WorkCustomer[];
   leads: WorkLead[];
   offCategories: WorkOffCategory[];
   projects: WorkProject[];
+  templates: WorkDayTemplate[];
   timeCategories: WorkTimeCategory[];
   travel: WorkTravel[];
 }
 
 export interface WorkStorage {
+  bookings?: RecentBooking[];
   customers: WorkCustomer[];
   leads: WorkLead[];
   offCategories: WorkOffCategory[];
   projects: WorkProject[];
+  templates?: WorkDayTemplate[];
   timeCategories: WorkTimeCategory[];
   travel?: WorkTravel[];
   ts: number;

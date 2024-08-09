@@ -82,8 +82,6 @@ import { UiBusyIndicatorComponent } from './utils/ui-busy-indicator/ui-busy-indi
 import { UiCenteredBusyIndicatorComponent } from './utils/ui-centered-busy-indicator/ui-centered-busy-indicator.component';
 import { StorageRoomComponent } from './warehouse/storage-room/storage-room.component';
 import { WarehouseComponent } from './warehouse/warehouse.component';
-import { WorkLeadComponent } from './work/leads/lead/lead.component';
-import { WorkLeadsComponent } from './work/leads/leads.component';
 import { WorkCalendarComponent } from './work/settings/calendar/calendar.component';
 import { WorkHolidaysComponent } from './work/settings/calendar/holidays/holidays.component';
 import { WorkCustomerComponent } from './work/settings/customers/customer/customer.component';
@@ -97,6 +95,18 @@ import { WorkTravelEditorComponent } from './work/work-travel/editor/editor.comp
 import { WorkTravelComponent } from './work/work-travel/work-travel.component';
 import { WorkYearComponent } from './work/work-year/work-year.component';
 import { WorkComponent } from './work/work.component';
+import { WorkDayHeaderComponent } from './work/work-day/work-day-header/work-day-header.component';
+import { WorkDayInfobox1Component } from './work/work-day/work-day-infobox1/work-day-infobox1.component';
+import { WorkDayBookingsComponent } from './work/work-day/work-day-bookings/work-day-bookings.component';
+import { WorkDayBookingFormComponent } from './work/work-day/work-day-booking-form/work-day-booking-form.component';
+import { WorkDayTemplatesboxComponent } from './work/work-day/work-day-templatesbox/work-day-templatesbox.component';
+import { WorkMonthHeaderComponent } from './work/work-month/work-month-header/work-month-header.component';
+import { H2NewComponent } from './utils/h2-new/h2-new.component';
+import { LinkBtnComponent } from './utils/link-btn/link-btn.component';
+import { WorkMonthBoxInfoComponent } from './work/work-month/work-month-box-info/work-month-box-info.component';
+import { CardComponent } from './utils/card/card.component';
+import { GridRowComponent } from './utils/grid-row/grid-row.component';
+import { WorkMonthBoxDayComponent } from './work/work-month/work-month-box-day/work-month-box-day.component';
 
 registerLocaleData(localeDe);
 registerLocaleData(localeFr);
@@ -171,8 +181,6 @@ registerLocaleData(localeFr);
         WorkCustomersComponent,
         WorkDayComponent,
         WorkHolidaysComponent,
-        WorkLeadComponent,
-        WorkLeadsComponent,
         WorkMonthComponent,
         WorkOffCategoriesComponent,
         WorkProjectsComponent,
@@ -180,6 +188,18 @@ registerLocaleData(localeFr);
         WorkTravelComponent,
         WorkTravelEditorComponent,
         WorkYearComponent,
+        WorkDayHeaderComponent,
+        WorkDayInfobox1Component,
+        WorkDayBookingsComponent,
+        WorkDayBookingFormComponent,
+        WorkDayTemplatesboxComponent,
+        WorkMonthHeaderComponent,
+        H2NewComponent,
+        LinkBtnComponent,
+        WorkMonthBoxInfoComponent,
+        CardComponent,
+        GridRowComponent,
+        WorkMonthBoxDayComponent,
     ],
     bootstrap: [
         AppComponent,

@@ -12,6 +12,7 @@ import { ConfigService } from '../../config.service';
 import { I18nService } from '../../i18n.service';
 import { SettingsService } from '../../utils/settings.service';
 import { SelectedItem } from '../folder-browser-dialog/folder-browser-dialog.component';
+import { L10nArchiveLocale } from 'src/app/l10n/l10n.types';
 
 @Component({
   selector: 'app-file',
@@ -73,7 +74,7 @@ export class FileComponent implements OnDestroy, OnInit {
   }
 
   delete(file: File): void {
-    if (window.confirm(this.i18n('file.housekeeping.delete.confirm'))) {
+    if (window.confirm(this.i18nstr.file.housekeeping.delete.confirm)) {
       this.busy = true;
       let url = `${environment.api.baseUrl}/file/${file.id}/delete`;
       this.authService.updateApi(url, {}).pipe(first()).subscribe((reply) => {
@@ -213,6 +214,14 @@ export class FileComponent implements OnDestroy, OnInit {
     return this.i18nService.i18n(key, params);
   }
 
+  /**
+   * Getter for i18n localization strings.
+   * @returns The localization strings.
+   */
+  get i18nstr(): L10nArchiveLocale {
+    return this.i18nService.str;
+  }
+
   private loadFile(id: number): void {
     this.busy = true;
     this.file = undefined;
@@ -267,8 +276,8 @@ export class FileComponent implements OnDestroy, OnInit {
     let url = `${environment.api.baseUrl}/file/next`;
     this.authService.queryApi(url).pipe(first()).subscribe((reply) => {
       if (reply.errno === 204) {
-        this.toastService.warn(this.i18nService.i18n('file.errors.noNextFile.title'),
-          this.i18nService.i18n('file.errors.noNextFile.message'));
+        this.toastService.warn(this.i18nstr.file.errors.noNextFile.title,
+          this.i18nstr.file.errors.noNextFile.message);
       } else {
         if (reply.success && reply.payload != undefined) {
           let id = <number>reply.payload['file'];

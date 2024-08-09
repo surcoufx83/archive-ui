@@ -1014,6 +1014,16 @@ export const L10nArchiveEnLocale: L10nArchiveLocale = {
             title: "Summary",
             booked: "Tracked"
         },
+        templatescard: {
+            description: "This day can be defined as a template. Saved templates can be used in the month view.",
+            disabledHoliday: "This day cannot be used as a template because it is assigned as a holiday.",
+            disabledOffday: "This day cannot be used as a template because it is assigned as an absence.",
+            existingItem: "The selected day is saved as the template «{0}». Saving again will overwrite the existing entry.",
+            pickFlexItemLabel: "Select Flex Item",
+            templateNamePlaceholder: "🖋️ Template Name",
+            title: "Template Management",
+            weekLink: "To Month View"
+        },
         tracked: {
             title: "Today's tracked time",
             description: "Description",
@@ -1026,27 +1036,32 @@ export const L10nArchiveEnLocale: L10nArchiveLocale = {
             livebtn: "Live",
             livebtnTitle: "Live tracking function",
             common: {
-                break: "Minus break",
+                break: "Start Break",
                 breakShort: "Break",
                 breakPlaceholder: "mm",
                 customer: "Customer",
-                description: "Description of the work carried out",
-                duration: "Working hours",
+                description: "Description of the work performed",
+                duration: "Work Time",
+                durationLong: "Work Time (hours)",
                 durationShort: "Total",
-                from: "Of",
-                project: "Customer project",
-                recentTitle: "Click to apply",
-                task: "Work package",
+                from: "From",
+                project: "Customer Project",
+                recentTitle: "Click to adopt this data",
+                task: "Task Package",
                 timeCategory: "Category",
-                timePlaceholder: "hh:mm | hmm | hmm",
-                until: "To"
+                timePlaceholder: "hh:mm | hhmm | hmm",
+                until: "Until"
             },
             createCustomer: {
                 title: "New customer",
                 nameTitle: "Customer name",
                 namePlaceholder: "Please specify..."
             },
-            live: {}
+            live: {},
+            recentBookings: {
+                title: "Frequently Used (60 Days)",
+                filter: "🔍 Filter...",
+            }
         }
     },
     workmonth: {
@@ -1067,10 +1082,12 @@ export const L10nArchiveEnLocale: L10nArchiveLocale = {
                 lastEditShort: "Last update"
             },
             time: {
-                title: "Booked time",
-                takeover: "Take-over",
+                title: "Logged Hours",
+                takeover: "Carry Forward",
                 balance: "Balance",
-                carryover: "Carry-over"
+                carryover: "Carryover",
+                booked: "Logged",
+                target: "Target"
             }
         },
         offtime: {

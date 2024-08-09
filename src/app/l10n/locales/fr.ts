@@ -1014,6 +1014,16 @@ export const L10nArchiveFrLocale: L10nArchiveLocale = {
             title: "Aperçu",
             booked: "Réservé"
         },
+        templatescard: {
+            description: "Ce jour peut être défini comme un modèle. Les modèles enregistrés peuvent être utilisés dans la vue mensuelle.",
+            disabledHoliday: "Ce jour ne peut pas être utilisé comme modèle car il est attribué comme jour férié.",
+            disabledOffday: "Ce jour ne peut pas être utilisé comme modèle car il est attribué comme jour d'absence.",
+            existingItem: "Le jour sélectionné est enregistré comme modèle «{0}». Sauvegarder à nouveau écrasera l'entrée existante.",
+            pickFlexItemLabel: "Sélectionner un élément flexible",
+            templateNamePlaceholder: "🖋️ Nom du modèle",
+            title: "Gestion des modèles",
+            weekLink: "À la vue mensuelle"
+        },
         tracked: {
             title: "Réservations d'aujourd'hui",
             description: "Description",
@@ -1026,27 +1036,32 @@ export const L10nArchiveFrLocale: L10nArchiveLocale = {
             livebtn: "En direct",
             livebtnTitle: "Fonction de suivi en direct",
             common: {
-                break: "Pause",
+                break: "Début Pause",
                 breakShort: "Pause",
-                breakPlaceholder: "minutes",
+                breakPlaceholder: "mm",
                 customer: "Client",
                 description: "Description des travaux effectués",
                 duration: "Temps de travail",
+                durationLong: "Temps de travail (heures)",
                 durationShort: "Total",
-                from: "Du",
+                from: "De",
                 project: "Projet client",
-                recentTitle: "Cliquer pour reprendre ces données",
-                task: "Tâche",
-                timeCategory: "Сatégorie",
+                recentTitle: "Cliquez pour adopter ces données",
+                task: "Paquet de tâches",
+                timeCategory: "Catégorie",
                 timePlaceholder: "hh:mm | hhmm | hmm",
-                until: "Jusqu'à"
+                until: "À"
             },
             createCustomer: {
                 title: "Nouveau client",
                 nameTitle: "Nom du client",
                 namePlaceholder: "Veuillez préciser..."
             },
-            live: {}
+            live: {},
+            recentBookings: {
+                title: "Utilisé fréquemment (60 jours)",
+                filter: "🔍 Filtrer...",
+            }
         }
     },
     workmonth: {
@@ -1067,10 +1082,12 @@ export const L10nArchiveFrLocale: L10nArchiveLocale = {
                 lastEditShort: "Dernier mod."
             },
             time: {
-                title: "Temps réservés",
-                takeover: "Reprise",
-                balance: "Différence",
-                carryover: "Retenir"
+                title: "Heures Enregistrées",
+                takeover: "Report",
+                balance: "Solde",
+                carryover: "Report",
+                booked: "Enregistré",
+                target: "Objectif"
             }
         },
         offtime: {

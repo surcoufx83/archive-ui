@@ -1,0 +1,58 @@
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">
+            <app-icon [iconClass]="icons['info']" [marginEnd]="1"></app-icon>
+            {{ i18nstr.workday.daycard.title }}
+        </h5>
+    </div>
+    <div class="card-body">
+        <div class="d-flex justify-content-between">
+            <div class="fs-7">
+                {{ i18nstr.calendar.weekday }}
+            </div>
+            <strong>
+                {{ fdate(today, 'EEEE') }}
+            </strong>
+        </div>
+        @if (day.offcategory) {
+        <div class="d-flex justify-content-between">
+            <div class="fs-7">
+                {{ i18nstr.work.offcategories.title }}
+            </div>
+            <strong>
+                {{ i18n('work.offcategories.' + day.offcategory.name) }}
+            </strong>
+        </div>
+        }
+        @if (day.stats) {
+        <div class="d-flex justify-content-between">
+            <div class="fs-7">
+                {{ i18nstr.workday.daycard.booked }}
+            </div>
+            <div>
+                <strong>
+                    {{ i18nDuration(day.stats.duration) }}
+                </strong>
+                <span class="fs-8 ms-2">
+                    @if (usersettingsObj.work.worktime.default > day.stats.duration) {
+                    [{{ i18nDuration(day.stats.duration - usersettingsObj.work.worktime.default) }}]
+                    }
+                    @else {
+                    [+{{ i18nDuration(day.stats.duration - usersettingsObj.work.worktime.default) }}]
+                    }
+                </span>
+            </div>
+        </div>
+        }
+    </div>
+    @if (day.stats && !this.day.offcategory) {
+    <div class="progress rounded-0 rounded-bottom">
+        <div class="progress-bar bg-success" role="progressbar" [ngStyle]="{ width: progressDone() + '%'}"
+            [attr.aria-valuenow]="progressDone()" aria-valuemin="0" aria-valuemax="100"></div>
+        <div class="progress-bar bg-warning" role="progressbar" [ngStyle]="{ width: progressMissing() + '%'}"
+            [attr.aria-valuenow]="progressMissing()" aria-valuemin="0" aria-valuemax="100"></div>
+        <div class="progress-bar bg-danger" role="progressbar" [ngStyle]="{ width: progressOvertime() + '%'}"
+            [attr.aria-valuenow]="progressOvertime()" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+    }
+</div>

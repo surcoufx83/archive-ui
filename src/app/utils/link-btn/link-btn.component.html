@@ -1,0 +1,8 @@
+<a [routerLink]="link">
+    <button type="button" class="btn px-3 px-lg-2" [ngClass]="css">
+        @if (icon) {
+        <app-icon [iconClass]="icons[icon]" class="me-1"></app-icon>
+        }
+        <ng-content></ng-content>
+    </button>
+</a>
