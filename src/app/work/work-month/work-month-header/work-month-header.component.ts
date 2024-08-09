@@ -58,7 +58,7 @@ export class WorkMonthHeaderComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['selectedMonth'] && changes['selectedMonth'].currentValue) {
+    if (changes['selectedMonth']?.currentValue) {
       this.lastMonth.set(sub(changes['selectedMonth'].currentValue, { months: 1 }));
       this.nextMonth.set(add(changes['selectedMonth'].currentValue, { months: 1 }));
       this.isThisMonth.set(isThisMonth(changes['selectedMonth'].currentValue));
