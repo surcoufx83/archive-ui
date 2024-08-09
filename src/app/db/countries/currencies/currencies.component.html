@@ -1,7 +1,7 @@
 <div class="container pt-4 pt-md-2 mb-2">
-    <app-h2 [title]="i18n('db.currencies.title')" [busy]="busy" [btn1]="i18n('common.back')"
+    <app-h2 [title]="i18nstr.db.currencies.title" [busy]="busy" [btn1]="i18nstr.common.back"
         [btn1css]="'btn btn-sm btn-outline-primary'" [btn1icon]="icons['go-left']" [btn1link]="'/db'"
-        [btn2]="i18n('common.add')" [btn2css]="'btn btn-sm btn-outline-primary'" [btn2icon]="icons['add']"
+        [btn2]="i18nstr.common.add" [btn2css]="'btn btn-sm btn-outline-primary'" [btn2icon]="icons['add']"
         (btn2Clicked)="edit()">
 
     </app-h2>
@@ -10,8 +10,8 @@
 <div #editor>
     <div class="container pt-4 pt-md-2 mb-2" *ngIf="editcurrency">
         <div class="card">
-            <app-h4 [containercss]="'card-header'" [title]="i18n('db.currencies.editor.title')" [busy]="saving"
-                [btn1]="i18n('common.save')" [btn1css]="'btn btn-sm btn-success'" [btn1icon]="icons['save']"
+            <app-h4 [containercss]="'card-header'" [title]="i18nstr.db.currencies.editor.title" [busy]="saving"
+                [btn1]="i18nstr.common.save" [btn1css]="'btn btn-sm btn-success'" [btn1icon]="icons['save']"
                 (btn1Clicked)="submit(f)" [btn2css]="editcurrency.id > 0 ? 'btn btn-sm btn-outline-danger' : ''"
                 [btn2icon]="editcurrency.id > 0 ? icons['delete'] : ''" (btn2Clicked)="delete(editcurrency)"
                 [xshow]="true" (xClicked)="editcurrency = undefined"></app-h4>
@@ -22,24 +22,24 @@
                         <div class="col-9 col-lg-6 mb-3">
                             <div class="form-group">
                                 <label for="currency-name" class="form-label required">{{
-                                    i18n('db.currencies.name') }}</label>
+                                    i18nstr.db.currencies.name }}</label>
                                 <input type="text" class="form-control" id="currency-name" name="currency-name"
-                                    [(ngModel)]="editcurrency.name" [placeholder]="i18n('db.currencies.name')" required>
+                                    [(ngModel)]="editcurrency.name" [placeholder]="i18nstr.db.currencies.name" required>
                             </div>
                         </div>
                         <div class="col-3 mb-3">
                             <div class="form-group">
                                 <label for="currency-default" class="form-label">{{
-                                    i18n('db.currencies.default') }}</label>
+                                    i18nstr.db.currencies.default }}</label>
                                 <div class="form-check">
                                     <input type="checkbox" class="form-check-input" id="currency-default"
                                         name="currency-default" [(ngModel)]="editcurrency.isdefault">
                                     <label for="currency-default" class="form-check-label"
                                         *ngIf="editcurrency.isdefault">{{
-                                        i18n('common.yes') }}</label>
+                                        i18nstr.common.yes }}</label>
                                     <label for="currency-default" class="form-check-label"
                                         *ngIf="!editcurrency.isdefault">{{
-                                        i18n('common.no') }}</label>
+                                        i18nstr.common.no }}</label>
                                 </div>
                             </div>
                         </div>
@@ -49,19 +49,19 @@
                         <div class="col-6 col-lg-3 mb-3">
                             <div class="form-group">
                                 <label for="currency-shortname" class="form-label required">{{
-                                    i18n('db.currencies.shortname') }}</label>
+                                    i18nstr.db.currencies.shortname }}</label>
                                 <input type="text" class="form-control" id="currency-shortname"
                                     name="currency-shortname" [(ngModel)]="editcurrency.shortname"
-                                    [placeholder]="i18n('db.currencies.shortname')" required minlength="3"
+                                    [placeholder]="i18nstr.db.currencies.shortname" required minlength="3"
                                     maxlength="3">
                             </div>
                         </div>
                         <div class="col-6 col-lg-3 mb-3">
                             <div class="form-group">
                                 <label for="currency-sign" class="form-label">{{
-                                    i18n('db.currencies.sign') }}</label>
+                                    i18nstr.db.currencies.sign }}</label>
                                 <input type="text" class="form-control" id="currency-sign" name="currency-sign"
-                                    [(ngModel)]="editcurrency.sign" [placeholder]="i18n('db.currencies.sign')"
+                                    [(ngModel)]="editcurrency.sign" [placeholder]="i18nstr.db.currencies.sign"
                                     minlength="1" maxlength="1">
                             </div>
                         </div>
@@ -77,17 +77,17 @@
     <div class="flex-table flex-table-sm mb-3">
         <div class="flex-table-head row">
             <div class="col-6">
-                {{ i18n('db.currencies.name') }}
+                {{ i18nstr.db.currencies.name }}
                 <app-sorter-icon columnName="name" [sortAsc]="sortAsc" [sortBy]="sortBy"
                     (click)="sort('name', sortBy === 'name' ? !sortAsc : sortAsc);"></app-sorter-icon>
             </div>
             <div class="col-3">
-                {{ i18n('db.currencies.shortname') }}
+                {{ i18nstr.db.currencies.shortname }}
                 <app-sorter-icon columnName="shortname" [sortAsc]="sortAsc" [sortBy]="sortBy"
                     (click)="sort('shortname', sortBy === 'shortname' ? !sortAsc : sortAsc);"></app-sorter-icon>
             </div>
             <div class="col-3">
-                {{ i18n('db.currencies.sign') }}
+                {{ i18nstr.db.currencies.sign }}
                 <app-sorter-icon columnName="sign" [sortAsc]="sortAsc" [sortBy]="sortBy"
                     (click)="sort('sign', sortBy === 'sign' ? !sortAsc : sortAsc);"></app-sorter-icon>
             </div>
@@ -96,7 +96,7 @@
             <div (click)="edit(item);" class="flex-table-body row pointer">
                 <div class="col-6 text-truncate">
                     {{ item.name }}
-                    <span class="badge bg-primary" *ngIf="item.isdefault">{{ i18n('db.currencies.default') }}</span>
+                    <span class="badge bg-primary" *ngIf="item.isdefault">{{ i18nstr.db.currencies.default }}</span>
                 </div>
                 <div class="col-3 text-truncate">
                     {{ item.shortname }}

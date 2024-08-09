@@ -11,6 +11,7 @@ import { I18nService } from '../i18n.service';
 import { FormatService } from '../utils/format.service';
 import { SettingsService } from '../utils/settings.service';
 import { SearchResultAccountItem, SearchResultCaseItem, SearchResultDirectoryItem, SearchResultFileItem, SearchResultNoteItem, SearchResultPageItem, SearchResults } from './searchresult';
+import { L10nArchiveLocale } from '../l10n/l10n.types';
 
 @Component({
   selector: 'app-search',
@@ -75,6 +76,14 @@ export class SearchComponent implements OnDestroy, OnInit {
 
   i18n(key: string, params: string[] = []): string {
     return this.i18nService.i18n(key, params);
+  }
+
+  /**
+   * Getter for i18n localization strings.
+   * @returns The localization strings.
+   */
+  get i18nstr(): L10nArchiveLocale {
+    return this.i18nService.str;
   }
 
   get locale(): string {

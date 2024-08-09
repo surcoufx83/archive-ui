@@ -44,7 +44,7 @@
   @if (bookings.length > 0) {
   <div class="pt-4 pt-md-2 mb-2">
     <!-- Container with bookings of selected day -->
-    <app-h3 [title]="i18n('workday.tracked.title')" [containercss]="'pt-4'"></app-h3>
+    <app-h3 [title]="i18nstr.workday.tracked.title" [containercss]="'pt-4'"></app-h3>
 
     <div class="pt-md-2 mb-2">
       <app-work-day-bookings [bookings]="bookings" (bookingClick)="copyFromRecent($event)"
@@ -56,7 +56,7 @@
 
   <div class="pt-4 pt-md-2 mb-2">
     <!-- Container with booking form -->
-    <app-h3 [title]="i18n('workday.tracking.title')" [containercss]="'pt-4'" id="scroll-anchor"></app-h3>
+    <app-h3 [title]="i18nstr.workday.tracking.title" [containercss]="'pt-4'" id="scroll-anchor"></app-h3>
 
     @if (booking) {
     <!-- container tracking -->
@@ -81,7 +81,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">
-            {{i18n('workday.tracking.createCustomer.title')}}
+            {{i18nstr.workday.tracking.createCustomer.title}}
           </h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
@@ -90,10 +90,10 @@
             <div class="col-12 mb-3">
               <div class="form-group">
                 <label for="create-customer-name" class="form-label required">
-                  {{ i18n('workday.tracking.createCustomer.nameTitle') }}
+                  {{ i18nstr.workday.tracking.createCustomer.nameTitle }}
                 </label>
                 <input type="text" class="form-control" id="create-customer-name" name="create-customer-name"
-                  [placeholder]="i18n('workday.tracking.createCustomer.namePlaceholder')" formControlName="name">
+                  [placeholder]="i18nstr.workday.tracking.createCustomer.namePlaceholder" formControlName="name">
               </div>
             </div>
           </div>
@@ -101,10 +101,10 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" #createCustomerModalCloser data-bs-dismiss="modal"
             (click)="createCustomer.reset()">
-            {{i18n('common.cancel')}}
+            {{i18nstr.common.cancel}}
           </button>
           <button type="submit" class="btn btn-success" [disabled]="!createCustomer.valid || createCustomerBusy()">
-            {{i18n('common.save')}}
+            {{i18nstr.common.save}}
           </button>
         </div>
       </div>

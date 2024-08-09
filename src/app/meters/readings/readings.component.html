@@ -1,18 +1,18 @@
 <div class="container pt-4 pt-md-2 mb-2">
   <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between align-items-center">
-    <h2 class="px-2 mb-0">{{ i18n('meter.readings.title') }}</h2>
+    <h2 class="px-2 mb-0">{{ i18nstr.meter.readings.title }}</h2>
     <div>
       <nav class="h-100" style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
         <ol class="breadcrumb d-flex align-items-center h-100 mb-0 flex-fill flex-nowrap">
           <li [ngClass]="{'breadcrumb-item fade me-1 me-lg-2': true, 'show': busy}">
             <ui-busy-indicator></ui-busy-indicator>
           </li>
-          <app-button [title]="i18n('meter.title')" [css]="'btn btn-sm btn-outline-secondary'" [icon]="icons['meter']"
+          <app-button [title]="i18nstr.meter.title" [css]="'btn btn-sm btn-outline-secondary'" [icon]="icons['meter']"
             [link]="'/meter'"></app-button>
           <button type="button" class="btn btn-sm btn-outline-primary" (click)="newRecord()" data-bs-toggle="modal"
             data-bs-target="#exampleModal">
             <app-icon [iconClass]="icons['add']"></app-icon>
-            {{ i18n('common.add') }}
+            {{ i18nstr.common.add }}
           </button>
         </ol>
       </nav>
@@ -30,9 +30,9 @@
   <div class="container">
     <div class="flex-table hover flex-table-sm mb-3">
       <div class="flex-table-head row">
-        <div class="col-4">{{ i18n('common.date') }}</div>
-        <div class="col-4">{{ i18n('meter.readings.meter') }}</div>
-        <div class="col-4 text-end">{{ i18n('meter.readings.value') }}</div>
+        <div class="col-4">{{ i18nstr.common.date }}</div>
+        <div class="col-4">{{ i18nstr.meter.readings.meter }}</div>
+        <div class="col-4 text-end">{{ i18nstr.meter.readings.value }}</div>
       </div>
       <ng-container *ngFor="let reading of readings; let i = index;">
         <ng-container *ngTemplateOutlet="readingRow; context: { 'reading': reading }"></ng-container>
@@ -84,18 +84,18 @@
     <div class="modal-content">
       <form (submit)="saveRecord(editRecord); newRecord(true);">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">{{ i18n('meter.readings.modal.title') }}</h5>
+          <h5 class="modal-title" id="exampleModalLabel">{{ i18nstr.meter.readings.modal.title }}</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <p class="fs-8">
-            {{ i18n('meter.readings.modal.description') }}
+            {{ i18nstr.meter.readings.modal.description }}
           </p>
           <ul *ngIf="editRecord != null" class="list-group list-group-flush">
             <li class="list-group-item">
               <div class="d-flex justify-content-between">
                 <div>
-                  <strong>{{ i18n('common.date') }}</strong>
+                  <strong>{{ i18nstr.common.date }}</strong>
                 </div>
                 <div class="text-end">
                   <input type="date" [(ngModel)]="editRecord.date" name="input-date"
@@ -125,10 +125,10 @@
           </ul>
         </div>
         <div class="modal-footer justify-content-between">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ i18n('common.cancel') }}</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ i18nstr.common.cancel }}</button>
           <button type="submit" class="btn btn-success" [disabled]="saving">
             <app-icon [iconClass]="icons[saving ? 'busy' : 'save']"></app-icon>
-            {{ i18n('common.save') }}
+            {{ i18nstr.common.save }}
           </button>
         </div>
       </form>

@@ -29,7 +29,7 @@
                             <li class="list-group-item pointer"
                                 (click)="newfolderName = ''; newfolderClicked = !newfolderClicked;">
                                 <app-icon [iconClass]="icons['add']" [marginEnd]="1"></app-icon>
-                                {{ i18n('folderbrowser.newFolder.title') }}
+                                {{ i18nstr.folderbrowser.newFolder.title }}
                             </li>
                         </ng-container>
                         <ng-container *ngIf="showAddFolderBtn && newfolderClicked">

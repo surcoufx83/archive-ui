@@ -11,6 +11,7 @@ import { environment } from 'src/environments/environment.dev';
 import { I18nService } from '../../i18n.service';
 import { FormatService } from 'src/app/utils/format.service';
 import { ToastsService } from 'src/app/utils/toasts.service';
+import { L10nArchiveLocale } from 'src/app/l10n/l10n.types';
 
 @Component({
   selector: 'app-work-day',
@@ -100,6 +101,14 @@ export class WorkDayComponent implements OnDestroy, OnInit {
    */
   i18n(key: string, params: string[] = []): string {
     return this.i18nService.i18n(key, params);
+  }
+
+  /**
+   * Getter for i18n localization strings.
+   * @returns The localization strings.
+   */
+  get i18nstr(): L10nArchiveLocale {
+    return this.i18nService.str;
   }
 
   /**

@@ -82,8 +82,6 @@ import { UiBusyIndicatorComponent } from './utils/ui-busy-indicator/ui-busy-indi
 import { UiCenteredBusyIndicatorComponent } from './utils/ui-centered-busy-indicator/ui-centered-busy-indicator.component';
 import { StorageRoomComponent } from './warehouse/storage-room/storage-room.component';
 import { WarehouseComponent } from './warehouse/warehouse.component';
-import { WorkLeadComponent } from './work/leads/lead/lead.component';
-import { WorkLeadsComponent } from './work/leads/leads.component';
 import { WorkCalendarComponent } from './work/settings/calendar/calendar.component';
 import { WorkHolidaysComponent } from './work/settings/calendar/holidays/holidays.component';
 import { WorkCustomerComponent } from './work/settings/customers/customer/customer.component';
@@ -181,8 +179,6 @@ registerLocaleData(localeFr);
         WorkCustomersComponent,
         WorkDayComponent,
         WorkHolidaysComponent,
-        WorkLeadComponent,
-        WorkLeadsComponent,
         WorkMonthComponent,
         WorkOffCategoriesComponent,
         WorkProjectsComponent,

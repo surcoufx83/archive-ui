@@ -67,7 +67,7 @@ export class FormatService {
    */
   fdate(date: Date | string | null, form: string): string {
     if (date == null)
-      return this.i18nService.i18n('common.novalue');
+      return this.i18nService.str.common.novalue;
     if (typeof (date) === 'string')
       date = new Date(date);
     return format(date, form, { locale: this.i18nService.DateLocale });
@@ -81,7 +81,7 @@ export class FormatService {
    */
   fdist(date: Date | string | null, suffix: boolean | undefined = undefined): string {
     if (date == null)
-      return this.i18nService.i18n('common.novalue');
+      return this.i18nService.str.common.novalue;
     if (typeof (date) === 'string')
       date = new Date(date);
     return formatDistanceToNow(date, { locale: this.i18nService.DateLocale, addSuffix: suffix });
@@ -96,7 +96,7 @@ export class FormatService {
    */
   fdist2(date: Date | string | null, baseDate: Date | string | null, suffix: boolean | undefined = undefined): string {
     if (date == null || baseDate == null)
-      return this.i18nService.i18n('common.novalue');
+      return this.i18nService.str.common.novalue;
     if (typeof (date) === 'string')
       date = new Date(date);
     if (typeof (baseDate) === 'string')

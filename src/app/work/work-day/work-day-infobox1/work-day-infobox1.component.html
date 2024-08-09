@@ -2,13 +2,13 @@
     <div class="card-header">
         <h5 class="mb-0">
             <app-icon [iconClass]="icons['info']" [marginEnd]="1"></app-icon>
-            {{ i18n('workday.daycard.title') }}
+            {{ i18nstr.workday.daycard.title }}
         </h5>
     </div>
     <div class="card-body">
         <div class="d-flex justify-content-between">
             <div class="fs-7">
-                {{ i18n('calendar.weekday') }}
+                {{ i18nstr.calendar.weekday }}
             </div>
             <strong>
                 {{ fdate(today, 'EEEE') }}
@@ -17,7 +17,7 @@
         @if (day.offcategory) {
         <div class="d-flex justify-content-between">
             <div class="fs-7">
-                {{ i18n('work.offcategories.title') }}
+                {{ i18nstr.work.offcategories.title }}
             </div>
             <strong>
                 {{ i18n('work.offcategories.' + day.offcategory.name) }}
@@ -27,7 +27,7 @@
         @if (day.stats) {
         <div class="d-flex justify-content-between">
             <div class="fs-7">
-                {{ i18n('workday.daycard.booked') }}
+                {{ i18nstr.workday.daycard.booked }}
             </div>
             <div>
                 <strong>

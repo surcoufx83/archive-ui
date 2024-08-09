@@ -1,7 +1,7 @@
 <div class="sidebar-container h-100 w-100 overflow-y-auto" [attr.data-mobile]="isMobile">
     <div>
         <input type="text" class="form-control w-100 rounded-0" [(ngModel)]="filterExpr" (keyup)="onChangeFilter()"
-            [placeholder]="i18n('notepad2.filterPlaceholder')" autocomplete="off">
+            [placeholder]="i18nstr.notepad2.filterPlaceholder" autocomplete="off">
     </div>
     @for (noteItem of filteredNotes; track $index) {
     <a class="d-flex justify-content-between align-items-center w-100 notepad-item text-reset text-decoration-none"
@@ -38,5 +38,5 @@
     }
 </div>
 
-<confirm-deletion [title]="i18n('common.confirm.deletion.title')" [question]="i18n('common.confirm.deletion.message')"
+<confirm-deletion [title]="i18nstr.common.confirm.deletion.title" [question]="i18nstr.common.confirm.deletion.message"
     (confirm)="deleteNote ? onDeletionConfirmed(deleteNote) : null"></confirm-deletion>

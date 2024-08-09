@@ -1,5 +1,5 @@
 <div class="container pt-4 pt-md-2 mb-2">
-    <app-h2 [title]="i18n('db.directories.title')" [busy]="busy" [btn1]="i18n('common.back')"
+    <app-h2 [title]="i18nstr.db.directories.title" [busy]="busy" [btn1]="i18nstr.common.back"
         [btn1css]="'btn btn-sm btn-outline-primary'" [btn1icon]="icons['go-left']" [btn1link]="'/db'">
     </app-h2>
 </div>
@@ -8,17 +8,17 @@
     <div class="flex-table flex-table-sm mb-3">
         <div class="flex-table-head row">
             <div class="col-6 col-lg-3">
-                {{ i18n('db.directories.id') }}
+                {{ i18nstr.db.directories.id }}
                 <app-sorter-icon columnName="id" [sortAsc]="sortAsc" [sortBy]="sortBy"
                     (click)="sort('id', sortBy === 'id' ? !sortAsc : sortAsc);"></app-sorter-icon>
             </div>
             <div class="col-6 col-lg-3">
-                {{ i18n('db.directories.name') }}
+                {{ i18nstr.db.directories.name }}
                 <app-sorter-icon columnName="name" [sortAsc]="sortAsc" [sortBy]="sortBy"
                     (click)="sort('name', sortBy === 'name' ? !sortAsc : sortAsc);"></app-sorter-icon>
             </div>
             <div class="col-6 col-lg-3">
-                {{ i18n('db.directories.mtime') }}
+                {{ i18nstr.db.directories.mtime }}
                 <app-sorter-icon columnName="mtime" [sortAsc]="sortAsc" [sortBy]="sortBy"
                     (click)="sort('mtime', sortBy === 'mtime' ? !sortAsc : sortAsc);"></app-sorter-icon>
             </div>

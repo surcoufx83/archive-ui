@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment.dev';
 import { I18nService } from '../i18n.service';
 import { FormatService } from '../utils/format.service';
 import { SettingsService } from '../utils/settings.service';
+import { L10nArchiveLocale } from '../l10n/l10n.types';
 
 @Component({
   selector: 'app-cases',
@@ -66,8 +67,12 @@ export class CasesComponent implements OnDestroy, OnInit {
     return format(date, form, { locale: this.i18nService.DateLocale });
   }
 
-  i18n(key: string, params: string[] = []): string {
-    return this.i18nService.i18n(key, params);
+  /**
+   * Getter for i18n localization strings.
+   * @returns The localization strings.
+   */
+  get i18nstr(): L10nArchiveLocale {
+    return this.i18nService.str;
   }
 
   ngOnDestroy(): void {

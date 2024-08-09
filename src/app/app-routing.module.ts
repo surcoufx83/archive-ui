@@ -33,8 +33,6 @@ import { SearchComponent } from './search/search.component';
 import { SessionGuard } from './session-guard.guard';
 import { StorageRoomComponent } from './warehouse/storage-room/storage-room.component';
 import { WarehouseComponent } from './warehouse/warehouse.component';
-import { WorkLeadComponent } from './work/leads/lead/lead.component';
-import { WorkLeadsComponent } from './work/leads/leads.component';
 import { WorkCustomerComponent } from './work/settings/customers/customer/customer.component';
 import { WorkCustomersComponent } from './work/settings/customers/customers.component';
 import { WorkDayComponent } from './work/work-day/work-day.component';
@@ -107,8 +105,6 @@ const routes: Routes = [
     path: 'work', component: WorkComponent, canActivate: [SessionGuard], children: [
       { path: '', redirectTo: 'today', pathMatch: 'full' },
       { path: 'day/:date', component: WorkDayComponent, canActivate: [SessionGuard] },
-      { path: 'leads', component: WorkLeadsComponent, canActivate: [SessionGuard] },
-      { path: 'lead/:id', component: WorkLeadComponent, canActivate: [SessionGuard] },
       { path: 'month', component: WorkMonthComponent, canActivate: [SessionGuard] },
       { path: 'month/:year/:month', component: WorkMonthComponent, canActivate: [SessionGuard] },
       { path: 'year', component: WorkYearComponent, canActivate: [SessionGuard] },

@@ -3,6 +3,7 @@ import { first } from 'rxjs';
 import { AuthService } from 'src/app/auth.service';
 import { I18nService } from 'src/app/i18n.service';
 import { ButtonType, Directory, File } from 'src/app/if';
+import { L10nArchiveLocale } from 'src/app/l10n/l10n.types';
 import { environment } from 'src/environments/environment.dev';
 
 @Component({
@@ -12,13 +13,13 @@ import { environment } from 'src/environments/environment.dev';
 })
 export class FolderBrowserDialogComponent implements OnInit {
 
-  @Input() cancelBtnTitle: string = this.i18nService.i18n('common.cancel');
+  @Input() cancelBtnTitle: string = this.i18nstr.common.cancel;
   @Input() initialFolder: Directory | null = null;
-  @Input() okBtnTitle: string = this.i18nService.i18n('common.save');
+  @Input() okBtnTitle: string = this.i18nstr.common.save;
   @Input() showAddFolderBtn: boolean = false;
   @Input() showDirectories: boolean = true;
   @Input() showFiles: boolean = false;
-  @Input() title: string = this.i18nService.i18n('folderbrowser.title');
+  @Input() title: string = this.i18nstr.folderbrowser.title;
   @Output() select = new EventEmitter<SelectedItem>();
   @ViewChild('modal') modal?: ElementRef;
 
@@ -51,6 +52,14 @@ export class FolderBrowserDialogComponent implements OnInit {
 
   i18n(key: string, params: string[] = []): string {
     return this.i18nService.i18n(key, params);
+  }
+
+  /**
+   * Getter for i18n localization strings.
+   * @returns The localization strings.
+   */
+  get i18nstr(): L10nArchiveLocale {
+    return this.i18nService.str;
   }
 
   ngOnInit(): void {

@@ -3,8 +3,8 @@
         <div class="container-fluid d-flex d-md-none justify-content-end">
             <button type="button" class="btn btn-dark navbar-toggler" data-bs-toggle="collapse"
                 data-bs-target="#navbar-collapsible" aria-controls="navbar-collapsible" aria-expanded="false"
-                [title]="i18n('navbar.showNavigationItems.btnTitle')"
-                [attr.aria-label]="i18n('navbar.showNavigationItems.btnTitle')" #navbarCollapseBtn
+                [title]="i18nstr.navbar.showNavigationItems.btnTitle"
+                [attr.aria-label]="i18nstr.navbar.showNavigationItems.btnTitle" #navbarCollapseBtn
                 (click)="navbarVisible = !navbarVisible">
                 <app-icon [iconClass]="icons['menu']" [addCssClasses]="'p-1'"></app-icon>
             </button>
@@ -111,7 +111,7 @@
                         <div class="d-none d-md-block me-4 dropdown">
                             <button type="button" class="btn btn-dark locale-btn dropdown-toggle" #navbarLocalesDropdown
                                 role="button" data-bs-toggle="dropdown" aria-expanded="false"
-                                [title]="i18n('navbar.switchLocale.btnTitle')">
+                                [title]="i18nstr.navbar.switchLocale.btnTitle">
                                 <app-icon [iconClass]="icons['locale']" [addCssClasses]="'me-2'"></app-icon>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-dark bg-dark mt-2 border shadow"
@@ -120,7 +120,7 @@
                                     *ngFor="let locale of navbarLocales"
                                     (click)="changeLocaleTo(locale.code, $event); navbarLocalesDropdownBtn ? navbarLocalesDropdownBtn.nativeElement.click() : null">
                                     {{ i18n('locales.' + locale.code + '.title') }}
-                                    <span *ngIf="locale.isDefault" class="fs-7">({{ i18n('common.default')
+                                    <span *ngIf="locale.isDefault" class="fs-7">({{ i18nstr.common.default
                                         }})</span>
                                 </li>
                             </ul>
@@ -128,7 +128,7 @@
                         <div class="d-flex d-md-none flex-row align-items-center text-light mx-1 mb-3">
                             <app-icon [iconClass]="icons['locale']"></app-icon>
                             <span class="ms-2 ms-md-0 me-2">
-                                {{ i18n('navbar.switchLocale.smTitle') }}:
+                                {{ i18nstr.navbar.switchLocale.smTitle }}:
                             </span>
                             <button type="button"
                                 [ngClass]="{'btn btn-sm btn-dark ms-2': true, 'active': locale.code == currentLocale}"
@@ -146,12 +146,12 @@
                                     <app-icon [iconClass]="icons['search']"></app-icon>
                                 </label>
                                 <input type="text" class="form-control form-control-sm"
-                                    [placeholder]="i18n('navbar.search.placeholder')"
+                                    [placeholder]="i18nstr.navbar.search.placeholder"
                                     aria-describedby="navbar-main-search-label" id="navbar-main-search-input"
                                     name="navbar-main-search-input" [(ngModel)]="searchphrase">
                                 <button class="btn btn-sm btn-secondary" type="submit"
                                     (click)="navbarVisible ? navbarCollapseBtn?.click() : null">
-                                    {{ i18n('navbar.search.submit') }}
+                                    {{ i18nstr.navbar.search.submit }}
                                 </button>
                             </div>
                         </form>

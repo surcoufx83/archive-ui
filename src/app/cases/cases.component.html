@@ -1,8 +1,8 @@
 <div class="container pt-4 pt-md-2 mb-2">
-    <app-h2 [title]="i18n('cases.title')" [btn1]="i18n('cases.showDeleted')"
+    <app-h2 [title]="i18nstr.cases.title" [btn1]="i18nstr.cases.showDeleted"
         [btn1icon]="showDeleted ? 'fa-solid fa-toggle-on' : 'fa-solid fa-toggle-off'"
         [btn1css]="'btn btn-sm btn-secondary'" (btn1Clicked)="changeShowDeleted(!showDeleted)"
-        [btn2]="i18n('cases.showInRetention')"
+        [btn2]="i18nstr.cases.showInRetention"
         [btn2icon]="showInRetention ? 'fa-solid fa-toggle-on' : 'fa-solid fa-toggle-off'"
         [btn2css]="'btn btn-sm btn-secondary'" (btn2Clicked)="changeShowRetention(!showInRetention)"></app-h2>
 </div>

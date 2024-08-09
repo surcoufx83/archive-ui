@@ -1,6 +1,6 @@
 <div class="container pt-4 pt-md-2 mb-2">
   <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between align-items-center">
-    <h2 class="text-nowrap text-truncate">{{ i18n('home.title') }}</h2>
+    <h2 class="text-nowrap text-truncate">{{ i18nstr.home.title }}</h2>
   </div>
 
   <div class="d-flex flex-column flex-lg-row justify-content-between align-items-top pt-4 pt-md-2 mb-2">
@@ -10,7 +10,7 @@
         <div class="card-header">
           <h5 class="mb-0">
             <app-icon [iconClass]="icons['star']" [fixedWidth]="true"></app-icon>
-            {{ i18n('home.inbox.title') }}
+            {{ i18nstr.home.inbox.title }}
           </h5>
         </div>
         <ul class="list-group flush hover rounded-0 " *ngIf="inboxfiles.length > 0">
@@ -28,7 +28,7 @@
         <div class="card-header">
           <h5 class="mb-0">
             <app-icon [iconClass]="icons['cases']" [fixedWidth]="true"></app-icon>
-            {{ i18n('home.cases.title') }}
+            {{ i18nstr.home.cases.title }}
           </h5>
         </div>
         <div class="card-body">
@@ -45,7 +45,7 @@
         <div class="card-header">
           <h5 class="mb-0">
             <app-icon [iconClass]="icons['star']" [fixedWidth]="true"></app-icon>
-            {{ i18n('home.recentFiles.title') }}
+            {{ i18nstr.home.recentFiles.title }}
           </h5>
         </div>
         <ul class="list-group flush hover rounded-0 ">
@@ -67,22 +67,22 @@
         <div class="card">
           <div class="card-header">
             <h5 class="mb-0">
-              {{ i18n('home.supermarket.title') }}
+              {{ i18nstr.home.supermarket.title }}
             </h5>
           </div>
           <div class="card-body p-0">
             <ul class="list-group list-group-flush rounded">
               <a class="list-group-item" routerLink="/shopping">
                 <app-icon [iconClass]="icons['shopping']" [marginEnd]="1" [fixedWidth]="true"></app-icon>
-                {{ i18n('home.supermarket.shoppingLink') }}
+                {{ i18nstr.home.supermarket.shoppingLink }}
               </a>
               <a class="list-group-item" routerLink="/price-comparison">
                 <app-icon [iconClass]="icons['filter-price']" [marginEnd]="1" [fixedWidth]="true"></app-icon>
-                {{ i18n('home.supermarket.priceComparison') }}
+                {{ i18nstr.home.supermarket.priceComparison }}
               </a>
               <a class="list-group-item" [routerLink]="'/receipts'">
                 <app-icon [iconClass]="icons['receipt']" [marginEnd]="1" [fixedWidth]="true"></app-icon>
-                {{ i18n('home.supermarket.receiptsLink') }}
+                {{ i18nstr.home.supermarket.receiptsLink }}
               </a>
             </ul>
           </div>
@@ -93,14 +93,14 @@
         <div class="card">
           <div class="card-header">
             <h5 class="mb-0">
-              {{ i18n('home.readings.title') }}
+              {{ i18nstr.home.readings.title }}
             </h5>
           </div>
           <div class="card-body p-0">
             <ul class="list-group list-group-flush rounded">
               <a class="list-group-item" [routerLink]="'/readings'">
                 <app-icon [iconClass]="icons['meter-reading']" [marginEnd]="1" [fixedWidth]="true"></app-icon>
-                {{ i18n('home.readings.readingsLink') }}
+                {{ i18nstr.home.readings.readingsLink }}
               </a>
             </ul>
           </div>
@@ -111,18 +111,18 @@
         <div class="card">
           <div class="card-header">
             <h5 class="mb-0">
-              {{ i18n('home.special.title') }}
+              {{ i18nstr.home.special.title }}
             </h5>
           </div>
           <div class="card-body p-0">
             <ul class="list-group list-group-flush rounded">
               <a class="list-group-item" [routerLink]="'/notepad'">
                 <app-icon [iconClass]="icons['notepad']" [marginEnd]="1" [fixedWidth]="true"></app-icon>
-                {{ i18n('home.special.notepadLink') }}
+                {{ i18nstr.home.special.notepadLink }}
               </a>
               <a class="list-group-item" [routerLink]="'/warehouse'">
                 <app-icon [iconClass]="icons['warehouse']" [marginEnd]="1" [fixedWidth]="true"></app-icon>
-                {{ i18n('home.special.warehouseLink') }}
+                {{ i18nstr.home.special.warehouseLink }}
               </a>
             </ul>
           </div>
@@ -133,14 +133,14 @@
         <div class="card">
           <div class="card-header">
             <h5 class="mb-0">
-              {{ i18n('home.database.title') }}
+              {{ i18nstr.home.database.title }}
             </h5>
           </div>
           <div class="card-body p-0">
             <ul class="list-group list-group-flush rounded">
               <a class="list-group-item" [routerLink]="'/db'">
                 <app-icon [iconClass]="icons['database']" [marginEnd]="1" [fixedWidth]="true"></app-icon>
-                {{ i18n('home.database.dbmanager') }}
+                {{ i18nstr.home.database.dbmanager }}
               </a>
             </ul>
           </div>
@@ -151,7 +151,7 @@
         <div class="card">
           <div class="card-header">
             <h5 class="mb-0">
-              {{ i18n('home.stats.title') }}
+              {{ i18nstr.home.stats.title }}
             </h5>
           </div>
           <div class="card-body p-0">
@@ -166,11 +166,11 @@
                 <div class="card-footer px-2 py-1 fs-7">
                   <a [routerLink]="['/files']">
                     <app-icon [iconClass]="icons['go-right']"></app-icon>
-                    {{ i18n('home.stats.filesLink') }}
+                    {{ i18nstr.home.stats.filesLink }}
                   </a>
                   <a [routerLink]="['/dashboard']" class="ms-2">
                     <app-icon [iconClass]="icons['go-right']"></app-icon>
-                    {{ i18n('home.stats.storageLink') }}
+                    {{ i18nstr.home.stats.storageLink }}
                   </a>
                 </div>
               </li>
@@ -184,15 +184,15 @@
                 <div class="card-footer px-2 py-1 fs-7">
                   <a [routerLink]="['/files/noclass']">
                     <app-icon [iconClass]="icons['go-right']"></app-icon>
-                    {{ i18n('home.stats.noclassFilesLink') }}
+                    {{ i18nstr.home.stats.noclassFilesLink }}
                   </a>
                   <a [routerLink]="['/cases']" class="ms-2">
                     <app-icon [iconClass]="icons['go-right']"></app-icon>
-                    {{ i18n('home.stats.casesLink') }}
+                    {{ i18nstr.home.stats.casesLink }}
                   </a>
                   <a [routerLink]="['/files/noocr']" class="ms-2">
                     <app-icon [iconClass]="icons['go-right']"></app-icon>
-                    {{ i18n('home.stats.noocrFilesLink') }}
+                    {{ i18nstr.home.stats.noocrFilesLink }}
                   </a>
                 </div>
               </li>

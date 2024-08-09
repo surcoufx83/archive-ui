@@ -22,41 +22,41 @@
             <div class="d-flex align-items-center mb-1">
                 <div class="border border-secondary rounded">
                     <button type="button" class="btn btn-dark btn-sm" (click)="onPressFormatter(editor, 'bold')"
-                        [title]="i18n('notepad2.textEditor.textBold')">
+                        [title]="i18nstr.notepad2.textEditor.textBold">
                         <app-icon class="fa-solid fa-bold"></app-icon>
                     </button>
                     <button type="button" class="btn btn-dark btn-sm" (click)="onPressFormatter(editor, 'italic')"
-                        [title]="i18n('notepad2.textEditor.textItalic')">
+                        [title]="i18nstr.notepad2.textEditor.textItalic">
                         <app-icon class="fa-solid fa-italic"></app-icon>
                     </button>
                     <button type="button" class="btn btn-dark btn-sm"
                         (click)="onPressFormatter(editor, 'strikethrough')"
-                        [title]="i18n('notepad2.textEditor.textStrikethrough')">
+                        [title]="i18nstr.notepad2.textEditor.textStrikethrough">
                         <app-icon class="fa-solid fa-strikethrough"></app-icon>
                     </button>
                 </div>
                 <div class="border border-secondary rounded ms-1">
                     <button type="button" [ngClass]="{ 'btn btn-dark btn-sm': true, active: editorCurrentLineProps.ul }"
-                        (click)="onPressList(editor, 'ul')" [title]="i18n('notepad2.textEditor.makeUList')">
+                        (click)="onPressList(editor, 'ul')" [title]="i18nstr.notepad2.textEditor.makeUList">
                         <app-icon class="fa-solid fa-list-ul"></app-icon>
                     </button>
                     <button type="button" [ngClass]="{ 'btn btn-dark btn-sm': true, active: editorCurrentLineProps.ol }"
-                        (click)="onPressList(editor, 'ol')" [title]="i18n('notepad2.textEditor.makeOList')">
+                        (click)="onPressList(editor, 'ol')" [title]="i18nstr.notepad2.textEditor.makeOList">
                         <app-icon class="fa-solid fa-list-ol"></app-icon>
                     </button>
                     <button type="button" class="btn btn-dark btn-sm" [disabled]="editorCurrentLineProps.level < 1"
-                        (click)="onPressLevelChange(editor, '-')" [title]="i18n('notepad2.textEditor.reduceLevel')">
+                        (click)="onPressLevelChange(editor, '-')" [title]="i18nstr.notepad2.textEditor.reduceLevel">
                         <app-icon class="fa-solid fa-outdent"></app-icon>
                     </button>
                     <button type="button" class="btn btn-dark btn-sm"
                         [disabled]="!editorCurrentLineProps.ol && !editorCurrentLineProps.ul"
-                        (click)="onPressLevelChange(editor, '+')" [title]="i18n('notepad2.textEditor.increaseLevel')">
+                        (click)="onPressLevelChange(editor, '+')" [title]="i18nstr.notepad2.textEditor.increaseLevel">
                         <app-icon class="fa-solid fa-indent"></app-icon>
                     </button>
                 </div>
                 <div class="border border-secondary rounded ms-1">
                     <button type="button" class="btn btn-dark btn-sm" (click)="onPressBracketKey(editor, '[')"
-                        [title]="i18n('notepad2.textEditor.makeLink')">
+                        [title]="i18nstr.notepad2.textEditor.makeLink">
                         <app-icon class="fa-solid fa-link"></app-icon>
                     </button>
                 </div>

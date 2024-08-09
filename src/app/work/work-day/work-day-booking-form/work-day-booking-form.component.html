@@ -10,40 +10,40 @@
                         <div class="col-6 col-lg-3 mb-3">
                             <div class="form-group">
                                 <label for="tracking-from" class="form-label required">
-                                    {{ i18n('workday.tracking.common.from') }}
+                                    {{ i18nstr.workday.tracking.common.from }}
                                 </label>
                                 <input type="text" #focusInput class="form-control always-status" id="tracking-from"
                                     name="tracking-from" formControlName="timeFrom"
-                                    [placeholder]="i18n('workday.tracking.common.timePlaceholder')"
+                                    [placeholder]="i18nstr.workday.tracking.common.timePlaceholder"
                                     (input)="onChangeTime()">
                             </div>
                         </div>
                         <div class="col-6 col-lg-3 mb-3">
                             <div class="form-group">
                                 <label for="tracking-until" class="form-label required">
-                                    {{ i18n('workday.tracking.common.until') }}
+                                    {{ i18nstr.workday.tracking.common.until }}
                                 </label>
                                 <input type="text" class="form-control always-status" id="tracking-until"
                                     name="tracking-until" formControlName="timeUntil"
-                                    [placeholder]="i18n('workday.tracking.common.timePlaceholder')"
+                                    [placeholder]="i18nstr.workday.tracking.common.timePlaceholder"
                                     (input)="onChangeTime()">
                             </div>
                         </div>
                         <div class="col-6 col-lg-3 mb-3">
                             <div class="form-group">
                                 <label for="tracking-break" class="form-label required">
-                                    {{ i18n('workday.tracking.common.break') }}
+                                    {{ i18nstr.workday.tracking.common.break }}
                                 </label>
                                 <input type="number" class="form-control always-status" id="tracking-break"
                                     name="tracking-break" formControlName="timeBreak"
-                                    [placeholder]="i18n('workday.tracking.common.breakPlaceholder')"
+                                    [placeholder]="i18nstr.workday.tracking.common.breakPlaceholder"
                                     (input)="onChangeTime()">
                             </div>
                         </div>
                         <div class="col-6 col-lg-3 mb-3">
                             <div class="form-group">
                                 <label for="tracking-duration" class="form-label">
-                                    {{ i18n('workday.tracking.common.durationLong') }}
+                                    {{ i18nstr.workday.tracking.common.durationLong }}
                                 </label>
                                 <input type="text" class="form-control" id="tracking-duration" name="tracking-duration"
                                     formControlName="durationOutput" readonly>
@@ -55,13 +55,13 @@
                         <div class="col-12 col-lg-6 mb-3">
                             <div class="form-group">
                                 <label for="tracking-category" class="form-label required">
-                                    {{ i18n('workday.tracking.common.timeCategory') }}
+                                    {{ i18nstr.workday.tracking.common.timeCategory }}
                                 </label>
                                 <div class="input-group">
                                     <select class="form-select always-status" id="tracking-category"
                                         name="tracking-category" formControlName="category">
                                         <option [ngValue]="-1">
-                                            {{ i18n('common.select.pickOne') }}
+                                            {{ i18nstr.common.select.pickOne }}
                                         </option>
                                         @for (category of categories; track $index) {
                                         <option [ngValue]="category.id">
@@ -86,16 +86,16 @@
                         <div class="col-12 col-lg-4 mb-3">
                             <div class="form-group">
                                 <label for="tracking-customer" class="form-label required">
-                                    {{ i18n('workday.tracking.common.customer') }}
+                                    {{ i18nstr.workday.tracking.common.customer }}
                                 </label>
                                 <label class="form-label text-link pointer ms-3 fs-8" data-bs-toggle="modal"
                                     data-bs-target="#createCustomerModal">
-                                    [{{ i18n('common.add') }}]
+                                    [{{ i18nstr.common.add }}]
                                 </label>
                                 <select class="form-select always-status" id="tracking-customer"
                                     name="tracking-customer" formControlName="customer">
                                     <option [ngValue]="-1">
-                                        {{ i18n('common.select.pickOne') }}
+                                        {{ i18nstr.common.select.pickOne }}
                                     </option>
                                     @for (customer of customers; track $index) {
                                     <option [ngValue]="customer.id">
@@ -112,12 +112,12 @@
                             <!-- tracking of customer project if enabled via user settings-->
                             <div class="form-group">
                                 <label for="tracking-project" class="form-label">
-                                    {{ i18n('workday.tracking.common.project') }}
+                                    {{ i18nstr.workday.tracking.common.project }}
                                 </label>
                                 <select class="form-select always-status" id="tracking-project" name="tracking-project"
                                     formControlName="customerProject">
                                     <option [ngValue]="-1">
-                                        {{ i18n('common.select.pickOne') }}
+                                        {{ i18nstr.common.select.pickOne }}
                                     </option>
                                     @for (project of projects; track $index) {
                                     <option [ngValue]="project.id">
@@ -134,7 +134,7 @@
                             <!-- tracking of task if enabled via user settings -->
                             <div class="form-group">
                                 <label for="tracking-task" class="form-label">
-                                    {{ i18n('workday.tracking.common.task') }}
+                                    {{ i18nstr.workday.tracking.common.task }}
                                 </label>
                                 <input type="text" class="form-control always-status" id="tracking-task"
                                     name="tracking-task" formControlName="task">
@@ -147,7 +147,7 @@
                         <div class="col-12 mb-3">
                             <div class="form-group">
                                 <label for="tracking-description" class="form-label">
-                                    {{ i18n('workday.tracking.common.description') }}
+                                    {{ i18nstr.workday.tracking.common.description }}
                                 </label>
                                 <textarea class="form-control always-status" id="tracking-description"
                                     name="tracking-description" formControlName="description"></textarea>
@@ -160,7 +160,7 @@
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary" [disabled]="busy">
                                     <app-icon [iconClass]="icons[busy ? 'busy' : 'save']" [marginEnd]="1"></app-icon>
-                                    {{ i18n('common.save') }}
+                                    {{ i18nstr.common.save }}
                                 </button>
                             </div>
                         </div>
@@ -192,7 +192,7 @@
         </ul>
         <ul class="list-group overflow-y-auto rounded-top-0 border-top-0" style="max-height: 50vh;">
             @for (item of filteredRecentBookings(); track $index) {
-            <li class="list-group-item pointer" [title]="i18n('workday.tracking.common.recentTitle')"
+            <li class="list-group-item pointer" [title]="i18nstr.workday.tracking.common.recentTitle"
                 (click)="copyFromRecent(item.booking);">
                 <div class="d-flex justify-content-between">
                     <div>

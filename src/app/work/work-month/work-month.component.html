@@ -39,7 +39,7 @@
 
   <div class="pt-4 pt-md-2 mb-2">
     <!-- Calendar container -->
-    <app-h3 [title]="i18n('workday.tracking.title')" [containercss]="'pt-4'" id="scroll-anchor"></app-h3>
+    <app-h3 [title]="i18nstr.workday.tracking.title" [containercss]="'pt-4'" id="scroll-anchor"></app-h3>
 
 
 
@@ -69,13 +69,13 @@
             <div class="card-header">
               <h5 class="mb-0">
                 <app-icon [iconClass]="icons['stopwatch']" [marginEnd]="1"></app-icon>
-                {{ i18n('workmonth.cards.time.title') }}
+                {{ i18nstr.workmonth.cards.time.title }}
               </h5>
             </div>
             <div class="card-body">
               <div class="d-flex justify-content-between mb-2">
                 <div class="fs-7">
-                  {{ i18n('workmonth.cards.time.takeover') }}
+                  {{ i18nstr.workmonth.cards.time.takeover }}
                 </div>
                 <div class="font-weight-bold">
                   {{ i18n('calendar.duration.short', ['' + monthObj.timestart]) }}
@@ -83,7 +83,7 @@
               </div>
               <div class="d-flex justify-content-between mb-2">
                 <div class="fs-7">
-                  {{ i18n('workmonth.cards.time.balance') }}
+                  {{ i18nstr.workmonth.cards.time.balance }}
                 </div>
                 <div class="font-weight-bold">
                   {{ i18n('calendar.duration.short', ['' + monthObj.timedif]) }}
@@ -91,7 +91,7 @@
               </div>
               <div class="d-flex justify-content-between mb-2">
                 <div class="fs-7">
-                  {{ i18n('workmonth.cards.time.carryover') }}
+                  {{ i18nstr.workmonth.cards.time.carryover }}
                 </div>
                 <div class="font-weight-bold">
                   {{ i18n('calendar.duration.short', ['' + monthObj.timeclose]) }}
@@ -113,7 +113,7 @@
             <div class="card-body">
               <div class="d-flex justify-content-between">
                 <div class="fs-7">
-                  {{ i18n('calendar.weekday') }}
+                  {{ i18nstr.calendar.weekday }}
                 </div>
                 <div class="font-weight-bold">
                   <strong>{{ f(s2d(selectedDay.date), 'EEEE') }}</strong>
@@ -121,7 +121,7 @@
               </div>
               <div class="d-flex justify-content-between" *ngIf="selectedDay.offcategory">
                 <div class="fs-7">
-                  {{ i18n('work.offcategories.title') }}
+                  {{ i18nstr.work.offcategories.title }}
                 </div>
                 <div class="font-weight-bold">
                   <strong>{{ i18n('work.offcategories.' + selectedDay.offcategory.name) }}</strong>
@@ -130,7 +130,7 @@
               <ng-container *ngIf="selectedDay.stats">
                 <div class="d-flex justify-content-between">
                   <div class="fs-7">
-                    {{ i18n('workday.daycard.booked') }}
+                    {{ i18nstr.workday.daycard.booked }}
                   </div>
                   <div class="font-weight-bold">
                     <strong>{{ fd(selectedDay.stats.duration) }}</strong>
@@ -146,10 +146,10 @@
               <ng-container *ngIf="selectedDay.daytimeStats">
                 <div class="mt-2 border-bottom"></div>
                 <div class="row mt-2 fs-8">
-                  <div class="col-3 text-center"><strong>{{ i18n('workday.tracking.common.from') }}</strong></div>
-                  <div class="col-3 text-center"><strong>{{ i18n('workday.tracking.common.until') }}</strong></div>
-                  <div class="col-3 text-center"><strong>{{ i18n('workday.tracking.common.breakShort') }}</strong></div>
-                  <div class="col-3 text-center"><strong>{{ i18n('workday.tracking.common.durationShort') }}</strong>
+                  <div class="col-3 text-center"><strong>{{ i18nstr.workday.tracking.common.from }}</strong></div>
+                  <div class="col-3 text-center"><strong>{{ i18nstr.workday.tracking.common.until }}</strong></div>
+                  <div class="col-3 text-center"><strong>{{ i18nstr.workday.tracking.common.breakShort }}</strong></div>
+                  <div class="col-3 text-center"><strong>{{ i18nstr.workday.tracking.common.durationShort }}</strong>
                   </div>
                 </div>
                 <div class="row fs-8">
@@ -169,17 +169,17 @@
 
     <div class="container pt-4 pt-md-2 mb-2">
       <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between">
-        <h3>{{ i18n('workmonth.calendar.title') }}</h3>
+        <h3>{{ i18nstr.workmonth.calendar.title }}</h3>
         <div>
           <nav class="h-100" style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
             <ol class="breadcrumb d-flex align-items-center h-100 mb-0">
               <li class="breadcrumb-item">
                 <button type="button" class="btn btn-sm btn-secondary"
                   (click)="usersettingsObj.view.calendar.showWeekend = !usersettingsObj.view.calendar.showWeekend; pushUserSettings();"
-                  [title]="i18n('calendar.showWeekendTitle')">
+                  [title]="i18nstr.calendar.showWeekendTitle">
                   <app-icon [iconClass]="icons[usersettingsObj.view.calendar.showWeekend ? 'toggle-on' : 'toggle-off']"
                     [marginEnd]="1"></app-icon>
-                  {{ i18n('calendar.showWeekend') }}
+                  {{ i18nstr.calendar.showWeekend }}
                 </button>
               </li>
             </ol>
@@ -194,8 +194,8 @@
         class="container-fluid p-0 mb-3 mb-md-1 d-flex flex-column flex-md-row justify-content-end align-items-center flex-wrap">
         <!-- Offtime categories drag&drop-->
         <div class="me-3">
-          {{ i18n('workmonth.offtime.title') }}<i [ngClass]="[icons['help'], 'fs-8 me-1 help-icon pointer']"
-            [tooltip]="i18n('workmonth.offtime.subtitle')"></i>:
+          {{ i18nstr.workmonth.offtime.title }}<i [ngClass]="[icons['help'], 'fs-8 me-1 help-icon pointer']"
+            [tooltip]="i18nstr.workmonth.offtime.subtitle"></i>:
         </div>
         <nav class="h-100" style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
           <ol class="breadcrumb d-flex align-items-center h-100 mb-0">

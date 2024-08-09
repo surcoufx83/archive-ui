@@ -11,7 +11,7 @@
                     [routerLink]="['/case', case.id]">
                     <app-icon [iconClass]="icons['info']" [marginEnd]="1"
                         addCssClasses="d-none d-md-inline-block"></app-icon>
-                    {{ i18n('case.metacard.shorttitle') }}
+                    {{ i18nstr.case.metacard.shorttitle }}
                 </a>
             </li>
             <li class="nav-item ms-1" *ngIf="haschilds(case.id)">
@@ -19,7 +19,7 @@
                     [routerLink]="['/case', case.id, 'childs']">
                     <app-icon [iconClass]="icons['cases']" [marginEnd]="1"
                         addCssClasses="d-none d-md-inline-block"></app-icon>
-                    {{ i18n('case.childscard.title') }}
+                    {{ i18nstr.case.childscard.title }}
                 </a>
             </li>
             <li class="nav-item ms-1">
@@ -27,7 +27,7 @@
                     [routerLink]="['/case', case.id, 'times']">
                     <app-icon [iconClass]="icons['stopwatch']" [marginEnd]="1"
                         addCssClasses="d-none d-md-inline-block"></app-icon>
-                    {{ i18n('case.timecard.title') }}
+                    {{ i18nstr.case.timecard.title }}
                 </a>
             </li>
             <li class="nav-item ms-1">
@@ -35,7 +35,7 @@
                     [routerLink]="['/case', case.id, 'files']">
                     <app-icon [iconClass]="icons['folder']" [marginEnd]="1"
                         addCssClasses="d-none d-md-inline-block"></app-icon>
-                    {{ i18n('case.filescard.title') }}
+                    {{ i18nstr.case.filescard.title }}
                 </a>
             </li>
         </ul>
@@ -46,14 +46,14 @@
                     <!-- case meta card -->
 
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h3 class="text-nowrap text-truncate">{{ i18n('case.metacard.title') }}</h3>
+                        <h3 class="text-nowrap text-truncate">{{ i18nstr.case.metacard.title }}</h3>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <!-- case header data parent + casename -->
                             <div class="col-12 col-lg-6 mb-3">
                                 <div class="form-group">
-                                    <label for="case-name" class="form-label required">{{ i18n('case.metacard.name')
+                                    <label for="case-name" class="form-label required">{{ i18nstr.case.metacard.name
                                         }}</label>
                                     <input type="text" class="form-control" id="case-name" name="case-name"
                                         [(ngModel)]="case.title" (change)="changes['name'] = case.title; updateCase();"
@@ -62,13 +62,13 @@
                             </div>
                             <div class="col-12 col-lg-6 mb-3">
                                 <div class="form-group">
-                                    <label for="case-parent" class="form-label required">{{ i18n('case.metacard.parent')
+                                    <label for="case-parent" class="form-label required">{{ i18nstr.case.metacard.parent
                                         }}</label>
                                     <div class="input-group">
                                         <select class="form-select" id="case-parent" name="case-parent"
                                             [(ngModel)]="case.parentid"
                                             (change)="case.parentid = +case.parentid!; updateCase();" required>
-                                            <option [value]="-1">{{ i18n('case.metacard.noparent') }}</option>
+                                            <option [value]="-1">{{ i18nstr.case.metacard.noparent }}</option>
                                             <ng-container *ngFor="let item of listOfCases">
                                                 <option [value]="item.id" [disabled]="hasParent(item.id, case.id)">{{
                                                     item.casepath }}</option>
@@ -83,7 +83,7 @@
                             </div>
                             <div class="col-12 mb-3">
                                 <div class="form-group">
-                                    <label for="case-comment" class="form-label">{{ i18n('case.metacard.comment')
+                                    <label for="case-comment" class="form-label">{{ i18nstr.case.metacard.comment
                                         }}</label>
                                     <textarea class="form-control" id="case-comment" name="case-comment"
                                         [(ngModel)]="case.comment"
@@ -97,12 +97,12 @@
                             <!-- case participants -->
                             <div class="col-12 col-lg-6 mb-3">
                                 <div class="form-group">
-                                    <label for="case-client" class="form-label">{{ i18n('case.metacard.client')
+                                    <label for="case-client" class="form-label">{{ i18nstr.case.metacard.client
                                         }}</label>
                                     <select class="form-select" id="case-client" name="case-client"
                                         [(ngModel)]="case.clientid"
                                         (change)="case.clientid = +case.clientid!; updateCase();">
-                                        <option [value]="-1">{{ i18n('common.select.pickOne') }}</option>
+                                        <option [value]="-1">{{ i18nstr.common.select.pickOne }}</option>
                                         <ng-container *ngFor="let item of listOfClients">
                                             <option [value]="item.id">{{ item.name1 }}, {{ item.street }}, {{
                                                 item.zip }} {{ item.city }}</option>
@@ -112,11 +112,11 @@
                             </div>
                             <div class="col-12 col-lg-6 mb-3">
                                 <div class="form-group">
-                                    <label for="case-party" class="form-label">{{ i18n('case.metacard.party') }}</label>
+                                    <label for="case-party" class="form-label">{{ i18nstr.case.metacard.party }}</label>
                                     <select class="form-select" id="case-party" name="case-party"
                                         [(ngModel)]="case.partyid"
                                         (change)="case.partyid = +case.partyid!; updateCase();">
-                                        <option [value]="-1">{{ i18n('common.select.pickOne') }}</option>
+                                        <option [value]="-1">{{ i18nstr.common.select.pickOne }}</option>
                                         <ng-container *ngFor="let item of listOfParties">
                                             <option [value]="item.id">{{ item.name1 }}, {{ item.street }}, {{
                                                 item.zip }} {{ item.city }}</option>
@@ -131,12 +131,12 @@
                             <!-- case type and status -->
                             <div class="col-12 col-lg-3 mb-3">
                                 <div class="form-group">
-                                    <label for="case-type" class="form-label required">{{ i18n('case.metacard.type')
+                                    <label for="case-type" class="form-label required">{{ i18nstr.case.metacard.type
                                         }}</label>
                                     <select class="form-select" id="case-type" name="case-type"
                                         [(ngModel)]="case.typeid" (change)="case.typeid = +case.typeid!; updateCase();"
                                         required>
-                                        <option value="">{{ i18n('common.select.pickOne') }}</option>
+                                        <option value="">{{ i18nstr.common.select.pickOne }}</option>
                                         <ng-container *ngFor="let item of listOfCaseTypes">
                                             <option [value]="item.id">{{ i18n('casetype.' + item.name) }}</option>
                                         </ng-container>
@@ -145,7 +145,7 @@
                             </div>
                             <div class="col-12 col-lg-3 mb-3">
                                 <div class="form-group">
-                                    <label for="case-status" class="form-label">{{ i18n('case.metacard.status')
+                                    <label for="case-status" class="form-label">{{ i18nstr.case.metacard.status
                                         }}</label>
                                     <input type="text" class="form-control-plaintext form-control-px" id="case-status"
                                         name="case-status"
@@ -156,7 +156,7 @@
                             <div class="col-12 col-lg-3 mb-3"
                                 *ngIf="getCaseStatus(case.statusid) && getCaseStatus(case.statusid)?.followup?.status && getCaseStatus(getCaseStatus(case.statusid)!.followup!.status)">
                                 <div class="form-group">
-                                    <label for="case-nextstatus" class="form-label">{{ i18n('case.metacard.nextstatus')
+                                    <label for="case-nextstatus" class="form-label">{{ i18nstr.case.metacard.nextstatus
                                         }}</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control-plaintext form-control-px"
@@ -178,7 +178,7 @@
                             <!-- case meta information -->
                             <div class="col-6 col-lg-3 mb-3">
                                 <div class="form-group">
-                                    <label for="case-created" class="form-label">{{ i18n('case.metacard.created')
+                                    <label for="case-created" class="form-label">{{ i18nstr.case.metacard.created
                                         }}</label>
                                     <input type="text" class="form-control-plaintext form-control-px" id="case-created"
                                         name="case-created" [value]="formatService.fdate(case.created, 'Pp')" readonly>
@@ -186,7 +186,7 @@
                             </div>
                             <div class="col-6 col-lg-3 mb-3" *ngIf="case.deleted">
                                 <div class="form-group">
-                                    <label for="case-deleted" class="form-label">{{ i18n('case.metacard.deleted')
+                                    <label for="case-deleted" class="form-label">{{ i18nstr.case.metacard.deleted
                                         }}</label>
                                     <input type="text" class="form-control-plaintext form-control-px" id="case-deleted"
                                         name="case-deleted" [value]="formatService.fdate(case.deleted, 'Pp')" readonly>
@@ -194,13 +194,13 @@
                             </div>
                             <div class="col-6 col-lg-3 mb-3">
                                 <div class="form-group">
-                                    <label for="case-followup" class="form-label">{{ i18n('case.metacard.followup')
+                                    <label for="case-followup" class="form-label">{{ i18nstr.case.metacard.followup
                                         }}</label>
                                     <div class="input-group">
                                         <select class="form-select" id="case-followup" name="case-followup"
                                             [(ngModel)]="case.followupcaseid"
                                             (change)="case.followupcaseid = +case.followupcaseid!; updateCase();">
-                                            <option [value]="-1">{{ i18n('common.select.pickOne') }}</option>
+                                            <option [value]="-1">{{ i18nstr.common.select.pickOne }}</option>
                                             <ng-container *ngFor="let item of listOfCases">
                                                 <option [value]="item.id" [disabled]="item.id ==  case.id">{{
                                                     item.casepath }}</option>
@@ -214,7 +214,7 @@
                             </div>
                             <div class="col-6 col-lg-3 mb-3">
                                 <div class="form-group">
-                                    <label for="case-filecount" class="form-label">{{ i18n('case.metacard.filecount')
+                                    <label for="case-filecount" class="form-label">{{ i18nstr.case.metacard.filecount
                                         }}</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control-plaintext form-control-px"
@@ -234,13 +234,13 @@
                 <div [ngClass]="[ activeRouteChild == 'times' ? 'd-block' : 'd-none' ]">
                     <!-- case times card -->
                     <div class="card-header">
-                        <h3 class="text-nowrap text-truncate">{{ i18n('case.timecard.title') }}</h3>
+                        <h3 class="text-nowrap text-truncate">{{ i18nstr.case.timecard.title }}</h3>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-6 col-lg-3 mb-3">
                                 <div class="form-group">
-                                    <label for="case-period-start" class="form-label">{{ i18n('case.timecard.start')
+                                    <label for="case-period-start" class="form-label">{{ i18nstr.case.timecard.start
                                         }}</label>
                                     <input type="date" class="form-control" id="case-period-start"
                                         name="case-period-start" [(ngModel)]="case.period.start"
@@ -250,13 +250,13 @@
                             <div class="col-6 col-lg-3 mb-3">
                                 <div class="form-group">
                                     <label for="case-period-minperiod" class="form-label">{{
-                                        i18n('case.timecard.minperiod')
+                                        i18nstr.case.timecard.minperiod
                                         }}</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control-plaintext form-control-px"
                                             id="case-period-minperiod" name="case-period-minperiod"
                                             [value]="this.duration(case.period.minperiod)"
-                                            [placeholder]="i18n('common.period.placeholder')" readonly>
+                                            [placeholder]="i18nstr.common.period.placeholder" readonly>
                                         <button class="btn btn-outline-secondary rounded dropdown-toggle" type="button"
                                             data-bs-toggle="dropdown" data-bs-auto-close="outside"
                                             aria-expanded="false">
@@ -271,13 +271,13 @@
                             </div>
                             <div class="col-6 col-lg-3 mb-3">
                                 <div class="form-group">
-                                    <label for="case-period-period" class="form-label">{{ i18n('case.timecard.period')
+                                    <label for="case-period-period" class="form-label">{{ i18nstr.case.timecard.period
                                         }}</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control-plaintext form-control-px"
                                             id="case-period-period" name="case-period-period"
                                             [value]="this.duration(case.period.period)"
-                                            [placeholder]="i18n('common.period.placeholder')" readonly>
+                                            [placeholder]="i18nstr.common.period.placeholder" readonly>
                                         <button class="btn btn-outline-secondary rounded dropdown-toggle" type="button"
                                             data-bs-toggle="dropdown" data-bs-auto-close="outside"
                                             aria-expanded="false">
@@ -293,13 +293,13 @@
                             <div class="col-6 col-lg-3 mb-3">
                                 <div class="form-group">
                                     <label for="case-period-termination" class="form-label">{{
-                                        i18n('case.timecard.termination')
+                                        i18nstr.case.timecard.termination
                                         }}</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control-plaintext form-control-px"
                                             id="case-period-termination" name="case-period-termination"
                                             [value]="this.duration(case.period.terminationperiod)"
-                                            [placeholder]="i18n('common.period.placeholder')" readonly>
+                                            [placeholder]="i18nstr.common.period.placeholder" readonly>
                                         <button class="btn btn-outline-secondary rounded dropdown-toggle" type="button"
                                             data-bs-toggle="dropdown" data-bs-auto-close="outside"
                                             aria-expanded="false">
@@ -314,7 +314,7 @@
                             </div>
                             <div class="col-6 col-lg-3 mb-3">
                                 <div class="form-group">
-                                    <label for="case-period-end" class="form-label">{{ i18n('case.timecard.end')
+                                    <label for="case-period-end" class="form-label">{{ i18nstr.case.timecard.end
                                         }}</label>
                                     <input type="date" class="form-control" id="case-period-end" name="case-period-end"
                                         [(ngModel)]="case.period.end"
@@ -331,7 +331,7 @@
                                         name="case-notify-upcoming"
                                         (change)="case.notification.upcoming = (+case.notification.upcoming === 1); updateCase();">
                                     <label for="case-notify-upcoming" class="form-label" value="1">{{
-                                        i18n('case.timecard.notifyUpcoming') }}</label>
+                                        i18nstr.case.timecard.notifyUpcoming }}</label>
                                 </div>
                             </div>
                             <div class="col-12">
@@ -341,7 +341,7 @@
                                         name="case-notify-forecast"
                                         (change)="case.notification.forecast = (+case.notification.forecast === 1); updateCase();">
                                     <label for="case-notify-forecast" class="form-label" value="1">{{
-                                        i18n('case.timecard.notifyForecast') }}</label>
+                                        i18nstr.case.timecard.notifyForecast }}</label>
                                 </div>
                             </div>
                             <!-- case notifications -->
@@ -352,10 +352,10 @@
                 <div [ngClass]="[ activeRouteChild == 'childs' ? 'd-block' : 'd-none' ]">
                     <!-- case childs card -->
                     <div class="card-header">
-                        <app-h3 [title]="i18n('case.childscard.title')" [btn1]="i18n('cases.showDeleted')"
+                        <app-h3 [title]="i18nstr.case.childscard.title" [btn1]="i18nstr.cases.showDeleted"
                             [btn1icon]="showDeleted ? 'fa-solid fa-toggle-on' : 'fa-solid fa-toggle-off'"
                             [btn1css]="'btn btn-sm btn-secondary'" (btn1Clicked)="changeShowDeleted(!showDeleted)"
-                            [btn2]="i18n('cases.showInRetention')"
+                            [btn2]="i18nstr.cases.showInRetention"
                             [btn2icon]="showInRetention ? 'fa-solid fa-toggle-on' : 'fa-solid fa-toggle-off'"
                             [btn2css]="'btn btn-sm btn-secondary'"
                             (btn2Clicked)="changeShowRetention(!showInRetention)">
@@ -373,7 +373,7 @@
                 <div [ngClass]="[ activeRouteChild == 'files' ? 'd-block' : 'd-none' ]">
                     <!-- case files card -->
                     <div class="card-header">
-                        <app-h3 [title]="i18n('case.filescard.title')">
+                        <app-h3 [title]="i18nstr.case.filescard.title">
                         </app-h3>
                     </div>
                     <ul class="list-group flush hover rounded-0 " *ngIf="casefiles.length > 0">

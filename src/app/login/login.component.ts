@@ -4,6 +4,7 @@ import { first } from 'rxjs';
 import { environment } from 'src/environments/environment.dev';
 import { AuthService } from '../auth.service';
 import { I18nService } from '../i18n.service';
+import { L10nArchiveLocale } from '../l10n/l10n.types';
 
 @Component({
   selector: 'app-login',
@@ -24,8 +25,12 @@ export class LoginComponent implements OnInit {
     private router: Router,
   ) { }
 
-  i18n(key: string): string {
-    return this.i18nService.i18n(key);
+  /**
+   * Getter for i18n localization strings.
+   * @returns The localization strings.
+   */
+  get i18nstr(): L10nArchiveLocale {
+    return this.i18nService.str;
   }
 
   ngOnInit(): void {

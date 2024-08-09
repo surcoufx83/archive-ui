@@ -1,7 +1,7 @@
 <div>
 
     <div class="container pt-4 pt-md-2 mb-2">
-        <app-h2 [title]="i18n('receipts.title')" [busy]="busy" [btn1]="i18n('common.add')"
+        <app-h2 [title]="i18nstr.receipts.title" [busy]="busy" [btn1]="i18nstr.common.add"
             [btn1css]="'btn btn-sm btn-outline-primary'" [btn1icon]="icons['add']"
             (btn1Clicked)="new(); newItem();"></app-h2>
     </div>
@@ -9,9 +9,9 @@
     <div class="container">
         <div class="flex-table flex-table-sm mb-3">
             <div class="flex-table-head row">
-                <div class="col-3">{{ i18n('receipts.date') }}</div>
-                <div class="col-6 col-lg-7">{{ i18n('receipts.party') }}</div>
-                <div class="col-3 col-lg-2 text-end">{{ i18n('leads.table.head.created') }}</div>
+                <div class="col-3">{{ i18nstr.receipts.date }}</div>
+                <div class="col-6 col-lg-7">{{ i18nstr.receipts.party }}</div>
+                <div class="col-3 col-lg-2 text-end">{{ i18nstr.leads.table.head.created }}</div>
             </div>
             <ng-container *ngIf="selectedReceipt && selectedReceipt.id == 0">
                 <ng-container *ngTemplateOutlet="receiptEditor"></ng-container>
@@ -29,22 +29,22 @@
                     </div>
                     <div class="col-12 container card p-1" *ngIf="selectedReceipt && selectedReceipt.id == receipt.id">
                         <div class="card-header p-1 d-flex justify-content-between align-items-center">
-                            <h4>{{ i18n('receipts.items.title') }}</h4>
+                            <h4>{{ i18nstr.receipts.items.title }}</h4>
                             <button type="button" class="btn-close" (click)="selectedReceipt = null;"></button>
                         </div>
                         <div class="card-body p-1 fs-7">
                             <div class="flex-table flex-table-sm">
                                 <div class="flex-table-head row">
-                                    <div class="col-12 col-lg-3">{{ i18n('receipts.items.article') }}</div>
-                                    <div class="d-none d-lg-block col-lg-1 text-end">{{ i18n('receipts.items.quantity')
+                                    <div class="col-12 col-lg-3">{{ i18nstr.receipts.items.article }}</div>
+                                    <div class="d-none d-lg-block col-lg-1 text-end">{{ i18nstr.receipts.items.quantity
                                         }}</div>
                                     <div class="d-none d-lg-block col-lg-2 text-end">{{
-                                        i18n('receipts.items.singleprice') }}</div>
-                                    <div class="d-none d-lg-block col-lg-2 text-end">{{ i18n('receipts.items.discount')
+                                        i18nstr.receipts.items.singleprice }}</div>
+                                    <div class="d-none d-lg-block col-lg-2 text-end">{{ i18nstr.receipts.items.discount
                                         }}</div>
-                                    <div class="d-none d-lg-block col-lg-2 text-end">{{ i18n('receipts.items.deposit')
+                                    <div class="d-none d-lg-block col-lg-2 text-end">{{ i18nstr.receipts.items.deposit
                                         }}</div>
-                                    <div class="d-none d-lg-block col-lg-2 text-end">{{ i18n('receipts.items.totalnet')
+                                    <div class="d-none d-lg-block col-lg-2 text-end">{{ i18nstr.receipts.items.totalnet
                                         }}</div>
                                 </div>
                                 <ng-container *ngTemplateOutlet="receiptItems"></ng-container>
@@ -73,15 +73,15 @@
                     {{ formatService.fcur(selectedReceipt.gross_total, selectedReceipt.currency) }}
                 </div>
                 <div class="col-12 container card p-1">
-                    <app-h4 [title]="i18n('receipts.edit.title')" [containercss]="'card-header'"
-                        [btn1]="i18n('common.save')" [btn1css]="'btn btn-sm btn-success'" [btn1icon]="icons['save']"
+                    <app-h4 [title]="i18nstr.receipts.edit.title" [containercss]="'card-header'"
+                        [btn1]="i18nstr.common.save" [btn1css]="'btn btn-sm btn-success'" [btn1icon]="icons['save']"
                         (btn1Clicked)="saveSelected(form, $event)" [btn2css]="'btn btn-sm btn-outline-secondary'"
                         [btn2icon]="icons['delete']" (btn2Clicked)="onCancelEdit()"></app-h4>
                     <div class="card-body p-1 px-3 fs-7 mb-3">
                         <div class="row">
                             <div class="col-6 col-lg-3 mb-3">
                                 <div class="form-group">
-                                    <label for="receipt-date" class="form-label required">{{ i18n('receipts.date')
+                                    <label for="receipt-date" class="form-label required">{{ i18nstr.receipts.date
                                         }}</label>
                                     <input type="date" class="form-control" id="receipt-date" name="receipt-date"
                                         [(ngModel)]="selectedReceipt.date" required>
@@ -90,7 +90,7 @@
                             <div class="col-6 col-lg-3 mb-3">
                                 <div class="form-group">
                                     <label for="receipt-currency" class="form-label required">{{
-                                        i18n('receipts.currency')
+                                        i18nstr.receipts.currency
                                         }}</label>
                                     <select class="form-select" id="receipt-currency" name="receipt-currency"
                                         [(ngModel)]="selectedReceipt.currencyid" required (change)="onChangeCurrency()">
@@ -105,7 +105,7 @@
                         <div class="row">
                             <div class="col-12 col-lg-6 mb-3">
                                 <div class="form-group">
-                                    <label for="receipt-client" class="form-label required">{{ i18n('receipts.client')
+                                    <label for="receipt-client" class="form-label required">{{ i18nstr.receipts.client
                                         }}</label>
                                     <select class="form-select" id="receipt-client" name="receipt-client"
                                         [(ngModel)]="selectedReceipt.clientid" required>
@@ -117,7 +117,7 @@
                             </div>
                             <div class="col-12 col-lg-6 mb-3">
                                 <div class="form-group">
-                                    <label for="receipt-party" class="form-label required">{{ i18n('receipts.party')
+                                    <label for="receipt-party" class="form-label required">{{ i18nstr.receipts.party
                                         }}</label>
                                     <select class="form-select" id="receipt-party" name="receipt-party"
                                         [(ngModel)]="selectedReceipt.partyid" required>
@@ -129,22 +129,22 @@
                             </div>
                         </div>
                     </div>
-                    <app-h4 [title]="i18n('receipts.items.title')" [containercss]="'card-header'"
+                    <app-h4 [title]="i18nstr.receipts.items.title" [containercss]="'card-header'"
                         [btn1css]="'btn btn-sm btn-outline-primary'" [btn1icon]="icons['add']"
                         (btn1Clicked)="newItem()"></app-h4>
                     <div class="card-body p-1 fs-7">
                         <div class="flex-table flex-table-sm">
                             <div class="flex-table-head row">
-                                <div class="col-12 col-lg-3">{{ i18n('receipts.items.article') }}</div>
-                                <div class="d-none d-lg-block col-lg-1 text-end">{{ i18n('receipts.items.quantity')
+                                <div class="col-12 col-lg-3">{{ i18nstr.receipts.items.article }}</div>
+                                <div class="d-none d-lg-block col-lg-1 text-end">{{ i18nstr.receipts.items.quantity
                                     }}</div>
                                 <div class="d-none d-lg-block col-lg-2 text-end">{{
-                                    i18n('receipts.items.singleprice') }}</div>
-                                <div class="d-none d-lg-block col-lg-2 text-end">{{ i18n('receipts.items.discount')
+                                    i18nstr.receipts.items.singleprice }}</div>
+                                <div class="d-none d-lg-block col-lg-2 text-end">{{ i18nstr.receipts.items.discount
                                     }}</div>
-                                <div class="d-none d-lg-block col-lg-2 text-end">{{ i18n('receipts.items.deposit')
+                                <div class="d-none d-lg-block col-lg-2 text-end">{{ i18nstr.receipts.items.deposit
                                     }}</div>
-                                <div class="d-none d-lg-block col-lg-2 text-end">{{ i18n('receipts.items.totalnet')
+                                <div class="d-none d-lg-block col-lg-2 text-end">{{ i18nstr.receipts.items.totalnet
                                     }}</div>
                             </div>
                             <ng-container *ngTemplateOutlet="receiptItems"></ng-container>
@@ -197,7 +197,7 @@
                 <div class="col-4 col-lg-1 text-end d-flex d-lg-block">
                     <ng-container *ngIf="selectedReceipt.id > 0">
                         <span class="d-inline-block d-lg-none me-2">{{
-                            i18n('receipts.items.quantity') }}:</span>
+                            i18nstr.receipts.items.quantity }}:</span>
                         <span>{{ formatService.fnumber(item.quantity) }}</span>
                     </ng-container>
                     <ng-container *ngIf="selectedReceipt.id == 0">
@@ -210,7 +210,7 @@
                 <div class="col-4 col-lg-2 text-end d-flex d-lg-block">
                     <ng-container *ngIf="selectedReceipt.id > 0">
                         <span class="d-inline-block d-lg-none me-2">{{
-                            i18n('receipts.items.singleprice') }}:</span>
+                            i18nstr.receipts.items.singleprice }}:</span>
                         <span>{{ formatService.fcur(item.singleprice, selectedReceipt.currency)
                             }}</span>
                     </ng-container>
@@ -224,7 +224,7 @@
                 <div class="col-4 col-lg-2 text-end d-flex d-lg-block">
                     <ng-container *ngIf="selectedReceipt.id > 0">
                         <span class="d-inline-block d-lg-none me-2">{{
-                            i18n('receipts.items.discount') }}:</span>
+                            i18nstr.receipts.items.discount }}:</span>
                         <span>{{ formatService.fcur(item.discount * -1, selectedReceipt.currency)
                             }}</span>
                     </ng-container>
@@ -238,7 +238,7 @@
                 <div class="col-4 col-lg-2 text-end d-flex d-lg-block">
                     <ng-container *ngIf="selectedReceipt.id > 0">
                         <span class="d-inline-block d-lg-none me-2">{{
-                            i18n('receipts.items.deposit') }}:</span>
+                            i18nstr.receipts.items.deposit }}:</span>
                         <span>{{ formatService.fcur(item.deposit, selectedReceipt.currency)
                             }}</span>
                     </ng-container>
@@ -252,7 +252,7 @@
                 <div class="col-4 col-lg-2 text-end d-flex d-lg-block">
                     <ng-container *ngIf="selectedReceipt.id > 0">
                         <span class="d-inline-block d-lg-none me-2">{{
-                            i18n('receipts.items.totalnet') }}:</span>
+                            i18nstr.receipts.items.totalnet }}:</span>
                         <span>{{ formatService.fcur(item.totalnet, selectedReceipt.currency)
                             }}</span>
                     </ng-container>
@@ -271,29 +271,29 @@
     <ng-container *ngIf="selectedReceipt">
         <div class="flex-table-body row">
             <div class="col-12 col-lg-3">
-                <strong>{{ i18n('receipts.items.summary') }}</strong>
+                <strong>{{ i18nstr.receipts.items.summary }}</strong>
             </div>
             <div class="col-4 col-lg-1 text-end d-flex d-lg-block"></div>
             <div class="col-4 col-lg-2 text-end d-flex d-lg-block">
                 <span class="d-inline-block d-lg-none me-2">{{
-                    i18n('receipts.items.singleprice') }}:</span>
+                    i18nstr.receipts.items.singleprice }}:</span>
                 <strong>{{ formatService.fcur(selectedTotals.singleprice,
                     selectedReceipt.currency) }}</strong>
             </div>
             <div class="col-4 col-lg-2 text-end d-flex d-lg-block">
-                <span class="d-inline-block d-lg-none me-2">{{ i18n('receipts.items.discount')
+                <span class="d-inline-block d-lg-none me-2">{{ i18nstr.receipts.items.discount
                     }}:</span>
                 <strong>{{ formatService.fcur(selectedTotals.discount * -1,
                     selectedReceipt.currency) }}</strong>
             </div>
             <div class="col-4 col-lg-2 text-end d-flex d-lg-block">
-                <span class="d-inline-block d-lg-none me-2">{{ i18n('receipts.items.deposit')
+                <span class="d-inline-block d-lg-none me-2">{{ i18nstr.receipts.items.deposit
                     }}:</span>
                 <strong>{{ formatService.fcur(selectedTotals.deposit, selectedReceipt.currency)
                     }}</strong>
             </div>
             <div class="col-4 col-lg-2 text-end d-flex d-lg-block">
-                <span class="d-inline-block d-lg-none me-2">{{ i18n('receipts.items.totalnet')
+                <span class="d-inline-block d-lg-none me-2">{{ i18nstr.receipts.items.totalnet
                     }}:</span>
                 <strong>{{ formatService.fcur(selectedTotals.gross, selectedReceipt.currency)
                     }}</strong>
@@ -312,7 +312,7 @@
                 {{ article(receiptitem.articleid)!.ean }}</ng-container>
             <ng-container *ngIf="article(receiptitem.articleid)!.organic">,
                 <app-icon [iconClass]="icons['organic']"></app-icon>
-                {{ i18n('receipts.items.organic') }}
+                {{ i18nstr.receipts.items.organic }}
             </ng-container>)
         </span>
     </ng-container>

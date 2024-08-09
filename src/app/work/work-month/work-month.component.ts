@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment.dev';
 import { AuthService } from '../../auth.service';
 import { I18nService } from '../../i18n.service';
 import { SettingsService } from '../../utils/settings.service';
+import { L10nArchiveLocale } from 'src/app/l10n/l10n.types';
 
 @Component({
   selector: 'app-work-month',
@@ -153,6 +154,14 @@ export class WorkMonthComponent implements AfterViewInit, OnDestroy, OnInit {
     return this.i18nService.i18n(key, params);
   }
 
+  /**
+   * Getter for i18n localization strings.
+   * @returns The localization strings.
+   */
+  get i18nstr(): L10nArchiveLocale {
+    return this.i18nService.str;
+  }
+
   ngAfterViewInit() {
     this.subscriptions.push(this.route.paramMap.subscribe((params: ParamMap) => {
       let y = params.get('year');
@@ -271,7 +280,7 @@ export class WorkMonthComponent implements AfterViewInit, OnDestroy, OnInit {
         });
       }
       this.offdayDroppableEvents.push({
-        title: this.i18n('work.offcategories.none'),
+        title: this.i18nstr.work.offcategories.none,
         start: new Date(),
         draggable: true,
         allDay: true,
@@ -281,7 +290,7 @@ export class WorkMonthComponent implements AfterViewInit, OnDestroy, OnInit {
             icon: '',
             iconcolor: '',
             id: 0,
-            name: this.i18n('work.offcategories.none'),
+            name: this.i18nstr.work.offcategories.none,
             quickselect: true,
             rowcolor: '',
             userid: 0
