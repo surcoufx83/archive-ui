@@ -78,8 +78,8 @@ export class WorkYearComponent implements OnDestroy, OnInit {
       this.busy = false;
       this.loaded = true;
       Object.entries(this.yearMonths).forEach((item) => {
-        item[1] = item[1].sort((a, b) => a.month - b.month);
-        this.yearClosingTime[<number><unknown>item[0]] = item[1][item[1].length - 1].timeclose;
+        item[1] = item[1].sort((a, b) => a.period.month - b.period.month);
+        this.yearClosingTime[<number><unknown>item[0]] = item[1][item[1].length - 1].stats.bookings.timeClose;
         this.yearMonthCount[<number><unknown>item[0]] = item[1].length;
         this.yearMonthsVisible[<number><unknown>item[0]] = this.yearMonthsVisible[<number><unknown>item[0]] || (item[1].length != 12) || <number><unknown>item[0] == this.thisYear;
       });
@@ -130,26 +130,35 @@ export class WorkYearComponent implements OnDestroy, OnInit {
     const datefrom = new Date(year, i, 1, 12, 0, 0);
     const dateuntil = sub(add(new Date(year, i, 1, 12, 0, 0), { months: 1 }), { days: 1 });
     let month: WorkMonth = {
-      datefrom: formatISO(datefrom),
-      dateuntil: formatISO(dateuntil),
-      days: getDaysInMonth(datefrom),
-      holidays: 0,
       id: 0,
-      month: getMonth(datefrom) + 1,
-      timeclose: 0,
-      timedif: 0,
-      timestart: 0,
+      uiCreating: true,
       updated: '',
-      userid: 0,
-      weekenddays: eachWeekendOfMonth(datefrom).length,
-      year: year,
-      uiCreating: true
+      period: {
+        dateFrom: formatISO(datefrom),
+        dateUntil: formatISO(dateuntil),
+        month: getMonth(datefrom) + 1,
+        year: year
+      },
+      stats: {
+        days: {
+          total: getDaysInMonth(datefrom),
+          holidays: 0,
+          weekend: eachWeekendOfMonth(datefrom).length
+        },
+        bookings: {
+          timeStart: 0,
+          timeClose: 0,
+          timeDif: 0,
+          timeBooked: 0,
+          timeTarget: 0
+        }
+      }
     };
     this.authService.updateApi(url, month).pipe(first()).subscribe((reply) => {
       if (reply.success) {
         month = { ...reply.payload!['month'] };
         this.yearMonths[year].push(month);
-        this.yearClosingTime[year] = month.timeclose;
+        this.yearClosingTime[year] = month.stats.bookings.timeClose;
         this.yearMonthCount[year] = this.yearMonths[year].length;
         if (i < 11) {
           let sub = this.onCompleteYearMonth(year, i + 1).subscribe((r) => {

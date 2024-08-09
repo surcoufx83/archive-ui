@@ -1082,10 +1082,12 @@ export const L10nArchiveEnLocale: L10nArchiveLocale = {
                 lastEditShort: "Last update"
             },
             time: {
-                title: "Booked time",
-                takeover: "Take-over",
+                title: "Logged Hours",
+                takeover: "Carry Forward",
                 balance: "Balance",
-                carryover: "Carry-over"
+                carryover: "Carryover",
+                booked: "Logged",
+                target: "Target"
             }
         },
         offtime: {

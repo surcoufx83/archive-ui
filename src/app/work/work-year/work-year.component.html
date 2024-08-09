@@ -40,18 +40,18 @@
                         <div class="col-2 text-end">{{i18nstr.workyear.table.monthHeader.closetime}}</div>
                     </div>
                     <div class="flex-table-body row" *ngFor="let month of yearMonths[year]"
-                        [id]="'work-year-' + year + '-month-' + month.month">
+                        [id]="'work-year-' + year + '-month-' + month.period.month">
                         <div class="col-3">
-                            <a [routerLink]="['/work', 'month', year, month.month]">
-                                {{ month.month }}) {{ f(month.datefrom, 'LLLL') }}
+                            <a [routerLink]="['/work', 'month', year, month.period.month]">
+                                {{ month.period.month }}) {{ f(month.period.dateFrom, 'LLLL') }}
                             </a>
                         </div>
-                        <div class="col-1">{{ month.days }}</div>
-                        <div class="col-1">{{ month.holidays }}</div>
-                        <div class="col-1">{{ month.weekenddays }}</div>
-                        <div class="col-2 text-end">{{ fd(month.timestart) }}</div>
-                        <div class="col-2 text-end">{{ fd(month.timedif) }}</div>
-                        <div class="col-2 text-end">{{ fd(month.timeclose) }}</div>
+                        <div class="col-1">{{ month.stats.days.total }}</div>
+                        <div class="col-1">{{ month.stats.days.holidays }}</div>
+                        <div class="col-1">{{ month.stats.days.weekend }}</div>
+                        <div class="col-2 text-end">{{ fd(month.stats.bookings.timeStart) }}</div>
+                        <div class="col-2 text-end">{{ fd(month.stats.bookings.timeDif) }}</div>
+                        <div class="col-2 text-end">{{ fd(month.stats.bookings.timeClose) }}</div>
                     </div>
                 </div>
             </ng-container>

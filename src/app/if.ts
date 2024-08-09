@@ -932,19 +932,36 @@ export type WorkLeadLead = {
 }
 
 export type WorkMonth = {
-  datefrom: string,
-  dateuntil: string,
-  days: number,
-  holidays: number,
   id: number,
-  month: number,
-  timeclose: number,
-  timedif: number,
-  timestart: number,
   updated: string,
-  userid: number,
-  weekenddays: number,
-  year: number,
+  period: {
+    dateFrom: string,
+    dateUntil: string,
+    month: number,
+    year: number,
+  },
+  stats: {
+    days: {
+      total: number,
+      holidays: number,
+      weekend: number,
+    },
+    bookings: {
+      categories?: null | {
+        categoryId: number;
+        time: {
+          total: number,
+          break: number,
+          net: number,
+        }
+      }[],
+      timeStart: number,
+      timeClose: number,
+      timeDif: number,
+      timeBooked: number,
+      timeTarget: number,
+    }
+  },
   uiCreating?: boolean,
 }
 

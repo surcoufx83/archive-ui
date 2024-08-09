@@ -179,6 +179,20 @@ export class FormatService {
   }
 
   /**
+   * Converts a duration in hours (with decimals) to a localized string representation.
+   * For example, a duration of 7.5 would be represented as "7.5 hours" in the appropriate language and format.
+   * The string is translated using the i18n service to ensure it matches the user's locale.
+   * 
+   * @param duration The duration of time in hours, with decimals (e.g., 7.5 for 7 hours and 30 minutes).
+   * @returns A localized string representing the duration in the format defined by the i18n service.
+   */
+  timespan(duration: number | null | undefined): string {
+    if (!duration)
+      return '';
+    return this.i18nService.i18n('calendar.duration.short', [duration.toLocaleString(this.i18nService.Locale, { minimumFractionDigits: 1 })]);
+  }
+
+  /**
    * Formats a string for use in a URL.
    * @param inputStr The string to format.
    * @returns The formatted URL string.

@@ -1081,7 +1081,9 @@ export type L10nArchiveLocale = {
                 title: string,
                 takeover: string,
                 balance: string,
-                carryover: string
+                carryover: string,
+                booked: string,
+                target: string
             }
         },
         offtime: {

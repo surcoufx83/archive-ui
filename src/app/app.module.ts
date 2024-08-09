@@ -105,6 +105,8 @@ import { H2NewComponent } from './utils/h2-new/h2-new.component';
 import { LinkBtnComponent } from './utils/link-btn/link-btn.component';
 import { WorkMonthBoxInfoComponent } from './work/work-month/work-month-box-info/work-month-box-info.component';
 import { CardComponent } from './utils/card/card.component';
+import { GridRowComponent } from './utils/grid-row/grid-row.component';
+import { WorkMonthBoxDayComponent } from './work/work-month/work-month-box-day/work-month-box-day.component';
 
 registerLocaleData(localeDe);
 registerLocaleData(localeFr);
@@ -196,6 +198,8 @@ registerLocaleData(localeFr);
         LinkBtnComponent,
         WorkMonthBoxInfoComponent,
         CardComponent,
+        GridRowComponent,
+        WorkMonthBoxDayComponent,
     ],
     bootstrap: [
         AppComponent,

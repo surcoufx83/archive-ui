@@ -1085,7 +1085,9 @@ export const L10nArchiveDeLocale: L10nArchiveLocale = {
                 title: "Gebuchte Zeiten",
                 takeover: "Übernahme",
                 balance: "Differenz",
-                carryover: "Übertrag"
+                carryover: "Übertrag",
+                booked: "Gebucht",
+                target: "Ziel"
             }
         },
         offtime: {

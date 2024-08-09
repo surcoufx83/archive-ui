@@ -1,12 +1,13 @@
-<app-card icon="info" [title]="i18nstr.workmonth.cards.target.title">
+<app-card icon="info" [title]="i18nstr.workmonth.cards.target.title" [progressBar]="progress()">
     <div class="d-flex justify-content-between mb-2">
         <div class="fs-7">
             {{ i18nstr.workmonth.cards.target.businessDays }} [ {{ i18nstr.workmonth.cards.target.offDays }} ]
         </div>
         <div>
             @if (workMonth) {
-            <strong>{{ workMonth.days - workMonth.weekenddays - workMonth.holidays }}</strong>
-            <span class="fs-8 ms-1">[ {{ workMonth.weekenddays }} / {{ workMonth.holidays }} ]</span>
+            <strong>{{ workMonth.stats.days.total - workMonth.stats.days.weekend - workMonth.stats.days.holidays
+                }}</strong>
+            <span class="fs-8 ms-1">[ {{ workMonth.stats.days.weekend }} / {{ workMonth.stats.days.holidays }} ]</span>
             }
         </div>
     </div>
@@ -21,4 +22,7 @@
             }
         </div>
     </div>
+    <div class="my-2 border-bottom"></div>
+    <app-grid-row [items]="headerGridRow()" [rowCss]="['fs-7', 'text-center', 'fw-bold']"></app-grid-row>
+    <app-grid-row [items]="contentGridRow()" [rowCss]="['fs-7', 'text-center']"></app-grid-row>
 </app-card>

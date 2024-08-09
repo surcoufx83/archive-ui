@@ -1,5 +1,5 @@
 <div class="card">
-    <div class="card-header">
+    <div class="card-header fw-bold">
         @if (icon) {
         <app-icon [iconClass]="icons[icon]" [marginEnd]="1"></app-icon>
         }
@@ -8,4 +8,12 @@
     <div class="card-body">
         <ng-content></ng-content>
     </div>
+    @if (progressItems().length > 0) {
+    <div class="progress rounded-0 rounded-bottom">
+        @for (item of progressItems(); track $index) {
+        <div class="progress-bar" [ngClass]="item.css" role="progressbar" [ngStyle]="{ width: item.widthPercent}"
+            [attr.aria-valuenow]="item.ariaValue" aria-valuemin="0" [attr.aria-valuemax]="progressMax()"></div>
+        }
+    </div>
+    }
 </div>

@@ -47,9 +47,8 @@
     </div>
     @if (day.stats && !this.day.offcategory) {
     <div class="progress rounded-0 rounded-bottom">
-        <div class="progress-bar bg-success border-end border-white" role="progressbar"
-            [ngStyle]="{ width: progressDone() + '%'}" [attr.aria-valuenow]="progressDone()" aria-valuemin="0"
-            aria-valuemax="100"></div>
+        <div class="progress-bar bg-success" role="progressbar" [ngStyle]="{ width: progressDone() + '%'}"
+            [attr.aria-valuenow]="progressDone()" aria-valuemin="0" aria-valuemax="100"></div>
         <div class="progress-bar bg-warning" role="progressbar" [ngStyle]="{ width: progressMissing() + '%'}"
             [attr.aria-valuenow]="progressMissing()" aria-valuemin="0" aria-valuemax="100"></div>
         <div class="progress-bar bg-danger" role="progressbar" [ngStyle]="{ width: progressOvertime() + '%'}"
