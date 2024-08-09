@@ -542,7 +542,7 @@ export class SettingsService {
     urlitem: string,
     listing: any[],
     subject: BehaviorSubject<boolean | any | null> | Subject<any | boolean>,
-    callback: Function,
+    callback: (listing: any[]) => void,
     propertyName?: string
   ) {
 
