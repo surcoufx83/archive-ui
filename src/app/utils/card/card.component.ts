@@ -19,15 +19,15 @@ export class CardComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['progressBar']?.currentValue) {
       let newitems: CardProgressItemInternal[] = [];
-      for (const item of changes['progressBar']?.currentValue.items) {
+      for (const item of changes['progressBar'].currentValue.items) {
         newitems.push({
           css: item.css,
           ariaValue: item.value,
-          widthPercent: `${item.value / changes['progressBar']?.currentValue.max * 100}%`
+          widthPercent: `${item.value / changes['progressBar'].currentValue.max * 100}%`
         })
       }
       this.progressItems.set(newitems);
-      this.progressMax.set(changes['progressBar']?.currentValue.max);
+      this.progressMax.set(changes['progressBar'].currentValue.max);
     }
     else {
       this.progressItems.set([]);
