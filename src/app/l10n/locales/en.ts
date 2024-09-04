@@ -1072,7 +1072,8 @@ export const L10nArchiveEnLocale: L10nArchiveLocale = {
         },
         cards: {
             day: {
-                title: "Details for day {0}"
+                title: "Details for day {0}",
+                noBookings: "No entries"
             },
             target: {
                 title: "Info",

@@ -63,8 +63,9 @@ export class WorkMonthBoxDayComponent implements OnChanges {
    * @param changes The changes to the data-bound properties.
    */
   ngOnChanges(changes: SimpleChanges): void {
+    if (!changes['workDay']?.currentValue)
+      return;
     if (changes['workDay']?.currentValue.daytimeStats) {
-      console.log(changes['workDay']?.currentValue.daytimeStats)
       this.headerGridRow.set([
         { content: this.i18nstr.workday.tracking.common.from },
         { content: this.i18nstr.workday.tracking.common.until },

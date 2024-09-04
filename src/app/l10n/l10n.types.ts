@@ -1068,7 +1068,8 @@ export type L10nArchiveLocale = {
         },
         cards: {
             day: {
-                title: string
+                title: string,
+                noBookings: string,
             },
             target: {
                 title: string,
