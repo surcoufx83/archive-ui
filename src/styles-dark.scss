@@ -35,7 +35,6 @@ body[data-bs-theme="dark"] {
       &.active {
         background-color: rgba(13, 110, 253, 0.15) !important;
         &:hover {
-          //background-color: rgba(255, 255, 255, 0.05);
           background-color: rgba(13, 110, 253, 0.23) !important;
         }
       }
@@ -44,15 +43,12 @@ body[data-bs-theme="dark"] {
   ul.list-group {
     > .list-group-item {
       &.active {
-        //background-color: rgba(255, 255, 255, 0.05);
         background-color: rgba(13, 110, 253, 0.15) !important;
         &:hover {
-          //background-color: rgba(255, 255, 255, 0.05);
           background-color: rgba(13, 110, 253, 0.23) !important;
         }
       }
       &:hover {
-        //background-color: rgba(255, 255, 255, 0.05);
         background-color: rgba(13, 110, 253, 0.1) !important;
       }
     }
