@@ -1,4 +1,23 @@
 <app-card icon="today" [title]="i18n('workmonth.cards.day.title', [fdate(workDay?.date, 'P')])">
+
+    <ng-container actionitems>
+        @if (workDay && !workDay.stats) {
+        <div class="btn-group" role="group">
+            @for (item of offCategories; track $index) {
+            <button type="button" class="btn btn-sm" [ngClass]="{ 'btn-success': workDay.offcategory?.id === item.id }"
+                (click)="assignOffdayEvent.emit({ day: workDay, category: item })">
+                <app-icon [iconClass]="item.icon"></app-icon>
+            </button>
+            }
+            @if (workDay.offcategory && workDay.offcategory.quickselect) {
+            <button type="button" class="btn btn-sm" (click)="assignOffdayEvent.emit({ day: workDay })">
+                <app-icon [iconClass]="icons['calendarClear']"></app-icon>
+            </button>
+            }
+        </div>
+        }
+    </ng-container>
+
     <div class="d-flex justify-content-between">
         <div class="fs-7">
             {{ i18nstr.calendar.weekday }}

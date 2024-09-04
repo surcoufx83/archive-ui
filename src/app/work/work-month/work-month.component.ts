@@ -1,8 +1,8 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarMonthViewDay } from 'angular-calendar';
 import { EventColor } from 'calendar-utils/calendar-utils';
-import { add, differenceInMinutes, format, getDate, getMonth, getYear, isAfter, isBefore, isSameDay, isSameMonth, parseISO, sub } from 'date-fns';
+import { add, differenceInMinutes, format, getDate, getMonth, getYear, isAfter, isBefore, isSameDay, isSameMonth, parse, parseISO, sub } from 'date-fns';
 import { BehaviorSubject, Subject, Subscription, first } from 'rxjs';
 import { ApiReply, UserSettings, WorkDay, WorkDayBooking, WorkMonth, WorkOffCategory } from 'src/app/if';
 import { environment } from 'src/environments/environment.dev';
@@ -10,6 +10,7 @@ import { AuthService } from '../../auth.service';
 import { I18nService } from '../../i18n.service';
 import { SettingsService } from '../../utils/settings.service';
 import { L10nArchiveLocale } from 'src/app/l10n/l10n.types';
+import { OffCategoryAssignEvent } from './work-month-box-day/work-month-box-day.component';
 
 @Component({
   selector: 'app-work-month',
@@ -27,7 +28,8 @@ export class WorkMonthComponent implements AfterViewInit, OnDestroy, OnInit {
   month: number | undefined;
   monthLoading: boolean = true;
   monthObj?: WorkMonth;
-  offdayDroppableEvents: CalendarEvent[] = [];
+  /* offdayDroppableEvents: CalendarEvent[] = []; */
+  offCategories = signal<WorkOffCategory[]>([]);
   private selectedDate$: BehaviorSubject<Date | null> = new BehaviorSubject<Date | null>(null);
   refresh = new Subject<void>();
   selectedDate = this.selectedDate$.asObservable();
@@ -98,7 +100,7 @@ export class WorkMonthComponent implements AfterViewInit, OnDestroy, OnInit {
     }
   }
 
-  eventTimesChanged({ event, newStart, newEnd, }: CalendarEventTimesChangedEvent): void {
+  /* eventTimesChanged({ event, newStart, newEnd, }: CalendarEventTimesChangedEvent): void {
     if (event.meta.type == undefined)
       return;
     if (event.meta.type === 'WorkOffCategory') {
@@ -120,7 +122,7 @@ export class WorkMonthComponent implements AfterViewInit, OnDestroy, OnInit {
         }
       });
     }
-  }
+  } */
 
   f(date: Date, form: string): string {
     return format(date, form, { locale: this.i18nService.DateLocale });
@@ -246,10 +248,12 @@ export class WorkMonthComponent implements AfterViewInit, OnDestroy, OnInit {
               }
             }
             const today = new Date();
-            if (this.monthObj.period.month == getMonth(today) + 1 && this.dayObjs[getDate(today)] != undefined)
-              this.selectedDate$.next(today);
-            else if (this.dayObjs[1] != undefined) {
-              this.selectedDate$.next(this.s2d(this.dayObjs[1].date));
+            if (this.selectedDate$.value == null) {
+              if (this.monthObj.period.month == getMonth(today) + 1 && this.dayObjs[getDate(today)] != undefined)
+                this.selectedDate$.next(today);
+              else if (this.dayObjs[1] != undefined) {
+                this.selectedDate$.next(this.s2d(this.dayObjs[1].date));
+              }
             }
           }
         }
@@ -265,39 +269,9 @@ export class WorkMonthComponent implements AfterViewInit, OnDestroy, OnInit {
   ngOnInit(): void {
     this.subscriptions.push(this.userSettings.settings$.subscribe((settings) => this.usersettingsObj = settings));
     this.subscriptions.push(this.userSettings.workOfftimeCategories$.subscribe((categories) => {
-      this.offdayDroppableEvents = [];
-      for (const offcat of Object.values(categories)) {
-        this.offdayDroppableEvents.push({
-          title: this.i18n('work.offcategories.' + offcat.name),
-          start: new Date(),
-          draggable: true,
-          color: offcat.calendarcolor,
-          allDay: true,
-          meta: {
-            obj: offcat,
-            type: 'WorkOffCategory'
-          }
-        });
+      if (categories && Object.keys(categories).length > 0) {
+        this.offCategories.set(Object.values(categories));
       }
-      this.offdayDroppableEvents.push({
-        title: this.i18nstr.work.offcategories.none,
-        start: new Date(),
-        draggable: true,
-        allDay: true,
-        meta: {
-          obj: {
-            calendarcolor: {},
-            icon: '',
-            iconcolor: '',
-            id: 0,
-            name: this.i18nstr.work.offcategories.none,
-            quickselect: true,
-            rowcolor: '',
-            userid: 0
-          },
-          type: 'WorkOffCategory'
-        }
-      });
     }));
     this.subscriptions.push(this.selectedDate.subscribe((date) => {
       if (date == null)
@@ -335,6 +309,14 @@ export class WorkMonthComponent implements AfterViewInit, OnDestroy, OnInit {
         }
       });
     }));
+  }
+
+  onAssignOffDay(event: OffCategoryAssignEvent): void {
+    const url = `${environment.api.baseUrl}/work/day/${this.monthObj?.id}/${event.day.id}/offdays/set/${event.category?.id || 0}`;
+    this.authService.updateApi(url, {}).pipe(first()).subscribe((reply: ApiReply) => {
+      if (reply.success)
+        this.ngAfterViewInitLoadFromBackend();
+    });
   }
 
   pushUserSettings(): void {

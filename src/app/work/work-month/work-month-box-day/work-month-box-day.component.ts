@@ -1,9 +1,10 @@
-import { Component, Input, OnChanges, signal, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, signal, SimpleChanges } from '@angular/core';
 import { I18nService } from 'src/app/i18n.service';
-import { UserSettings, WorkDay } from 'src/app/if';
+import { UserSettings, WorkDay, WorkOffCategory } from 'src/app/if';
 import { L10nArchiveLocale } from 'src/app/l10n/l10n.types';
 import { FormatService } from 'src/app/utils/format.service';
 import { GridRowItem } from 'src/app/utils/grid-row/grid-row.component';
+import { environment } from 'src/environments/environment.dev';
 
 @Component({
   selector: 'app-work-month-box-day',
@@ -13,8 +14,11 @@ import { GridRowItem } from 'src/app/utils/grid-row/grid-row.component';
 export class WorkMonthBoxDayComponent implements OnChanges {
 
   @Input({ required: true }) workDay?: WorkDay;
+  @Input({ required: true }) offCategories: WorkOffCategory[] = [];
   @Input() settings: UserSettings | null = null;
+  @Output() assignOffdayEvent = new EventEmitter<OffCategoryAssignEvent>();
 
+  icons = environment.icons;
   headerGridRow = signal<GridRowItem[]>([]);
   contentGridRow = signal<GridRowItem[]>([]);
 
@@ -81,4 +85,9 @@ export class WorkMonthBoxDayComponent implements OnChanges {
     }
   }
 
+}
+
+export type OffCategoryAssignEvent = {
+  day: WorkDay,
+  category?: WorkOffCategory,
 }

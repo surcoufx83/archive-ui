@@ -27,7 +27,8 @@
 
       <div class="col-12 col-md-4">
         <!-- card 3: Day info box -->
-        <app-work-month-box-day [workDay]="selectedDay" [settings]="usersettingsObj"></app-work-month-box-day>
+        <app-work-month-box-day [workDay]="selectedDay" [settings]="usersettingsObj" [offCategories]="offCategories()"
+          (assignOffdayEvent)="onAssignOffDay($event)"></app-work-month-box-day>
       </div>
 
       <!-- container with info cards -->
@@ -37,7 +38,7 @@
 
   <div class="pt-4 pt-md-2 mb-2">
     <!-- Calendar container -->
-    <app-h3 [title]="i18nstr.workmonth.calendar.title" [containercss]="'pt-4'" [btn1]="i18nstr.calendar.showWeekend"
+    <app-h3 [title]="i18nstr.workmonth.calendar.title" containercss="pt-4" [btn1]="i18nstr.calendar.showWeekend"
       btn1css="btn btn-sm btn-secondary"
       [btn1icon]="icons[usersettingsObj.view.calendar.showWeekend ? 'toggle-on' : 'toggle-off']"
       (btn1Clicked)="usersettingsObj.view.calendar.showWeekend = !usersettingsObj.view.calendar.showWeekend; pushUserSettings()"></app-h3>
@@ -47,8 +48,7 @@
     <mwl-calendar-month-view [activeDayIsOpen]="activeDayIsOpen" [viewDate]="viewDate" [events]="calendarEvents"
       [excludeDays]="(usersettingsObj.view.calendar.showWeekend ? [] : [0,6])" [refresh]="refresh"
       [weekStartsOn]="usersettingsObj.view.calendar.firstDayOfWeek" (beforeViewRender)="beforeMonthViewRender($event)"
-      (dayClicked)="dayClicked($event.day)" (eventClicked)="handleEvent('Clicked', $event.event)"
-      (eventTimesChanged)="eventTimesChanged($event)" [locale]="locale">
+      (dayClicked)="dayClicked($event.day)" (eventClicked)="handleEvent('Clicked', $event.event)" [locale]="locale">
     </mwl-calendar-month-view>
   </div>
 
