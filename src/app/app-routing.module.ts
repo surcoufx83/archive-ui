@@ -79,7 +79,7 @@ const routes: Routes = [
   {
     path: 'finance', component: FinanceComponent, canActivate: [SessionGuard], children: [
       { path: 'accounts', component: AccountsComponent, canActivate: [SessionGuard] },
-      { path: 'stocks', component: StocksComponent, canActivate: [SessionGuard] },
+      { path: 'stocks', component: StocksComponent, canActivate: [SessionGuard], pathMatch: 'full' },
       { path: 'stocks/:id/transactions', component: StocksComponent, canActivate: [SessionGuard] },
       { path: 'stocks/transactions', component: StocksComponent, canActivate: [SessionGuard] },
       { path: 'taxes/:year', component: TaxComponent, canActivate: [SessionGuard] },

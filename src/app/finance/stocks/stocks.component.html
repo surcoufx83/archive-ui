@@ -1,44 +1,41 @@
-<div>
-
-    <div class="container pt-4 pt-md-2 mb-2">
-        <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between align-items-center">
-            <h2 class="px-2 mb-0">{{ i18nstr.stocks.title }}</h2>
-            <div>
-                <nav class="h-100" style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
-                    <ol class="breadcrumb d-flex align-items-center h-100 mb-0 flex-fill flex-nowrap">
-                        <button type="button" class="btn btn-sm btn-outline-primary" (click)="createNewRates()"
-                            data-bs-toggle="modal" data-bs-target="#rate-input-modal">
-                            <app-icon [iconClass]="icons['receipt']"></app-icon>
-                            {{ i18nstr.stocks.updateRates }}
+<div class="container pt-4 pt-md-2 mb-2">
+    <div class="pb-2 border-bottom border-secondary border-2 d-flex justify-content-between align-items-center">
+        <h2 class="px-2 mb-0">{{ i18nstr.stocks.title }}</h2>
+        <div>
+            <nav class="h-100" style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
+                <ol class="breadcrumb d-flex align-items-center h-100 mb-0 flex-fill flex-nowrap">
+                    <button type="button" class="btn btn-sm btn-outline-primary" (click)="createNewRates()"
+                        data-bs-toggle="modal" data-bs-target="#rate-input-modal">
+                        <app-icon [iconClass]="icons['receipt']"></app-icon>
+                        {{ i18nstr.stocks.updateRates }}
+                    </button>
+                    <a class="ms-2" [routerLink]="['/finance', 'stocks', 'transactions']">
+                        <button type="button" class="btn btn-sm btn-outline-primary">
+                            <app-icon [iconClass]="icons['file']"></app-icon>
+                            {{ i18nstr.stocks.transactionsLink }}
                         </button>
-                        <a class="ms-2" [routerLink]="['/finance', 'stocks', 'transactions']">
-                            <button type="button" class="btn btn-sm btn-outline-primary">
-                                <app-icon [iconClass]="icons['file']"></app-icon>
-                                {{ i18nstr.stocks.transactionsLink }}
-                            </button>
-                        </a>
-                    </ol>
-                </nav>
-            </div>
+                    </a>
+                </ol>
+            </nav>
         </div>
     </div>
+</div>
 
-    <div class="container">
-        <div class="flex-table flex-table-sm mb-3">
-            <div class="flex-table-head row">
-                <div class="col-6 col-md-4 col-lg-3">{{ i18nstr.stocks.name }}</div>
-                <div class="col-1 text-end d-none d-lg-block">{{ i18nstr.stocks.quantity }}</div>
-                <div class="col-2 text-end d-none d-md-block">{{ i18nstr.stocks.rate }}</div>
-                <div class="col-3 col-md-2 text-end">{{ i18nstr.stocks.value }}</div>
-                <div class="col-3 text-end d-block d-md-none">{{ i18nstr.stocks.dif }}</div>
-                <div class="col-2 text-end d-none d-md-block">{{ i18nstr.stocks.dif }}</div>
-                <div class="col-2 text-end d-none d-md-block">{{ i18nstr.stocks.difrel }}</div>
-            </div>
-            <ng-container *ngTemplateOutlet="sumRow"></ng-container>
-            <ng-container *ngFor="let stock of stocks; let i = index;">
-                <ng-container *ngTemplateOutlet="stockRow; context: { stock: stock }"></ng-container>
-            </ng-container>
+<div class="container">
+    <div class="flex-table flex-table-sm mb-3">
+        <div class="flex-table-head row">
+            <div class="col-6 col-md-4 col-lg-3">{{ i18nstr.stocks.name }}</div>
+            <div class="col-1 text-end d-none d-lg-block">{{ i18nstr.stocks.quantity }}</div>
+            <div class="col-2 text-end d-none d-md-block">{{ i18nstr.stocks.rate }}</div>
+            <div class="col-3 col-md-2 text-end">{{ i18nstr.stocks.value }}</div>
+            <div class="col-3 text-end d-block d-md-none">{{ i18nstr.stocks.dif }}</div>
+            <div class="col-2 text-end d-none d-md-block">{{ i18nstr.stocks.dif }}</div>
+            <div class="col-2 text-end d-none d-md-block">{{ i18nstr.stocks.difrel }}</div>
         </div>
+        <ng-container *ngTemplateOutlet="sumRow"></ng-container>
+        <ng-container *ngFor="let stock of stocks; let i = index;">
+            <ng-container *ngTemplateOutlet="stockRow; context: { stock: stock }"></ng-container>
+        </ng-container>
     </div>
 </div>
 
