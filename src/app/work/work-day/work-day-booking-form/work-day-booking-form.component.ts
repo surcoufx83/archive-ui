@@ -201,6 +201,63 @@ export class WorkDayBookingFormComponent implements OnChanges {
     this.bookingSubmit.emit(tempBooking);
   }
 
+  keyupDebounce?: number;
+  /**
+   * Handles the `keyup` event for time input fields.
+   * Debounces the input to prevent excessive processing and validates the entered time.
+   * If the input is valid and meets specific conditions, it moves the focus to the next input field.
+   * 
+   * @param e The current input element.
+   * @param event The keyboard event triggered by the user.
+   * @param next The next input element to focus on if conditions are met.
+   */
+  onTimeKeyUp(e: HTMLInputElement, event: KeyboardEvent, next: HTMLInputElement): void {
+    clearTimeout(this.keyupDebounce);
+    this.keyupDebounce = setTimeout(() => {
+      const time = this.parseTime(e.value);
+      const reqkeys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+      if (e.value.length < 3 || time === null || !reqkeys.includes(event.key))
+        return;
+      if ((e.value.length === 3 && time.getHours() > 2 && time.getHours() < 10) || (e.value.length === 4)) {
+        next.focus();
+      }
+    }, 150);
+  }
+
+  /**
+   * Handles the `keyup` event for a break input field, implementing a debounce mechanism
+   * to process the input after a short delay. If the input meets certain conditions,
+   * it focuses on the next text area element.
+   *
+   * @param e - The HTML input element where the keyup event occurred.
+   * @param event - The keyboard event triggered by the keyup action.
+   * @param next - The next HTML text area element to focus on if conditions are met.
+   * 
+   * @remarks
+   * - The method uses a debounce mechanism with a delay of 150ms to avoid processing
+   *   the input on every key press.
+   * - It checks if the input value has at least two characters and if the pressed key
+   *   is a numeric character before proceeding.
+   * - If the conditions are satisfied, the focus is shifted to the `next` text area element.
+   */
+  onBreakKeyUp(e: HTMLInputElement, event: KeyboardEvent, next: HTMLTextAreaElement): void {
+    clearTimeout(this.keyupDebounce);
+    this.keyupDebounce = setTimeout(() => {
+      const time = +e.value;
+      const reqkeys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+      if (e.value.length < 2 || !reqkeys.includes(event.key))
+        return;
+      next.focus();
+    }, 150);
+  }
+
+  /**
+   * Parses a time string and returns a Date object with the time set to the parsed hours and minutes.
+   * The date portion of the returned Date object is based on the `this.day.date` property.
+   * 
+   * @param time - A string representing the time to parse, expected to match the `WorkDayBookingTimeValidationPattern`.
+   * @returns A `Date` object with the parsed time set, or `null` if the input string does not match the expected pattern.
+   */
   parseTime(time: string): Date | null {
     let match = time.match(WorkDayBookingTimeValidationPattern);
     if (match && match.groups) {

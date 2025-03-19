@@ -12,10 +12,10 @@
                                 <label for="tracking-from" class="form-label required">
                                     {{ i18nstr.workday.tracking.common.from }}
                                 </label>
-                                <input type="text" #focusInput class="form-control always-status" id="tracking-from"
-                                    name="tracking-from" formControlName="timeFrom"
+                                <input type="text" #focusInput #fromTime class="form-control always-status"
+                                    id="tracking-from" name="tracking-from" formControlName="timeFrom"
                                     [placeholder]="i18nstr.workday.tracking.common.timePlaceholder"
-                                    (input)="onChangeTime()">
+                                    (input)="onChangeTime()" (keyup)="onTimeKeyUp(fromTime, $event, untilTime)">
                             </div>
                         </div>
                         <div class="col-6 col-lg-3 mb-3">
@@ -23,10 +23,10 @@
                                 <label for="tracking-until" class="form-label required">
                                     {{ i18nstr.workday.tracking.common.until }}
                                 </label>
-                                <input type="text" class="form-control always-status" id="tracking-until"
+                                <input type="text" #untilTime class="form-control always-status" id="tracking-until"
                                     name="tracking-until" formControlName="timeUntil"
                                     [placeholder]="i18nstr.workday.tracking.common.timePlaceholder"
-                                    (input)="onChangeTime()">
+                                    (input)="onChangeTime()" (keyup)="onTimeKeyUp(untilTime, $event, breakTime)">
                             </div>
                         </div>
                         <div class="col-6 col-lg-3 mb-3">
@@ -34,10 +34,10 @@
                                 <label for="tracking-break" class="form-label required">
                                     {{ i18nstr.workday.tracking.common.break }}
                                 </label>
-                                <input type="number" class="form-control always-status" id="tracking-break"
+                                <input type="number" #breakTime class="form-control always-status" id="tracking-break"
                                     name="tracking-break" formControlName="timeBreak"
                                     [placeholder]="i18nstr.workday.tracking.common.breakPlaceholder"
-                                    (input)="onChangeTime()">
+                                    (input)="onChangeTime()" (keyup)="onBreakKeyUp(breakTime, $event, descField)">
                             </div>
                         </div>
                         <div class="col-6 col-lg-3 mb-3">
@@ -149,7 +149,7 @@
                                 <label for="tracking-description" class="form-label">
                                     {{ i18nstr.workday.tracking.common.description }}
                                 </label>
-                                <textarea class="form-control always-status" id="tracking-description"
+                                <textarea class="form-control always-status" #descField id="tracking-description"
                                     name="tracking-description" formControlName="description"></textarea>
                             </div>
                         </div>
