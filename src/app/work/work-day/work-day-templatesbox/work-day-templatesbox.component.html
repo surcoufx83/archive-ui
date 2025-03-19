@@ -53,7 +53,8 @@
         }
     </div>
     <div class="card-footer">
-        <a [routerLink]="['/work', 'month']" class="text-light fs-7 text-decoration-none">
+        <a [routerLink]="['/work', 'month', day.month.period.year, day.month.period.month]"
+            class="text-light fs-7 text-decoration-none">
             <app-icon [iconClass]="icons['go-right']" [marginEnd]="1"></app-icon>
             {{ i18nstr.workday.templatescard.weekLink }}
         </a>
