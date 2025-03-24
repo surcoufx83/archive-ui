@@ -1,5 +1,5 @@
 import { HttpStatusCode } from '@angular/common/http';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { first } from 'rxjs';
 import { Case, File, UserSettings } from 'src/app/if';
@@ -9,6 +9,8 @@ import { I18nService } from '../i18n.service';
 import { FormatService } from '../utils/format.service';
 import { SettingsService } from '../utils/settings.service';
 import { L10nArchiveLocale } from '../l10n/l10n.types';
+import { EChartsCoreOption, EChartsOption } from 'echarts';
+import { parse } from 'date-fns';
 
 @Component({
   selector: 'app-home',
@@ -23,7 +25,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   inactivecases: Case[] = [];
   inboxfiles: File[] = [];
   recentfiles: File[] = [];
-  stats?: HomeStats;
+  stats = signal<HomeStats | null>(null);
+  stocksChart = signal<EChartsOption | null>(null);
   storagename: string = `${environment.localStoragePrefix}homeData`;
   updatetimeout: any;
   usersettingsObj: UserSettings | null = null;
@@ -45,10 +48,55 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.inactivecases = olddata.inactivecases;
       this.inboxfiles = olddata.inboxfiles;
       this.recentfiles = olddata.recentfiles;
-      this.stats = olddata.stats;
+      this.stats.set(olddata.stats);
       this.etag = olddata.etag;
+      this.createStocksChart();
     }
     this.i18nService.setTitle('home.title');
+  }
+
+  createStocksChart(): void {
+    const dailyStats = this.stats()?.daily;
+    if (!dailyStats) {
+      this.stocksChart.set(null);
+      return;
+    }
+    console.log(dailyStats)
+    let chartOptions: EChartsOption = {
+      xAxis: [{
+        type: 'time',
+      }],
+      yAxis: [{
+        type: 'value',
+        axisLabel: {
+          formatter: function (v, i) { return `${Math.floor(v / 1000)}k` },
+          showMinLabel: false,
+        }
+      }],
+      series: [
+        {
+          type: 'line',
+          data: dailyStats.sort((a, b) => a.time.localeCompare(b.time)).map((v) => [parse(v.time, 'yyyy-MM-dd HH:mm:ss', new Date()), +v.stocks_value]),
+        }
+      ],
+      legend: {
+        show: false
+      },
+      title: {
+        show: false
+      },
+      grid: {
+        top: '10%',
+        bottom: '10%',
+      },
+      tooltip: {
+        trigger: 'item',
+        position: 'right',
+        valueFormatter: (v, i) => `${this.formatService.fcur(v as number)}`
+      }
+    }
+    console.log(chartOptions)
+    this.stocksChart.set(chartOptions);
   }
 
   i18n(key: string, params: string[] = []): string {
@@ -82,13 +130,14 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.inactivecases = response.inactivecases;
         this.inboxfiles = response.inboxfiles;
         this.recentfiles = response.recentfiles;
-        this.stats = response.stats;
+        this.stats.set(response.stats);
+        this.createStocksChart();
         this.etag = reply.etag;
         localStorage.setItem(this.storagename, JSON.stringify(<HomeStorage>{
           inactivecases: this.inactivecases,
           inboxfiles: this.inboxfiles,
           recentfiles: this.recentfiles,
-          stats: this.stats,
+          stats: this.stats(),
           etag: reply.etag,
         }));
       }
@@ -135,36 +184,44 @@ export interface HomeResponse {
 }
 
 export interface HomeStats {
+  daily: HomeGeneralDailyStats[];
   general: HomeGeneralStats;
   newfiles: HomeinboxfilesStats;
 }
 
 export interface HomeGeneralStats {
-  addresses_count: number;
-  cases_active_count: number;
-  cases_count: number;
-  cases_draft_count: number;
-  cases_old_count: number;
-  classes_count: number;
-  dir_count: number;
-  extensions_count: number;
-  file_count: number;
-  file_size_avg: number;
-  file_size_max: number;
-  file_size_min: number;
-  file_size_total: number;
-  file_with_caseid: number;
-  file_with_classid: number;
-  file_with_clientid: number;
-  file_with_partyid: number;
-  file_withmultipleversions_count: number;
-  file_withocr_count: number;
-  freespace: number;
-  invoices_count: number;
-  invoices_topay_count: number;
+  addresses_count: string;
+  cases_active_count: string;
+  cases_count: string;
+  cases_draft_count: string;
+  cases_old_count: string;
+  classes_count: string;
+  dir_count: string;
+  extensions_count: string;
+  file_count: string;
+  file_size_avg: string;
+  file_size_max: string;
+  file_size_min: string;
+  file_size_total: string;
+  file_with_caseid: string;
+  file_with_classid: string;
+  file_with_clientid: string;
+  file_with_partyid: string;
+  file_withmultipleversions_count: string;
+  file_withocr_count: string;
+  freespace: string;
+  invoices_count: string;
+  invoices_topay_count: string;
   parties_count: number;
-  time: number;
-  totalspace: number;
+  stocks_value: string;
+  time: string;
+  totalspace: string;
+}
+
+export interface HomeGeneralDailyStats extends HomeGeneralStats {
+  day: string;
+  month: string;
+  year: string;
 }
 
 export interface HomeinboxfilesStats {

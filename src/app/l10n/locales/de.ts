@@ -586,6 +586,10 @@ export const L10nArchiveDeLocale: L10nArchiveLocale = {
     },
     home: {
         title: "Archiv Startseite",
+        banking: {
+            title: "Aktiendepot",
+            pricesLink: "Kurse",
+        },
         cases: {
             title: "Akten zur Prüfung"
         },

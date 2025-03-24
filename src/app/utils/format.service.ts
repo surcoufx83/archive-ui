@@ -24,7 +24,9 @@ export class FormatService {
   * @param md Maximum digits.
   * @returns The formatted file size string.
   */
-  filesize(size: number, fd: number = 0, md: number | undefined = undefined): string {
+  filesize(size: number | string, fd: number = 0, md: number | undefined = undefined): string {
+    if (typeof size === 'string')
+      size = +size;
     if (size <= 0)
       return '0 B';
     let f = Math.floor(Math.log(size) / Math.log(1024));
@@ -163,7 +165,7 @@ export class FormatService {
    * @param md Maximum fraction digits.
    * @returns The formatted number string.
    */
-  fnumber(n: number, fd: number = 0, md: number | undefined = undefined): string {
+  fnumber(n: number | string, fd: number = 0, md: number | undefined = undefined): string {
     return (+n).toLocaleString(this.i18nService.Locale, { minimumFractionDigits: fd, maximumFractionDigits: md });
   }
 

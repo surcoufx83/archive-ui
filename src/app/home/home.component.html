@@ -67,6 +67,29 @@
         <div class="card">
           <div class="card-header">
             <h5 class="mb-0">
+              {{ i18nstr.home.banking.title }}
+            </h5>
+          </div>
+          <div class="card-body p-0">
+            <ul class="list-group list-group-flush rounded">
+              @if (stocksChart()) {
+              <div class="list-group-item">
+                <div echarts [options]="stocksChart()!" style="height: 180px"></div>
+              </div>
+              }
+              <a class="list-group-item" [routerLink]="['/finance', 'stocks']">
+                <app-icon [iconClass]="icons['stocks']" [marginEnd]="1" [fixedWidth]="true"></app-icon>
+                {{ i18nstr.home.banking.pricesLink }}
+              </a>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">
               {{ i18nstr.home.supermarket.title }}
             </h5>
           </div>
@@ -158,10 +181,11 @@
             <ul class="list-group list-group-flush sm rounded">
               <li class="list-group-item px-0 pb-0">
                 <div class="px-2">
-                  {{ i18n('home.stats.files1', [ formatService.fnumber(stats.general.file_count),
-                  formatService.fnumber(stats.general.dir_count), formatService.filesize(stats.general.file_size_total,
+                  {{ i18n('home.stats.files1', [ formatService.fnumber(stats()?.general?.file_count ?? 0),
+                  formatService.fnumber(stats()?.general?.dir_count ?? 0),
+                  formatService.filesize(stats()?.general?.file_size_total ?? 0,
                   0, 2) ]) }}
-                  {{ i18n('home.stats.files3', [ formatService.fnumber(stats.newfiles.count) ]) }}
+                  {{ i18n('home.stats.files3', [ formatService.fnumber(stats()?.newfiles?.count ?? 0) ]) }}
                 </div>
                 <div class="card-footer px-2 py-1 fs-7">
                   <a [routerLink]="['/files']">
@@ -176,9 +200,10 @@
               </li>
               <li class="list-group-item px-0 pb-0">
                 <div class="px-2">
-                  {{ i18n('home.stats.files2', [ formatService.fnumber(stats.general.file_with_classid),
-                  formatService.fnumber(stats.general.file_with_caseid), formatService.fnumber(stats.general.file_count
-                  - stats.general.file_withocr_count) ])
+                  {{ i18n('home.stats.files2', [ formatService.fnumber(stats()?.general?.file_with_classid ?? 0),
+                  formatService.fnumber(stats()?.general?.file_with_caseid ?? 0),
+                  formatService.fnumber(+(stats()?.general?.file_count ?? 0)
+                  - +(stats()?.general?.file_withocr_count ?? 0)) ])
                   }}
                 </div>
                 <div class="card-footer px-2 py-1 fs-7">

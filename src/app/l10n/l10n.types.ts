@@ -581,6 +581,10 @@ export type L10nArchiveLocale = {
     },
     home: {
         title: string,
+        banking: {
+            title: string,
+            pricesLink: string,
+        },
         cases: {
             title: string
         },
