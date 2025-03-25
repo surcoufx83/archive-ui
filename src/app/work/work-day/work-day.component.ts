@@ -157,6 +157,10 @@ export class WorkDayComponent implements OnDestroy, OnInit {
     this.subscriptions.push(this.userSettings.workCustomers$.subscribe((customers) => {
       this.customers = Object.values(customers).sort((a, b) => a.name.localeCompare(b.name));
     }));
+    this.subscriptions.push(this.userSettings.workProjects$.subscribe((projects) => {
+      console.log(projects)
+      this.projects = [...Object.values(projects)];
+    }))
     this.subscriptions.push(this.userSettings.workRecentTimeBookings$.subscribe((bookings) => this.recentEntries.set(bookings)));
     this.subscriptions.push(this.route.paramMap.subscribe((params) => {
       let date = 'today';
