@@ -1,1 +1,26 @@
-<p>tax works!</p>
+<div class="container-fluid p-3">
+    <app-card icon="taxes" [title]="i18n('navbar.finance.taxYear', [taxyear()])">
+        <div actionitems>
+            <button type="button" class="btn btn-sm" [ngClass]="{ 'd-none': !busy() }">
+                <app-icon [iconClass]="icons['busy']"></app-icon>
+            </button>
+            <button type="button" class="btn btn-sm ms-2" [ngClass]="{ 'btn-primary': showFilterBar() }"
+                (click)="showFilterBar.set(!showFilterBar())">
+                <app-icon [iconClass]="icons['filter']"></app-icon>
+            </button>
+        </div>
+        <div class="row">
+            <div class="mb-3" [ngClass]="{ 'd-none': !showFilterBar() }">
+                Filter....
+            </div>
+            <ul class="list-group flush hover rounded-0">
+                @for (file of files(); track $index) {
+                <a [ngClass]="['fix-border list-group-item', 'py-2', 'pe-2', 'border-start-0 border-end-0']"
+                    [routerLink]="['/file', file.id]">
+                    <file-list-item [file]="file"></file-list-item>
+                </a>
+                }
+            </ul>
+        </div>
+    </app-card>
+</div>
