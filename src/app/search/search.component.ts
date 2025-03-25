@@ -97,15 +97,16 @@ export class SearchComponent implements OnDestroy, OnInit {
   ngOnInit(): void {
     this.subscriptions.push(this.settings.settings$.subscribe((settings) => this.usersettingsObj = settings));
     this.subscriptions.push(this.route.paramMap.subscribe((params) => {
+      this.reset();
+      this.showgroup = params.get('tab') ?? 'tags';
+      this.phrase = params.get('phrase') ?? '';
+      this.searchphrase = params.get('phrase') ?? '';
+      this.searchtoken = params.get('token') ?? '';
+      this.urltoken = params.get('token') ?? '';
+
       setTimeout(() => {
-        this.reset();
-        this.showgroup = params.get('tab') ?? 'tags';
-        this.phrase = params.get('phrase') ?? '';
-        this.searchphrase = params.get('phrase') ?? '';
-        this.searchtoken = params.get('token') ?? '';
-        this.urltoken = params.get('token') ?? '';
         this.onSearch(params.get('token') != null, (params.get('token') ?? ''));
-      }, 1);
+      }, 100);
     }));
   }
 
@@ -153,13 +154,13 @@ export class SearchComponent implements OnDestroy, OnInit {
                 this.searchresults.directories = <SearchResultDirectoryItem[]>reply.payload['items'];
                 break;
               case 'files':
-                this.searchresults.files = <SearchResultFileItem[]>reply.payload['items'];
+                this.searchresults.files = (<SearchResultFileItem[]>reply.payload['items']).sort((a, b) => b.file.mtime.localeCompare(a.file.mtime));
                 break;
               case 'notepad':
                 this.searchresults.notes = <SearchResultNoteItem[]>reply.payload['items'];
                 break;
               case 'pages':
-                this.searchresults.pages = <SearchResultPageItem[]>reply.payload['items'];
+                this.searchresults.pages = (<SearchResultPageItem[]>reply.payload['items']).sort((a, b) => b.file.mtime.localeCompare(a.file.mtime));
                 break;
               case 'tags':
                 this.searchresults.tags = <{ [key: string]: { [key: number]: File } }>(reply.payload['items']);
