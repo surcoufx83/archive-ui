@@ -1,4 +1,4 @@
-<div class="d-flex flex-column">
+<div class="d-flex flex-column overflow-y-hidden" style="height: 100%!important;">
     @if (isMobile) {
     <div class="sidebar-toggle d-flex justify-content-between p-2">
         <div>
@@ -29,11 +29,12 @@
         </div>
     </div>
     }
-    <div class="main-container d-flex vh-calc-100">
+    <div class="main-container d-flex" style="height: 100%!important;">
         <div [ngClass]="{ 'sidebar-body': true, 'd-none': !sidebarOpen }" [attr.data-mobile]="isMobile">
             <app-notepad2-sidebar [notes]="notes()" [isOpen]="sidebarOpen" [isMobile]="isMobile"></app-notepad2-sidebar>
         </div>
-        <div [ngClass]="{ 'notes-body flex-grow-1 px-4 py-3': true, 'd-none': isMobile && sidebarOpen }">
+        <div class="notes-body flex-grow-1 px-4 py-3 overflow-y-scroll"
+            [ngClass]="{ 'd-none': isMobile && sidebarOpen }">
             @if (selectedNote) {
             <app-notepad2-note [note]="selectedNote" [editMode]="editMode"></app-notepad2-note>
             }
