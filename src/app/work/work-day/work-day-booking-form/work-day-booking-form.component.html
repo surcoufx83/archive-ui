@@ -93,7 +93,7 @@
                                     [{{ i18nstr.common.add }}]
                                 </label>
                                 <select class="form-select always-status" id="tracking-customer"
-                                    name="tracking-customer" formControlName="customer">
+                                    name="tracking-customer" formControlName="customer" (change)="onChangeCustomer()">
                                     <option [ngValue]="-1">
                                         {{ i18nstr.common.select.pickOne }}
                                     </option>
@@ -119,7 +119,7 @@
                                     <option [ngValue]="-1">
                                         {{ i18nstr.common.select.pickOne }}
                                     </option>
-                                    @for (project of projects; track $index) {
+                                    @for (project of customerFilteredProjects(); track $index) {
                                     <option [ngValue]="project.id">
                                         {{ project.name }}
                                     </option>

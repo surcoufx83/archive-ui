@@ -44,6 +44,7 @@ export class WorkDayBookingFormComponent implements OnChanges {
     description: new FormControl<string>(''),
   });
 
+  customerFilteredProjects = signal<WorkProject[]>([]);
   filterDebounce: any;
   filteredRecentBookings = signal<ModifiedRecentBooking[]>([]);
   filterRecent: string = '';
@@ -69,6 +70,7 @@ export class WorkDayBookingFormComponent implements OnChanges {
       task: item.projectstage,
       description: item.description,
     });
+    this.onChangeCustomer();
     this.scroller.scrollToAnchor('scroll-anchor');
     this.focusElement?.nativeElement.focus();
   }
@@ -118,6 +120,9 @@ export class WorkDayBookingFormComponent implements OnChanges {
     if (changes['copyBooking'] && changes['copyBooking'].currentValue[0] !== null)
       this.copyFromRecent(changes['copyBooking'].currentValue[0]);
 
+    if ((changes['customers'] && changes['customers'].currentValue) || (changes['projects'] && changes['projects'].currentValue))
+      this.onChangeCustomer();
+
     if (changes['recentBookings'] && changes['recentBookings'].currentValue) {
       let temp: ModifiedRecentBooking[] = [];
       (<RecentBooking[]>changes['recentBookings'].currentValue).forEach((booking) => {
@@ -132,6 +137,12 @@ export class WorkDayBookingFormComponent implements OnChanges {
       this.onChangeRecentFilter();
     }
 
+  }
+
+  onChangeCustomer(): void {
+    this.customerFilteredProjects.set(
+      this.projects.filter((p) => p.customerid === this.bookingForm.controls.customer.value)
+    );
   }
 
   /**

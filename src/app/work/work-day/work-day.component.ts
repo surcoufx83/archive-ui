@@ -1,17 +1,16 @@
 import { Component, ElementRef, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { addDays, differenceInMinutes, format, parseISO, set, setHours, subDays } from 'date-fns';
-import { AuthService } from '../../auth.service';
-import { SettingsService } from '../../utils/settings.service';
-
-import { FormControl, FormGroup, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
-import { Subscription, first } from 'rxjs';
+import { addDays, parseISO, setHours, subDays } from 'date-fns';
+import { first, Subscription } from 'rxjs';
 import { RecentBooking, UserSettings, WorkCustomer, WorkDay, WorkDayBooking, WorkProject, WorkTimeCategory } from 'src/app/if';
-import { environment } from 'src/environments/environment.dev';
-import { I18nService } from '../../i18n.service';
+import { L10nArchiveLocale } from 'src/app/l10n/l10n.types';
 import { FormatService } from 'src/app/utils/format.service';
 import { ToastsService } from 'src/app/utils/toasts.service';
-import { L10nArchiveLocale } from 'src/app/l10n/l10n.types';
+import { environment } from 'src/environments/environment.dev';
+import { AuthService } from '../../auth.service';
+import { I18nService } from '../../i18n.service';
+import { SettingsService } from '../../utils/settings.service';
 
 @Component({
   selector: 'app-work-day',
@@ -158,7 +157,6 @@ export class WorkDayComponent implements OnDestroy, OnInit {
       this.customers = Object.values(customers).sort((a, b) => a.name.localeCompare(b.name));
     }));
     this.subscriptions.push(this.userSettings.workProjects$.subscribe((projects) => {
-      console.log(projects)
       this.projects = [...Object.values(projects)];
     }))
     this.subscriptions.push(this.userSettings.workRecentTimeBookings$.subscribe((bookings) => this.recentEntries.set(bookings)));
