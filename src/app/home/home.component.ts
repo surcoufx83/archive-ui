@@ -1,16 +1,16 @@
 import { HttpStatusCode } from '@angular/common/http';
 import { Component, OnDestroy, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
+import { parse } from 'date-fns';
+import { EChartsOption } from 'echarts';
 import { first } from 'rxjs';
 import { Case, File, UserSettings } from 'src/app/if';
 import { environment } from 'src/environments/environment.dev';
 import { AuthService } from '../auth.service';
 import { I18nService } from '../i18n.service';
+import { L10nArchiveLocale } from '../l10n/l10n.types';
 import { FormatService } from '../utils/format.service';
 import { SettingsService } from '../utils/settings.service';
-import { L10nArchiveLocale } from '../l10n/l10n.types';
-import { EChartsCoreOption, EChartsOption } from 'echarts';
-import { parse } from 'date-fns';
 
 @Component({
   selector: 'app-home',
@@ -61,7 +61,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.stocksChart.set(null);
       return;
     }
-    console.log(dailyStats)
     let chartOptions: EChartsOption = {
       xAxis: [{
         type: 'time',
@@ -95,7 +94,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         valueFormatter: (v, i) => `${this.formatService.fcur(v as number)}`
       }
     }
-    console.log(chartOptions)
     this.stocksChart.set(chartOptions);
   }
 
