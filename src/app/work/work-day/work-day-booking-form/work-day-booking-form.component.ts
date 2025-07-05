@@ -38,7 +38,7 @@ export class WorkDayBookingFormComponent implements OnChanges {
     timeBreak: new FormControl<number>(0, { validators: [Validators.min(0), Validators.max(1440)] }),
     durationOutput: new FormControl<string>(''),
     category: new FormControl<number>(-1, { validators: [Validators.min(0), Validators.required] }),
-    customer: new FormControl<number>(-1, { validators: [Validators.min(0), Validators.required] }),
+    customer: new FormControl<number>(-1),
     customerProject: new FormControl<number>(-1),
     task: new FormControl<string>(''),
     description: new FormControl<string>(''),
@@ -113,7 +113,17 @@ export class WorkDayBookingFormComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
 
     if (changes['booking']) {
-      this.bookingForm.reset();
+      this.bookingForm.reset({
+        category: -1,
+        customer: -1,
+        customerProject: -1,
+        description: '',
+        durationOutput: '',
+        task: '',
+        timeBreak: 0,
+        timeFrom: '',
+        timeUntil: ''
+      });
       this.focusElement?.nativeElement.focus();
     }
 
@@ -231,6 +241,7 @@ export class WorkDayBookingFormComponent implements OnChanges {
         return;
       if ((e.value.length === 3 && time.getHours() > 2 && time.getHours() < 10) || (e.value.length === 4)) {
         next.focus();
+        next.select();
       }
     }, 150);
   }

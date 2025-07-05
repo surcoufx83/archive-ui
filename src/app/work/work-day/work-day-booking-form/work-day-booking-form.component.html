@@ -60,7 +60,7 @@
                                 <div class="input-group">
                                     <select class="form-select always-status" id="tracking-category"
                                         name="tracking-category" formControlName="category">
-                                        <option [ngValue]="-1">
+                                        <option [ngValue]="-1" [selected]="-1 === bookingForm.controls.category.value">
                                             {{ i18nstr.common.select.pickOne }}
                                         </option>
                                         @for (category of categories; track $index) {
@@ -81,9 +81,10 @@
                         </div>
                     </div>
 
-                    <div class="row" [ngClass]="{ 'd-none': !usersettingsObj.work.tracking.trackCustomer }">
+                    <div class="row">
                         <!-- tracking of customer if enabled via user settings -->
-                        <div class="col-12 col-lg-4 mb-3">
+                        <div class="col-12 col-lg-4 mb-3"
+                            [ngClass]="{ 'd-none': !usersettingsObj.work.tracking.trackCustomer }">
                             <div class="form-group">
                                 <label for="tracking-customer" class="form-label required">
                                     {{ i18nstr.workday.tracking.common.customer }}
