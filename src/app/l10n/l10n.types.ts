@@ -1005,7 +1005,10 @@ export type L10nArchiveLocale = {
             support: string,
             trainingself: string,
             travel: string,
-            title: string
+            title: string,
+            ntw_travel: string,
+            ntw_work: string,
+            judge: string,
         }
     },
     workday: {

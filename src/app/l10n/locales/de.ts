@@ -1002,15 +1002,18 @@ export const L10nArchiveDeLocale: L10nArchiveLocale = {
             administration: "Administratives",
             bugfixing: "Bugfixing",
             healthwork: "Klinik",
-            meeting: "Meeting intern",
+            meeting: "Internes Meeting",
             "non-canon": "Abwesend",
             implementation: "Implementierung",
             presales: "Presales",
             support: "Support",
             trainingself: "Fortbildung",
             travel: "Reise",
-            title: "Zeitart"
-        }
+            title: "Zeitart",
+            ntw_travel: "Reise",
+            ntw_work: "Arbeit",
+            judge: "Schöffentätigkeit",
+        },
     },
     workday: {
         pagetitle: "Tagesbuchungen {0}",

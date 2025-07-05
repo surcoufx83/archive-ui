@@ -999,18 +999,21 @@ export const L10nArchiveEnLocale: L10nArchiveLocale = {
             title: "Absence"
         },
         timecategories: {
-            administration: "Administration",
+            administration: "Administrative tasks",
             bugfixing: "Bug fixing",
-            healthwork: "Clinical Work",
-            meeting: "Meeting",
+            healthwork: "Clinic",
+            meeting: "Internal meeting",
             "non-canon": "Absent",
             implementation: "Implementation",
             presales: "Presales",
             support: "Support",
-            trainingself: "Advanced training",
-            travel: "Travel time",
-            title: "Category"
-        }
+            trainingself: "Further training",
+            travel: "Travel",
+            title: "Time category",
+            ntw_travel: "Travel",
+            ntw_work: "Work",
+            judge: "Jury duty",
+        },
     },
     workday: {
         pagetitle: "Day bookings {0}",

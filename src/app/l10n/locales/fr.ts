@@ -999,18 +999,21 @@ export const L10nArchiveFrLocale: L10nArchiveLocale = {
             title: "Absence"
         },
         timecategories: {
-            administration: "Activités administratives",
-            bugfixing: "Bugfixing",
-            healthwork: "Travail Clinique",
-            meeting: "Meeting",
+            administration: "Tâches administratives",
+            bugfixing: "Correction de bugs",
+            healthwork: "Clinique",
+            meeting: "Réunion interne",
             "non-canon": "Absent",
             implementation: "Implémentation",
-            presales: "Presales",
+            presales: "Avant-vente",
             support: "Support",
-            trainingself: "Perfectionnement professionnel",
-            travel: "Voyage",
-            title: "Catégorie de temps"
-        }
+            trainingself: "Formation continue",
+            travel: "Déplacement",
+            title: "Type de temps",
+            ntw_travel: "Déplacement",
+            ntw_work: "Travail",
+            judge: "Activité de juré",
+        },
     },
     workday: {
         pagetitle: "Réservations journalières {0}",
