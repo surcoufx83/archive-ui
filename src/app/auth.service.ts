@@ -138,13 +138,13 @@ export class AuthService {
           return;
         } else {
           reply.next({ success: false, status: response.status });
-          this.toastService.error(this.i18nService.i18n('authService.apiError.title'),
+          this.toastService.error(this.i18nService.str.authService.apiError.title,
             this.i18nService.i18n('authService.apiError.message', [response.error ?? '']));
         }
       },
       (e: HttpErrorResponse) => {
         reply.next({ success: false, status: e.status });
-        this.toastService.error(this.i18nService.i18n('authService.apiError.title'),
+        this.toastService.error(this.i18nService.str.authService.apiError.title,
           this.i18nService.i18n('authService.apiError.message', [e.statusText]));
       }
     );
@@ -199,7 +199,7 @@ export class AuthService {
           etag = etagarr.groups['etag'];
         reply.next({ success: false, etag: etag, status: e.status });
         reply.complete();
-        this.toastService.error(this.i18nService.i18n('authService.apiError.title'),
+        this.toastService.error(this.i18nService.str.authService.apiError.title,
           this.i18nService.i18n('authService.apiError.message', [e.statusText]));
         if (e.status === 401) {
           this.logout();
@@ -220,12 +220,12 @@ export class AuthService {
       error: (e: HttpErrorResponse) => {
         reply.next({ success: false, status: e.status });
         if (e.status === 304) {
-          this.toastService.confirm(this.i18nService.i18n('authService.notModified.title'),
+          this.toastService.confirm(this.i18nService.str.authService.notModified.title,
             this.i18nService.i18n('authService.notModified.message', [e.statusText]));
           return;
         }
         console.log(e);
-        this.toastService.error(this.i18nService.i18n('authService.apiError.title'),
+        this.toastService.error(this.i18nService.str.authService.apiError.title,
           this.i18nService.i18n('authService.apiError.message', [e.statusText]));
         if (e.status === 401) {
           this.logout();

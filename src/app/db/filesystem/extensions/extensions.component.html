@@ -1,5 +1,5 @@
 <div class="container pt-4 pt-md-2 mb-2">
-    <app-h2 [title]="i18n('db.extensions.title')" [busy]="busy" [btn1]="i18n('common.back')"
+    <app-h2 [title]="i18nstr.db.extensions.title" [busy]="busy" [btn1]="i18nstr.common.back"
         [btn1css]="'btn btn-sm btn-outline-primary'" [btn1icon]="icons['go-left']" [btn1link]="'/db'">
     </app-h2>
 </div>
@@ -7,8 +7,8 @@
 <div #editor>
     <div class="container pt-4 pt-md-2 mb-2" *ngIf="edititem">
         <div class="card">
-            <app-h4 [containercss]="'card-header'" [title]="i18n('db.extensions.editor.title')" [busy]="saving"
-                [btn1]="i18n('common.save')" [btn1css]="'btn btn-sm btn-success'" [btn1icon]="icons['save']"
+            <app-h4 [containercss]="'card-header'" [title]="i18nstr.db.extensions.editor.title" [busy]="saving"
+                [btn1]="i18nstr.common.save" [btn1css]="'btn btn-sm btn-success'" [btn1icon]="icons['save']"
                 (btn1Clicked)="submit(f)" [btn2css]="edititem.id > 0 ? 'btn btn-sm btn-outline-danger' : ''"
                 [btn2icon]="edititem.id > 0 ? icons['delete'] : ''" (btn2Clicked)="delete(edititem)" [xshow]="true"
                 (xClicked)="edititem = undefined"></app-h4>
@@ -19,15 +19,15 @@
                         <div class="col-12 col-lg-3 mb-3">
                             <div class="form-group">
                                 <label for="extension-ext" class="form-label required">{{
-                                    i18n('db.extensions.ext') }}</label>
+                                    i18nstr.db.extensions.ext }}</label>
                                 <input type="text" class="form-control" id="extension-ext" name="extension-ext"
-                                    [(ngModel)]="edititem.ext" [placeholder]="i18n('db.extensions.ext')" required>
+                                    [(ngModel)]="edititem.ext" [placeholder]="i18nstr.db.extensions.ext" required>
                             </div>
                         </div>
                         <div class="col-12 col-lg-6 mb-3">
                             <div class="form-group">
                                 <label for="extension-mimetype" class="form-label required">{{
-                                    i18n('db.extensions.mimetype') }}</label>
+                                    i18nstr.db.extensions.mimetype }}</label>
                                 <select class="form-select" id="extension-mimetype" name="extension-mimetype"
                                     [(ngModel)]="edititem.mimetype" required>
                                     <option *ngFor="let mt of mimetypes" [value]="mt.mimetype">{{ mt.mimetype }}
@@ -41,36 +41,36 @@
                         <div class="col-12 mb-3">
                             <div class="form-group">
                                 <label for="extension-gscommand" class="form-label">{{
-                                    i18n('db.extensions.editor.gscommand') }}</label>
+                                    i18nstr.db.extensions.editor.gscommand }}</label>
                                 <input type="text" class="form-control" id="extension-gscommand"
                                     name="extension-gscommand" [(ngModel)]="edititem.convert.gscommand"
-                                    [placeholder]="i18n('db.extensions.editor.gscommand')">
+                                    [placeholder]="i18nstr.db.extensions.editor.gscommand">
                             </div>
                         </div>
                         <div class="col-6 col-lg-3 mb-3">
                             <div class="form-group">
                                 <label for="extension-returnImg" class="form-label">{{
-                                    i18n('db.extensions.editor.returnImg') }}</label>
+                                    i18nstr.db.extensions.editor.returnImg }}</label>
                                 <div class="form-check">
                                     <input type="checkbox" class="form-check-input" id="extension-returnImg"
                                         name="extension-returnImg" [(ngModel)]="edititem.convert.returnImg">
                                     <label for="extension-returnImg" class="form-check-label"
                                         *ngIf="edititem.convert.returnImg">{{
-                                        i18n('common.yes') }}</label>
+                                        i18nstr.common.yes }}</label>
                                     <label for="extension-returnImg" class="form-check-label"
                                         *ngIf="!edititem.convert.returnImg">{{
-                                        i18n('common.no') }}</label>
+                                        i18nstr.common.no }}</label>
                                 </div>
                             </div>
                         </div>
                         <div class="col-12 col-lg-6 mb-3">
                             <div class="form-group">
                                 <label for="extension-returnMimetype" class="form-label">{{
-                                    i18n('db.extensions.editor.returnMimetype') }}</label>
+                                    i18nstr.db.extensions.editor.returnMimetype }}</label>
                                 <select class="form-select" id="extension-returnMimetype"
                                     name="extension-returnMimetype" [(ngModel)]="edititem.convert.returnMimetype">
                                     <option value="" [selected]="edititem.convert.returnMimetype == ''">{{
-                                        i18n('common.select.pickedNone') }}</option>
+                                        i18nstr.common.select.pickedNone }}</option>
                                     <option *ngFor="let mt of mimetypes" [value]="mt.mimetype"
                                         [selected]="mt.mimetype === edititem.convert.returnMimetype">{{ mt.mimetype }}
                                     </option>
@@ -80,10 +80,10 @@
                         <div class="col-12 mb-3">
                             <div class="form-group">
                                 <label for="extension-ocrcommand" class="form-label">{{
-                                    i18n('db.extensions.editor.ocrcommand') }}</label>
+                                    i18nstr.db.extensions.editor.ocrcommand }}</label>
                                 <input type="text" class="form-control" id="extension-mimetype"
                                     name="extension-ocrcommand" [(ngModel)]="edititem.convert.ocrcommand"
-                                    [placeholder]="i18n('db.extensions.editor.ocrcommand')">
+                                    [placeholder]="i18nstr.db.extensions.editor.ocrcommand">
                             </div>
                         </div>
                     </div>
@@ -92,64 +92,64 @@
                         <div class="col-12 col-lg-3 mb-3">
                             <div class="form-group">
                                 <label for="extension-displayable" class="form-label">{{
-                                    i18n('db.extensions.displayable') }}</label>
+                                    i18nstr.db.extensions.displayable }}</label>
                                 <div class="form-check">
                                     <input type="checkbox" class="form-check-input" id="extension-displayable"
                                         name="extension-displayable" [(ngModel)]="edititem.displayable">
                                     <label for="extension-displayable" class="form-check-label"
                                         *ngIf="edititem.displayable">{{
-                                        i18n('common.yes') }}</label>
+                                        i18nstr.common.yes }}</label>
                                     <label for="extension-displayable" class="form-check-label"
                                         *ngIf="!edititem.displayable">{{
-                                        i18n('common.no') }}</label>
+                                        i18nstr.common.no }}</label>
                                 </div>
                             </div>
                         </div>
                         <div class="col-12 col-lg-3 mb-3">
                             <div class="form-group">
                                 <label for="extension-downloadable" class="form-label">{{
-                                    i18n('db.extensions.downloadable') }}</label>
+                                    i18nstr.db.extensions.downloadable }}</label>
                                 <div class="form-check">
                                     <input type="checkbox" class="form-check-input" id="extension-downloadable"
                                         name="extension-downloadable" [(ngModel)]="edititem.downloadable">
                                     <label for="extension-downloadable" class="form-check-label"
                                         *ngIf="edititem.downloadable">{{
-                                        i18n('common.yes') }}</label>
+                                        i18nstr.common.yes }}</label>
                                     <label for="extension-downloadable" class="form-check-label"
                                         *ngIf="!edititem.downloadable">{{
-                                        i18n('common.no') }}</label>
+                                        i18nstr.common.no }}</label>
                                 </div>
                             </div>
                         </div>
                         <div class="col-12 col-lg-3 mb-3">
                             <div class="form-group">
                                 <label for="extension-indexable" class="form-label">{{
-                                    i18n('db.extensions.indexable') }}</label>
+                                    i18nstr.db.extensions.indexable }}</label>
                                 <div class="form-check">
                                     <input type="checkbox" class="form-check-input" id="extension-indexable"
                                         name="extension-indexable" [(ngModel)]="edititem.indexable">
                                     <label for="extension-indexable" class="form-check-label"
                                         *ngIf="edititem.indexable">{{
-                                        i18n('common.yes') }}</label>
+                                        i18nstr.common.yes }}</label>
                                     <label for="extension-indexable" class="form-check-label"
                                         *ngIf="!edititem.indexable">{{
-                                        i18n('common.no') }}</label>
+                                        i18nstr.common.no }}</label>
                                 </div>
                             </div>
                         </div>
                         <div class="col-12 col-lg-3 mb-3">
                             <div class="form-group">
                                 <label for="extension-isofficefile" class="form-label">{{
-                                    i18n('db.extensions.isofficefile') }}</label>
+                                    i18nstr.db.extensions.isofficefile }}</label>
                                 <div class="form-check">
                                     <input type="checkbox" class="form-check-input" id="extension-isofficefile"
                                         name="extension-isofficefile" [(ngModel)]="edititem.phpoffice">
                                     <label for="extension-isofficefile" class="form-check-label"
                                         *ngIf="edititem.phpoffice">{{
-                                        i18n('common.yes') }}</label>
+                                        i18nstr.common.yes }}</label>
                                     <label for="extension-isofficefile" class="form-check-label"
                                         *ngIf="!edititem.phpoffice">{{
-                                        i18n('common.no') }}</label>
+                                        i18nstr.common.no }}</label>
                                 </div>
                             </div>
                         </div>
@@ -165,15 +165,15 @@
     <div class="flex-table flex-table-sm mb-3">
         <div class="flex-table-head row">
             <div class="col-4 col-lg-3">
-                {{ i18n('db.extensions.ext') }}
+                {{ i18nstr.db.extensions.ext }}
                 <app-sorter-icon columnName="ext" [sortAsc]="sortAsc" [sortBy]="sortBy"
                     (click)="sort('ext', sortBy === 'ext' ? !sortAsc : sortAsc);"></app-sorter-icon>
             </div>
             <div class="col-8 col-lg-3">
-                {{ i18n('db.extensions.options') }}
+                {{ i18nstr.db.extensions.options }}
             </div>
             <div class="col-lg-6 d-none d-lg-block">
-                {{ i18n('db.extensions.mimetype') }}
+                {{ i18nstr.db.extensions.mimetype }}
                 <app-sorter-icon columnName="mimetype" [sortAsc]="sortAsc" [sortBy]="sortBy"
                     (click)="sort('mimetype', sortBy === 'mimetype' ? !sortAsc : sortAsc);"></app-sorter-icon>
             </div>
@@ -183,7 +183,7 @@
                 <div class="col-4 col-lg-3 text-truncate">
                     {{ item.ext }}
                     <span class="badge bg-danger" *ngIf="item.mimetype === '/unknown'">{{
-                        i18n('db.extensions.unknownMimetype') }}</span>
+                        i18nstr.db.extensions.unknownMimetype }}</span>
                 </div>
                 <div class="col-8 col-lg-3 text-truncate">
                     <span [ngClass]="{ 'strikethrough': !item.displayable}">

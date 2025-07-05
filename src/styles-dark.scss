@@ -1,16 +1,27 @@
 body[data-bs-theme="dark"] {
   .cal-month-view {
     background-color: rgba(0, 0, 0, 0.1);
-    .cal-cell-row:hover {
-      background-color: rgba(13, 110, 253, 0.1) !important;
+    .cal-cell-row {
       .cal-cell {
         background-color: rgba(0, 0, 0, 0.1);
-        &.cal-today {
-          background-color: rgba(0, 0, 0, 0.1);
-        }
         &:hover {
           background-color: rgba(13, 110, 253, 0.15);
         }
+        &.cal-today {
+          background-color: rgba(149, 154, 0, 0.1);
+          &:hover {
+            background-color: rgba(149, 154, 0, 0.2);
+          }
+        }
+        &.cal-open {
+          background-color: rgba(3, 205, 0, 0.1);
+          &:hover {
+            background-color: rgba(3, 205, 0, 0.2);
+          }
+        }
+      }
+      &:hover {
+        background-color: rgba(13, 110, 253, 0.1) !important;
       }
     }
   }
@@ -24,7 +35,6 @@ body[data-bs-theme="dark"] {
       &.active {
         background-color: rgba(13, 110, 253, 0.15) !important;
         &:hover {
-          //background-color: rgba(255, 255, 255, 0.05);
           background-color: rgba(13, 110, 253, 0.23) !important;
         }
       }
@@ -33,15 +43,12 @@ body[data-bs-theme="dark"] {
   ul.list-group {
     > .list-group-item {
       &.active {
-        //background-color: rgba(255, 255, 255, 0.05);
         background-color: rgba(13, 110, 253, 0.15) !important;
         &:hover {
-          //background-color: rgba(255, 255, 255, 0.05);
           background-color: rgba(13, 110, 253, 0.23) !important;
         }
       }
       &:hover {
-        //background-color: rgba(255, 255, 255, 0.05);
         background-color: rgba(13, 110, 253, 0.1) !important;
       }
     }

@@ -5,7 +5,7 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="modal-title">{{ title }}</h5>
                 <button *ngIf="cancelable" type="button" class="btn-close" data-bs-dismiss="modal"
-                    [attr.aria-label]="i18n('common.confirm.deletion.closeModal')" (click)="cancel.emit()"></button>
+                    [attr.aria-label]="i18nstr.common.confirm.deletion.closeModal" (click)="cancel.emit()"></button>
             </div>
             <div class="modal-body py-1">
                 {{ question }}
@@ -14,12 +14,12 @@
                 <button *ngIf="cancelable" type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal"
                     (click)="cancel.emit()">
                     <app-icon [iconClass]="icons['go-left']"></app-icon>
-                    {{ i18n('common.confirm.deletion.cancel') }}
+                    {{ i18nstr.common.confirm.deletion.cancel }}
                 </button>
                 <button type="button" class="btn btn-sm btn-danger ms-2" data-bs-dismiss="modal"
                     (click)="confirm.emit()">
                     <app-icon [iconClass]="icons['delete']"></app-icon>
-                    {{ i18n('common.confirm.deletion.confirm') }}
+                    {{ i18nstr.common.confirm.deletion.confirm }}
                 </button>
             </div>
         </div>

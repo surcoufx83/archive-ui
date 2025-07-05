@@ -5,6 +5,7 @@ import { first } from 'rxjs';
 import { AuthService } from 'src/app/auth.service';
 import { I18nService } from 'src/app/i18n.service';
 import { ApiReply, Meter } from 'src/app/if';
+import { L10nArchiveLocale } from 'src/app/l10n/l10n.types';
 import { FormatService } from 'src/app/utils/format.service';
 import { environment } from 'src/environments/environment.dev';
 
@@ -37,8 +38,12 @@ export class ReadingsComponent implements OnInit {
     return this.formatService.fdate(date, form);
   }
 
-  i18n(key: string, params: string[] = []): string {
-    return this.i18nService.i18n(key, params);
+  /**
+   * Getter for i18n localization strings.
+   * @returns The localization strings.
+   */
+  get i18nstr(): L10nArchiveLocale {
+    return this.i18nService.str;
   }
 
   getMeter(id: number): Meter | null {

@@ -1,0 +1,9 @@
+@if (!hidden()) {
+<div class="row" [ngClass]="rowCss">
+    @for (item of items; track $index) {
+    <div [class]="colSize()" [ngClass]="item.colCss">
+        {{ item.content }}
+    </div>
+    }
+</div>
+}

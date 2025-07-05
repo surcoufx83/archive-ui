@@ -1,0 +1,62 @@
+<app-card icon="today" [title]="i18n('workmonth.cards.day.title', [fdate(workDay?.date, 'P')])">
+
+    <ng-container actionitems>
+        @if (workDay && !workDay.stats) {
+        <div class="btn-group" role="group">
+            @for (item of offCategories; track $index) {
+            <button type="button" class="btn btn-sm" [ngClass]="{ 'btn-success': workDay.offcategory?.id === item.id }"
+                (click)="assignOffdayEvent.emit({ day: workDay, category: item })">
+                <app-icon [iconClass]="item.icon"></app-icon>
+            </button>
+            }
+            @if (workDay.offcategory && workDay.offcategory.quickselect) {
+            <button type="button" class="btn btn-sm" (click)="assignOffdayEvent.emit({ day: workDay })">
+                <app-icon [iconClass]="icons['calendarClear']"></app-icon>
+            </button>
+            }
+        </div>
+        }
+    </ng-container>
+
+    <div class="d-flex justify-content-between">
+        <div class="fs-7">
+            {{ i18nstr.calendar.weekday }}
+        </div>
+        <strong>{{ fdate(workDay?.date, 'EEEE') }}</strong>
+    </div>
+    @if (workDay && workDay.offcategory) {
+    <div class="d-flex justify-content-between mt-2">
+        <div class="fs-7">
+            {{ i18nstr.work.offcategories.title }}
+        </div>
+        <strong>{{ i18n('work.offcategories.' + workDay.offcategory.name) }}</strong>
+    </div>
+    }
+    @if (workDay && workDay.stats) {
+    <div class="d-flex justify-content-between mt-2">
+        <div class="fs-7">
+            {{ i18nstr.workday.daycard.booked }}
+        </div>
+        <div class="font-weight-bold">
+            <strong>
+                {{ formatTimespan(workDay.stats.duration) }}
+            </strong>
+            @if (settings && settings.work.worktime.default != workDay.stats.duration) {
+            <span class="fs-8 ms-2">[{{ settings.work.worktime.default < workDay.stats.duration ? '+' : '' }}{{
+                    formatTimespan(workDay.stats.duration - settings.work.worktime.default) }}]</span>
+                    }
+        </div>
+    </div>
+    <div class="my-2 border-bottom"></div>
+    <app-grid-row [items]="headerGridRow()" [rowCss]="['fs-7', 'text-center', 'fw-bold']"></app-grid-row>
+    <app-grid-row [items]="contentGridRow()" [rowCss]="['fs-7', 'text-center']"></app-grid-row>
+    }
+    @else if (workDay && !workDay.offcategory && !workDay.stats) {
+    <div class="my-2 border-bottom"></div>
+    <div class="d-flex justify-content-between fst-italic mt-2">
+        <div class="fs-7">
+            {{ i18nstr.workmonth.cards.day.noBookings }}
+        </div>
+    </div>
+    }
+</app-card>

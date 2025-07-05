@@ -1,4 +1,10 @@
 <toast-container></toast-container>
 
-<app-navbar *ngIf="isLoggedin"></app-navbar>
-<router-outlet></router-outlet>
+<div class="d-flex flex-column" style="height: 100vh!important;">
+    @if (isLoggedin) {
+    <app-navbar></app-navbar>
+    }
+    <div class="flex-grow-1 overflow-y-auto">
+        <router-outlet></router-outlet>
+    </div>
+</div>

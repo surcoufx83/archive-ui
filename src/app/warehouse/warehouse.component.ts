@@ -8,6 +8,7 @@ import { I18nService } from '../i18n.service';
 import { ApiReply, WarehouseRoom, WarehouseSpace } from '../if';
 import { SettingsService } from '../utils/settings.service';
 import { FormatService } from '../utils/format.service';
+import { L10nArchiveLocale } from '../l10n/l10n.types';
 
 @Component({
   selector: 'app-warehouse',
@@ -41,7 +42,15 @@ export class WarehouseComponent implements OnInit, OnDestroy {
   i18n(key: string, params: string[] = []): string {
     return this.i18nService.i18n(key, params);
   }
-  
+
+  /**
+   * Getter for i18n localization strings.
+   * @returns The localization strings.
+   */
+  get i18nstr(): L10nArchiveLocale {
+    return this.i18nService.str;
+  }
+
   ngOnDestroy(): void {
     this.subs.forEach((sub) => sub.unsubscribe());
   }

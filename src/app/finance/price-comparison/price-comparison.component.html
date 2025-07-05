@@ -1,18 +1,19 @@
 <div class="container pt-4 pt-md-2 mb-2">
-    <app-h2 [title]="i18n('pricecomparison.title')">
+    <app-h2 [title]="i18nstr.pricecomparison.title">
     </app-h2>
 </div>
 
 <div class="container">
     <div class="flex-table flex-table-sm mb-3">
         <div class="flex-table-head row">
-            <div class="col-3 text-nowrap text-truncate">{{ i18n('pricecomparison.chart') }}</div>
-            <div class="col-3 text-nowrap text-truncate">{{ i18n('pricecomparison.time') }}</div>
-            <div class="col-3 text-nowrap text-truncate">{{ i18n('pricecomparison.range') }}</div>
-            <div class="col-3 text-nowrap text-truncate">{{ i18n('pricecomparison.article') }}</div>
+            <div class="col-3 text-nowrap text-truncate">{{ i18nstr.pricecomparison.chart }}</div>
+            <div class="col-3 text-nowrap text-truncate">{{ i18nstr.pricecomparison.time }}</div>
+            <div class="col-3 text-nowrap text-truncate">{{ i18nstr.pricecomparison.range }}</div>
+            <div class="col-3 text-nowrap text-truncate">{{ i18nstr.pricecomparison.article }}</div>
         </div>
         <ng-container *ngFor="let itemsarray of items">
-            <ng-container [ngTemplateOutlet]="compareitem" [ngTemplateOutletContext]="{ items: itemsarray, article: articles[itemsarray[0].articleid]}"></ng-container>
+            <ng-container [ngTemplateOutlet]="compareitem"
+                [ngTemplateOutletContext]="{ items: itemsarray, article: articles[itemsarray[0].articleid]}"></ng-container>
         </ng-container>
     </div>
 </div>

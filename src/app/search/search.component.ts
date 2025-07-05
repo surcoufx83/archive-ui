@@ -11,6 +11,7 @@ import { I18nService } from '../i18n.service';
 import { FormatService } from '../utils/format.service';
 import { SettingsService } from '../utils/settings.service';
 import { SearchResultAccountItem, SearchResultCaseItem, SearchResultDirectoryItem, SearchResultFileItem, SearchResultNoteItem, SearchResultPageItem, SearchResults } from './searchresult';
+import { L10nArchiveLocale } from '../l10n/l10n.types';
 
 @Component({
   selector: 'app-search',
@@ -77,6 +78,14 @@ export class SearchComponent implements OnDestroy, OnInit {
     return this.i18nService.i18n(key, params);
   }
 
+  /**
+   * Getter for i18n localization strings.
+   * @returns The localization strings.
+   */
+  get i18nstr(): L10nArchiveLocale {
+    return this.i18nService.str;
+  }
+
   get locale(): string {
     return this.i18nService.Locale;
   }
@@ -88,15 +97,16 @@ export class SearchComponent implements OnDestroy, OnInit {
   ngOnInit(): void {
     this.subscriptions.push(this.settings.settings$.subscribe((settings) => this.usersettingsObj = settings));
     this.subscriptions.push(this.route.paramMap.subscribe((params) => {
+      this.reset();
+      this.showgroup = params.get('tab') ?? 'tags';
+      this.phrase = params.get('phrase') ?? '';
+      this.searchphrase = params.get('phrase') ?? '';
+      this.searchtoken = params.get('token') ?? '';
+      this.urltoken = params.get('token') ?? '';
+
       setTimeout(() => {
-        this.reset();
-        this.showgroup = params.get('tab') ?? 'tags';
-        this.phrase = params.get('phrase') ?? '';
-        this.searchphrase = params.get('phrase') ?? '';
-        this.searchtoken = params.get('token') ?? '';
-        this.urltoken = params.get('token') ?? '';
         this.onSearch(params.get('token') != null, (params.get('token') ?? ''));
-      }, 1);
+      }, 100);
     }));
   }
 
@@ -144,13 +154,13 @@ export class SearchComponent implements OnDestroy, OnInit {
                 this.searchresults.directories = <SearchResultDirectoryItem[]>reply.payload['items'];
                 break;
               case 'files':
-                this.searchresults.files = <SearchResultFileItem[]>reply.payload['items'];
+                this.searchresults.files = (<SearchResultFileItem[]>reply.payload['items']).sort((a, b) => b.file.mtime.localeCompare(a.file.mtime));
                 break;
               case 'notepad':
                 this.searchresults.notes = <SearchResultNoteItem[]>reply.payload['items'];
                 break;
               case 'pages':
-                this.searchresults.pages = <SearchResultPageItem[]>reply.payload['items'];
+                this.searchresults.pages = (<SearchResultPageItem[]>reply.payload['items']).sort((a, b) => b.file.mtime.localeCompare(a.file.mtime));
                 break;
               case 'tags':
                 this.searchresults.tags = <{ [key: string]: { [key: number]: File } }>(reply.payload['items']);

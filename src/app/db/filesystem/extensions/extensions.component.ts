@@ -4,6 +4,7 @@ import { first } from 'rxjs';
 import { AuthService } from 'src/app/auth.service';
 import { I18nService } from 'src/app/i18n.service';
 import { Extension, Mimetype } from 'src/app/if';
+import { L10nArchiveLocale } from 'src/app/l10n/l10n.types';
 import { ToastsService } from 'src/app/utils/toasts.service';
 import { environment } from 'src/environments/environment.dev';
 
@@ -84,6 +85,14 @@ export class DbExtensionsComponent implements OnInit {
     return this.i18nService.i18n(key, params);
   }
 
+  /**
+   * Getter for i18n localization strings.
+   * @returns The localization strings.
+   */
+  get i18nstr(): L10nArchiveLocale {
+    return this.i18nService.str;
+  }
+
   get indexableIcon(): string {
     return this.icons['fingerprint'];
   }
@@ -129,8 +138,8 @@ export class DbExtensionsComponent implements OnInit {
 
   submit(form: NgForm): void {
     if (!form.valid) {
-      this.toastService.warn(this.i18nService.i18n('common.warn.formInvalid.title'),
-        this.i18nService.i18n('common.warn.formInvalid.message'));
+      this.toastService.warn(this.i18nstr.common.warn.formInvalid.title,
+        this.i18nstr.common.warn.formInvalid.message);
       return;
     }
     if (!this.timeout)

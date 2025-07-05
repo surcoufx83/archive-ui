@@ -1,5 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { I18nService } from 'src/app/i18n.service';
+import { L10nArchiveLocale } from 'src/app/l10n/l10n.types';
 import { environment } from 'src/environments/environment.dev';
 
 @Component({
@@ -25,8 +26,12 @@ export class ConfirmDeletionComponent {
     private i18nService: I18nService) {
   }
 
-  i18n(key: string, params: string[] = []): string {
-    return this.i18nService.i18n(key, params);
+  /**
+   * Getter for i18n localization strings.
+   * @returns The localization strings.
+   */
+  get i18nstr(): L10nArchiveLocale {
+    return this.i18nService.str;
   }
 
 }

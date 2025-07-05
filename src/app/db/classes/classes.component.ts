@@ -2,6 +2,7 @@ import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/co
 import { Subscription, first } from 'rxjs';
 import { I18nService } from 'src/app/i18n.service';
 import { Class, UserSettings } from 'src/app/if';
+import { L10nArchiveLocale } from 'src/app/l10n/l10n.types';
 import { SettingsService } from 'src/app/utils/settings.service';
 import { ToastsService } from 'src/app/utils/toasts.service';
 import { environment } from 'src/environments/environment.dev';
@@ -46,8 +47,8 @@ export class DbClassesComponent implements OnDestroy, OnInit {
       this.saving = true;
       this.userSettings.deleteClass(item).pipe(first()).subscribe((e) => {
         if (e) {
-          this.toastService.confirm(this.i18nService.i18n('common.confirm.delete.title'),
-            this.i18nService.i18n('common.confirm.delete.message'));
+          this.toastService.confirm(this.i18nstr.common.confirm.delete.title,
+            this.i18nstr.common.confirm.delete.message);
           this.editclass = undefined;
         }
         this.saving = false;
@@ -70,6 +71,14 @@ export class DbClassesComponent implements OnDestroy, OnInit {
 
   i18n(key: string, params: string[] = []): string {
     return this.i18nService.i18n(key, params);
+  }
+
+  /**
+   * Getter for i18n localization strings.
+   * @returns The localization strings.
+   */
+  get i18nstr(): L10nArchiveLocale {
+    return this.i18nService.str;
   }
 
   ngOnDestroy(): void {

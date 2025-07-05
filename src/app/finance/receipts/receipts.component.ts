@@ -5,6 +5,7 @@ import { Subscription, first } from 'rxjs';
 import { AuthService } from 'src/app/auth.service';
 import { I18nService } from 'src/app/i18n.service';
 import { Country, Currency, Party, Receipt, ReceiptArticle, ReceiptArticleCategory, TaxRate, UserSettings } from 'src/app/if';
+import { L10nArchiveLocale } from 'src/app/l10n/l10n.types';
 import { FormatService } from 'src/app/utils/format.service';
 import { SettingsService } from 'src/app/utils/settings.service';
 import { ToastsService } from 'src/app/utils/toasts.service';
@@ -77,6 +78,14 @@ export class ReceiptsComponent implements OnInit, OnDestroy {
 
   i18n(key: string, params: string[] = []): string {
     return this.i18nService.i18n(key, params);
+  }
+
+  /**
+   * Getter for i18n localization strings.
+   * @returns The localization strings.
+   */
+  get i18nstr(): L10nArchiveLocale {
+    return this.i18nService.str;
   }
 
   new(): void {
@@ -239,20 +248,20 @@ export class ReceiptsComponent implements OnInit, OnDestroy {
     if (!this.selectedReceipt)
       return;
     if (form.form.status !== 'VALID') {
-      this.toastService.warn(this.i18nService.i18n('common.warn.formInvalid.title'),
-        this.i18nService.i18n('common.warn.formInvalid.message'));
+      this.toastService.warn(this.i18nstr.common.warn.formInvalid.title,
+        this.i18nstr.common.warn.formInvalid.message);
       return;
     }
 
     if (this.selectedReceipt.items.length == 0) {
-      this.toastService.warn(this.i18nService.i18n('common.warn.formInvalid.title'),
-        this.i18nService.i18n('receipts.edit.noitems1'));
+      this.toastService.warn(this.i18nstr.common.warn.formInvalid.title,
+        this.i18nstr.receipts.edit.noitems1);
       return;
     }
 
     if (this.selectedReceipt.items[0].articleid == null || this.selectedReceipt.items[0].totalnet == 0) {
-      this.toastService.warn(this.i18nService.i18n('common.warn.formInvalid.title'),
-        this.i18nService.i18n('receipts.edit.noitems2'));
+      this.toastService.warn(this.i18nstr.common.warn.formInvalid.title,
+        this.i18nstr.receipts.edit.noitems2);
       return;
     }
 
@@ -281,8 +290,8 @@ export class ReceiptsComponent implements OnInit, OnDestroy {
   select(receipt: Receipt): void {
     if (this.selectedReceipt) {
       if (this.selectedReceipt.id == 0 && this.selectedReceipt.items.length > 1) {
-        this.toastService.warn(this.i18nService.i18n('receipts.select.stillediting.title'),
-          this.i18nService.i18n('receipts.select.stillediting.message'));
+        this.toastService.warn(this.i18nstr.receipts.select.stillediting.title,
+          this.i18nstr.receipts.select.stillediting.message);
         return;
       }
     }

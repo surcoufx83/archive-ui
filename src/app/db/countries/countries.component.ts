@@ -7,6 +7,7 @@ import { SettingsService } from 'src/app/utils/settings.service';
 import { ToastsService } from 'src/app/utils/toasts.service';
 import { environment } from 'src/environments/environment.dev';
 import { DbCurrenciesStorage } from './currencies/currencies.component';
+import { L10nArchiveLocale } from 'src/app/l10n/l10n.types';
 
 @Component({
   selector: 'app-countries',
@@ -57,8 +58,8 @@ export class DbCountriesComponent implements OnInit, OnDestroy {
       this.userSettings.deleteCountry(item).pipe(first()).subscribe((e) => {
         console.log(e)
         if (e) {
-          this.toastService.confirm(this.i18nService.i18n('common.confirm.delete.title'),
-            this.i18nService.i18n('common.confirm.delete.message'));
+          this.toastService.confirm(this.i18nstr.common.confirm.delete.title,
+            this.i18nstr.common.confirm.delete.message);
           this.editcountry = undefined;
         }
         this.saving = false;
@@ -81,6 +82,14 @@ export class DbCountriesComponent implements OnInit, OnDestroy {
 
   i18n(key: string, params: string[] = []): string {
     return this.i18nService.i18n(key, params);
+  }
+
+  /**
+   * Getter for i18n localization strings.
+   * @returns The localization strings.
+   */
+  get i18nstr(): L10nArchiveLocale {
+    return this.i18nService.str;
   }
 
   ngOnDestroy(): void {
@@ -141,8 +150,8 @@ export class DbCountriesComponent implements OnInit, OnDestroy {
 
   submit(form: NgForm): void {
     if (!form.valid) {
-      this.toastService.warn(this.i18nService.i18n('common.warn.formInvalid.title'),
-        this.i18nService.i18n('common.warn.formInvalid.message'));
+      this.toastService.warn(this.i18nstr.common.warn.formInvalid.title,
+        this.i18nstr.common.warn.formInvalid.message);
       return;
     }
     if (!this.timeout)
@@ -156,8 +165,8 @@ export class DbCountriesComponent implements OnInit, OnDestroy {
     this.saving = true;
     this.userSettings.updateCountry(this.editcountry).pipe(first()).subscribe((e) => {
       if (e)
-        this.toastService.confirm(this.i18nService.i18n('common.confirm.save.title'),
-          this.i18nService.i18n('common.confirm.save.message'));
+        this.toastService.confirm(this.i18nstr.common.confirm.save.title,
+          this.i18nstr.common.confirm.save.message);
       this.saving = false;
     });
   }

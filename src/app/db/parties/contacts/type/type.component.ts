@@ -7,6 +7,7 @@ import { ToastsService } from 'src/app/utils/toasts.service';
 import { ContactType, UserSettings } from 'src/app/if';
 import { environment } from 'src/environments/environment.dev';
 import { Subscription, first } from 'rxjs';
+import { L10nArchiveLocale } from 'src/app/l10n/l10n.types';
 
 @Component({
   selector: 'app-type',
@@ -43,8 +44,8 @@ export class DbContactTypeComponent implements OnDestroy, OnInit {
       this.saving = true;
       this.userSettings.deleteContactType(item).pipe(first()).subscribe((e) => {
         if (e) {
-          this.toastService.confirm(this.i18nService.i18n('common.confirm.delete.title'),
-            this.i18nService.i18n('common.confirm.delete.message'));
+          this.toastService.confirm(this.i18nstr.common.confirm.delete.title,
+            this.i18nstr.common.confirm.delete.message);
           this.editctype = undefined;
         }
         this.saving = false;
@@ -67,6 +68,14 @@ export class DbContactTypeComponent implements OnDestroy, OnInit {
 
   i18n(key: string, params: string[] = []): string {
     return this.i18nService.i18n(key, params);
+  }
+
+  /**
+   * Getter for i18n localization strings.
+   * @returns The localization strings.
+   */
+  get i18nstr(): L10nArchiveLocale {
+    return this.i18nService.str;
   }
 
   ngOnDestroy(): void {
@@ -100,8 +109,8 @@ export class DbContactTypeComponent implements OnDestroy, OnInit {
 
   submit(form: NgForm): void {
     if (!form.valid) {
-      this.toastService.warn(this.i18nService.i18n('common.warn.formInvalid.title'),
-        this.i18nService.i18n('common.warn.formInvalid.message'));
+      this.toastService.warn(this.i18nstr.common.warn.formInvalid.title,
+        this.i18nstr.common.warn.formInvalid.message);
       return;
     }
     if (!this.timeout)
@@ -115,8 +124,8 @@ export class DbContactTypeComponent implements OnDestroy, OnInit {
     this.saving = true;
     this.userSettings.updateContactType(this.editctype).pipe(first()).subscribe((e) => {
       if (e)
-        this.toastService.confirm(this.i18nService.i18n('common.confirm.save.title'),
-          this.i18nService.i18n('common.confirm.save.message'));
+        this.toastService.confirm(this.i18nstr.common.confirm.save.title,
+          this.i18nstr.common.confirm.save.message);
       this.saving = false;
     });
   }

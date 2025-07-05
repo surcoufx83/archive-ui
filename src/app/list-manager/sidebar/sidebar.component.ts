@@ -2,6 +2,7 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { first } from 'rxjs';
 import { I18nService } from 'src/app/i18n.service';
 import { List } from 'src/app/if';
+import { L10nArchiveLocale } from 'src/app/l10n/l10n.types';
 import { FormatService } from 'src/app/utils/format.service';
 import { SettingsService } from 'src/app/utils/settings.service';
 
@@ -35,8 +36,12 @@ export class ListManagerSidebarComponent implements OnChanges {
     return this.formatService.furl(inputStr);
   }
 
-  i18n(key: string, params: string[] = []): string {
-    return this.i18nService.i18n(key, params);
+  /**
+   * Getter for i18n localization strings.
+   * @returns The localization strings.
+   */
+  get i18nstr(): L10nArchiveLocale {
+    return this.i18nService.str;
   }
 
   ngOnChanges(changes: SimpleChanges): void {

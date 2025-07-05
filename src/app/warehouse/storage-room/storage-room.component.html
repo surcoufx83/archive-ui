@@ -8,13 +8,13 @@
     <form #f (ngSubmit)="onSubmitRoom()" ngNativeValidate [formGroup]="roomFormgroup">
         <div class="card mb-4">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h3 class="text-nowrap text-truncate">{{ i18n('warehouse.rooms.metacard.title') }}</h3>
+                <h3 class="text-nowrap text-truncate">{{ i18nstr.warehouse.rooms.metacard.title }}</h3>
             </div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-12 col-lg-6 mb-3">
                         <div class="form-group">
-                            <label for="room-name" class="form-label required">{{ i18n('warehouse.rooms.metacard.name')
+                            <label for="room-name" class="form-label required">{{ i18nstr.warehouse.rooms.metacard.name
                                 }}</label>
                             <input type="text" class="form-control" id="room-name" name="room-name"
                                 formControlName="name">
@@ -22,7 +22,7 @@
                     </div>
                     <div class="col-12 col-lg-3 mb-3">
                         <div class="form-group">
-                            <label for="room-icon" class="form-label required">{{ i18n('warehouse.rooms.metacard.icon')
+                            <label for="room-icon" class="form-label required">{{ i18nstr.warehouse.rooms.metacard.icon
                                 }}</label>
                             <div class="input-group">
                                 <span class="input-group-text">

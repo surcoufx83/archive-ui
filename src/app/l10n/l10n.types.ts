@@ -147,6 +147,7 @@ export type L10nArchiveLocale = {
             Banking_DepositStatement: string,
             Banking_Earnings: string,
             Banking_LossOffSetting: string,
+            Banking_Order: string,
             Banking_SellOrders: string,
             Banking_Stmt: string,
             Claim_Settlement: string,
@@ -170,6 +171,7 @@ export type L10nArchiveLocale = {
             General_DeviceInfo: string,
             General_IdDocuments: string,
             General_Letter: string,
+            General_Mailbody: string,
             General_Manuals: string,
             General_Order: string,
             General_OrderConfirmation: string,
@@ -178,27 +180,6 @@ export type L10nArchiveLocale = {
             Health_Report: string,
             Home_AnnualSettlement: string,
             Home_MeterReading: string,
-            Insurance_AnnualReport: string,
-            Insurance_Stmt: string,
-            Job_AnnualBonus: string,
-            Job_AnnualPayroll: string,
-            Job_Application: string,
-            Job_Certificate: string,
-            Job_CoD: string,
-            Job_Expenses_Clearing: string,
-            Job_Incentives_Status: string,
-            Job_PaySlip: string,
-            Job_PaySlip2: string,
-            Legal_Deed: string,
-            Legal_LayJudge_CompensationForm: string,
-            Legal_LayJudge_InvitationTrial: string,
-            Legal_LayJudge_ReservedDates: string,
-            Legal_Mandate: string,
-            Legal_Notice: string,
-            Pension_AnnualReport: string,
-            Public_Application: string,
-            Public_BallotDocs: string,
-            Security_Credentials: string,
             In_PerformanceReport: string,
             In_PostReceipt: string,
             In_QuarterReport: string,
@@ -221,7 +202,24 @@ export type L10nArchiveLocale = {
             In_VacationResp: string,
             In_VaccinationCertificate: string,
             In_Voucher: string,
+            Insurance_AnnualReport: string,
+            Insurance_Stmt: string,
+            Job_AnnualBonus: string,
+            Job_AnnualPayroll: string,
+            Job_Application: string,
+            Job_Certificate: string,
+            Job_CoD: string,
+            Job_Expenses_Clearing: string,
+            Job_Incentives_Status: string,
+            Job_PaySlip: string,
+            Job_PaySlip2: string,
             LeaseAgreement: string,
+            Legal_Deed: string,
+            Legal_LayJudge_CompensationForm: string,
+            Legal_LayJudge_InvitationTrial: string,
+            Legal_LayJudge_ReservedDates: string,
+            Legal_Mandate: string,
+            Legal_Notice: string,
             NewCard: string,
             Out_ClaimReport: string,
             Out_Contradiction: string,
@@ -232,8 +230,12 @@ export type L10nArchiveLocale = {
             Out_SepaMandate: string,
             Out_TaxDeclaration: string,
             Out_Termination: string,
+            Pension_AnnualReport: string,
+            Public_Application: string,
+            Public_BallotDocs: string,
             RentalAgreement: string,
-            Trash: string
+            Security_Credentials: string,
+            Trash: string,
         }
     },
     common: {
@@ -581,6 +583,10 @@ export type L10nArchiveLocale = {
     },
     home: {
         title: string,
+        banking: {
+            title: string,
+            pricesLink: string,
+        },
         cases: {
             title: string
         },
@@ -1001,7 +1007,10 @@ export type L10nArchiveLocale = {
             support: string,
             trainingself: string,
             travel: string,
-            title: string
+            title: string,
+            ntw_travel: string,
+            ntw_work: string,
+            judge: string,
         }
     },
     workday: {
@@ -1009,6 +1018,16 @@ export type L10nArchiveLocale = {
         daycard: {
             title: string,
             booked: string
+        },
+        templatescard: {
+            description: string,
+            disabledHoliday: string,
+            disabledOffday: string,
+            existingItem: string,
+            pickFlexItemLabel: string,
+            templateNamePlaceholder: string,
+            title: string,
+            weekLink: string,
         },
         tracked: {
             title: string,
@@ -1028,6 +1047,7 @@ export type L10nArchiveLocale = {
                 customer: string,
                 description: string,
                 duration: string,
+                durationLong: string,
                 durationShort: string,
                 from: string,
                 project: string,
@@ -1042,7 +1062,11 @@ export type L10nArchiveLocale = {
                 nameTitle: string,
                 namePlaceholder: string
             },
-            live: {}
+            live: {},
+            recentBookings: {
+                title: string,
+                filter: string,
+            }
         }
     },
     workmonth: {
@@ -1053,7 +1077,8 @@ export type L10nArchiveLocale = {
         },
         cards: {
             day: {
-                title: string
+                title: string,
+                noBookings: string,
             },
             target: {
                 title: string,
@@ -1066,7 +1091,9 @@ export type L10nArchiveLocale = {
                 title: string,
                 takeover: string,
                 balance: string,
-                carryover: string
+                carryover: string,
+                booked: string,
+                target: string
             }
         },
         offtime: {
